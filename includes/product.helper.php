@@ -168,7 +168,7 @@ class TInvWL_Product {
 		$data['variation_id']	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 		$data['in_stock']		 = $product_data->is_in_stock();
 		$data['price']			 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() );
-		$data['formdata']		 = $this->prepare_save_meta( $meta );
+		$data['formdata']		 = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
 
 		global $wpdb;
 		if ( $wpdb->insert( $this->table, $data ) ) { // @codingStandardsIgnoreLine WordPress.VIP.DirectDatabaseQuery.DirectQuery
@@ -222,11 +222,14 @@ class TInvWL_Product {
 			return false;
 		}
 
+		$product_id		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
+		$variation_id	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+
 		$products = $this->get( array(
-			'product_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ),
-			'variation_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ),
+			'product_id'	 => $product_id,
+			'variation_id'	 => $variation_id,
 			'wishlist_id'	 => $wishlist_id,
-			'formdata'		 => $this->prepare_save_meta( $meta ),
+			'formdata'		 => $this->prepare_save_meta( $meta, $product_id, $variation_id ),
 			'count'			 => 1,
 			'external'		 => false,
 		) );
@@ -329,7 +332,7 @@ class TInvWL_Product {
 					'price'			 => FILTER_SANITIZE_NUMBER_FLOAT,
 					'in_stock'		 => FILTER_VALIDATE_BOOLEAN,
 				) );
-				if ( ! tinv_get_option( 'product_table', 'colm_quantity' ) ) {
+				if ( ! tinv_get_option( 'general', 'quantity_func' ) ) {
 					$product['quantity'] = 1;
 				}
 			}
@@ -431,7 +434,7 @@ class TInvWL_Product {
 			'product_id'	 => $data['product_id'],
 			'variation_id'	 => $data['variation_id'],
 			'wishlist_id'	 => $data['wishlist_id'],
-			'formdata'		 => $this->prepare_save_meta( $meta ),
+			'formdata'		 => $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] ),
 		) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}
 
@@ -464,7 +467,7 @@ class TInvWL_Product {
 			'wishlist_id'	 => $wishlist_id,
 			'product_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ),
 			'variation_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ),
-			'formdata'		 => $this->prepare_save_meta( $meta ),
+			'formdata'		 => $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] ),
 		);
 		$result	 = false !== $wpdb->delete( $this->table, $data ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
@@ -516,14 +519,30 @@ class TInvWL_Product {
 	/**
 	 * Prepare to save meta in database
 	 *
-	 * @param array $meta Meta array.
+	 * @param array  $meta Meta array.
+	 * @param ineger $product_id Woocommerce product ID.
+	 * @param ineger $variation_id Woocommerce product variation ID.
 	 * @return string
 	 */
-	function prepare_save_meta( $meta = array() ) {
+	function prepare_save_meta( $meta = array(), $product_id = 0, $variation_id = 0 ) {
 		if ( ! is_array( $meta ) ) {
 			$meta = array();
 		}
-		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta );
+		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta, $product_id, $variation_id );
+		if ( ! empty( $variation_id ) ) {
+			if ( 'product_variation' == get_post_type( $product_id ) ) { // WPCS: loose comparison ok.
+				$product_id		 = wp_get_post_parent_id( $product_id );
+			}
+
+			$product_data	 = wc_get_product( $product_id );
+			$attributes		 = array_keys( (array) $product_data->get_variation_attributes() );
+			foreach ( $attributes as $attribute ) {
+				$attribute = 'attribute_' . sanitize_title( $attribute );
+				if ( array_key_exists( $attribute, $meta ) ) {
+					unset( $meta[ $attribute ] );
+				}
+			}
+		}
 		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'undefined' ) as $field ) {
 			if ( array_key_exists( $field, $meta ) ) {
 				unset( $meta[ $field ] );

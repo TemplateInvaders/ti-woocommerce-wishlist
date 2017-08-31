@@ -190,19 +190,19 @@ if ( ! function_exists( 'gf_productaddon_support' ) ) {
 			/**
 			 * Change text for button add to cart
 			 *
-			 * @param string $text_add_to_card Text "Add to cart".
+			 * @param string $text_add_to_cart Text "Add to cart".
 			 * @param array  $wl_product Wishlist product.
 			 * @param object $product WooCommerce Product.
 			 *
 			 * @return string
 			 */
-			function gf_productaddon_text_button( $text_add_to_card, $wl_product, $product ) {
+			function gf_productaddon_text_button( $text_add_to_cart, $wl_product, $product ) {
 				$gravity_form_data = get_post_meta( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
 
-				return ( $gravity_form_data ) ? __( 'Select options', 'woocommerce' ) : $text_add_to_card;
+				return ( $gravity_form_data ) ? __( 'Select options', 'woocommerce' ) : $text_add_to_cart;
 			}
 
-			add_filter( 'tinvwl_wishlist_item_add_to_card', 'gf_productaddon_text_button', 10, 3 );
+			add_filter( 'tinvwl_wishlist_item_add_to_cart', 'gf_productaddon_text_button', 10, 3 );
 		}
 
 		if ( ! function_exists( 'gf_productaddon_run_action_button' ) ) {
@@ -720,7 +720,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					if ( tinv_get_option( 'product_table', 'colm_stock' ) ) {
 						$row_string .= '<td class="product-stock">%5$s</td>';
 					}
-					if ( tinv_get_option( 'product_table', 'add_to_card' ) ) {
+					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
 					}
 					$row_string .= '</tr>';
@@ -823,7 +823,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 						$row_string .= '<td class="product-stock">%4$s</td>';
 					}
 
-					if ( tinv_get_option( 'product_table', 'add_to_card' ) ) {
+					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
 					}
 					$row_string .= '</tr>';
@@ -969,7 +969,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_mix_and_match_products' ) ) {
 					if ( tinv_get_option( 'product_table', 'colm_stock' ) ) {
 						$row_string .= '<td class="product-stock">%4$s</td>';
 					}
-					if ( tinv_get_option( 'product_table', 'add_to_card' ) ) {
+					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
 					}
 					$row_string .= '</tr>';
@@ -1182,7 +1182,7 @@ if ( ! function_exists( 'tinvwl_row_yith_woocommerce_product_bundles' ) ) {
 					if ( tinv_get_option( 'product_table', 'colm_stock' ) ) {
 						$row_string .= '<td class="product-stock">%4$s</td>';
 					}
-					if ( tinv_get_option( 'product_table', 'add_to_card' ) ) {
+					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
 					}
 					$row_string .= '</tr>';

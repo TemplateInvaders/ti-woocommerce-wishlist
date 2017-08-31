@@ -712,7 +712,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 	add_filter( 'tinvwl_product_add_to_cart_need_redirect', 'tinvwl_add_to_cart_need_redirect', 10, 3 );
 } // End if().
 
-if ( ! function_exists( 'tinvwl_meta_validate_card_add' ) ) {
+if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 
 	/**
 	 * Checks the ability to add a product
@@ -724,7 +724,7 @@ if ( ! function_exists( 'tinvwl_meta_validate_card_add' ) ) {
 	 *
 	 * @return boolean
 	 */
-	function tinvwl_meta_validate_card_add( $redirect, $product, $redirect_url, $wl_product ) {
+	function tinvwl_meta_validate_cart_add( $redirect, $product, $redirect_url, $wl_product ) {
 		if ( $redirect && array_key_exists( 'meta', $wl_product ) && ! empty( $wl_product['meta'] ) ) {
 
 			TInvWL_Public_Cart::prepare_post( $wl_product );
@@ -749,7 +749,7 @@ if ( ! function_exists( 'tinvwl_meta_validate_card_add' ) ) {
 		return $redirect;
 	}
 
-	add_filter( 'tinvwl_product_add_to_cart_need_redirect', 'tinvwl_meta_validate_card_add', 90, 4 );
+	add_filter( 'tinvwl_product_add_to_cart_need_redirect', 'tinvwl_meta_validate_cart_add', 90, 4 );
 } // End if().
 
 if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {

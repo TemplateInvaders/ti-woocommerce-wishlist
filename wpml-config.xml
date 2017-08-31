@@ -16,11 +16,11 @@
 			<key name="text_remove"/>
 		</key>
 		<key name="tinvwl-product_table">
-			<key name="text_add_to_card"/>
+			<key name="text_add_to_cart"/>
 		</key>
 		<key name="tinvwl-table">
-			<key name="text_add_select_to_card"/>
-			<key name="text_add_all_to_card"/>
+			<key name="text_add_select_to_cart"/>
+			<key name="text_add_all_to_cart"/>
 		</key>
 		<key name="tinvwl-social">
 			<key name="share_on"/>

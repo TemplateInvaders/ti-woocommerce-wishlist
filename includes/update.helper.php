@@ -116,4 +116,16 @@ class TInvWL_Update {
 	function up_1_1_10_1( $previous_version = 0 ) {
 		update_option( 'tinvwl_wizard', true );
 	}
+
+	/**
+	 * Fix name field
+	 */
+	function up_p_1_5_4() {
+		tinv_update_option( 'product_table', 'add_to_cart', tinv_get_option( 'product_table', 'add_to_card' ) );
+		tinv_update_option( 'product_table', 'text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_card' ) );
+		tinv_update_option( 'table', 'add_select_to_cart', tinv_get_option( 'table', 'add_select_to_card' ) );
+		tinv_update_option( 'table', 'text_add_select_to_cart', tinv_get_option( 'table', 'text_add_select_to_card' ) );
+		tinv_update_option( 'table', 'add_all_to_cart', tinv_get_option( 'table', 'add_all_to_card' ) );
+		tinv_update_option( 'table', 'text_add_all_to_cart', tinv_get_option( 'table', 'text_add_all_to_card' ) );
+	}
 }

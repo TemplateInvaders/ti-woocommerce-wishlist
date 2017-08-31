@@ -76,8 +76,8 @@ class TInvWL_Public_Wishlist_View {
 
 		add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
 
-		add_action( 'tinvwl_wishlist_item_action_add_to_card', array( $this, 'product_allow_add_to_card' ), 10, 3 );
-		add_filter( 'tinvwl_wishlist_item_add_to_card', array( $this, 'external_text' ), 10, 3 );
+		add_action( 'tinvwl_wishlist_item_action_add_to_cart', array( $this, 'product_allow_add_to_cart' ), 10, 3 );
+		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'external_text' ), 10, 3 );
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
 		TInvWL_Public_Wishlist_Buttons::init( $this->_n );
@@ -169,7 +169,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @param object  $product Product.
 	 * @return boolean
 	 */
-	function product_allow_add_to_card( $allow, $wlproduct, $product ) {
+	function product_allow_add_to_cart( $allow, $wlproduct, $product ) {
 		if ( ! $allow ) {
 			return false;
 		}
@@ -229,7 +229,7 @@ class TInvWL_Public_Wishlist_View {
 		if ( ! empty( $post['tinvwl-add-to-cart'] ) ) {
 			$product	 = $post['tinvwl-add-to-cart'];
 			$quantity	 = array_key_exists( $product, (array) $post['wishlist_qty'] ) ? $post['wishlist_qty'][ $product ] : 1;
-			return $this->button_addtocard( $wishlist, $product, $quantity, $owner );
+			return $this->button_addtocart( $wishlist, $product, $quantity, $owner );
 		}
 		if ( ! empty( $post['tinvwl-remove'] ) ) {
 			if ( ! $wishlist['is_owner'] ) {
@@ -269,7 +269,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @param boolean $owner Is Owner.
 	 * @return boolean
 	 */
-	function button_addtocard( $wishlist, $id, $quantity = 1, $owner = false ) {
+	function button_addtocart( $wishlist, $id, $quantity = 1, $owner = false ) {
 		$id			 = absint( $id );
 		$quantity	 = absint( $quantity );
 		if ( empty( $id ) || empty( $quantity ) ) {

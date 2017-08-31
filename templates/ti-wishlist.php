@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php if ( $wishlist_table_row['colm_stock'] ) { ?>
 						<th class="product-stock"><?php esc_html_e( 'Stock Status', 'ti-woocommerce-wishlist' ); ?></th>
 					<?php } ?>
-					<?php if ( $wishlist_table_row['add_to_card'] ) { ?>
+					<?php if ( $wishlist_table_row['add_to_cart'] ) { ?>
 						<th class="product-action">&nbsp;</th>
 					<?php } ?>
 				</tr>
@@ -117,12 +117,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 									?>
 								</td>
 							<?php } ?>
-							<?php if ( $wishlist_table_row['add_to_card'] ) { ?>
+							<?php if ( $wishlist_table_row['add_to_cart'] ) { ?>
 								<td class="product-action">
 									<?php
-									if ( apply_filters( 'tinvwl_wishlist_item_action_add_to_card', $wishlist_table_row['add_to_card'], $wl_product, $product ) ) {
+									if ( apply_filters( 'tinvwl_wishlist_item_action_add_to_cart', $wishlist_table_row['add_to_cart'], $wl_product, $product ) ) {
 									?>
-										<button class="button alt" name="tinvwl-add-to-cart" value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i class="fa fa-shopping-cart"></i><span class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_card', $wishlist_table_row['text_add_to_card'], $wl_product, $product ) ); ?></span></button>
+										<button class="button alt" name="tinvwl-add-to-cart" value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i class="fa fa-shopping-cart"></i><span class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?></span></button>
 									<?php } ?>
 								</td>
 							<?php } ?>

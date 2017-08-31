@@ -396,14 +396,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 				'fields'     => array(
 					array(
 						'type'  => 'checkboxonoff',
-						'name'  => 'add_to_card',
+						'name'  => 'add_to_cart',
 						'text'  => __( 'Show "Add to Cart" button', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'extra' => array( 'tiwl-show' => '.tiwl-table-action-addcart' ),
 					),
 					array(
 						'type'  => 'text',
-						'name'  => 'text_add_to_card',
+						'name'  => 'text_add_to_cart',
 						'text'  => __( '"Add to Cart" Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Add to Cart',
 						'class' => 'tiwl-table-action-addcart',
@@ -455,14 +455,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'checkboxonoff',
-						'name'  => 'add_select_to_card',
+						'name'  => 'add_select_to_cart',
 						'text'  => __( 'Show "Add Selected to Cart" button', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'extra' => array( 'tiwl-show' => '.tiwl-table-addcart-sel' ),
 					),
 					array(
 						'type'  => 'text',
-						'name'  => 'text_add_select_to_card',
+						'name'  => 'text_add_select_to_cart',
 						'text'  => __( '"Add Selected to Cart" Button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Add Selected to Cart',
 						'class' => 'tiwl-table-addcart-sel',
@@ -473,14 +473,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'checkboxonoff',
-						'name'  => 'add_all_to_card',
+						'name'  => 'add_all_to_cart',
 						'text'  => __( 'Show "Add All to Cart" button', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'extra' => array( 'tiwl-show' => '.tiwl-table-addcart-all' ),
 					),
 					array(
 						'type'  => 'text',
-						'name'  => 'text_add_all_to_card',
+						'name'  => 'text_add_all_to_cart',
 						'text'  => __( '"Add All to Cart" Button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Add All to Cart',
 						'class' => 'tiwl-table-addcart-all',

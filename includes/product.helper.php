@@ -245,6 +245,8 @@ class TInvWL_Product {
 	 * @return array
 	 */
 	function get( $data = array() ) {
+		global $wpdb;
+
 		$default = array(
 			'count'		 => 10,
 			'field'		 => null,
@@ -277,7 +279,7 @@ class TInvWL_Product {
 		$where = '1';
 		if ( ! empty( $data ) && is_array( $data ) ) {
 			if ( array_key_exists( 'meta', $data ) ) {
-				$data['formdata'] = $this->prepare_save_meta( $data['meta'] );
+				$data['formdata'] = trim( $wpdb->prepare( '%s', $this->prepare_save_meta( $data['meta'] ) ), "'" );
 				unset( $data['meta'] );
 			}
 			foreach ( $data as $f => $v ) {
@@ -311,7 +313,6 @@ class TInvWL_Product {
 
 			$sql = str_replace( $replace, $replacer, $default['sql'] );
 		}
-		global $wpdb;
 		$products = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
 		if ( empty( $products ) ) {
@@ -467,8 +468,8 @@ class TInvWL_Product {
 			'wishlist_id'	 => $wishlist_id,
 			'product_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ),
 			'variation_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ),
-			'formdata'		 => $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] ),
 		);
+		$data['formdata'] = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
 		$result	 = false !== $wpdb->delete( $this->table, $data ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
 			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) );

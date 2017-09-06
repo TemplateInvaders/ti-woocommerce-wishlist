@@ -138,6 +138,9 @@ class TInvWL_Public_Cart {
 				}
 				self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
 				self::unprepare_post();
+				if ( get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes' ) {
+					wp_safe_redirect( wc_get_cart_url() );
+				}
 				return array( $product_id => $quantity );
 			}
 		}

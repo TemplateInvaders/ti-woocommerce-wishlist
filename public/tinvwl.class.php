@@ -239,8 +239,13 @@ class TInvWL_Public_TInvWL {
 			if ( 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
 				if ( is_user_logged_in() ) {
 					$user		 = get_user_by( 'id', $wishlist['author'] );
-					$user_name	 = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
-					$user		 = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+					if ( $user ) {
+						$user_name	 = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
+						$user		 = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+					} else {
+						$user_name	 = '';
+						$user		 = '';
+					}
 				} else {
 					$user_name	 = '';
 					$user		 = '';

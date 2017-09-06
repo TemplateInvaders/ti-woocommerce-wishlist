@@ -229,7 +229,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 */
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		$products = self::get_current_products( $wishlist );
-		$result = array();
+		$result = $errors = array();
 		foreach ( $products as $product ) {
 			$product_data = wc_get_product( $product['variation_id'] ? $product['variation_id'] : $product['product_id'] );
 
@@ -238,6 +238,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
 			if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $product ) ) {
+				$errors[] = $product['product_id'];
 				continue;
 			}
 			$product	 = $product['ID'];
@@ -246,6 +247,14 @@ class TInvWL_Public_Wishlist_Buttons {
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
 			}
+		}
+		if ( ! empty( $errors ) ) {
+			$titles = array();
+			foreach ( $errors as $product_id ) {
+				$titles[] = ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ) . sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+			}
+			$titles = array_filter( $titles );
+			wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist-premium' ), wc_format_list_of_items( $titles ) ), 'error' );
 		}
 		if ( ! empty( $result ) ) {
 			wc_add_to_cart_message( $result, true );
@@ -306,7 +315,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 */
 	public static function apply_action_add_selected( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		if ( ! empty( $selected ) ) {
-			$result = array();
+			$result = $errors = array();
 			foreach ( $selected as $product ) {
 				$wlp = null;
 				if ( 0 === $wishlist['ID'] ) {
@@ -322,6 +331,7 @@ class TInvWL_Public_Wishlist_Buttons {
 					remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
+						$errors[] = $_product['product_id'];
 						continue;
 					}
 				}
@@ -331,11 +341,19 @@ class TInvWL_Public_Wishlist_Buttons {
 					$result = tinv_array_merge( $result, $add );
 				}
 			}
+			if ( ! empty( $errors ) ) {
+				$titles = array();
+				foreach ( $errors as $product_id ) {
+					$titles[] = ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ) . sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+				}
+				$titles = array_filter( $titles );
+				wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist-premium' ), wc_format_list_of_items( $titles ) ), 'error' );
+			}
 			if ( ! empty( $result ) ) {
 				wc_add_to_cart_message( $result, true );
 				return true;
 			}
-		}
+		} // End if().
 		return false;
 	}
 

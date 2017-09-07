@@ -481,7 +481,7 @@ if ( ! function_exists( 'tinv_url_wishlist_by_key' ) ) {
 			}
 			$link .= $share_key . '/' . $suffix;
 		} else {
-			$link .= add_query_arg( 'tinvwlID', $share_key, $link );
+			$link = add_query_arg( 'tinvwlID', $share_key, $link );
 		}
 
 		if ( 1 < $paged ) {

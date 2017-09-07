@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,14 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.4 =
+*Release Date - 07 September 2017*
+
+* Added notice for variable products (if no variation applied by default) when adding to cart from Wishlist page.
+* Fixed an issue when products could not be added to cart from shared Wishlist
+* Fixed an issue with redirect to cart page after successful  product addition
+* Fixed an issue with "Plain" permalinks structure
 
 = 1.5.3 =
 *Release Date - 30 August 2017*

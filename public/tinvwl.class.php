@@ -266,8 +266,8 @@ class TInvWL_Public_TInvWL {
 				$meta = array(
 					'url'         => tinv_url_wishlist( $wishlist['share_key'] ),
 					'type'        => 'product.group',
-					'title'       => sprintf( __( '%1$s of %2$s', 'ti-woocommerce-wishlist-premium' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
-					'description' => __( 'Coming soon', 'ti-woocommerce-wishlist-premium' ),
+					'title'       => sprintf( __( '%1$s of %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
+					'description' => __( 'Coming soon', 'ti-woocommerce-wishlist' ),
 					'image'       => $image,
 				);
 				if ( tinv_get_option( 'social', 'facebook' ) ) {

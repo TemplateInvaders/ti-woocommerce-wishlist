@@ -373,7 +373,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 						}
 					}
 					if ( ! empty( $result ) ) {
-						WC_Admin_Notices::add_custom_notice( 'missing_hook_' . $type, sprintf( _n( 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hook "%2$s" is missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hooks "%2$s" are missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', count( $result ), 'ti-woocommerce-wishlist-premium' ), $type_name, '<strong>' . join( '</strong>, <strong>', $result ) . '</strong>' ) );
+						WC_Admin_Notices::add_custom_notice( 'missing_hook_' . $type, sprintf( _n( 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hook "%2$s" is missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hooks "%2$s" are missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', count( $result ), 'ti-woocommerce-wishlist' ), $type_name, '<strong>' . join( '</strong>, <strong>', $result ) . '</strong>' ) );
 						$check = false;
 					} else {
 						WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );

@@ -504,7 +504,7 @@ if ( ! function_exists( 'tinv_url_wishlist' ) ) {
 	 */
 	function tinv_url_wishlist( $id = '', $paged = 1, $full = true ) {
 		$share_key = $id;
-		if ( is_integer( $id ) ) {
+		if ( ! ( is_string( $id ) && preg_match( '/^[A-Fa-f0-9]{6}$/', $id ) ) ) {
 			$wishlist	 = tinv_wishlist_get( $id, false );
 			$share_key	 = $wishlist['share_key'];
 		}

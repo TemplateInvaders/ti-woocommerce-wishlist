@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-11 19:08+0700\n"
+"POT-Creation-Date: 2017-09-07 20:25+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -136,7 +136,7 @@ msgid "Wishlist Page Options"
 msgstr ""
 
 #: admin/settings/general.class.php:160 admin/settings/general.class.php:177
-#: public/tinvwl.class.php:265
+#: public/tinvwl.class.php:270
 msgid "Coming soon"
 msgstr ""
 
@@ -809,7 +809,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/api/yoasti18n/i18n-module.php:196
+#: includes/api/yoasti18n/i18n-module.php:207
 #, php-format
 msgid ""
 "As you can see, there is a translation of this plugin in %1$s. This "
@@ -818,7 +818,7 @@ msgid ""
 "translation to %1$s!"
 msgstr ""
 
-#: includes/api/yoasti18n/i18n-module.php:198
+#: includes/api/yoasti18n/i18n-module.php:209
 #, php-format
 msgid ""
 "You're using WordPress in <strong>%1$s</strong>. While %2$s has been "
@@ -827,7 +827,7 @@ msgid ""
 "translation to %1$s!"
 msgstr ""
 
-#: includes/api/yoasti18n/i18n-module.php:200
+#: includes/api/yoasti18n/i18n-module.php:211
 #, php-format
 msgid ""
 "You're using WordPress in a language we don't support yet. We'd love for "
@@ -835,12 +835,12 @@ msgid ""
 "right now. You can change that! Register at %4$s to help translate it!"
 msgstr ""
 
-#: includes/api/yoasti18n/i18n-module.php:226
+#: includes/api/yoasti18n/i18n-module.php:237
 #, php-format
 msgid "Translation of %s"
 msgstr ""
 
-#: includes/api/yoasti18n/i18n-module.php:228
+#: includes/api/yoasti18n/i18n-module.php:239
 msgid "Register now &raquo;"
 msgstr ""
 
@@ -926,7 +926,7 @@ msgid "Page Setup"
 msgstr ""
 
 #: includes/wizard.class.php:282 includes/wizard.class.php:312
-#: public/tinvwl.class.php:487
+#: public/tinvwl.class.php:492
 msgid "Wishlist"
 msgstr ""
 
@@ -958,16 +958,16 @@ msgstr ""
 msgid "Ready!"
 msgstr ""
 
-#: public/tinvwl.class.php:264
+#: public/tinvwl.class.php:269
 #, php-format
 msgid "%1$s of %2$s"
 msgstr ""
 
-#: public/tinvwl.class.php:408
+#: public/tinvwl.class.php:413
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:410
+#: public/tinvwl.class.php:415
 msgid ""
 "Please select some product options before adding this product to your "
 "wishlist."
@@ -990,20 +990,39 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:264
+#: public/wishlist/buttons.class.php:254 public/wishlist/buttons.class.php:347
+#, php-format
+msgctxt "Item name in quotes"
+msgid "&ldquo;%s&rdquo;"
+msgstr ""
+
+#: public/wishlist/buttons.class.php:257 public/wishlist/buttons.class.php:350
+#, php-format
+msgid ""
+"Product %s could not be added to cart because some options are not "
+"specified. Please, select some product options before adding the products to "
+"your cart."
+msgid_plural ""
+"Products: %s could not be added to cart because some options are not "
+"specified. Please, select some product options before adding the products to "
+"your cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: public/wishlist/buttons.class.php:273
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:269
+#: public/wishlist/buttons.class.php:278
 msgid "Remove"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:373 public/wishlist/view.class.php:252
+#: public/wishlist/buttons.class.php:391 public/wishlist/view.class.php:252
 #, php-format
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:378
+#: public/wishlist/buttons.class.php:396
 #, php-format
 msgid "%s has been successfully removed from wishlist."
 msgid_plural "%s have been successfully removed from wishlist."
@@ -1077,9 +1096,10 @@ msgid "Stock Status"
 msgstr ""
 
 #: templates/ti-wishlist-user.php:110 templates/ti-wishlist.php:114
-#: tinv-wishlists-function-integration.php:657
-#: tinv-wishlists-function-integration.php:759
-#: tinv-wishlists-function-integration.php:906
+#: tinv-wishlists-function-integration.php:711
+#: tinv-wishlists-function-integration.php:813
+#: tinv-wishlists-function-integration.php:960
+#: tinv-wishlists-function-integration.php:1173
 msgid "In stock"
 msgstr ""
 
@@ -1087,27 +1107,35 @@ msgstr ""
 msgid "Select options"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:382
+#: tinv-wishlists-function-integration.php:436
 msgid "Note"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:385
+#: tinv-wishlists-function-integration.php:439
 msgid "To"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:388
+#: tinv-wishlists-function-integration.php:442
 msgid "To Email"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:391
+#: tinv-wishlists-function-integration.php:445
 msgid "Address"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:394
+#: tinv-wishlists-function-integration.php:448
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1061
+#: tinv-wishlists-function-integration.php:1112
+msgid "Out of stock"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:1303
+msgid "Photos imported - "
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:1410
 #, php-format
 msgid ""
 "Please help us improve %2$s! If you opt-in, some data about your usage of "
@@ -1115,18 +1143,18 @@ msgid ""
 "work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1073
+#: tinv-wishlists-function-integration.php:1424
 #, php-format
 msgid ""
 "Allow %6$s to collect some usage data with %5$s to make the plugin even more "
 "awesome. If you skip this, that's okay! %2$s will still work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1073
+#: tinv-wishlists-function-integration.php:1424
 msgid "WooCommerce Wishlist Plugin"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1073
+#: tinv-wishlists-function-integration.php:1424
 msgid "TemplateInvaders"
 msgstr ""
 

@@ -1360,7 +1360,7 @@ if ( ! function_exists( 'TII18n' ) ) {
 		return TInvWL_Includes_API_Yoasti18n::instance();
 	}
 }
-return;
+
 // Create a helper function for easy SDK access.
 if ( ! function_exists( 'tinvwl_fs' ) ) {
 

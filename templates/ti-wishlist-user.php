@@ -107,7 +107,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									if ( ! array_key_exists( 'class', $availability ) ) {
 										$availability['class'] = '';
 									}
-									$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist-premium' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+									$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 
 									echo apply_filters( 'tinvwl_wishlist_item_status', $availability_html, $availability['availability'], $wl_product, $product ); // WPCS: xss ok.
 									?>

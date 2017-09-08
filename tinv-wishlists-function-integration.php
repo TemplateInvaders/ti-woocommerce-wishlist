@@ -789,7 +789,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 							$bundled_product_qty = 0;
 						}
 					}
-					if ( 0 === $bundled_product_qty ) {
+					if ( 0 === $bundled_product_qty || 'visible' != $bundled_item->cart_visibility ) {
 						continue;
 					}
 

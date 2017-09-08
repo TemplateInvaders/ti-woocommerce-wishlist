@@ -290,6 +290,7 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 		if ( ! empty( $data['msg'] ) ) {
+			$data['msg'] = apply_filters( $this->_n . '_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
 			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
 		}
 		if ( ! tinv_get_option( 'general', 'show_notice' ) && array_key_exists( 'msg', $data ) ) {
@@ -298,7 +299,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 			$data['make_remove'] = $data['status'];
 		}
-		$data                = apply_filters( $this->_n . '_addtowishlist_return_ajax', $data );
+		$data = apply_filters( $this->_n . '_addtowishlist_return_ajax', $data, $post, $form, $product );
 		ob_clean();
 		wp_send_json( $data );
 	}

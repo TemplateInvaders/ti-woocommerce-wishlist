@@ -384,21 +384,23 @@
 	$('.variations_form').each(function () {
 		var c = $(this),
 		e = c.find('.tinvwl_add_to_wishlist_button');
-		c.on('hide_variation', function (a) {
-			a.preventDefault();
-			e.addClass('disabled-add-wishlist');
-		}).on('show_variation', function (a, b, d) {
-            var f = JSON.parse(e.attr('tinv-wl-list')),
-                j = false;
-            for(var i in f) {
-                if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
-                    j = true;
+        if (e.length) {
+            c.on('hide_variation', function (a) {
+                a.preventDefault();
+                e.addClass('disabled-add-wishlist');
+            }).on('show_variation', function (a, b, d) {
+                var f = JSON.parse(e.attr('tinv-wl-list')),
+                    j = false;
+                for(var i in f) {
+                    if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
+                        j = true;
+                    }
                 }
-            }
-            e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j);
-			a.preventDefault();
-			e.removeClass('disabled-add-wishlist');
-		});
+                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j);
+                a.preventDefault();
+                e.removeClass('disabled-add-wishlist');
+            });
+        }
 	});
 })(jQuery);
 (function ($) {

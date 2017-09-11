@@ -696,7 +696,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 
 		$need_url_data	 = array_filter( array_merge( array(
 			'variation_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 ) ),
-			'add-to-cart'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ),
+			'add-to-cart'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->get_id() : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ),
 		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $product->variation_data ) ? $product->variation_data : array() ) : array() ) ) ) );
 		$need_url		 = apply_filters( 'woocommerce_product_add_to_cart_url', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $product );
 		$need_url_full	 = apply_filters( 'woocommerce_product_add_to_cart_url', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $product->get_permalink() ) ), $product );
@@ -844,7 +844,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_item_meta_post' ) ) {
 	 */
 	function tinvwl_add_to_cart_item_meta_post( $cart_item_data, $cart_item_key ) {
 		$postdata = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-		
+
 		$postdata = apply_filters( 'tinvwl_product_prepare_meta', $postdata );
 		if ( array_key_exists( 'variation_id', $postdata ) && ! empty( $postdata['variation_id'] ) ) {
 			foreach ( $postdata as $key => $field ) {

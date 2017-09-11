@@ -773,7 +773,12 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 			$bundled_items = $product->get_bundled_items();
 			if ( ! empty( $bundled_items ) ) {
 				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
-					$bundled_product_id   = $bundled_item->product_id;
+					$bundled_product_id						 = $bundled_item->product_id;
+					$bundled_item_variation_id_request_key	 = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
+					$bundled_variation_id					 = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
+					if ( ! empty( $bundled_variation_id ) ) {
+						$bundled_item->product = wc_get_product( $bundled_variation_id );
+					}
 					$bundled_product_type = $bundled_item->product->get_type();
 					$is_optional          = $bundled_item->is_optional();
 

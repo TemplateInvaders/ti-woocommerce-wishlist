@@ -430,6 +430,8 @@ class TInvWL_Public_AddToWishlist {
 	function htmloutput( $attr = array(), $is_shortcode = false ) {
 		global $product;
 
+		$attr	 = apply_filters( 'tinvwl_addtowishlist_out_prepare_attr', $attr );
+		$product = apply_filters( 'tinvwl_addtowishlist_out_prepare_product', $product );
 		$this->product = $product;
 		$position      = tinv_get_option( 'add_to_wishlist', 'position' );
 		if ( $is_shortcode ) {

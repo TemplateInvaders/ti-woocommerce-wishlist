@@ -805,9 +805,8 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' 
 	 * @return array
 	 */
 	function tinv_wishlist_metasupport_woocommerce_product_bundles( $meta, $product_id ) {
-		$bundled_item_id                   = 1;
-		$bundled_item_quantity_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_quantity_' . $bundled_item_id;
-		if ( array_key_exists( $bundled_item_quantity_request_key, $meta ) ) {
+		$product = wc_get_product( $product_id );
+		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 			$meta = array();
 		}
 

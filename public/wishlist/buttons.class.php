@@ -246,12 +246,14 @@ class TInvWL_Public_Wishlist_Buttons {
 			$add		 = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
+			} else {
+				$errors[] = $product['product_id'];
 			}
 		}
 		if ( ! empty( $errors ) ) {
 			$titles = array();
 			foreach ( $errors as $product_id ) {
-				$titles[] = ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ) . sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+				$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
 			}
 			$titles = array_filter( $titles );
 			wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
@@ -339,12 +341,14 @@ class TInvWL_Public_Wishlist_Buttons {
 				$add		 = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
 				if ( $add ) {
 					$result = tinv_array_merge( $result, $add );
+				} else {
+					$errors[] = $product['product_id'];
 				}
 			}
 			if ( ! empty( $errors ) ) {
 				$titles = array();
 				foreach ( $errors as $product_id ) {
-					$titles[] = ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ) . sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+					$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
 				}
 				$titles = array_filter( $titles );
 				wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );

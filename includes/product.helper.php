@@ -342,6 +342,9 @@ class TInvWL_Product {
 				if ( $product_data ) {
 					$product['product_id']		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
 					$product['variation_id']	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+				} else {
+					unset( $products[ $k ] );
+					continue;
 				}
 				$product['data'] = $product_data;
 			}

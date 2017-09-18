@@ -104,6 +104,7 @@ class TInvWL_Public_TInvWL {
 		add_action( 'wp_login', array( $this, 'transfert_local_to_user' ), 10, 2 );
 		add_action( 'user_register', array( $this, 'transfert_local_to_user_register' ) );
 		add_action( 'init', array( $this, 'legacy_transfer' ), 90 );
+		add_action( 'clear_auth_cookie', array( $this, 'set_user_sharekey' ) );
 
 		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
 		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
@@ -460,8 +461,8 @@ class TInvWL_Public_TInvWL {
 					$wlp->update( $product );
 				}
 			} else {
+				$_wishlist	 = array_shift( $_wishlist );
 				if ( $wishlist['ID'] != $_wishlist['ID'] ) {
-					$_wishlist	 = array_shift( $_wishlist );
 					$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
 					$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
 					$added = true;
@@ -476,6 +477,18 @@ class TInvWL_Public_TInvWL {
 				}
 				$wl->set_sharekey( $_wishlist['share_key'] );
 			}
+		}
+	}
+
+	/**
+	 * Set the default wishlist key if the user loguot
+	 */
+	public function set_user_sharekey() {
+		$wl			 = new TInvWL_Wishlist( $this->_n );
+		$wishlist	 = $wl->get_by_user_default();
+		if ( ! empty( $wishlist ) ) {
+			$wishlist = array_shift( $wishlist );
+			$wl->set_sharekey( $wishlist['share_key'] );
 		}
 	}
 

@@ -188,7 +188,7 @@ class TInvWL_Public_Wishlist_View {
 				return false;
 			}
 
-			$is_owner	 = get_current_user_id() === $wishlist['author'];
+			$is_owner	 = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];
 			$nonce		 = filter_input( INPUT_POST, 'wishlist_nonce' );
 			if ( $nonce && wp_verify_nonce( $nonce, 'tinvwl_wishlist_owner' ) && $is_owner ) {
 				do_action( 'tinvwl_before_action_owner', $wishlist );

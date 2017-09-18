@@ -460,19 +460,21 @@ class TInvWL_Public_TInvWL {
 					$wlp->update( $product );
 				}
 			} else {
-				$_wishlist	 = array_shift( $_wishlist );
-				$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
-				$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
-				$added = true;
-				foreach ( $products as $product ) {
-					unset( $product['author'] );
-					unset( $product['wishlist_id'] );
-					$added = $added && $wlp->add_product( $product );
+				if ( $wishlist['ID'] != $_wishlist['ID'] ) {
+					$_wishlist	 = array_shift( $_wishlist );
+					$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
+					$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
+					$added = true;
+					foreach ( $products as $product ) {
+						unset( $product['author'] );
+						unset( $product['wishlist_id'] );
+						$added = $added && $wlp->add_product( $product );
+					}
+					if ( $added ) {
+						$wlpl->remove_product_from_wl();
+					}
 				}
-				if ( $added ) {
-					$wlpl->remove_product_from_wl();
-					$wl->set_sharekey( $_wishlist['share_key'] );
-				}
+				$wl->set_sharekey( $_wishlist['share_key'] );
 			}
 		}
 	}

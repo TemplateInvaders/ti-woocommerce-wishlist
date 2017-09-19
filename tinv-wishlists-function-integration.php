@@ -794,6 +794,49 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 	add_action( 'tinvwl_wishlist_row_after', 'tinvwl_row_woocommerce_composite_products', 10, 2 );
 } // End if().
 
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
+
+	/**
+	 * Modify price for WooCommerce Composite Products
+	 *
+	 * @param string      $price Returned price.
+	 * @param array       $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_composite_products( $price, $wl_product, $product ) {
+		if ( is_object( $product ) && $product->is_type( 'composite' ) && array_key_exists( 'wccp_component_selection', $wl_product['meta'] ) ) {
+			$components = $product->get_components();
+			$_price			 = $product->get_price();
+			$regular_price	 = $product->get_regular_price();
+			foreach ( $components as $component_id => $component ) {
+				$composited_product_id       = ! empty( $wl_product['meta']['wccp_component_selection'][ $component_id ] ) ? absint( $wl_product['meta']['wccp_component_selection'][ $component_id ] ) : '';
+				$composited_product_quantity = isset( $wl_product['meta']['wccp_component_quantity'][ $component_id ] ) ? absint( $wl_product['meta']['wccp_component_quantity'][ $component_id ] ) : $component->get_quantity( 'min' );
+
+				$composited_variation_id = isset( $wl_product['meta']['wccp_variation_id'][ $component_id ] ) ? wc_clean( $wl_product['meta']['wccp_variation_id'][ $component_id ] ) : '';
+
+				if ( $composited_product_id ) {
+					$composited_product_wrapper = $component->get_option( $composited_variation_id ? $composited_variation_id : $composited_product_id );
+					if ( $component->is_priced_individually() ) {
+						$_price			 += $composited_product_wrapper->get_price() * $composited_product_quantity;
+						$regular_price	 += $composited_product_wrapper->get_regular_price() * $composited_product_quantity;
+					}
+				}
+			}
+			if ( $_price == $regular_price ) {
+				$price = wc_price( $_price ) . $product->get_price_suffix();
+			} else {
+				$price = wc_format_sale_price( $regular_price, $_price ) . $product->get_price_suffix();
+			}
+		}
+
+		return $price;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_composite_products', 10, 3 );
+} // End if().
+
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' ) ) {
 
 	/**

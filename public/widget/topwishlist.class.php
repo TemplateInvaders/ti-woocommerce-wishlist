@@ -23,7 +23,7 @@ class TInvWL_Public_Widget_Topwishlist extends WC_Widget {
 		$this->widget_cssclass		 = 'tinvwl widget_wishlist_products_counter';
 		$this->widget_description	 = __( 'Displays the number of products in the wishlist on your site.', 'ti-woocommerce-wishlist' );
 		$this->widget_id			 = 'widget_top_wishlist';
-		$this->widget_name			 = __( 'Wishlist Products Counter', 'ti-woocommerce-wishlist' );
+		$this->widget_name			 = __( 'TInv Wishlist Products Counter', 'ti-woocommerce-wishlist' );
 		$this->settings				 = array(
 			'show_icon'	 => array(
 				'type'	 => 'checkbox',

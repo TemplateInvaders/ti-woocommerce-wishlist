@@ -279,7 +279,14 @@ class TInvWL_Product {
 		$where = '1';
 		if ( ! empty( $data ) && is_array( $data ) ) {
 			if ( array_key_exists( 'meta', $data ) ) {
-				$data['formdata'] = trim( $wpdb->prepare( '%s', $this->prepare_save_meta( $data['meta'] ) ), "'" );
+				$product_id = $variation_id = 0;
+				if ( array_key_exists( 'product_id', $data ) ) {
+					$product_id = $data['product_id'];
+				}
+				if ( array_key_exists( 'variation_id', $data ) ) {
+					$variation_id = $data['variation_id'];
+				}
+				$data['formdata'] = trim( $wpdb->prepare( '%s', $this->prepare_save_meta( $data['meta'], $product_id, $variation_id ) ), "'" );
 				unset( $data['meta'] );
 			}
 			foreach ( $data as $f => $v ) {
@@ -534,16 +541,18 @@ class TInvWL_Product {
 		}
 		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta, $product_id, $variation_id );
 		if ( ! empty( $variation_id ) ) {
-			if ( 'product_variation' == get_post_type( $product_id ) ) { // WPCS: loose comparison ok.
-				$product_id		 = wp_get_post_parent_id( $product_id );
-			}
-
-			$product_data	 = wc_get_product( $product_id );
-			$attributes		 = array_keys( (array) $product_data->get_variation_attributes() );
-			foreach ( $attributes as $attribute ) {
-				$attribute = 'attribute_' . sanitize_title( $attribute );
-				if ( array_key_exists( $attribute, $meta ) ) {
-					unset( $meta[ $attribute ] );
+			$product_data	 = $this->product_data( $product_id, $variation_id );
+			if ( is_object( $product_data ) ) {
+				$attributes		 = array_keys( (array) $product_data->get_variation_attributes() );
+				foreach ( $attributes as $attribute ) {
+					if ( array_key_exists( $attribute, $meta ) ) {
+						unset( $meta[ $attribute ] );
+						continue;
+					}
+					$attribute = 'attribute_' . sanitize_title( $attribute );
+					if ( array_key_exists( $attribute, $meta ) ) {
+						unset( $meta[ $attribute ] );
+					}
 				}
 			}
 		}

@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,17 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.6 =
+*Release Date - 20 September 2017*
+
+* Fixed an issue with transferring products between guest and customer wishlists after signing in or logout.
+* Fixed an issue when it's not possible to remove products from wishlist as a guest
+* Fixed an issue with adding a product variations to wishlist
+* Improved WooCommerce Product Bundles plugin support:
+ * Fixed an issue with displaying product custom meta attributes
+* Improved WPML plugin compatibility:
+ * Fixed an issue with "Remove/Add" button text when switching languages
 
 = 1.5.5 =
 *Release Date - 11 September 2017*

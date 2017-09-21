@@ -25,7 +25,7 @@ class TInvWL_Public_TopWishlist {
 	/**
 	 * This class
 	 *
-	 * @var \TInvWL_Public_CartSave
+	 * @var \TInvWL_Public_TopWishlist
 	 */
 	protected static $_instance = null;
 
@@ -33,7 +33,7 @@ class TInvWL_Public_TopWishlist {
 	 * Get this class object
 	 *
 	 * @param string $plugin_name Plugin name.
-	 * @return \TInvWL_Public_CartSave
+	 * @return \TInvWL_Public_TopWishlist
 	 */
 	public static function instance( $plugin_name = TINVWL_PREFIX ) {
 		if ( is_null( self::$_instance ) ) {
@@ -95,30 +95,26 @@ class TInvWL_Public_TopWishlist {
 	 */
 	public static function counter() {
 		$count	 = 0;
+		$wl		 = new TInvWL_Wishlist();
 		if ( is_user_logged_in() ) {
-			$wlp = new TInvWL_Product();
-			$data	 = array(
-				'external'	 => false,
-				'author'	 => $wlp->user,
-				'sql'		 => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} WHERE {where}',
-			);
-			$counts	 = $wlp->get( $data );
-			$counts	 = array_shift( $counts );
-			$count	 = absint( $counts['quantity'] );
+			$wishlist	 = $wl->add_user_default();
+			$wlp		 = new TInvWL_Product();
+			$counts		 = $wlp->get( array(
+				'external'		 => false,
+				'wishlist_id'	 => $wishlist,
+				'sql'			 => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} WHERE {where}',
+			) );
+			$counts		 = array_shift( $counts );
+			$count		 = absint( $counts['quantity'] );
 		} else {
-			$wl			 = new TInvWL_Wishlist();
-			$wishlist	 = $wl->get_by_sharekey_default();
-			if ( ! empty( $wishlist )  ) {
-				$wishlist	 = array_shift( $wishlist );
-				$wlp		 = new TInvWL_Product( $wishlist );
-				$products	 = $wlp->get_wishlist( array(
-					'count'		 => 9999999,
-					'external'	 => false,
-				) );
-				foreach ( $products as $product ) {
-					$count++;
-				}
-			}
+			$wishlist	 = $wl->add_sharekey_default();
+			$wlp		 = new TInvWL_Product( $wishlist );
+			$counts		 = $wlp->get_wishlist( array(
+				'external'	 => false,
+				'sql'		 => sprintf( 'SELECT %s(`quantity`) AS `quantity` FROM {table} WHERE {where}', ( tinv_get_option( 'general', 'quantity_func' ) ? 'SUM' : 'COUNT' ) ),
+			) );
+			$counts		 = array_shift( $counts );
+			$count		 = absint( $counts['quantity'] );
 		}
 		return $count;
 	}

@@ -372,7 +372,7 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare_form' ) ) {
 	 * @return array
 	 */
 	function tinvwl_wpml_addtowishlist_prepare_form( $post_data ) {
-		if ( class_exists( 'woocommerce_wpml' ) ) {
+		if ( class_exists( 'woocommerce_wpml' ) && is_array( $post_data ) ) {
 			$woo_wpml = woocommerce_wpml::instance();
 			if ( array_key_exists( 'product_id', $post_data ) && ! empty( $post_data['product_id'] ) ) {
 				$post_data['product_id'] = $woo_wpml->products->get_original_product_id( $post_data['product_id'] );

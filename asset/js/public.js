@@ -123,13 +123,11 @@
 				},
 				removed: function (status) {
 					if (status) {
-						$(this).removeClass('tinvwl-product-in-list').removeClass('tinvwl-product-make-remove');
+						$(this).removeClass('tinvwl-product-in-list').removeClass('tinvwl-product-make-remove').attr('tinv-wl-action', 'addto');
 					}
 				},
                 make_remove: function (status) {
-                    if (status) {
-                        $(this).addClass( 'tinvwl-product-make-remove' );
-                    }
+					$( this ).toggleClass( 'tinvwl-product-make-remove', status ).attr( 'tinv-wl-action', status ? 'remove' : 'addto' );
                 },
                 top_wishlist_content: function(data) {
                     $('.widget_wishlist_content').html(data);
@@ -146,7 +144,8 @@
 				tinv_wishlist_name: name || '',
 				product_type: $(this).attr('tinv-wl-producttype'),
 				product_id: $(this).attr('tinv-wl-product') || 0,
-				product_variation: $(this).attr('tinv-wl-productvariation') || 0
+				product_variation: $(this).attr('tinv-wl-productvariation') || 0,
+				product_action: $(this).attr('tinv-wl-action') || 'addto'
 			},
 			a = this;
 			$('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select, textarea').each(function () {
@@ -396,7 +395,7 @@
                         j = true;
                     }
                 }
-                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j);
+                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j).attr('tinv-wl-action', ( j ? 'remove' : 'addto' ) );
                 a.preventDefault();
                 e.removeClass('disabled-add-wishlist');
             });

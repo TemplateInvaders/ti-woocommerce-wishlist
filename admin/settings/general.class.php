@@ -97,7 +97,8 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( 'Remove product from Wishlist on second click', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
-							'tiwl-show' => '.tiwl-button-simple-flow',
+							'tiwl-show'	 => '.tiwl-general-simple-flow>td',
+							'tiwl-hide'	 => '.tiwl-general-simple-flow-hide>td',
 						),
 					),
 					array(
@@ -135,7 +136,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( '"Product removed from Wishlist" Text', 'ti-woocommerce-wishlist' ),
 						'desc'  => __( 'This notification will be shown once the product is removed from Wishlist on a single or a catalog page.', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Product removed from Wishlist',
-						'class' => 'tiwl-button-show-notice',
+						'class' => 'tiwl-button-show-notice tiwl-general-simple-flow',
 					),
 					array(
 						'type'  => 'text',
@@ -150,7 +151,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'	 => __( '"Product already in Wishlist" Text', 'ti-woocommerce-wishlist' ),
 						'desc'	 => __( 'This notification will be shown if user will try to add product that already in wishlist when quantity on wishlist page is disabled.', 'ti-woocommerce-wishlist' ),
 						'std'	 => 'Product already in Wishlist',
-						'class'	 => 'tiwl-button-show-notice',
+						'class'	 => 'tiwl-button-show-notice tiwl-general-simple-flow-hide',
 					),
 				),
 			),

@@ -191,8 +191,8 @@ class TInvWL_Public_AddToWishlist {
 								if ( $wlp->remove_product_from_wl( 0, $post['product_id'], $variation_id, apply_filters( 'tinvwl_addtowishlist_add_form', $form ) ) ) {
 									$data['msg'][]   = tinv_get_option( 'general', 'text_removed_from' );
 									$data['removed'] = true;
+									$status = false;
 								}
-								$status = false;
 							} elseif ( ! $allowed_adding ) {
 								$data['msg'][] = tinv_get_option( 'general', 'text_already_in' );
 								$status = false;
@@ -228,8 +228,8 @@ class TInvWL_Public_AddToWishlist {
 						if ( $wlp->remove_product_from_wl( 0, $post['product_id'], $variation_id, apply_filters( 'tinvwl_addtowishlist_add_form', $form ) ) ) {
 							$data['msg'][]   = tinv_get_option( 'general', 'text_removed_from' );
 							$data['removed'] = true;
+							$status = false;
 						}
-						$status = false;
 					} elseif ( ! $allowed_adding ) {
 						$data['msg'][] = tinv_get_option( 'general', 'text_already_in' );
 						$status = false;
@@ -255,8 +255,8 @@ class TInvWL_Public_AddToWishlist {
 						if ( $wlp->remove_product_from_wl( 0, $post['product_id'], 0, apply_filters( 'tinvwl_addtowishlist_add_form', $form ) ) ) {
 							$data['msg'][]   = tinv_get_option( 'general', 'text_removed_from' );
 							$data['removed'] = true;
+							$status = false;
 						}
-						$status = false;
 					} elseif ( ! $allowed_adding ) {
 						$data['msg'][] = tinv_get_option( 'general', 'text_already_in' );
 						$status = false;
@@ -518,12 +518,20 @@ class TInvWL_Public_AddToWishlist {
 			}
 		}
 		$icon .= $icon_class;
+		$variation_id = ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) );
 		foreach ( $this->wishlist as $value ) {
 			if ( $value['in'] ) {
 				$icon .= ' tinvwl-product-in-list';
 				if ( tinv_get_option( 'general', 'simple_flow' ) ) {
-					$icon .= ' tinvwl-product-make-remove';
-					$action = 'remove';
+					if ( $this->is_loop ) {
+						if ( ! is_array( $value['in'] ) || in_array( $variation_id, $value['in'] ) ) {
+							$icon .= ' tinvwl-product-make-remove';
+							$action = 'remove';
+						}
+					} else {
+						$icon .= ' tinvwl-product-make-remove';
+						$action = 'remove';
+					}
 				}
 				break;
 			}
@@ -531,7 +539,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( 'button' == tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'type' ) ) { // WPCS: loose comparison ok.
 			$icon .= ' button';
 		}
-		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" tinv-wl-list="%s" tinv-wl-product="%s" tinv-wl-productvariation="%s" tinv-wl-producttype="%s" tinv-wl-action="%s">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );
+		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" tinv-wl-list="%s" tinv-wl-product="%s" tinv-wl-productvariation="%s" tinv-wl-producttype="%s" tinv-wl-action="%s">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );
 		$content .= apply_filters( 'tinvwl_wishlist_button_after', '' );
 
 		if ( ! empty( $text ) ) {

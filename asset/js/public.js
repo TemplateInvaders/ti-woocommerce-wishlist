@@ -389,13 +389,14 @@
                 e.addClass('disabled-add-wishlist');
             }).on('show_variation', function (a, b, d) {
                 var f = JSON.parse(e.attr('tinv-wl-list')),
-                    j = false;
+                    j = false,
+                    g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
                 for(var i in f) {
                     if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
                         j = true;
                     }
                 }
-                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j).attr('tinv-wl-action', ( j ? 'remove' : 'addto' ) );
+                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('tinv-wl-action', ( (j && g) ? 'remove' : 'addto' ) );
                 a.preventDefault();
                 e.removeClass('disabled-add-wishlist');
             });

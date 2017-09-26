@@ -413,6 +413,7 @@ class TInvWL_Public_TInvWL {
 		wp_localize_script( $this->_n, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
 			'text_already_in'            => tinv_get_option( 'general', 'text_already_in' ),
+			'simple_flow'		         => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );

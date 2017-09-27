@@ -368,7 +368,6 @@ class TInvWL_Public_AddToWishlist {
 				$in[ $product['wishlist_id'] ][] = $product['variation_id'];
 			}
 			foreach ( $in as $wishlist_id => $products ) {
-				$in[ $wishlist_id ] = array_filter( $products );
 				sort( $in[ $wishlist_id ], SORT_NUMERIC );
 				if ( empty( $in[ $wishlist_id ] ) && ( $this->is_loop || ! $vproduct ) ) {
 					$in[ $wishlist_id ] = true;

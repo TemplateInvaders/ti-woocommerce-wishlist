@@ -448,35 +448,37 @@ class TInvWL_Public_TInvWL {
 		$wishlist	 = $wl->get_by_sharekey_default();
 		if ( ! empty( $wishlist ) ) {
 			$wishlist	 = array_shift( $wishlist );
-			$wlpl		 = new TInvWL_Product( $wishlist );
-			$wl->user = $user_id;
-			$_wishlist	 = $wl->get_by_user_default( $user_id );
-			if ( empty( $_wishlist ) ) {
-				$wishlist['author'] = $user_id;
-				unset( $wishlist['title'] );
-				$wl->update( $wishlist['ID'], $wishlist );
-				$wlp		 = new TInvWL_Product( $wishlist, $this->_n );
-				$products	 = $wlp->get_wishlist( array( 'external' => false ) );
-				foreach ( $products as $product ) {
-					$product['author'] = $user_id;
-					$wlp->update( $product );
-				}
-			} else {
-				$_wishlist	 = array_shift( $_wishlist );
-				if ( $wishlist['ID'] != $_wishlist['ID'] ) {
-					$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
-					$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
-					$added = true;
+			if ( empty( $wishlist['author'] ) ) {
+				$wlpl		 = new TInvWL_Product( $wishlist );
+				$wl->user = $user_id;
+				$_wishlist	 = $wl->get_by_user_default( $user_id );
+				if ( empty( $_wishlist ) ) {
+					$wishlist['author'] = $user_id;
+					unset( $wishlist['title'] );
+					$wl->update( $wishlist['ID'], $wishlist );
+					$wlp		 = new TInvWL_Product( $wishlist, $this->_n );
+					$products	 = $wlp->get_wishlist( array( 'external' => false ) );
 					foreach ( $products as $product ) {
-						unset( $product['author'] );
-						unset( $product['wishlist_id'] );
-						$added = $added && $wlp->add_product( $product );
+						$product['author'] = $user_id;
+						$wlp->update( $product );
 					}
-					if ( $added ) {
-						$wlpl->remove_product_from_wl();
+				} else {
+					$_wishlist	 = array_shift( $_wishlist );
+					if ( $wishlist['ID'] != $_wishlist['ID'] ) {
+						$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
+						$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
+						$added = true;
+						foreach ( $products as $product ) {
+							unset( $product['author'] );
+							unset( $product['wishlist_id'] );
+							$added = $added && $wlp->add_product( $product );
+						}
+						if ( $added ) {
+							$wlpl->remove_product_from_wl();
+						}
 					}
+					$wl->set_sharekey( $_wishlist['share_key'] );
 				}
-				$wl->set_sharekey( $_wishlist['share_key'] );
 			}
 		}
 	}

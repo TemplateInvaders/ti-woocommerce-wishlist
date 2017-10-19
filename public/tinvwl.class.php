@@ -187,17 +187,23 @@ class TInvWL_Public_TInvWL {
 		$id             = tinv_get_option( 'page', 'wishlist' );
 		$pages          = array( $id );
 		$language_codes = array();
-		$languages      = apply_filters( 'wpml_active_languages', array(), array(
-			'skip_missing' => 0,
-			'orderby'      => 'code',
-		) );
-		if ( ! empty( $languages ) ) {
-			foreach ( $languages as $l ) {
-				$pages[]          = apply_filters( 'wpml_object_id', $id, 'page', true, $l['language_code'] );
-				$language_codes[] = $l['language_code'];
+		if ( function_exists( 'pll_languages_list' ) ) {
+			$language_codes	 = implode( '|', pll_languages_list() );
+			$translations	 = PLL()->model->post->get_translations( $id );
+			$pages			 = array_merge( $pages, array_values( $translations ) );
+		} else {
+			$languages      = apply_filters( 'wpml_active_languages', array(), array(
+				'skip_missing' => 0,
+				'orderby'      => 'code',
+			) );
+			if ( ! empty( $languages ) ) {
+				foreach ( $languages as $l ) {
+					$pages[]          = apply_filters( 'wpml_object_id', $id, 'page', true, $l['language_code'] );
+					$language_codes[] = $l['language_code'];
+				}
+				$pages          = array_unique( $pages );
+				$language_codes = implode( '|', array_unique( $language_codes ) );
 			}
-			$pages          = array_unique( $pages );
-			$language_codes = implode( '|', array_unique( $language_codes ) );
 		}
 
 		$pages = array_filter( $pages );
@@ -342,7 +348,7 @@ class TInvWL_Public_TInvWL {
 		if ( ! tinv_get_option( 'style', 'customstyle' ) ) {
 			wp_enqueue_style( $this->_n . '-theme', TINVWL_URL . 'asset/css/theme.min.css', array(), $this->_v, 'all' );
 		}
-		if ( ! tinv_get_option( 'style', 'customstyle' ) || tinv_get_option( 'style_plain', 'allow' ) ) {
+		if ( ! tinv_get_option( 'style', 'customstyle' ) || ( tinv_get_option( 'style_plain', 'allow' ) && tinv_get_option( 'style_plain', 'css' ) ) ) {
 			wp_enqueue_style( $this->_n . '-dynaminc', admin_url( 'admin-ajax.php' ) . '?action=' . $this->_n . '_css', array( $this->_n ), $this->_v, 'all' );
 		}
 		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'asset/css/font-awesome.min.css', array(), $this->_v, 'all' );

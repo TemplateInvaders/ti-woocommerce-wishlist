@@ -88,6 +88,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 
 			array(
@@ -123,6 +124,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 
 			array(
@@ -160,6 +162,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -221,6 +224,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -270,6 +274,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -319,6 +324,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -368,6 +374,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -417,6 +424,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Table Head Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -436,6 +444,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Content Text Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -455,6 +464,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Price Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -521,6 +531,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Title Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',
@@ -540,6 +551,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'element'	 => 'font-family',
 				'text'		 => __( 'Content Text Font', 'ti-woocommerce-wishlist' ),
 				'options'	 => $font_family,
+				'validate'	 => array( 'filter' => FILTER_DEFAULT ),
 			),
 			array(
 				'type'		 => 'text',

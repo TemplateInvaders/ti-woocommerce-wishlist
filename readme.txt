@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.5.6
+Stable tag: 1.5.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.7 =
+*Release Date - 21 October 2017*
+
+* Fixed an issue with fonts not applying in Wishlist if "Use Theme Style" option is enabled
+* Fixed an issue with transferring products between guest and user wishlists used on the same device/machine in the same browser.
+* Fixed an issue with empty pop up window after clicking Share Wishlist by Email button 
+* Internal improvements:
+ * Variable product (without predefined variations applied by default) added from products listing page will be always substituted with the product added from details page (with selected variations).
+* Improved WooCommerce Composite Products plugin support:
+ * Fixed individual price calculation with components
+* Improved Polylang plugin support
 
 = 1.5.6 =
 *Release Date - 20 September 2017*

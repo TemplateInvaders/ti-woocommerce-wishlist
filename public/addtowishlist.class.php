@@ -475,7 +475,7 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		$data = array(
-			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $position ),
+			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ),
 			'product'             => $this->product,
 			'variation_id'        => ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ),
 			'TInvWishlist'        => $wishlists,

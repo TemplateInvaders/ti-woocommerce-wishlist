@@ -107,6 +107,9 @@ class TInvWL_Public_AddToWishlist {
 					add_action( 'tinvwl_after_shop_loop_item', 'tinvwl_view_addto_htmlloop' );
 					add_action( 'woocommerce_after_shop_loop_item', 'tinvwl_view_addto_htmlloop', 9 );
 					break;
+				case 'above_thumb':
+					add_action( 'tinvwl_above_thumb_loop_item', 'tinvwl_view_addto_htmlloop' );
+					add_action( 'woocommerce_before_shop_loop_item', 'tinvwl_view_addto_htmlloop', 9 );
 				case 'shortcode':
 					break;
 				case 'after':

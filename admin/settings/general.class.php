@@ -317,9 +317,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'    => __( 'Button position', 'ti-woocommerce-wishlist' ),
 						'std'     => 'after',
 						'options' => array(
-							'after'     => __( 'After "Add to Cart" button', 'ti-woocommerce-wishlist' ),
-							'before'    => __( 'Before "Add to Cart" button', 'ti-woocommerce-wishlist' ),
-							'shortcode' => __( 'Custom position with code', 'ti-woocommerce-wishlist' ),
+							'after'			 => __( 'After "Add to Cart" button', 'ti-woocommerce-wishlist-premium' ),
+							'before'		 => __( 'Before "Add to Cart" button', 'ti-woocommerce-wishlist-premium' ),
+							'above_thumb'	 => __( 'Above Thumbnail', 'ti-woocommerce-wishlist-premium' ),
+							'shortcode'		 => __( 'Custom position with code', 'ti-woocommerce-wishlist-premium' ),
 						),
 						'desc'  => __( 'Note: if "Custom position with code" option is applied, the "Add to Wishlist" button should be added into template using <code>do_shortcode()</code> function like this:<br /><code>do_shortcode("[ti_wishlists_addtowishlist loop=yes]")</code>', 'ti-woocommerce-wishlist' ),
 					),

@@ -133,6 +133,7 @@
                     $('.widget_wishlist_content').html(data);
                 },
                 top_wishlist_counter: function(data) {
+                    $('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', 0 < data );
                     $('.wishlist_products_counter_number').html(data);
                 }
 			}

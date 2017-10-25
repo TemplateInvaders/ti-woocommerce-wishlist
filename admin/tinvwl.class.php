@@ -142,6 +142,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'admin_footer_text', array( $this, 'footer_admin' ) );
+		add_filter( 'screen_options_show_screen', array( $this, 'screen_options_hide_screen' ), 10, 2 );
 
 		add_filter( $this->_n . '_view_panelstatus', array( $this, 'status_panel' ), 9999 );
 	}
@@ -398,6 +399,20 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );
 		}
 		tinv_update_option( 'template_checker', '', array() );
+	}
+
+	/**
+	 * Disable screen option on plugin pages
+	 *
+	 * @param boolean    $show_screen Show screen.
+	 * @param \WP_Screen $_this Screen option page.
+	 * @return boolean
+	 */
+	function screen_options_hide_screen( $show_screen, $_this ) {
+		if ( $this->_n === $_this->parent_base || $this->_n === $_this->parent_file ) {
+			return false;
+		}
+		return $show_screen;
 	}
 
 }

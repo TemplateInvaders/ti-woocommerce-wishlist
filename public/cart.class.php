@@ -159,6 +159,9 @@ class TInvWL_Public_Cart {
 		if ( array_key_exists( 'meta', $product ) && ! empty( $product['meta'] ) ) {
 			$_POST		 = $product['meta']; // May be a conflict there will be no GET attributes.
 			$_REQUEST	 = $product['meta'];
+		} else {
+			$_POST		 = array();
+			$_REQUEST	 = array();
 		}
 	}
 

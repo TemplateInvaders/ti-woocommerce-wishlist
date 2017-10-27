@@ -115,6 +115,12 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
 					),
 					array(
+						'type'	 => 'button_submit',
+						'name'	 => 'setting_reset',
+						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist-premium' ),
+						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
+					),
+					array(
 						'type'	 => 'button_submit_quick',
 						'name'	 => 'setting_save_quick',
 						'std'	 => '<span><i class="fa fa-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
@@ -179,6 +185,12 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	function constructor_save( $data ) {
 		if ( empty( $data ) || ! is_array( $data ) ) {
 			return false;
+		}
+		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
+			foreach ( $data as $key => $value ) {
+				$data[ $key ] = array();
+			}
+			return parent::constructor_save( $data );
 		}
 		if ( array_key_exists( 'style', (array) $data ) && array_key_exists( 'style_options', (array) $data ) ) {
 			if ( false === $data['style']['customstyle'] ) {

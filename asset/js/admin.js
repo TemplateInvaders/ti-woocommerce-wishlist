@@ -324,5 +324,12 @@ function TInvWL( $, h ) {
 		popover.popover( 'hide' );
 	    } );
 	}
+    $( 'body' ).on( 'click', '.tinvwl-confirm-reset', function ( e ) {
+        e.preventDefault();
+        var a = confirm( tinvwl_comfirm.text_comfirm_reset );
+        if ( a ) {
+            $( this ).removeClass('tinvwl-confirm-reset').trigger( 'click' );
+        }
+    } );
     } );
 } )( jQuery );

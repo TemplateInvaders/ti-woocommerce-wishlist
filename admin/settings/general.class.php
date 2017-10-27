@@ -621,6 +621,12 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
 					),
 					array(
+						'type'	 => 'button_submit',
+						'name'	 => 'setting_reset',
+						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist-premium' ),
+						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
+					),
+					array(
 						'type' => 'button_submit_quick',
 						'name' => 'setting_save_quick',
 						'std'  => '<span><i class="fa fa-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
@@ -660,6 +666,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		tinv_update_option( 'processing', 'autoremove', $data['general']['processing_autoremove'] );
 		tinv_update_option( 'processing', 'autoremove_anyone', $data['general']['processing_autoremove_anyone'] );
 		tinv_update_option( 'processing', 'autoremove_status', 'tinvwl-addcart' );
+		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
+			foreach ( $data as $key => $value ) {
+				if ( ! in_array( $key, array( 'page' ) ) ) {
+					$data[ $key ] = array();
+				}
+			}
+			parent::constructor_save( $data );
+		}
 		TInvWL_Public_TInvWL::update_rewrite_rules();
 	}
 

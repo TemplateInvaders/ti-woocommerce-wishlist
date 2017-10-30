@@ -260,23 +260,32 @@ class TInvWL_Public_TInvWL {
 
 				$wlp      = new TInvWL_Product( $wishlist );
 				$products = $wlp->get_wishlist( array(
-					'count'    => 1,
+					'count'    => 999999,
 					'order_by' => 'date',
 					'order'    => 'DESC',
 				) );
+				$products_title = array();
+				foreach ( $products as $product ) {
+					if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
+						$title = $product['data']->get_title();
+						if ( ! in_array( $title, $products_title ) ) {
+							$products_title[] = $title;
+						}
+					}
+				}
 				$product  = array_shift( $products );
 				$image    = '';
 				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
 					list( $image, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
 				}
 
-				$meta = array(
-					'url'         => tinv_url_wishlist( $wishlist['share_key'] ),
-					'type'        => 'product.group',
-					'title'       => sprintf( __( '%1$s of %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
-					'description' => __( 'Coming soon', 'ti-woocommerce-wishlist' ),
-					'image'       => $image,
-				);
+				$meta = apply_filters( 'tinvwl_social_header_meta', array(
+					'url'			 => tinv_url_wishlist( $wishlist['share_key'] ),
+					'type'			 => 'product.group',
+					'title'			 => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist-premium' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
+					'description'	 => implode( ', ', $products_title ),
+					'image'			 => $image,
+				) );
 				if ( tinv_get_option( 'social', 'facebook' ) ) {
 					foreach ( $meta as $name => $content ) {
 						echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );

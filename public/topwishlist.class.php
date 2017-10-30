@@ -68,7 +68,7 @@ class TInvWL_Public_TopWishlist {
 		$data = array(
 			'icon'			 => tinv_get_option( 'topline', 'icon' ),
 			'icon_class'	 => ( $atts['show_icon'] && tinv_get_option( 'topline', 'icon' ) ) ? 'top_wishlist-' . tinv_get_option( 'topline', 'icon' ) : '',
-			'icon_style'	 => esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ),
+			'icon_style'	 => ( $atts['show_icon'] && tinv_get_option( 'topline', 'icon' ) ) ? esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ) : '',
 			'icon_upload'	 => tinv_get_option( 'topline', 'icon_upload' ),
 			'text'			 => $atts['show_text'] ? $atts['text'] : '',
 			'counter'		 => $atts['show_counter'] ? self::counter() : 0,

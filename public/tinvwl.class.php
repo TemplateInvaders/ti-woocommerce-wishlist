@@ -91,7 +91,7 @@ class TInvWL_Public_TInvWL {
 	 */
 	function define_hooks() {
 		if ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) {
-			add_filter( 'language_attributes', array( $this, 'add_ogp' ) );
+			add_filter( 'language_attributes', array( $this, 'add_ogp' ), 100 );
 			add_action( 'wp_head', array( $this, 'add_meta_tags' ), 0 );
 		}
 
@@ -314,8 +314,16 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function add_ogp( $text ) {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && tinv_get_option( 'social', 'facebook' ) ) {
-			$text = 'prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#" itemscope itemtype="http://schema.org/Offer" ' . $text;
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
+			if ( ! preg_match( '/prefix\=/i', $text ) ) {
+				$text .= ' prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#"';
+			}
+			if ( ! preg_match( '/itemscope/i', $text ) ) {
+				$text .= ' itemscope';
+			}
+			if ( ! preg_match( '/itemtype\=/i', $text ) ) {
+				$text .= ' itemtype="http://schema.org/Offer"';
+			}
 		}
 
 		return $text;

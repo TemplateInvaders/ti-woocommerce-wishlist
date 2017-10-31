@@ -176,7 +176,7 @@ if ( ! function_exists( 'tinvwl_w3total_reject_uri' ) ) {
 	add_action( 'admin_init', 'tinvwl_w3total_reject_uri' );
 } // End if().
 
-if ( function_exists( $function_name ) ) {
+if ( function_exists( 'tinvwl_comet_cache_reject' ) ) {
 
 	/**
 	 * Set define disabled for Comet Cache

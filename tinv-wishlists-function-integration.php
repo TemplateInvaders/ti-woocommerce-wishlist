@@ -176,6 +176,28 @@ if ( ! function_exists( 'tinvwl_w3total_reject_uri' ) ) {
 	add_action( 'admin_init', 'tinvwl_w3total_reject_uri' );
 } // End if().
 
+if ( function_exists( $function_name ) ) {
+
+	/**
+	 * Set define disabled for Comet Cache
+	 *
+	 * @param mixed $data Any content.
+	 * @return mixed
+	 */
+	function tinvwl_comet_cache_reject( $data = '' ) {
+		define( 'COMET_CACHE_ALLOWED', false );
+
+		return $data;
+	}
+
+	add_filter( 'tinvwl_addtowishlist_return_ajax', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinvwl_before_action_owner', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinvwl_before_action_user', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinvwl_addproduct_tocart', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinv_wishlist_addtowishlist_button', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinv_wishlist_addtowishlist_dialogbox', 'tinvwl_comet_cache_reject' );
+}
+
 if ( ! function_exists( 'gf_productaddon_support' ) ) {
 
 	/**

@@ -186,12 +186,6 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 		if ( empty( $data ) || ! is_array( $data ) ) {
 			return false;
 		}
-		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
-			foreach ( $data as $key => $value ) {
-				$data[ $key ] = array();
-			}
-			return parent::constructor_save( $data );
-		}
 		if ( array_key_exists( 'style', (array) $data ) && array_key_exists( 'style_options', (array) $data ) ) {
 			if ( false === $data['style']['customstyle'] ) {
 				$data['style_options']['css'] = $this->convert_styles( $data['style_options'] );
@@ -208,7 +202,17 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 				$data['style_plain']['allow'] = false;
 			}
 		}
+		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
+			foreach ( $data as $key => $value ) {
+				if ( ! in_array( $key, array( 'style' ) ) ) {
+					$data[ $key ] = array();
+				}
+			}
+		}
 		parent::constructor_save( $data );
+		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
+			tinv_update_option( 'style_options', '', array() );
+		}
 	}
 
 	/**

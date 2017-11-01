@@ -84,7 +84,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_empty_wishlists' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
-		$this->shudule_remove_wishlist();
+		$this->scheduled_remove_wishlist();
 	}
 
 	/**
@@ -425,7 +425,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	/**
 	 * Check if there is a hook in the cron
 	 */
-	function shudule_remove_wishlist() {
+	function scheduled_remove_wishlist() {
 		$timestamp = wp_next_scheduled( 'tinvwl_remove_without_author_wishlist' );
 		if ( $timestamp ) {
 			$time = strtotime( '00:00 today +1 HOURS' );

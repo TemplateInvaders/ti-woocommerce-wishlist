@@ -497,18 +497,6 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'text'		 => __( 'Social Icons Background Hover Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
-				'type'		 => 'select',
-				'selector'	 => '.tinv-wishlist .social-buttons li a',
-				'element'	 => '-ti-background',
-				'text'		 => __( 'Social Icons Color', 'ti-woocommerce-wishlist' ),
-				'options'	 => array(
-					'dark'	 => __( 'Dark', 'ti-woocommerce-wishlist' ),
-					'white'	 => __( 'White', 'ti-woocommerce-wishlist' ),
-				),
-				'validate'	 => FILTER_DEFAULT,
-			),
-
-			array(
 				'type'		 => 'group',
 				'title'		 => __( 'popups', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,

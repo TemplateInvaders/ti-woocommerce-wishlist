@@ -317,10 +317,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'    => __( 'Button position', 'ti-woocommerce-wishlist' ),
 						'std'     => 'after',
 						'options' => array(
-							'after'			 => __( 'After "Add to Cart" button', 'ti-woocommerce-wishlist-premium' ),
-							'before'		 => __( 'Before "Add to Cart" button', 'ti-woocommerce-wishlist-premium' ),
-							'above_thumb'	 => __( 'Above Thumbnail', 'ti-woocommerce-wishlist-premium' ),
-							'shortcode'		 => __( 'Custom position with code', 'ti-woocommerce-wishlist-premium' ),
+							'after'			 => __( 'After "Add to Cart" button', 'ti-woocommerce-wishlist' ),
+							'before'		 => __( 'Before "Add to Cart" button', 'ti-woocommerce-wishlist' ),
+							'above_thumb'	 => __( 'Above Thumbnail', 'ti-woocommerce-wishlist' ),
+							'shortcode'		 => __( 'Custom position with code', 'ti-woocommerce-wishlist' ),
 						),
 						'desc'  => __( 'Note: if "Custom position with code" option is applied, the "Add to Wishlist" button should be added into template using <code>do_shortcode()</code> function like this:<br /><code>do_shortcode("[ti_wishlists_addtowishlist loop=yes]")</code>', 'ti-woocommerce-wishlist' ),
 					),
@@ -541,6 +541,16 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text' => __( '"Share on" Text', 'ti-woocommerce-wishlist' ),
 						'std'  => 'Share on',
 					),
+					array(
+						'type'		 => 'select',
+						'name'		 => 'icon_style',
+						'text'		 => __( 'Social Icons Color', 'ti-woocommerce-wishlist' ),
+						'options'	 => array(
+							'dark'	 => __( 'Dark', 'ti-woocommerce-wishlist' ),
+							'white'	 => __( 'White', 'ti-woocommerce-wishlist' ),
+						),
+						'validate'	 => FILTER_DEFAULT,
+					),
 				),
 			),
 			array(
@@ -623,7 +633,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'	 => 'button_submit',
 						'name'	 => 'setting_reset',
-						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist-premium' ),
+						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
 						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
 					),
 					array(

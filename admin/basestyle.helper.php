@@ -117,7 +117,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 					array(
 						'type'	 => 'button_submit',
 						'name'	 => 'setting_reset',
-						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist-premium' ),
+						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
 						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
 					),
 					array(

@@ -168,7 +168,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		wp_enqueue_script( $this->_n . '-bootstrap', TINVWL_URL . 'asset/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_v, 'all' );
 		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/admin' . $suffix . '.js', array( 'jquery', 'wp-color-picker' ), $this->_v, 'all' );
 		wp_localize_script( $this->_n, 'tinvwl_comfirm', array(
-			'text_comfirm_reset' => __( 'Are you sure you want to reset the settings?', 'ti-woocommerce-wishlist-premium' ),
+			'text_comfirm_reset' => __( 'Are you sure you want to reset the settings?', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );
 	}

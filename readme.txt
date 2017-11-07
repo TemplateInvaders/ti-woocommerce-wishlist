@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,16 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.8 =
+*Release Date - 07 November 2017*
+
+* Improved Wishlists storage functionality (empty wishlists that do not have a user will be removed after 7 days)
+* Fixed an issue with the wrong metadata after sharing Wishlist on Facebook
+* Added "Reset to Defaults" option in the admin panel
+* Added an option to show the "Add to Wishlist" button above product thumbnail
+* An option to change social icons from dark to white was moved to "Social Networks Sharing Options" section
+* Added support for Comet Cache plugin
 
 = 1.5.7 =
 *Release Date - 21 October 2017*

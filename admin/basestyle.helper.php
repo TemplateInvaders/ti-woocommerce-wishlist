@@ -86,7 +86,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 						'type'	 => 'checkboxonoff',
 						'name'	 => 'allow',
 						'text'	 => __( 'Template Custom CSS', 'ti-woocommerce-wishlist' ),
-						'std'	 => true,
+						'std'	 => false,
 						'extra'	 => array( 'tiwl-show' => '.tiwl-style-custom-allow' ),
 						'class'	 => 'tinvwl-header-row',
 					),

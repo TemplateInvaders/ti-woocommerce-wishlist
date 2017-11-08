@@ -427,7 +427,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function scheduled_remove_wishlist() {
 		$timestamp = wp_next_scheduled( 'tinvwl_remove_without_author_wishlist' );
-		if ( $timestamp ) {
+		if ( ! $timestamp ) {
 			$time = strtotime( '00:00 today +1 HOURS' );
 			wp_schedule_event( $time, 'daily', 'tinvwl_remove_without_author_wishlist' );
 		}

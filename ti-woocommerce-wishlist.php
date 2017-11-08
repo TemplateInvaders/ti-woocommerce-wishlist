@@ -83,6 +83,7 @@ if ( ! function_exists( 'uninstall_tinv_wishlist' ) ) {
 		if ( ! defined( 'TINVWL_LOAD_PREMIUM' ) ) {
 			TInvWL_Activator::uninstall();
 			flush_rewrite_rules();
+			wp_clear_scheduled_hook( 'tinvwl_remove_without_author_wishlist' );
 		}
 	}
 }

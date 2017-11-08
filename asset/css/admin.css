@@ -623,6 +623,29 @@ h6 {
     padding: 0;
 }
 
+/* reset button */
+.tinvwl-panel.only-button #save_buttons--setting_save,
+.tinvwl-panel.only-button #save_buttons--setting_reset{
+    display: inline-block;
+}
+.tinvwl-panel.only-button #save_buttons--setting_reset{
+    float:right;
+}
+.tinvwl-panel.only-button #save_buttons--setting_reset .form-control{
+    background-color: #ffffff;
+    color: #3e3e3e;
+}
+.tinvwl-panel.only-button #save_buttons--setting_reset .tinvwl-btn.split span{
+    background: #fbfaf9;
+}
+.tinvwl-panel.only-button #save_buttons--setting_reset .form-control:hover{
+    color: #fff;
+    background-color: #515151;
+}
+.tinvwl-panel.only-button #save_buttons--setting_reset .tinvwl-btn.split:hover span{
+        background: #434343;
+}
+
 #doaction,
 #doaction2,
 #post-query-submit {

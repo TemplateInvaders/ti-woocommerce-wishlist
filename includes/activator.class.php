@@ -133,6 +133,12 @@ class TInvWL_Activator {
 				$table['upgrade'][ self::pre_database( $method ) ] = $_upgrade;
 			}
 			if ( array_key_exists( $name, $tables1 ) ) {
+				if ( ! array_key_exists( 'upgrade', $tables1[ $name ] ) ) {
+					$tables1[ $name ]['upgrade'] = array();
+				}
+				if ( ! array_key_exists( 'upgrade', $table ) ) {
+					$table['upgrade'] = array();
+				}
 				$table['upgrade'] = tinv_array_merge( $tables1[ $name ]['upgrade'], $table['upgrade'] );
 			}
 			if ( empty( $table['field'] ) ) {

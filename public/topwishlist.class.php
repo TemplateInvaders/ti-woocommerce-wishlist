@@ -57,6 +57,7 @@ class TInvWL_Public_TopWishlist {
 	 */
 	function define_hooks() {
 		add_filter( 'tinvwl_addtowishlist_return_ajax', array( __CLASS__, 'update_widget' ) );
+		add_filter( 'woocommerce_add_to_cart_fragments', array( __CLASS__, 'update_fragments' ) );
 	}
 
 	/**
@@ -71,7 +72,7 @@ class TInvWL_Public_TopWishlist {
 			'icon_style'	 => ( $atts['show_icon'] && tinv_get_option( 'topline', 'icon' ) ) ? esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ) : '',
 			'icon_upload'	 => tinv_get_option( 'topline', 'icon_upload' ),
 			'text'			 => $atts['show_text'] ? $atts['text'] : '',
-			'counter'		 => $atts['show_counter'] ? self::counter() : 0,
+			'counter'		 => $atts['show_counter'],
 			'show_counter'	 => $atts['show_counter'],
 		);
 		tinv_wishlist_template( 'ti-wishlist-product-counter.php', $data );
@@ -85,6 +86,18 @@ class TInvWL_Public_TopWishlist {
 	 */
 	public static function update_widget( $data ) {
 		$data['top_wishlist_counter'] = self::counter();
+
+		return $data;
+	}
+
+	/**
+	 * Load fragments for wishlist product counter
+	 *
+	 * @param array $data Woocommerce Fragments for updateing data.
+	 */
+	public static function update_fragments( $data = array() ) {
+		$data['span.wishlist_products_counter_number'] = sprintf( '<span class="wishlist_products_counter_number">%d</span>', self::counter() );
+
 		return $data;
 	}
 

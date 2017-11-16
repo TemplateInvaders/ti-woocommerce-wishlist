@@ -480,4 +480,7 @@
     $( document.body ).on( 'wc_fragments_refreshed', function() {
         $('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html() );
     } );
+    $( window ).load( function ( e ) {
+        $( document.body ).trigger( 'wc_fragment_refresh' );
+    } );
 })(jQuery);

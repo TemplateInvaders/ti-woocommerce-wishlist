@@ -146,8 +146,8 @@ if ( ! function_exists( 'tinvwl_w3total_reject_uri' ) ) {
 		$pages = array_unique( $pages );
 		$pages = array_filter( $pages );
 
+		$config = w3_instance( 'W3_Config' );
 		if ( ! empty( $pages ) ) {
-			$config   = w3_instance( 'W3_Config' );
 			$sections = array( 'dbcache.reject.uri', 'pgcache.reject.uri' );
 			foreach ( $sections as $section ) {
 				$settings = array_map( 'trim', $config->get_array( $section ) );

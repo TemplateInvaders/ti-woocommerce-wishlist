@@ -97,7 +97,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( 'Remove product from Wishlist on second click', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
-							'tiwl-show'	 => '.tiwl-general-simple-flow>td',
+							'tiwl-show'	 => '.tiwl-general-simple-flow>td, .tiwl-button-simple-flow',
 							'tiwl-hide'	 => '.tiwl-general-simple-flow-hide>td',
 						),
 					),

@@ -512,7 +512,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( ! empty( $icon ) ) {
 			$icon_upload = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_upload' );
 			if ( 'custom' === $icon && ! empty( $icon_upload ) ) {
-				$text = sprintf( '<img src="%s" alt="%s" /> %s', esc_url( $icon_upload ), esc_attr( inv_get_option( 'add_to_wishlist' . ($this->is_loop ? '_catalog' : ''), 'text' ) ), $text );
+				$text = sprintf( '<img src="%s" alt="%s" /> %s', esc_url( $icon_upload ), esc_attr( tinv_get_option( 'add_to_wishlist' . ($this->is_loop ? '_catalog' : ''), 'text' ) ), $text );
 			}
 			$icon = 'tinvwl-icon-' . $icon;
 			if ( 'custom' !== $icon ) {

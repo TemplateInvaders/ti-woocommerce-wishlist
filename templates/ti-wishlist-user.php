@@ -132,7 +132,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="100%">
+					<td colspan="100">
 						<?php do_action( 'tinvwl_after_wishlist_table', $wishlist ); ?>
 						<?php wp_nonce_field( 'tinvwl_wishlist_user', 'wishlist_nonce' ); ?>
 					</td>

@@ -3,8 +3,8 @@ Contributors: templateinvaders
 Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=donate
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
-Tested up to: 4.8
-Stable tag: 1.5.8
+Tested up to: 4.9
+Stable tag: 1.5.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,16 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.9 =
+*Release Date - 21 November 2017*
+
+* Fixed Wishlist Products Counter issue when the wrong number of products was displaying if cache is enabled
+* Fixed an issue with W3 Total Cache plugin
+* Fixed an issue with wrong file path after website migration
+* Fixed an issue with extra scheduled cleanup events
+* Fixed an issue with reset some settings after plugin update
+* Added support for WP Fastest Cache plugin 
 
 = 1.5.8 =
 *Release Date - 07 November 2017*

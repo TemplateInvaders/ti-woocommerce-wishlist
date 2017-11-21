@@ -23,8 +23,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n	 = $plugin_name;
-		$this->_v	 = $version;
+		$this->_n = $plugin_name;
+		$this->_v = $version;
 	}
 
 	/**
@@ -53,11 +53,12 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$files = scandir( $dir );
 		foreach ( $files as $value ) {
 			if ( preg_match( '/\.class\.php$/i', $value ) ) {
-				$file		 = preg_replace( '/\.class\.php$/i', '', $value );
-				$class		 = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-				$settings	 = new $class( $this->_n, $this->_v );
+				$file     = preg_replace( '/\.class\.php$/i', '', $value );
+				$class    = 'TInvWL_Admin_Settings_' . ucfirst( $file );
+				$settings = new $class( $this->_n, $this->_v );
 			}
 		}
+
 		return true;
 	}
 
@@ -118,9 +119,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Creation mune and sub-menu
 	 */
 	function action_menu() {
-		$page	 = add_menu_page( 'TI Wishlists', 'TI Wishlists', 'manage_options', $this->_n, null, TINVWL_URL . 'asset/img/icon_menu.png', 56 );
+		$page = add_menu_page( 'TI Wishlists', 'TI Wishlists', 'manage_options', $this->_n, null, TINVWL_URL . 'asset/img/icon_menu.png', 56 );
 		add_action( "load-$page", array( $this, 'onload' ) );
-		$menu	 = apply_filters( $this->_n . '_admin_menu', array() );
+		$menu = apply_filters( $this->_n . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
 			if ( ! array_key_exists( 'page_title', $item ) ) {
 				$item['page_title'] = $item['title'];
@@ -166,11 +167,27 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( $this->_n . '-bootstrap', TINVWL_URL . 'asset/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_v, 'all' );
-		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/admin' . $suffix . '.js', array( 'jquery', 'wp-color-picker' ), $this->_v, 'all' );
+		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/admin' . $suffix . '.js', array(
+			'jquery',
+			'wp-color-picker'
+		), $this->_v, 'all' );
 		wp_localize_script( $this->_n, 'tinvwl_comfirm', array(
 			'text_comfirm_reset' => __( 'Are you sure you want to reset the settings?', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );
+
+		$user_id   = get_current_user_id();
+		$user_info = get_userdata( $user_id );
+
+		wp_add_inline_script( $this->_n, 'window.intercomSettings = {
+			app_id: "zyh6v0pc",	
+			email: "' . $user_info->user_email . '",
+			name: "' . $user_info->user_nicename . '",						
+			"Website": "' . get_site_url() . '",
+			"Plugin name": "WooCommerce Wishlist Plugin",
+			"Plugin version":"' . TINVWL_FVERSION . '",
+		};
+		(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})()' );
 	}
 
 	/**
@@ -204,6 +221,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Templates overriding status check.
 	 *
 	 * @param boolean $outdated Out date status.
+	 *
 	 * @return string
 	 */
 	function templates_status_check( $outdated = false ) {
@@ -226,8 +244,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			}
 
 			if ( ! empty( $theme_file ) ) {
-				$core_version	 = WC_Admin_Status::get_file_version( TINVWL_PATH . '/templates/' . $file );
-				$theme_version	 = WC_Admin_Status::get_file_version( $theme_file );
+				$core_version  = WC_Admin_Status::get_file_version( TINVWL_PATH . '/templates/' . $file );
+				$theme_version = WC_Admin_Status::get_file_version( $theme_file );
 
 				if ( $core_version && ( empty( $theme_version ) || version_compare( $theme_version, $core_version, '<' ) ) ) {
 					if ( $outdated ) {
@@ -248,7 +266,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function system_report_templates() {
 
-	    TInvWL_View::view( 'templates-status', array( 'found_files' => $this->templates_status_check() ) );
+		TInvWL_View::view( 'templates-status', array( 'found_files' => $this->templates_status_check() ) );
 	}
 
 	/**
@@ -271,8 +289,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Load javascript for validation templates
 	 */
 	function enqueue_scripts_validate_template() {
-		$theme	 = wp_get_theme();
-		$theme	 = $theme->get_template();
+		$theme = wp_get_theme();
+		$theme = $theme->get_template();
 		if ( tinv_get_option( 'template_checker', 'theme' ) !== $theme ) {
 			tinv_update_option( 'template_checker', '', array() );
 			tinv_update_option( 'template_checker', 'theme', $theme );
@@ -282,12 +300,12 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		if ( tinv_get_option( 'template_checker', 'checked' ) && absint( tinv_get_option( 'template_checker', 'time' ) ) + HOUR_IN_SECONDS > time() ) {
 			return;
 		}
-		$types	 = array_keys( wc_get_product_types() );
+		$types = array_keys( wc_get_product_types() );
 		foreach ( $types as $type => $type_name ) {
 			if ( ! tinv_get_option( 'template_checker', 'missing_hook_' . $type ) ) {
 				$data = filter_input_array( INPUT_GET, array(
-					'wc-hide-notice'	 => FILTER_DEFAULT,
-					'_wc_notice_nonce'	 => FILTER_DEFAULT,
+					'wc-hide-notice'   => FILTER_DEFAULT,
+					'_wc_notice_nonce' => FILTER_DEFAULT,
 				) );
 				if ( 'missing_hook_' . $type === $data['wc-hide-notice'] && wp_verify_nonce( $data['_wc_notice_nonce'], 'woocommerce_hide_notices_nonce' ) ) {
 					tinv_update_option( 'template_checker', 'missing_hook_' . $type, true );
@@ -296,8 +314,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		}
 		if ( ! tinv_get_option( 'template_checker', 'hide_product_listing' ) ) {
 			$data = filter_input_array( INPUT_GET, array(
-				'wc-hide-notice'	 => FILTER_DEFAULT,
-				'_wc_notice_nonce'	 => FILTER_DEFAULT,
+				'wc-hide-notice'   => FILTER_DEFAULT,
+				'_wc_notice_nonce' => FILTER_DEFAULT,
 			) );
 			if ( 'missing_hook_listing' === $data['wc-hide-notice'] && wp_verify_nonce( $data['_wc_notice_nonce'], 'woocommerce_hide_notices_nonce' ) ) {
 				tinv_update_option( 'template_checker', 'hide_product_listing', true );
@@ -320,16 +338,16 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			return;
 		}
 		tinv_update_option( 'template_checker', 'time', time() );
-		$tags	 = array(
-			'woocommerce_single_product_summary'	 => 'tinvwl_single_product_summary',
-			'woocommerce_before_add_to_cart_button'	 => 'tinvwl_before_add_to_cart_button',
-			'woocommerce_after_add_to_cart_button'	 => 'tinvwl_after_add_to_cart_button',
+		$tags = array(
+			'woocommerce_single_product_summary'    => 'tinvwl_single_product_summary',
+			'woocommerce_before_add_to_cart_button' => 'tinvwl_before_add_to_cart_button',
+			'woocommerce_after_add_to_cart_button'  => 'tinvwl_after_add_to_cart_button',
 		);
-		$tch		 = TInvWL_CheckerHook::instance();
+		$tch  = TInvWL_CheckerHook::instance();
 		$tch->add_action( $tags );
 		$tch->add_action( array_keys( $tags ) );
 
-		$types	 = wc_get_product_types();
+		$types = wc_get_product_types();
 
 		$check = true;
 		foreach ( $types as $type => $type_name ) {
@@ -338,38 +356,41 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			}
 
 			if ( function_exists( 'wc_get_products' ) ) {
-				$products	 = wc_get_products( array(
+				$products = wc_get_products( array(
 					'status' => 'publish',
-					'type'	 => $type,
-					'limit'	 => 1,
+					'type'   => $type,
+					'limit'  => 1,
 				) );
 			} else {
 				$products = array_map( 'wc_get_product', get_posts( array(
-					'post_type'		 => 'product',
-					'post_status'	 => 'publish',
-					'numberposts'	 => 1,
-					'tax_query'		 => array(
+					'post_type'   => 'product',
+					'post_status' => 'publish',
+					'numberposts' => 1,
+					'tax_query'   => array(
 						array(
-							'taxonomy'	 => 'product_type',
-							'field'		 => 'slug',
-							'terms'		 => $type,
+							'taxonomy' => 'product_type',
+							'field'    => 'slug',
+							'terms'    => $type,
 						),
 					),
 				) ) );
 			}
 			if ( ! empty( $products ) ) {
 				$product = array_shift( $products );
-				$post	 = get_post( $product->get_id() ); // @codingStandardsIgnoreLine  WordPress.Variables.GlobalVariables.OverrideProhibited
-				$result	 = $tch->run( array(
-					'template'		 => array( 'content-single-product.php', 'single-product/add-to-cart/' . $type . '.php' ),
-					'template_args'	 => array(
-						'available_variations'	 => array( 1, 2, 3, 4, 5 ),
-						'attributes'			 => array(),
+				$post    = get_post( $product->get_id() ); // @codingStandardsIgnoreLine  WordPress.Variables.GlobalVariables.OverrideProhibited
+				$result  = $tch->run( array(
+					'template'      => array(
+						'content-single-product.php',
+						'single-product/add-to-cart/' . $type . '.php'
 					),
-					'url'			 => $product->get_permalink(),
+					'template_args' => array(
+						'available_variations' => array( 1, 2, 3, 4, 5 ),
+						'attributes'           => array(),
+					),
+					'url'           => $product->get_permalink(),
 				) );
 				if ( ! empty( $result ) ) {
-					$result	 = array_keys( $result );
+					$result = array_keys( $result );
 					foreach ( $result as $key => $tag ) {
 						if ( array_key_exists( $tag, $tags ) ) {
 							$tags[ $tag ];
@@ -401,7 +422,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function clear_notice_validation_template() {
 		WC_Admin_Notices::remove_notice( 'missing_hook_listing' );
-		$types	 = wc_get_product_types();
+		$types = wc_get_product_types();
 		foreach ( $types as $type => $type_name ) {
 			WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );
 		}
@@ -411,14 +432,16 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	/**
 	 * Disable screen option on plugin pages
 	 *
-	 * @param boolean    $show_screen Show screen.
+	 * @param boolean $show_screen Show screen.
 	 * @param \WP_Screen $_this Screen option page.
+	 *
 	 * @return boolean
 	 */
 	function screen_options_hide_screen( $show_screen, $_this ) {
 		if ( $this->_n === $_this->parent_base || $this->_n === $_this->parent_file ) {
 			return false;
 		}
+
 		return $show_screen;
 	}
 
@@ -437,17 +460,17 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Removing empty wishlist without a user older than 7 days
 	 */
 	public function remove_empty_wishlists() {
-		$wl			 = new TInvWL_Wishlist();
-		$wishlists	 = $wl->get( array(
+		$wl        = new TInvWL_Wishlist();
+		$wishlists = $wl->get( array(
 			'author' => 0,
-			'type'	 => 'default',
-			'sql'	 => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 7 DAY)',
+			'type'   => 'default',
+			'sql'    => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 7 DAY)',
 		) );
 		foreach ( $wishlists as $wishlist ) {
-			$wlp		 = new TInvWL_Product( $wishlist );
-			$products	 = $wlp->get_wishlist( array(
-				'count'		 => 1,
-				'external'	 => true,
+			$wlp      = new TInvWL_Product( $wishlist );
+			$products = $wlp->get_wishlist( array(
+				'count'    => 1,
+				'external' => true,
 			) );
 			if ( empty( $products ) ) {
 				$wl->remove( $wishlist['ID'] );
@@ -459,11 +482,11 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Removing old wishlist without a user older than 34 days
 	 */
 	public function remove_old_wishlists() {
-		$wl			 = new TInvWL_Wishlist();
-		$wishlists	 = $wl->get( array(
+		$wl        = new TInvWL_Wishlist();
+		$wishlists = $wl->get( array(
 			'author' => 0,
-			'type'	 => 'default',
-			'sql'	 => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 34 DAY)',
+			'type'   => 'default',
+			'sql'    => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 34 DAY)',
 		) );
 		foreach ( $wishlists as $wishlist ) {
 			$wl->remove( $wishlist['ID'] );

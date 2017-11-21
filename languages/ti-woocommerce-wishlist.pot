@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-08 00:31+0700\n"
+"POT-Creation-Date: 2017-11-21 15:34+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -731,7 +731,7 @@ msgstr ""
 msgid "Accent Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:198
+#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:215
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -753,48 +753,48 @@ msgstr ""
 msgid "Share your love with us."
 msgstr ""
 
-#: admin/tinvwl.class.php:95
+#: admin/tinvwl.class.php:96
 msgid ""
 "<strong>Welcome to WooCommerce Wishlist Plugin<strong> – You‘re almost ready "
 "to start :)"
 msgstr ""
 
-#: admin/tinvwl.class.php:97 admin/tinvwl.class.php:113
+#: admin/tinvwl.class.php:98 admin/tinvwl.class.php:114
 msgid "Run the Setup Wizard"
 msgstr ""
 
-#: admin/tinvwl.class.php:99
+#: admin/tinvwl.class.php:100
 msgid "Skip Setup"
 msgstr ""
 
-#: admin/tinvwl.class.php:107 includes/notice.helper.php:111
+#: admin/tinvwl.class.php:108 includes/notice.helper.php:111
 msgid "Dismiss"
 msgstr ""
 
-#: admin/tinvwl.class.php:108
+#: admin/tinvwl.class.php:109
 msgid "Link to Wishlists does not work!"
 msgstr ""
 
-#: admin/tinvwl.class.php:110
+#: admin/tinvwl.class.php:111
 msgid "Please apply the Wishlist page"
 msgstr ""
 
-#: admin/tinvwl.class.php:111
+#: admin/tinvwl.class.php:112
 msgid " or "
 msgstr ""
 
-#: admin/tinvwl.class.php:171
+#: admin/tinvwl.class.php:175
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:236
+#: admin/tinvwl.class.php:254
 #, php-format
 msgid ""
 "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out "
 "of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:262
+#: admin/tinvwl.class.php:280
 #, php-format
 msgid ""
 "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce "
@@ -805,7 +805,7 @@ msgid ""
 "the theme."
 msgstr ""
 
-#: admin/tinvwl.class.php:384
+#: admin/tinvwl.class.php:405
 #, php-format
 msgid ""
 "The \"Add to Wishlist\" button may work improperly in a product type \"%1$s"
@@ -1111,46 +1111,46 @@ msgid "Stock Status"
 msgstr ""
 
 #: templates/ti-wishlist-user.php:110 templates/ti-wishlist.php:114
-#: tinv-wishlists-function-integration.php:793
-#: tinv-wishlists-function-integration.php:942
-#: tinv-wishlists-function-integration.php:1089
-#: tinv-wishlists-function-integration.php:1302
+#: tinv-wishlists-function-integration.php:864
+#: tinv-wishlists-function-integration.php:1013
+#: tinv-wishlists-function-integration.php:1160
+#: tinv-wishlists-function-integration.php:1373
 msgid "In stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:224
+#: tinv-wishlists-function-integration.php:295
 msgid "Select options"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:518
+#: tinv-wishlists-function-integration.php:589
 msgid "Note"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:521
+#: tinv-wishlists-function-integration.php:592
 msgid "To"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:524
+#: tinv-wishlists-function-integration.php:595
 msgid "To Email"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:527
+#: tinv-wishlists-function-integration.php:598
 msgid "Address"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:530
+#: tinv-wishlists-function-integration.php:601
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1241
+#: tinv-wishlists-function-integration.php:1312
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1432
+#: tinv-wishlists-function-integration.php:1503
 msgid "Photos imported - "
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1539
+#: tinv-wishlists-function-integration.php:1610
 #, php-format
 msgid ""
 "Please help us improve %2$s! If you opt-in, some data about your usage of "
@@ -1158,18 +1158,18 @@ msgid ""
 "work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1553
+#: tinv-wishlists-function-integration.php:1624
 #, php-format
 msgid ""
 "Allow %6$s to collect some usage data with %5$s to make the plugin even more "
 "awesome. If you skip this, that's okay! %2$s will still work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1553
+#: tinv-wishlists-function-integration.php:1624
 msgid "WooCommerce Wishlist Plugin"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1553
+#: tinv-wishlists-function-integration.php:1624
 msgid "TemplateInvaders"
 msgstr ""
 

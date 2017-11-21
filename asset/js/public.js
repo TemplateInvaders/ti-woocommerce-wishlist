@@ -476,7 +476,7 @@
 		$('.tinv-wishlist table.tinvwl-table-manage-list tfoot td').each(function () {
 			$(this).toggle(!!$(this).children().not('.look_in').length || !!$(this).children('.look_in').children().length);
 		});
-	})
+	});
     $( document.body ).on( 'wc_fragments_refreshed', function() {
         $('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html() );
     } );

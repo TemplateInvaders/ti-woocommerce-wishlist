@@ -877,6 +877,10 @@
 				);
 			}
 
+
+			//Fix for migration issues.
+			return  TINVWL_PATH . 'ti-woocommerce-wishlist.php';
+
 			/**
 			 * @since 1.2.1
 			 *
@@ -2259,7 +2263,7 @@
 
 			return ( checkdnsrr( $domain, 'MX' ) || checkdnsrr( $domain, 'A' ) );
 		}
-		
+
 		/**
 		 * Generate API connectivity issue message.
 		 *
@@ -3751,7 +3755,7 @@
 			     ! $this->has_features_enabled_license() &&
 			     ! $this->_has_premium_license()
 			) {
-				if ( $this->is_registered() ) {				
+				if ( $this->is_registered() ) {
 					// IF wrapper is turned off because activation_timestamp is currently only stored for plugins (not addons).
 	//                if (empty($this->_storage->activation_timestamp) ||
 	//                    (WP_FS__SCRIPT_START_TIME - $this->_storage->activation_timestamp) > 30

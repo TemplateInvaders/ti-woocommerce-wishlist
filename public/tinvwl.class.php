@@ -432,7 +432,7 @@ class TInvWL_Public_TInvWL {
 	 */
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/public' . $suffix . '.js', array( 'jquery', 'wc-cart-fragments' ), $this->_v, true );
+		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/public' . $suffix . '.js', array( 'jquery', 'js-cookie', 'wc-cart-fragments' ), $this->_v, true );
 		wp_localize_script( $this->_n, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
 			'text_already_in'            => tinv_get_option( 'general', 'text_already_in' ),

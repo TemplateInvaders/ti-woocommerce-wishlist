@@ -31,7 +31,7 @@
 			},
 			onInited: function () {},
 			onClick: function () {
-				if ( $(this).is('.disabled-add-wishlist') ) {
+				if ($(this).is('.disabled-add-wishlist')) {
 					return false;
 				}
 				if (this.tinvwl_dialog) {
@@ -126,21 +126,21 @@
 						$(this).removeClass('tinvwl-product-in-list').removeClass('tinvwl-product-make-remove').attr('data-tinv-wl-action', 'addto');
 					}
 				},
-                make_remove: function (status) {
-					$( this ).toggleClass( 'tinvwl-product-make-remove', status ).attr( 'data-tinv-wl-action', status ? 'remove' : 'addto' );
-                },
-                top_wishlist_content: function(data) {
-                    $('.widget_wishlist_content').html(data);
-                },
-                top_wishlist_counter: function(data) {
-                    $('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', 0 < data );
-                    $('.wishlist_products_counter_number').html(data);
-                }
+				make_remove: function (status) {
+					$(this).toggleClass('tinvwl-product-make-remove', status).attr('data-tinv-wl-action', status ? 'remove' : 'addto');
+				},
+				top_wishlist_content: function (data) {
+					$('.widget_wishlist_content').html(data);
+				},
+				top_wishlist_counter: function (data) {
+					$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', 0 < data);
+					$('.wishlist_products_counter_number').html(data);
+				}
 			}
 		};
 		sd.onActionProduct = function (id, name) {
 			var data = {
-                form:{},
+				form: {},
 				tinv_wishlist_id: id || '',
 				tinv_wishlist_name: name || '',
 				product_type: $(this).attr('data-tinv-wl-producttype'),
@@ -150,51 +150,51 @@
 			},
 			a = this;
 			$('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select, textarea').each(function () {
-				var name_elm = $( this ).attr( 'name' ),
-                    type_elm = $( this ).attr( 'type' ),
-                    value_elm = $( this ).val(),
-                    count = 10,
-                    ti_merge_value = function ( o1, o2 ) {
-                        if ( 'object' === typeof o2 ) {
-                            if ( 'undefined' === typeof o1 ) {
-                                o1 = { };
-                            }
-                            for( var i in o2 ) {
-                                if ( '' === i ) {
-                                    var j = -1;
-                                    for ( j in o1 ) {
-                                        j = j;
-                                    }
-                                    j = parseInt( j ) + 1;
-                                    o1[j] = ti_merge_value( o1[i], o2[i] );
-                                } else {
-                                    o1[i] = ti_merge_value( o1[i], o2[i] );
-                                }
-                            }
-                            return o1;
-                        } else {
-                            return o2;
-                        }
-                    };
-                while ( /^(.+)\[([^\[\]]*?)\]$/.test( name_elm ) && 0 < count ) {
-                    var n_name = name_elm.match( /^(.+)\[([^\[\]]*?)\]$/ );
-                    if ( 3 === n_name.length ) {
-                        var _value_elm = {};
-                        _value_elm[n_name[2]] = value_elm;
-                        value_elm = _value_elm;
-                    }
-                    name_elm = n_name[1];
-                    count--;
-                }
+				var name_elm = $(this).attr('name'),
+				type_elm = $(this).attr('type'),
+				value_elm = $(this).val(),
+				count = 10,
+				ti_merge_value = function (o1, o2) {
+					if ('object' === typeof o2) {
+						if ('undefined' === typeof o1) {
+							o1 = {};
+						}
+						for (var i in o2) {
+							if ('' === i) {
+								var j = -1;
+								for (j in o1) {
+									j = j;
+								}
+								j = parseInt(j) + 1;
+								o1[j] = ti_merge_value(o1[i], o2[i]);
+							} else {
+								o1[i] = ti_merge_value(o1[i], o2[i]);
+							}
+						}
+						return o1;
+					} else {
+						return o2;
+					}
+				};
+				while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {
+					var n_name = name_elm.match(/^(.+)\[([^\[\]]*?)\]$/);
+					if (3 === n_name.length) {
+						var _value_elm = {};
+						_value_elm[n_name[2]] = value_elm;
+						value_elm = _value_elm;
+					}
+					name_elm = n_name[1];
+					count--;
+				}
 				if ('checkbox' === type_elm || 'radio' === type_elm) {
 					if ($(this).is(':checked')) {
-                        if ( ! value_elm.length && 'object' !== typeof value_elm ) {
-                            value_elm = true;
-                        }
-                        data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
+						if (!value_elm.length && 'object' !== typeof value_elm) {
+							value_elm = true;
+						}
+						data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
 					}
 				} else {
-					data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
+					data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
 				}
 			});
 			data = s.onPrepareDataAction.call(a, data) || data;
@@ -288,17 +288,17 @@
 	};
 	$(document).ready(function () {
 		$('body').on('click', '.tinvwl_add_to_wishlist_button', function (e) {
-            if ($(this).is('.disabled-add-wishlist')) {
-                e.preventDefault();
-                window.alert(tinvwl_add_to_wishlist.i18n_make_a_selection_text);
-                return;
-            }
-            if ($(this).is('.inited-add-wishlist')) {
-                return;
-            }
+			if ($(this).is('.disabled-add-wishlist')) {
+				e.preventDefault();
+				window.alert(tinvwl_add_to_wishlist.i18n_make_a_selection_text);
+				return;
+			}
+			if ($(this).is('.inited-add-wishlist')) {
+				return;
+			}
 			$(this).tinvwl_to_wishlist({
 				onInited: function (s) {
-                    $(this).addClass('inited-add-wishlist');
+					$(this).addClass('inited-add-wishlist');
 					s.onClick.call(this);
 				}
 			});
@@ -384,24 +384,24 @@
 	$('.variations_form').each(function () {
 		var c = $(this),
 		e = c.find('.tinvwl_add_to_wishlist_button');
-        if (e.length) {
-            c.on('hide_variation', function (a) {
-                a.preventDefault();
-                e.addClass('disabled-add-wishlist');
-            }).on('show_variation', function (a, b, d) {
-                var f = JSON.parse(e.attr('data-tinv-wl-list')),
-                    j = false,
-                    g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
-                for(var i in f) {
-                    if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
-                        j = true;
-                    }
-                }
-                e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('data-tinv-wl-action', ( (j && g) ? 'remove' : 'addto' ) );
-                a.preventDefault();
-                e.removeClass('disabled-add-wishlist');
-            });
-        }
+		if (e.length) {
+			c.on('hide_variation', function (a) {
+				a.preventDefault();
+				e.addClass('disabled-add-wishlist');
+			}).on('show_variation', function (a, b, d) {
+				var f = JSON.parse(e.attr('data-tinv-wl-list')),
+				j = false,
+				g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
+				for (var i in f) {
+					if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
+						j = true;
+					}
+				}
+				e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('data-tinv-wl-action', ((j && g) ? 'remove' : 'addto'));
+				a.preventDefault();
+				e.removeClass('disabled-add-wishlist');
+			});
+		}
 	});
 })(jQuery);
 (function ($) {
@@ -434,7 +434,7 @@
 				$(this).remove();
 			}
 		});
-        $('body').on('click', '.social-buttons .social[title!=email]', function (e) {
+		$('body').on('click', '.social-buttons .social[title!=email]', function (e) {
 			var newWind = window.open($(this).attr('href'), $(this).attr('title'), "width=420,height=320,resizable=yes,scrollbars=yes,status=yes");
 			if (newWind) {
 				newWind.focus();
@@ -477,10 +477,12 @@
 			$(this).toggle(!!$(this).children().not('.look_in').length || !!$(this).children('.look_in').children().length);
 		});
 	});
-    $( document.body ).on( 'wc_fragments_refreshed', function() {
-        $('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html() );
-    } );
-    $( window ).load( function ( e ) {
-        $( document.body ).trigger( 'wc_fragment_refresh' );
-    } );
+	$(document.body).on('wc_fragments_refreshed', function () {
+		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
+	});
+	$(window).on('load', function (e) {
+		if ($('div.tinv_mini_wishlist_list, span.wishlist_products_counter_number').length) {
+			$(document.body).trigger('wc_fragment_refresh');
+		}
+	});
 })(jQuery);

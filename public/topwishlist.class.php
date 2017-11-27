@@ -114,7 +114,7 @@ class TInvWL_Public_TopWishlist {
 			$wlp		 = new TInvWL_Product();
 			$counts		 = $wlp->get( array(
 				'external'		 => false,
-				'wishlist_id'	 => $wishlist,
+				'wishlist_id'	 => $wishlist['ID'],
 				'sql'			 => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} WHERE {where}',
 			) );
 			$counts		 = array_shift( $counts );

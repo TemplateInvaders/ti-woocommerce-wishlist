@@ -297,6 +297,8 @@ class TInvWL_Wishlist {
 	 * @return array
 	 */
 	function get( $data = array() ) {
+		global $wpdb;
+
 		$default = array(
 			'count'		 => 10,
 			'field'		 => null,
@@ -328,10 +330,13 @@ class TInvWL_Wishlist {
 			foreach ( $data as $f => $v ) {
 				$s = is_array( $v ) ? ' IN ' : '=';
 				if ( is_array( $v ) ) {
-					$v	 = "'" . implode( "','", $v ) . "'";
+					foreach ( $v as $_f => $_v ) {
+						$v[ $_f ] = $wpdb->prepare( '%s', $_v );
+					}
+					$v	 = implode( ',', $v );
 					$v	 = "($v)";
 				} else {
-					$v = "'$v'";
+					$v = $wpdb->prepare( '%s', $v );
 				}
 				$data[ $f ] = sprintf( '`%s`%s%s', $f, $s, $v );
 			}
@@ -357,7 +362,6 @@ class TInvWL_Wishlist {
 			$sql = str_replace( $replace, $replacer, $default['sql'] );
 		}
 
-		global $wpdb;
 		$wls = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
 		if ( empty( $wls ) ) {

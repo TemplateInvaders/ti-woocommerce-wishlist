@@ -292,10 +292,13 @@ class TInvWL_Product {
 			foreach ( $data as $f => $v ) {
 				$s = is_array( $v ) ? ' IN ' : '=';
 				if ( is_array( $v ) ) {
-					$v	 = "'" . implode( "','", $v ) . "'";
+					foreach ( $v as $_f => $_v ) {
+						$v[ $_f ] = $wpdb->prepare( '%s', $_v );
+					}
+					$v	 = implode( ',', $v );
 					$v	 = "($v)";
 				} else {
-					$v = "'$v'";
+					$v = $wpdb->prepare( '%s', $v );
 				}
 				$data[ $f ] = sprintf( '`%s`%s%s', $f, $s, $v );
 			}

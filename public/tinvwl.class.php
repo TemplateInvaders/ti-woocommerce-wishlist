@@ -361,14 +361,18 @@ class TInvWL_Public_TInvWL {
 	 * Load style
 	 */
 	function enqueue_styles() {
-		wp_enqueue_style( $this->_n, TINVWL_URL . 'asset/css/public.min.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( 'tinvwl', TINVWL_URL . 'asset/css/public.min.css', array(), $this->_v, 'all' );
 		if ( ! tinv_get_option( 'style', 'customstyle' ) ) {
-			wp_enqueue_style( $this->_n . '-theme', TINVWL_URL . 'asset/css/theme.min.css', array(), $this->_v, 'all' );
+			wp_enqueue_style( 'tinvwl-theme', TINVWL_URL . 'asset/css/theme.min.css', array(), $this->_v, 'all' );
 		}
 		if ( ! tinv_get_option( 'style', 'customstyle' ) || ( tinv_get_option( 'style_plain', 'allow' ) && tinv_get_option( 'style_plain', 'css' ) ) ) {
-			wp_enqueue_style( $this->_n . '-dynaminc', admin_url( 'admin-ajax.php' ) . '?action=' . $this->_n . '_css', array( $this->_n ), $this->_v, 'all' );
+			$newcss = $this->dynaminc_css();
+			if ( $newcss ) {
+				$name_style = tinv_get_option( 'style', 'customstyle' ) ? 'tinvwl' : 'tinvwl-theme';
+				wp_add_inline_style( $name_style, $newcss );
+			}
 		}
-		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'asset/css/font-awesome.min.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( 'tinvwl-font-awesome', TINVWL_URL . 'asset/css/font-awesome.min.css', array(), $this->_v, 'all' );
 	}
 
 	/**
@@ -389,7 +393,6 @@ class TInvWL_Public_TInvWL {
 	 * Generate dynaminc css
 	 */
 	function dynaminc_css() {
-		header( 'Content-type: text/css; charset=' . get_option( 'blog_charset' ) );
 		$css = get_transient( TINVWL_PREFIX . '_dynamic_' );
 		if ( ! $css ) {
 			$css = '';
@@ -411,8 +414,8 @@ class TInvWL_Public_TInvWL {
 			$css       = str_replace( '../img/', $image_url, $css );
 			set_transient( TINVWL_PREFIX . '_dynamic_', $css, DAY_IN_SECONDS );
 		}
-		echo $css; // WPCS: xss ok.
-		die();
+
+		return $css;
 	}
 
 	/**

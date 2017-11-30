@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_facebook', __( 'Show "Share on Facebook" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<?php echo TInvWL_Form::_label( 'social_facebook', __( 'Show "Facebook" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_facebook', $social_facebook_value ); // WPCS: xss ok. ?>
 					</div>
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_twitter', __( 'Show "Tweet on Twitter" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<?php echo TInvWL_Form::_label( 'social_twitter', __( 'Show "Twitter" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_twitter', $social_twitter_value ); // WPCS: xss ok. ?>
 					</div>
@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_pinterest', __( 'Show "Pin on Pinterest" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<?php echo TInvWL_Form::_label( 'social_pinterest', __( 'Show "Pinterest" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_pinterest', $social_pinterest_value ); // WPCS: xss ok. ?>
 					</div>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_google', __( 'Show "Share on Google+" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<?php echo TInvWL_Form::_label( 'social_google', __( 'Show "Google+" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_google', $social_google_value ); // WPCS: xss ok. ?>
 					</div>
@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_email', __( 'Show "Share on Email" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<?php echo TInvWL_Form::_label( 'social_email', __( 'Show "Share by Email" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_email', $social_email_value ); // WPCS: xss ok. ?>
 					</div>

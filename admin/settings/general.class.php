@@ -508,31 +508,31 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'facebook',
-						'text' => __( 'Show "Share on Facebook" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Facebook" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'twitter',
-						'text' => __( 'Show "Tweet on Twitter" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Twitter" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'pinterest',
-						'text' => __( 'Show "Pin on Pinterest" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Pinterest" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'google',
-						'text' => __( 'Show "Share on Google+" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Google+" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'email',
-						'text' => __( 'Show "Share on Email" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Share by Email" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(

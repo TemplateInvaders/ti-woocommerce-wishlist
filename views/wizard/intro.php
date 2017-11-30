@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<i class="wizard_setup"></i>
 	</div>
 	<div class="tinvwl-desc"><?php
-		esc_html_e( 'Thank you for choosing “Template Invaders Wishlist” to enhance your WooCommerce store!', 'ti-woocommerce-wishlist' );
+		esc_html_e( 'Thank you for choosing the Wishlist plugin by TemplateInvaders to enhance your WooCommerce store!', 'ti-woocommerce-wishlist' );
 		esc_html_e( 'This quick setup wizard will help you configure the basic settings.', 'ti-woocommerce-wishlist' );
 		?></div>
 	<?php echo TInvWL_Form::_button_submit( 'continue', '<i class="fa fa-magic"></i>' . __( 'let’s go', 'ti-woocommerce-wishlist' ), array( 'class' => 'tinvwl-btn red w-icon xl-icon round' ) ); // WPCS: xss ok. ?>

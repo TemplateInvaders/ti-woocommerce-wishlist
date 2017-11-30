@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<head>
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title><?php echo sprintf( __( 'TInv Wishlists &rsaquo; %s', 'ti-woocommerce-wishlist' ), $title ); // WPCS: xss ok. ?></title>
+		<title><?php echo sprintf( __( 'TI Wishlist &rsaquo; %s', 'ti-woocommerce-wishlist' ), $title ); // WPCS: xss ok. ?></title>
 		<?php do_action( 'admin_print_styles' ); ?>
 		<?php do_action( 'admin_head' ); ?>
 	</head>

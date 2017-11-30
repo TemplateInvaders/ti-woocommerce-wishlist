@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-21 15:34+0700\n"
+"POT-Creation-Date: 2017-12-01 01:05+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -121,8 +121,8 @@ msgstr ""
 
 #: admin/settings/general.class.php:144
 msgid ""
-"This notification will be shown if user will try to add product that already "
-"in wishlist when quantity on wishlist page is disabled."
+"This notification will be shown if user will try to add a product that is "
+"already in the wishlist."
 msgstr ""
 
 #: admin/settings/general.class.php:151
@@ -270,9 +270,9 @@ msgstr ""
 
 #: admin/settings/general.class.php:296
 msgid ""
-"This is separate settings for \"Add to wishlist\" button on product listing "
-"(Shop page, categories, etc.). You can also adjust button and text colors, "
-"size, etc. in <code>TI Wishlist > Style Options.</code>"
+"These are separate settings for the \"Add to Wishlist\" button on a product "
+"listing (Shop page, categories, etc.). You can also adjust button and text "
+"colors, size, etc. in a <code>TI Wishlist > Style Options.</code>"
 msgstr ""
 
 #: admin/settings/general.class.php:302
@@ -376,23 +376,23 @@ msgid "Social Networks Sharing Options"
 msgstr ""
 
 #: admin/settings/general.class.php:511 views/wizard/step-social.php:26
-msgid "Show \"Share on Facebook\" Button"
+msgid "Show \"Facebook\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:517 views/wizard/step-social.php:35
-msgid "Show \"Tweet on Twitter\" Button"
+msgid "Show \"Twitter\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:523 views/wizard/step-social.php:44
-msgid "Show \"Pin on Pinterest\" Button"
+msgid "Show \"Pinterest\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:529 views/wizard/step-social.php:53
-msgid "Show \"Share on Google+\" Button"
+msgid "Show \"Google+\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:535 views/wizard/step-social.php:62
-msgid "Show \"Share on Email\" Button"
+msgid "Show \"Share by Email\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:541
@@ -452,287 +452,243 @@ msgstr ""
 msgid "Use Default Font"
 msgstr ""
 
-#: admin/settings/style.class.php:49
-msgid "Georgia"
-msgstr ""
-
-#: admin/settings/style.class.php:50
-msgid "Times New Roman, Times"
-msgstr ""
-
-#: admin/settings/style.class.php:51
-msgid "Arial, Helvetica"
-msgstr ""
-
-#: admin/settings/style.class.php:52
-msgid "Courier New, Courier"
-msgstr ""
-
-#: admin/settings/style.class.php:53
-msgid "Georgia, Times New Roman, Times"
-msgstr ""
-
-#: admin/settings/style.class.php:54
-msgid "Verdana, Arial, Helvetica"
-msgstr ""
-
-#: admin/settings/style.class.php:55
-msgid "Geneva, Arial, Helvetica"
-msgstr ""
-
-#: admin/settings/style.class.php:56
-msgid "Source Sans Pro, Open Sans"
-msgstr ""
-
-#: admin/settings/style.class.php:57
-msgid "Helvetica Neue, Helvetica, Roboto, Arial"
-msgstr ""
-
-#: admin/settings/style.class.php:58
-msgid "Arial"
-msgstr ""
-
-#: admin/settings/style.class.php:59
-msgid "Lucida Grande, Verdana, Arial, Bitstream Vera Sans"
-msgstr ""
-
-#: admin/settings/style.class.php:64
+#: admin/settings/style.class.php:65
 msgid "text"
 msgstr ""
 
-#: admin/settings/style.class.php:71 admin/settings/style.class.php:514
+#: admin/settings/style.class.php:72 admin/settings/style.class.php:515
 msgid "Title Color"
 msgstr ""
 
-#: admin/settings/style.class.php:77 admin/settings/style.class.php:528
+#: admin/settings/style.class.php:78 admin/settings/style.class.php:529
 msgid "Title Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:83 admin/settings/style.class.php:439
-#: admin/settings/style.class.php:534
+#: admin/settings/style.class.php:84 admin/settings/style.class.php:440
+#: admin/settings/style.class.php:535
 msgid "Content Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:89 admin/settings/style.class.php:125
-#: admin/settings/style.class.php:163 admin/settings/style.class.php:225
-#: admin/settings/style.class.php:275 admin/settings/style.class.php:325
-#: admin/settings/style.class.php:375
+#: admin/settings/style.class.php:90 admin/settings/style.class.php:126
+#: admin/settings/style.class.php:164 admin/settings/style.class.php:226
+#: admin/settings/style.class.php:276 admin/settings/style.class.php:326
+#: admin/settings/style.class.php:376
 msgid "Font"
 msgstr ""
 
-#: admin/settings/style.class.php:96
+#: admin/settings/style.class.php:97
 msgid "links"
 msgstr ""
 
-#: admin/settings/style.class.php:103
+#: admin/settings/style.class.php:104
 msgid "Color"
 msgstr ""
 
-#: admin/settings/style.class.php:109
+#: admin/settings/style.class.php:110
 msgid "Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:115
+#: admin/settings/style.class.php:116
 msgid "Underline"
 msgstr ""
 
-#: admin/settings/style.class.php:117
+#: admin/settings/style.class.php:118
 msgid "Yes"
 msgstr ""
 
-#: admin/settings/style.class.php:118
+#: admin/settings/style.class.php:119
 msgid "No"
 msgstr ""
 
-#: admin/settings/style.class.php:132
+#: admin/settings/style.class.php:133
 msgid "fields"
 msgstr ""
 
-#: admin/settings/style.class.php:139 admin/settings/style.class.php:189
-#: admin/settings/style.class.php:251 admin/settings/style.class.php:301
-#: admin/settings/style.class.php:351 admin/settings/style.class.php:401
-#: admin/settings/style.class.php:508
+#: admin/settings/style.class.php:140 admin/settings/style.class.php:190
+#: admin/settings/style.class.php:252 admin/settings/style.class.php:302
+#: admin/settings/style.class.php:352 admin/settings/style.class.php:402
+#: admin/settings/style.class.php:509
 msgid "Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:145 admin/settings/style.class.php:407
+#: admin/settings/style.class.php:146 admin/settings/style.class.php:408
 msgid "Border Color"
 msgstr ""
 
-#: admin/settings/style.class.php:151 admin/settings/style.class.php:239
-#: admin/settings/style.class.php:289 admin/settings/style.class.php:339
-#: admin/settings/style.class.php:389
+#: admin/settings/style.class.php:152 admin/settings/style.class.php:240
+#: admin/settings/style.class.php:290 admin/settings/style.class.php:340
+#: admin/settings/style.class.php:390
 msgid "Border Radius"
 msgstr ""
 
-#: admin/settings/style.class.php:157 admin/settings/style.class.php:201
-#: admin/settings/style.class.php:263 admin/settings/style.class.php:313
-#: admin/settings/style.class.php:363
+#: admin/settings/style.class.php:158 admin/settings/style.class.php:202
+#: admin/settings/style.class.php:264 admin/settings/style.class.php:314
+#: admin/settings/style.class.php:364
 msgid "Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:171 admin/settings/style.class.php:233
-#: admin/settings/style.class.php:283 admin/settings/style.class.php:333
-#: admin/settings/style.class.php:383
+#: admin/settings/style.class.php:172 admin/settings/style.class.php:234
+#: admin/settings/style.class.php:284 admin/settings/style.class.php:334
+#: admin/settings/style.class.php:384
 msgid "Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:177
+#: admin/settings/style.class.php:178
 msgid "Select Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:182
-msgid "add to wishlist product page button"
+#: admin/settings/style.class.php:183
+msgid "\"Add to Wishlist\" product page button"
 msgstr ""
 
-#: admin/settings/style.class.php:195 admin/settings/style.class.php:257
-#: admin/settings/style.class.php:307 admin/settings/style.class.php:357
+#: admin/settings/style.class.php:196 admin/settings/style.class.php:258
+#: admin/settings/style.class.php:308 admin/settings/style.class.php:358
 msgid "Background Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:207
+#: admin/settings/style.class.php:208
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:213 admin/settings/style.class.php:269
-#: admin/settings/style.class.php:319 admin/settings/style.class.php:369
+#: admin/settings/style.class.php:214 admin/settings/style.class.php:270
+#: admin/settings/style.class.php:320 admin/settings/style.class.php:370
 msgid "Text Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:219
+#: admin/settings/style.class.php:220
 msgid "Button Text Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:244
+#: admin/settings/style.class.php:245
 msgid "accent buttons style"
 msgstr ""
 
-#: admin/settings/style.class.php:294
+#: admin/settings/style.class.php:295
 msgid "normal buttons style"
 msgstr ""
 
-#: admin/settings/style.class.php:344
+#: admin/settings/style.class.php:345
 msgid "add to cart button"
 msgstr ""
 
-#: admin/settings/style.class.php:394
+#: admin/settings/style.class.php:395
 msgid "table"
 msgstr ""
 
-#: admin/settings/style.class.php:413
+#: admin/settings/style.class.php:414
 msgid "Table Head Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:419
+#: admin/settings/style.class.php:420
 msgid "Table Head Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:425
+#: admin/settings/style.class.php:426
 msgid "Table Head Font"
 msgstr ""
 
-#: admin/settings/style.class.php:433
+#: admin/settings/style.class.php:434
 msgid "Table Head Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:445 admin/settings/style.class.php:540
+#: admin/settings/style.class.php:446 admin/settings/style.class.php:541
 msgid "Content Text Font"
 msgstr ""
 
-#: admin/settings/style.class.php:453 admin/settings/style.class.php:548
+#: admin/settings/style.class.php:454 admin/settings/style.class.php:549
 msgid "Content Text Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:459
+#: admin/settings/style.class.php:460
 msgid "Price Color"
 msgstr ""
 
-#: admin/settings/style.class.php:465
+#: admin/settings/style.class.php:466
 msgid "Price Font"
 msgstr ""
 
-#: admin/settings/style.class.php:473
+#: admin/settings/style.class.php:474
 msgid "Price Font Size"
 msgstr ""
 
-#: admin/settings/style.class.php:479
+#: admin/settings/style.class.php:480
 msgid "Special Price Color"
 msgstr ""
 
-#: admin/settings/style.class.php:485
+#: admin/settings/style.class.php:486
 msgid "Special Price Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:491
+#: admin/settings/style.class.php:492
 msgid "Social Icons Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:497
+#: admin/settings/style.class.php:498
 msgid "Social Icons Background Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:501
+#: admin/settings/style.class.php:502
 msgid "popups"
 msgstr ""
 
-#: admin/settings/style.class.php:520
+#: admin/settings/style.class.php:521
 msgid "Title Font"
 msgstr ""
 
-#: admin/settings/style.class.php:554
+#: admin/settings/style.class.php:555
 msgid "Fields Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:560
+#: admin/settings/style.class.php:561
 msgid "Fields Border Color"
 msgstr ""
 
-#: admin/settings/style.class.php:566
+#: admin/settings/style.class.php:567
 msgid "Fields Border Radius"
 msgstr ""
 
-#: admin/settings/style.class.php:572
+#: admin/settings/style.class.php:573
 msgid "Fields Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:578
+#: admin/settings/style.class.php:579
 msgid "Fields Placeholder Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:584
+#: admin/settings/style.class.php:585
 msgid "Normal Buttons Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:590
+#: admin/settings/style.class.php:591
 msgid "Normal Buttons Background Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:596
+#: admin/settings/style.class.php:597
 msgid "Normal Buttons Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:602
+#: admin/settings/style.class.php:603
 msgid "Normal Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:608
+#: admin/settings/style.class.php:609
 msgid "Accent Buttons Background Color"
 msgstr ""
 
-#: admin/settings/style.class.php:614
+#: admin/settings/style.class.php:615
 msgid "Accent Buttons Background Hover Color"
 msgstr ""
 
-#: admin/settings/style.class.php:620
+#: admin/settings/style.class.php:621
 msgid "Accent Buttons Text Color"
 msgstr ""
 
-#: admin/settings/style.class.php:626
+#: admin/settings/style.class.php:627
 msgid "Accent Buttons Text Hover Color"
 msgstr ""
 
 #: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:215
-msgid "Upgrade to Pro"
+msgid "Upgrade to Premium"
 msgstr ""
 
 #: admin/settings/upgrade.class.php:35
@@ -937,7 +893,7 @@ msgid "Page Setup"
 msgstr ""
 
 #: includes/wizard.class.php:282 includes/wizard.class.php:312
-#: public/tinvwl.class.php:533
+#: public/tinvwl.class.php:536
 msgid "Wishlist"
 msgstr ""
 
@@ -974,11 +930,11 @@ msgstr ""
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: public/tinvwl.class.php:437
+#: public/tinvwl.class.php:440
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:440
+#: public/tinvwl.class.php:443
 msgid ""
 "Please select some product options before adding this product to your "
 "wishlist."
@@ -989,7 +945,7 @@ msgid "Displays the number of products in the wishlist on your site."
 msgstr ""
 
 #: public/widget/topwishlist.class.php:26
-msgid "TInv Wishlist Products Counter"
+msgid "TI Wishlist Products Counter"
 msgstr ""
 
 #: public/widget/topwishlist.class.php:31
@@ -1266,8 +1222,8 @@ msgstr ""
 
 #: views/admin/templates-status.php:16
 msgid ""
-"This section shows any files that are overriding the default TI WooCommerce "
-"Wishlist template pages."
+"This section shows the files that are overriding the default TI WooCommerce "
+"Wishlist templates."
 msgstr ""
 
 #: views/admin/templates-status.php:24 views/admin/templates-status.php:31
@@ -1280,7 +1236,7 @@ msgstr ""
 
 #: views/null.php:19
 #, php-format
-msgid "Teamplate \"%s\" not found!"
+msgid "Template \"%s\" not found!"
 msgstr ""
 
 #: views/wizard/finish.php:15
@@ -1321,7 +1277,7 @@ msgid "Wishlist Settings"
 msgstr ""
 
 #: views/wizard/finish.php:30
-msgid "Visit Template Invaders Website for more Products."
+msgid "Visit TemplateInvaders website for more products."
 msgstr ""
 
 #: views/wizard/footer.php:17
@@ -1330,7 +1286,7 @@ msgstr ""
 
 #: views/wizard/header.php:19
 #, php-format
-msgid "TInv Wishlists &rsaquo; %s"
+msgid "TI Wishlist &rsaquo; %s"
 msgstr ""
 
 #: views/wizard/intro.php:15
@@ -1343,8 +1299,8 @@ msgstr ""
 
 #: views/wizard/intro.php:21
 msgid ""
-"Thank you for choosing “Template Invaders Wishlist” to enhance your "
-"WooCommerce store!"
+"Thank you for choosing the Wishlist plugin by TemplateInvaders to enhance "
+"your WooCommerce store!"
 msgstr ""
 
 #: views/wizard/intro.php:22
@@ -1418,17 +1374,17 @@ msgstr ""
 
 #: views/wizard/step-page.php:18
 msgid ""
-"The following page need to be selected so the “Wishlist” know where it is."
+"The following page needs to be applied so the “Wishlist” knows where it is. "
 msgstr ""
 
 #: views/wizard/step-page.php:19
 msgid ""
-"Choose from existing page or leave fields empty and it will be created "
-"automatically:"
+"Choose from existing pages or leave this field empty and the Wishlist page "
+"will be created automatically:"
 msgstr ""
 
 #: views/wizard/step-page.php:48
-msgid "Once created, this page can be managed from your admin dashboard."
+msgid "Once created, this page can be managed from WordPress dashboard."
 msgstr ""
 
 #: views/wizard/step-processing.php:16

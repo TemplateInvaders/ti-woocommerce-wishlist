@@ -141,7 +141,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'	 => 'text',
 						'name'	 => 'text_already_in',
 						'text'	 => __( '"Product already in Wishlist" Text', 'ti-woocommerce-wishlist' ),
-						'desc'	 => __( 'This notification will be shown if user will try to add product that already in wishlist when quantity on wishlist page is disabled.', 'ti-woocommerce-wishlist' ),
+						'desc'	 => __( 'This notification will be shown if user will try to add a product that is already in the wishlist.', 'ti-woocommerce-wishlist' ),
 						'std'	 => 'Product already in Wishlist',
 						'class'	 => 'tiwl-button-show-notice tiwl-general-simple-flow-hide',
 					),
@@ -293,7 +293,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			array(
 				'id'         => 'add_to_wishlist_catalog',
 				'title'      => __( 'Product listing Button Settings', 'ti-woocommerce-wishlist' ),
-				'desc'       => __( 'This is separate settings for "Add to wishlist" button on product listing (Shop page, categories, etc.). You can also adjust button and text colors, size, etc. in <code>TI Wishlist > Style Options.</code>', 'ti-woocommerce-wishlist' ),
+				'desc'       => __( 'These are separate settings for the "Add to Wishlist" button on a product listing (Shop page, categories, etc.). You can also adjust button and text colors, size, etc. in a <code>TI Wishlist > Style Options.</code>', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 				'fields'     => array(
 					array(

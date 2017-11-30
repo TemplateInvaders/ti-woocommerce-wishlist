@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="tinvwl-title-wrap">
 		<h1><?php esc_html_e( 'Page Setup', 'ti-woocommerce-wishlist' ); ?></h1>
 		<div class="tinvwl-desc">
-			<?php esc_html_e( 'The following page need to be selected so the “Wishlist” know where it is.', 'ti-woocommerce-wishlist' ); ?><br/>
-			<?php esc_html_e( 'Choose from existing page or leave fields empty and it will be created automatically:', 'ti-woocommerce-wishlist' ); ?>
+			<?php esc_html_e( 'The following page needs to be applied so the “Wishlist” knows where it is. ', 'ti-woocommerce-wishlist' ); ?><br/>
+			<?php esc_html_e( 'Choose from existing pages or leave this field empty and the Wishlist page will be created automatically:', 'ti-woocommerce-wishlist' ); ?>
 		</div>
 	</div>
 
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="tinvwl-separator"></div>
 
 	<div class="tinvwl-desc">
-		<?php esc_html_e( 'Once created, this page can be managed from your admin dashboard.', 'ti-woocommerce-wishlist' ); ?><br/>
+		<?php esc_html_e( 'Once created, this page can be managed from WordPress dashboard.', 'ti-woocommerce-wishlist' ); ?><br/>
 	</div>
 
 	<div class="tinvwl-nav tinv-wishlist-clearfix">

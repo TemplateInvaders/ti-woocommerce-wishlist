@@ -27,5 +27,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 			class="fa fa-wrench"></i><?php esc_html_e( 'Wishlist Settings', 'ti-woocommerce-wishlist' ); ?></a>
 	<div class="tinv-wishlist-clear"></div>
 	<a class="tinvwl-more"
-	   href="https://templateinvaders.com/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=wizard_more_product&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>"><?php esc_html_e( 'Visit Template Invaders Website for more Products.', 'ti-woocommerce-wishlist' ); ?></a>
+	   href="https://templateinvaders.com/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=wizard_more_product&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>"><?php esc_html_e( 'Visit TemplateInvaders website for more products.', 'ti-woocommerce-wishlist' ); ?></a>
 </div>

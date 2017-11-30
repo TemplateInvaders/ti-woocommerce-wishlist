@@ -119,7 +119,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Creation mune and sub-menu
 	 */
 	function action_menu() {
-		$page = add_menu_page( 'TI Wishlists', 'TI Wishlists', 'manage_options', $this->_n, null, TINVWL_URL . 'asset/img/icon_menu.png', 56 );
+		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_n, null, TINVWL_URL . 'asset/img/icon_menu.png', 56 );
 		add_action( "load-$page", array( $this, 'onload' ) );
 		$menu = apply_filters( $this->_n . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
@@ -212,7 +212,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * @return array
 	 */
 	function status_panel( $panel ) {
-		array_unshift( $panel, sprintf( '<a class="tinvwl-btn red w-icon smaller-txt" href="%s"><i class="fa fa-star"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_upgrade&partner=' . TINVWL_UTM_SOURCE, __( 'Upgrade to Pro', 'ti-woocommerce-wishlist' ) ) );
+		array_unshift( $panel, sprintf( '<a class="tinvwl-btn red w-icon smaller-txt" href="%s"><i class="fa fa-star"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_upgrade&partner=' . TINVWL_UTM_SOURCE, __( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ) ) );
 
 		return $panel;
 	}

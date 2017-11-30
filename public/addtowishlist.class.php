@@ -451,6 +451,9 @@ class TInvWL_Public_AddToWishlist {
 				return '';
 			}
 		}
+		if ( empty( $this->product ) || ! apply_filters( 'tinvwl_allow_addtowishlist_single_product', true, $this->product ) ) {
+			return;
+		}
 
 		$wishlists = $this->user_wishlist( $this->product );
 

@@ -360,6 +360,9 @@ class TInvWL_Public_AddToWishlist {
 		}
 		$ids = array_filter( $ids );
 
+		if ( empty( $ids ) ) {
+			return $wishlists;
+		}
 		$products = $wlp->get( array(
 			'product_id'	 => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ),
 			'wishlist_id'	 => $ids,

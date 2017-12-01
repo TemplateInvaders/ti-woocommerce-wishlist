@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.5.11
+Stable tag: 1.5.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.12 =
+*Release Date - 01 December 2017*
+
+* Fixed SQL query to avoid an issue when Wishlist title has an apostrophe
+* Fixed an issue with duplicated call to WC AJAX fragments
+* Improved performance for custom styles
+* Added filter 'tinvwl_allow_addtowishlist_single_product' that helps to show/hide the "Add to Wishlist" button for specific products on a single products page
+* Translation improvements:
+ * Corrected some texts
+ * Corrected some typos
+ * Removed some strings that do not require translation from .pot file
 
 = 1.5.11 =
 *Release Date - 21 November 2017*

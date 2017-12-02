@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.5.12
+Stable tag: 1.5.13
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.5.13 =
+*Release Date - 02 December 2017*
+
+* Fixed compatibility with activations of some plugins (rare case)
+* Fixed translation typo
 
 = 1.5.12 =
 *Release Date - 01 December 2017*

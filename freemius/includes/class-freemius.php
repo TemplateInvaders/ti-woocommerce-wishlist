@@ -879,7 +879,9 @@
 
 
 			//Fix for migration issues.
-			return  TINVWL_PATH . 'ti-woocommerce-wishlist.php';
+			if ('ti-woocommerce-wishlist' === $this->_slug) {
+				return TINVWL_PATH . 'ti-woocommerce-wishlist.php';
+			}
 
 			/**
 			 * @since 1.2.1

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-01 01:05+0700\n"
+"POT-Creation-Date: 2017-12-03 00:10+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -160,7 +160,7 @@ msgid "Remove condition"
 msgstr ""
 
 #: admin/settings/general.class.php:195
-msgid "Add to Card"
+msgid "Add to Cart"
 msgstr ""
 
 #: admin/settings/general.class.php:210

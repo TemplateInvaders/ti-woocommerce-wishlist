@@ -192,7 +192,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'    => __( 'Remove condition', 'ti-woocommerce-wishlist' ),
 						'std'     => 'tinvwl-addcart',
 						'options' => array(
-							'tinvwl-addcart' => __( 'Add to Card', 'ti-woocommerce-wishlist' ),
+							'tinvwl-addcart' => __( 'Add to Cart', 'ti-woocommerce-wishlist' ),
 						),
 						'class'   => 'tiwl-processing-autoremove',
 					),

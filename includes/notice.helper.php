@@ -130,11 +130,11 @@ class TInvWL_Notice {
 			}
 			$notice_key = $arg;
 			if ( ! is_integer( $arg ) || ! array_key_exists( $arg, $notice ) ) {
-				if ( 1 < count( $notice ) ) {
 					$notice_keys = array_keys( $notice );
+				if ( 1 < count( $notice ) ) {
 					$notice_key	 = $notice_keys[ rand( 0, count( $notice_keys ) ) ];
 				} else {
-					$notice_key = array_shift( array_keys( $notice ) );
+					$notice_key = $notice_keys[0];
 				}
 				$notice_key = absint( $notice_key ) + 1;
 			}

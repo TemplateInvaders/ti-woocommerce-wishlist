@@ -149,7 +149,7 @@
 				product_action: $(this).attr('data-tinv-wl-action') || 'addto'
 			},
 			a = this;
-			$('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select, textarea').each(function () {
+			$(a).closest('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select, textarea').each(function () {
 				var name_elm = $(this).attr('name'),
 				type_elm = $(this).attr('type'),
 				value_elm = $(this).val(),

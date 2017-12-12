@@ -85,7 +85,7 @@ class TInvWL_Public_TopWishlist {
 	 * @return array
 	 */
 	public static function update_widget( $data ) {
-		$data['top_wishlist_counter'] = self::counter();
+		$data['fragments'] = self::update_fragments( array() );
 
 		return $data;
 	}

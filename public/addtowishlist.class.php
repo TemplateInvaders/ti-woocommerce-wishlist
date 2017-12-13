@@ -318,9 +318,6 @@ class TInvWL_Public_AddToWishlist {
 		$wl			 = new TInvWL_Wishlist( $this->_n );
 		if ( is_user_logged_in() ) {
 			$wishlists = $wl->get_by_user_default();
-			if ( empty( $wishlists ) ) {
-				$wishlists[] = $wl->add_user_default();
-			}
 		} else {
 			$wishlists = $wl->get_by_sharekey_default();
 		}

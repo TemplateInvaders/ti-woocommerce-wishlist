@@ -120,14 +120,17 @@ class TInvWL_Public_TopWishlist {
 			$counts		 = array_shift( $counts );
 			$count		 = absint( $counts['quantity'] );
 		} else {
-			$wishlist	 = $wl->add_sharekey_default();
-			$wlp		 = new TInvWL_Product( $wishlist );
-			$counts		 = $wlp->get_wishlist( array(
-				'external'	 => false,
-				'sql'		 => sprintf( 'SELECT %s(`quantity`) AS `quantity` FROM {table} WHERE {where}', ( tinv_get_option( 'general', 'quantity_func' ) ? 'SUM' : 'COUNT' ) ),
-			) );
-			$counts		 = array_shift( $counts );
-			$count		 = absint( $counts['quantity'] );
+			$wishlist	 = $wl->get_by_sharekey_default();
+			if ( ! empty( $wishlist ) ) {
+				$wishlist	 = array_shift( $wishlist );
+				$wlp		 = new TInvWL_Product( $wishlist );
+				$counts		 = $wlp->get_wishlist( array(
+					'external'	 => false,
+					'sql'		 => sprintf( 'SELECT %s(`quantity`) AS `quantity` FROM {table} WHERE {where}', ( tinv_get_option( 'general', 'quantity_func' ) ? 'SUM' : 'COUNT' ) ),
+				) );
+				$counts		 = array_shift( $counts );
+				$count		 = absint( $counts['quantity'] );
+			}
 		}
 		return $count;
 	}

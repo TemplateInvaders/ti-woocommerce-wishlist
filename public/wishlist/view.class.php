@@ -105,7 +105,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function get_current_wishlist() {
 		if ( empty( $this->curent_wishlist ) ) {
-			$this->curent_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get() );
+			$this->curent_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get( '', true ) );
 		}
 		return $this->curent_wishlist;
 	}
@@ -319,6 +319,17 @@ class TInvWL_Public_Wishlist_View {
 		$wishlist = $this->get_current_wishlist();
 
 		if ( empty( $wishlist ) ) {
+			$id = get_query_var( 'tinvwlID', null );
+			if ( empty( $id ) && ( is_user_logged_in() || tinv_get_option( 'general', 'guests' ) ) ) {
+				return $this->wishlist_empty( array(), array(
+					'ID'		 => '',
+					'author'	 => get_current_user_id(),
+					'title'		 => tinv_get_option( 'general', 'default_title' ),
+					'status'	 => 'private',
+					'type'		 => 'default',
+					'share_key'	 => '',
+				) );
+			}
 			return $this->wishlist_null();
 		}
 

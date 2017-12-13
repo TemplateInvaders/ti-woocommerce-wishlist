@@ -83,7 +83,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_action( 'switch_theme', array( $this, 'clear_notice_validation_template' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_validate_template' ) );
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
-		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_empty_wishlists' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
 		$this->scheduled_remove_wishlist();
 	}
@@ -453,28 +452,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		if ( ! $timestamp ) {
 			$time = strtotime( '00:00 today +1 HOURS' );
 			wp_schedule_event( $time, 'daily', 'tinvwl_remove_without_author_wishlist' );
-		}
-	}
-
-	/**
-	 * Removing empty wishlist without a user older than 7 days
-	 */
-	public function remove_empty_wishlists() {
-		$wl        = new TInvWL_Wishlist();
-		$wishlists = $wl->get( array(
-			'author' => 0,
-			'type'   => 'default',
-			'sql'    => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 7 DAY)',
-		) );
-		foreach ( $wishlists as $wishlist ) {
-			$wlp      = new TInvWL_Product( $wishlist );
-			$products = $wlp->get_wishlist( array(
-				'count'    => 1,
-				'external' => true,
-			) );
-			if ( empty( $products ) ) {
-				$wl->remove( $wishlist['ID'] );
-			}
 		}
 	}
 

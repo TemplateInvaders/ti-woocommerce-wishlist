@@ -242,8 +242,8 @@ class TInvWL_Public_TInvWL {
 	 */
 	function add_meta_tags() {
 		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' )  || tinv_get_option( 'social', 'google' ) ) ) {
-			$wishlist = tinv_wishlist_get();
-			if ( 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
+			$wishlist = tinv_wishlist_get( '', false );
+			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
 				if ( is_user_logged_in() ) {
 					$user		 = get_user_by( 'id', $wishlist['author'] );
 					if ( $user ) {

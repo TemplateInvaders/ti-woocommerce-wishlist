@@ -1,10 +1,10 @@
 ﻿=== WooCommerce Wishlist Plugin ===
 Contributors: templateinvaders
 Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=donate
-Tags: wishlist, woocommerce, products, e-commerce, shop, ecommerce wishlist, woocommerce wishlist, woocommerce , shop wishlist, wishlist  for Woocommerce
+Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.5.13
+Stable tag: 1.5.14
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +16,7 @@ Add Wishlist functionality to your store for free.
 = Increase Sales and Conversions =
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
 
-[Live Preview](https://demo.templateinvaders.com/wordpress/plugins/wishlist/?utm_source=wordpressorg&utm_content=preview)
+[Live Preview](https://woocommercewishlist.com/preview/?utm_source=wordpressorg&utm_content=preview)
 
 [View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
 
@@ -44,12 +44,12 @@ WooCommerce Wishlist is a simple but powerful tool that can help you to convert 
 + Custom CSS styles 
 + Responsive & Retina Ready
 + Translation ready 
-+ WPML Support
++ [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) Support
 + Product variations Support
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
-We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: WooCommerce Bookings, WooCommerce Subscriptions, WooCommerce Composite Products, WooCommerce Product Bundles, WooCommerce Mix and Match, WooCommerce Gravity Forms Product Add-Ons, WooCommerce Gift Cards.
-It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with WP Rocket, WP Super Cache and W3 Total Cache plugins.
+We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/).
+It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with [WP Rocket](https://wp-rocket.me/), [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) and [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugins.
 
 = Add to Wishlist button =
 You can adjust Add to wishlist button settings to make it work best for your website.
@@ -63,7 +63,7 @@ WooCommerce Wishlist Plugin comes with over 60 appearance options such as colors
 
 = Translation Ready =
 
-You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, Loco Translate or WPML.
+You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
 
 = Responsive & Retina Ready =
 We know how important responsive website for the online store in nowadays.
@@ -129,6 +129,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 == Changelog ==
 
+= 1.5.14 =
+*Release Date - 14 December 2017*
+
+* Fixed an issue when empty wishlist is created once a guest visits the shop page
+* Added new option "Require Login" that disallows guests to add products to a Wishlist until they sign-in
+* Improved Wishlist Products Counter functionality
+
 = 1.5.13 =
 *Release Date - 02 December 2017*
 
@@ -161,11 +168,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 *Release Date - 21 November 2017*
 
 * Fixed Wishlist Products Counter issue when the wrong number of products was displaying if cache is enabled
-* Fixed an issue with W3 Total Cache plugin
+* Fixed an issue with [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugin
 * Fixed an issue with wrong file path after website migration
 * Fixed an issue with extra scheduled cleanup events
 * Fixed an issue with reset some settings after plugin update
-* Added support for WP Fastest Cache plugin 
+* Added support for [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin 
 
 = 1.5.8 =
 *Release Date - 07 November 2017*
@@ -175,7 +182,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Added "Reset to Defaults" option in the admin panel
 * Added an option to show the "Add to Wishlist" button above product thumbnail
 * An option to change social icons from dark to white was moved to "Social Networks Sharing Options" section
-* Added support for Comet Cache plugin
+* Added support for [Comet Cache](https://wordpress.org/plugins/comet-cache/) plugin
 
 = 1.5.7 =
 *Release Date - 21 October 2017*
@@ -185,9 +192,9 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed an issue with empty pop up window after clicking Share Wishlist by Email button 
 * Internal improvements:
  * Variable product (without predefined variations applied by default) added from products listing page will be always substituted with the product added from details page (with selected variations).
-* Improved WooCommerce Composite Products plugin support:
+* Improved [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin support:
  * Fixed individual price calculation with components
-* Improved Polylang plugin support
+* Improved [Polylang](https://wordpress.org/plugins/polylang/) plugin support
 
 = 1.5.6 =
 *Release Date - 20 September 2017*
@@ -195,15 +202,15 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed an issue with transferring products between guest and customer wishlists after signing in or logout.
 * Fixed an issue when it's not possible to remove products from wishlist as a guest
 * Fixed an issue with adding a product variations to wishlist
-* Improved WooCommerce Product Bundles plugin support:
+* Improved [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin support:
  * Fixed an issue with displaying product custom meta attributes
-* Improved WPML plugin compatibility:
+* Improved [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) plugin compatibility:
  * Fixed an issue with "Remove/Add" button text when switching languages
 
 = 1.5.5 =
 *Release Date - 11 September 2017*
 
-* Improved WooCommerce Product Bundles plugin support:
+* Improved [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin support:
  * Fixed and issue when product variations was not applied in bundled products
  * Fixed an issue with products visibility on a Wishlist page
 * Fixed text domains for some strings
@@ -220,11 +227,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.5.3 =
 *Release Date - 30 August 2017*
 
-* Improved WPML Compatibility
+* Improved [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) Compatibility
 * Added minified version of FontAwesome library
 * Added support for plugins/WooCommerce add-ons:
  * WooCommerce Personalized Product Option
- * YITH WooCommerce Product Bundles
+ * [YITH WooCommerce Product Bundles](https://yithemes.com/themes/plugins/yith-woocommerce-product-bundles/?refer_id=1033256)
 
 = 1.5.2 =
 *Release Date - 23 August 2017*
@@ -237,7 +244,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed a fatal error on Dashboard menu
 * Minor CSS fixes
 * Added support for plugins/WooCommerce add-ons:
- * WooCommerce Quantity Increment
+ * [WooCommerce Quantity Increment](https://wordpress.org/plugins/woocommerce-quantity-increment/)
 
 = 1.5.0 =
 *Release Date - 11 August 2017*
@@ -246,13 +253,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Added the ability to load custom translation files
 * Overall frontend performance optimization
 * Added support for plugins/WooCommerce add-ons that use custom meta:
- * WooCommerce Gift Cards
- * WooCommerce Bookings
- * WooCommerce Subscriptions
- * WooCommerce Composite Products
- * WooCommerce Product Bundles
- * WooCommerce Mix and Match
- * WooCommerce Gravity Forms Product Add-Ons
+ * [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/)
+ * [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955)
+ * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955)
+ * [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955)
+ * [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955)
+ * [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955)
+ * [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955)
 
 = 1.4.0 =
 *Release Date - 14 July 2017*
@@ -273,9 +280,9 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.3.3 =
 *Release Date - 07 May 2017*
 
-* Improved WPML compatibility (fixed an issue with URL formats)
+* Improved [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) compatibility (fixed an issue with URL formats)
 * Fixed issues with deprecated hooks related to WooCommerce 3.0.5
-* Added Polylang plugin support
+* Added [Polylang](https://wordpress.org/plugins/polylang/) plugin support
 * Added new option that allows product automatic removal when it's added to cart by anyone
 
 
@@ -294,10 +301,10 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.3.0 =
 *Release Date - 24 April 2017*
 
-* Fixed WPML string translations issue
+* Fixed [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) string translations issue
 * Added theme compatibility notices
 * Wishlist custom item meta hidden from order
-* Added compatibility with WooCommerce – Gift Cards
+* Added compatibility with [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/)
 
 = 1.2.1 =
 *Release Date - 08 April 2017*
@@ -313,7 +320,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.1.14 =
 *Release Date - 04 April 2017*
 
-* Fixed multiple issues with WPML support.
+* Fixed multiple issues with [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) support.
 
 = 1.1.13 =
 *Release Date - 16 March 2017*
@@ -342,7 +349,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.1.9 =
 *Release Date - 26 February 2017*
 
-* Fixed an issue with W3 Total Cache compatibility
+* Fixed an issue with [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) compatibility
 * Added public functions
 
 = 1.1.8 =
@@ -402,9 +409,9 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.1.0 =
 *Release Date - 11 October 2016*
 
-* Added support for WP Super Cache plugin
-* Added support for W3 Total Cache plugin
-* Added support for WooCommerce - Gravity Forms Product Add-Ons
+* Added support for [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) plugin
+* Added support for [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugin
+* Added support for [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955)
 * Added option to show link to Wishlist on My Account page
 * Added minimized versions of JS
 
@@ -428,4 +435,4 @@ Full documentation is available [here](https://templateinvaders.com/documentatio
 
 == Upgrade Notice ==
 = 1.5 =
-Improved frontend performance. Added plugin support for WooCommerce Gift Cards, WooCommerce Bookings, WooCommerce Subscriptions, WooCommerce Composite Products, WooCommerce Product Bundles, WooCommerce Mix and Match, WooCommerce Gravity Forms Product Add-Ons.
+Improved frontend performance. Added plugin support for [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955).

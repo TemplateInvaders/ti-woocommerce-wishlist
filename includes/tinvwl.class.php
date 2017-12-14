@@ -143,7 +143,7 @@ class TInvWL {
 	public function action_links( $links ) {
 		$plugin_links[]	 = '<a href="' . admin_url( 'admin.php?page=tinvwl' ) . '">' . __( 'Settings', 'ti-woocommerce-wishlist' ) . '</a>';
 		$plugin_links[]	 = '<a target="_blank" href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=action_link&partner=' . TINVWL_UTM_SOURCE . '" style="color:#46b450;font-weight:700;">' . __( 'Premium Version', 'ti-woocommerce-wishlist' ) . '</a>';
-		$plugin_links[]	 = '<a target="_blank" href="https://demo.templateinvaders.com/wordpress/plugins/wishlist/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=action_link&partner=' . TINVWL_UTM_SOURCE . '"  style="color:#515151">' . __( 'Live Demo', 'ti-woocommerce-wishlist' ) . '</a>';
+		$plugin_links[]	 = '<a target="_blank" href="https://woocommercewishlist.com/preview/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=action_link&partner=' . TINVWL_UTM_SOURCE . '"  style="color:#515151">' . __( 'Live Demo', 'ti-woocommerce-wishlist' ) . '</a>';
 
 		return array_merge( $links, $plugin_links );
 	}

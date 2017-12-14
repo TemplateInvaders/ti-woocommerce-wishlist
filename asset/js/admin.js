@@ -190,15 +190,23 @@ function TInvWL($, h) {
 				return a;
 			}
 			d1.attr('class', (d1.attr('class') + ' ' + a.attr('class')));
-			d1.toggleClass('disabled', a.is(':disabled'));
+			if (a.is(':disabled')) {
+				d1.toggleClass('disabled', a.is(':disabled'));
+				a.prop('disabled', false);
+			}
 			d1.toggleClass('checked', a.is(':checked'));
 			a.attr('type', 'checkbox').hide().removeAttr('class').wrap(d1).before(b1);
 			d1 = a.parent();
-			a.on('change', function () {
+			a.on('change', function (e) {
+				if (d1.hasClass('disabled')) {
+					return e.preventDefault();
+				}
 				d1.toggleClass('checked', $(this).is(':checked'));
-				d1.toggleClass('disabled', $(this).is(':disabled'));
 			});
-			d1.on('click', function () {
+			d1.on('click', function (e) {
+				if (d1.hasClass('disabled')) {
+					return e.preventDefault();
+				}
 				if (a.is(':enabled') && d1.hasClass('checked') === a.is(':checked')) {
 					a.click();
 				}

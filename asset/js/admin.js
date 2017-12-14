@@ -298,7 +298,6 @@ function TInvWL($, h) {
 			if (a && !b.is(':checked')) {
 				b.click().trigger('change');
 			}
-			b.attr('disabled', a ? 'disabled' : false);
 			b.closest('.tiwlform-onoff-container').toggleClass('disabled', a);
 		}).change();
 		$('.tablenav').each(function () {

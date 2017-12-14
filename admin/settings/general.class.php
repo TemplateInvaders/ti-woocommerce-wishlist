@@ -75,6 +75,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'	 => 'checkboxonoff',
 						'name'	 => 'require_login',
 						'text'	 => __( 'Require Login', 'ti-woocommerce-wishlist-premium' ),
+						'desc'  => __( 'Disallows guests to use Wishlist functionality until they sign-in.' ),
 						'std'	 => false,
 						'extra'	 => array(
 							'tiwl-show'	 => '.tiwl-general-redirect-require-login',

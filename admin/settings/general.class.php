@@ -84,6 +84,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'			 => 'checkboxonoff',
 						'name'			 => 'redirect_require_login',
 						'text'			 => __( 'Redirect to Login Page', 'ti-woocommerce-wishlist-premium' ),
+						'desc'			 => '<span class="tiwl-button-show-notice-warning-popup">' . __( '<strong>Currently this option could not be changed because "Show successful notice in popup" is disabled.</strong>', 'ti-woocommerce-wishlist-premium' ) . '</span><span class="tiwl-button-show-notice">' . __( 'If enabled, guest will be redirected to login page once he clicks the "Add to Wishlist" button or "Wishlist Products Counter" link.', 'ti-woocommerce-wishlist-premium' ) . '</span>',
 						'std'			 => false,
 						'class'			 => 'tiwl-general-redirect-require-login',
 					),
@@ -129,6 +130,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'std'   => true,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-button-show-notice',
+							'tiwl-hide' => '.tiwl-button-show-notice-warning-popup',
 						),
 					),
 					array(

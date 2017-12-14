@@ -105,7 +105,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function get_current_wishlist() {
 		if ( empty( $this->curent_wishlist ) ) {
-			$this->curent_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get( '', false ) );
+			$this->curent_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get() );
 		}
 		return $this->curent_wishlist;
 	}

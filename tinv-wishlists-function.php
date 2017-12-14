@@ -427,8 +427,11 @@ if ( ! function_exists( 'tinv_wishlist_get' ) ) {
 
 			$wishlist['is_owner'] = true;
 		} elseif ( $toend ) {
-			$wishlist				 = $wl->add_sharekey_default();
-			$wishlist['is_owner']	 = $wl->get_sharekey() === $wishlist['share_key'];
+			$wishlist = $wl->get_by_sharekey_default();
+			if ( ! empty( $wishlist ) ) {
+				$wishlist = array_shift( $wishlist );
+				$wishlist['is_owner'] = $wl->get_sharekey() === $wishlist['share_key'];
+			}
 		}
 
 		return $wishlist;

@@ -75,7 +75,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'	 => 'checkboxonoff',
 						'name'	 => 'require_login',
 						'text'	 => __( 'Require Login', 'ti-woocommerce-wishlist-premium' ),
-						'desc'  => __( 'Disallows guests to use Wishlist functionality until they sign-in.' ),
+						'desc'	 => __( 'Disallows guests to use Wishlist functionality until they sign-in.' ),
 						'std'	 => false,
 						'extra'	 => array(
 							'tiwl-show'	 => '.tiwl-general-redirect-require-login',
@@ -85,7 +85,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'			 => 'checkboxonoff',
 						'name'			 => 'redirect_require_login',
 						'text'			 => __( 'Redirect to Login Page', 'ti-woocommerce-wishlist-premium' ),
-						'desc'			 => '<span class="tiwl-button-show-notice-warning-popup">' . __( '<strong>Currently this option could not be changed because "Show successful notice in popup" is disabled.</strong>', 'ti-woocommerce-wishlist-premium' ) . '</span><span class="tiwl-button-show-notice">' . __( 'If enabled, guest will be redirected to login page once he clicks the "Add to Wishlist" button or "Wishlist Products Counter" link.', 'ti-woocommerce-wishlist-premium' ) . '</span>',
+						'desc'			 => '<span class="tiwl-button-show-notice-warning-popup">' . __( '<strong>Currently this option could not be changed because "Show successful notice in popup" is disabled. Guests will be redirected automatically to a login page.</strong>', 'ti-woocommerce-wishlist' ) . '</span><span class="tiwl-button-show-notice">' . __( 'If enabled, guests will be redirected to a login page once clicking the "Add to Wishlist" button or "Wishlist Products Counter" link. Otherwise a popup with login required notice will appear.', 'ti-woocommerce-wishlist' ) . '</span>',
 						'std'			 => false,
 						'class'			 => 'tiwl-general-redirect-require-login',
 					),

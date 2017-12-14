@@ -158,6 +158,25 @@ class TInvWL_Public_AddToWishlist {
 				wp_send_json( $data );
 			}
 			$wlp = new TInvWL_Product( $wishlist, $this->_n );
+		} elseif ( tinv_get_option( 'general', 'require_login' ) ) {
+			$data['status']	 = false;
+			$data['icon']	 = 'icon_big_times';
+			if ( tinv_get_option( 'general', 'redirect_require_login' ) ) {
+				$data['msg']			 = array();
+				$data['force_redirect']	 = wc_get_page_permalink( 'myaccount' );
+			} else {
+				$data['msg'][]				 = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist-premium' );
+				$data['redirect']			 = wc_get_page_permalink( 'myaccount' );
+				$data['dialog_custom_url']	 = wc_get_page_permalink( 'myaccount' );
+				$data['dialog_custom_html']	 = esc_html( __( 'Login', 'ti-woocommerce-wishlist-premium' ) );
+			}
+			$data['msg']	 = array_unique( $data['msg'] );
+			$data['msg']	 = implode( '<br>', $data['msg'] );
+			if ( ! empty( $data['msg'] ) ) {
+				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
+			}
+			ob_clean();
+			wp_send_json( $data );
 		} else {
 			$wl			 = new TInvWL_Wishlist( $this->_n );
 			$wishlist	 = $wl->add_sharekey_default();

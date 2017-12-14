@@ -72,6 +72,22 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'validate' => FILTER_VALIDATE_INT,
 					),
 					array(
+						'type'	 => 'checkboxonoff',
+						'name'	 => 'require_login',
+						'text'	 => __( 'Require Login', 'ti-woocommerce-wishlist-premium' ),
+						'std'	 => false,
+						'extra'	 => array(
+							'tiwl-show'	 => '.tiwl-general-redirect-require-login',
+						),
+					),
+					array(
+						'type'			 => 'checkboxonoff',
+						'name'			 => 'redirect_require_login',
+						'text'			 => __( 'Redirect to Login Page', 'ti-woocommerce-wishlist-premium' ),
+						'std'			 => false,
+						'class'			 => 'tiwl-general-redirect-require-login',
+					),
+					array(
 						'type' => 'checkboxonoff',
 						'name' => 'link_in_myaccount',
 						'text' => __( 'Show Link to Wishlist in my account', 'ti-woocommerce-wishlist' ),

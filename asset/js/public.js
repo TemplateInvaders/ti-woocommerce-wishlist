@@ -96,6 +96,9 @@
 							window.location.href = url;
 						}, 4000);
 				},
+				force_redirect: function (url) {
+					window.location.href = url;
+				},
 				wishlists: function (wishlist) {
 					$(this).attr('data-tinv-wl-list', wishlist);
 				},
@@ -130,15 +133,12 @@
 					$(this).toggleClass('tinvwl-product-make-remove', status).attr('data-tinv-wl-action', status ? 'remove' : 'addto');
 				},
 				fragments: function (data) {
-					// wc_cart_fragments_params is required to continue, ensure the object exists
 					if (typeof wc_cart_fragments_params === 'undefined') {
 						$.each(data, function (key, value) {
 							$(key).replaceWith(value);
 						});
 						return false;
 					}
-
-					/* Storage Handling */
 					var $supports_html5_storage;
 					try {
 						$supports_html5_storage = ('sessionStorage' in window && window.sessionStorage !== null);
@@ -149,7 +149,6 @@
 					} catch (err) {
 						$supports_html5_storage = false;
 					}
-
 					if ($supports_html5_storage) {
 						try {
 							var wc_fragments = $.parseJSON(sessionStorage.getItem(wc_cart_fragments_params.fragment_name)),
@@ -157,15 +156,12 @@
 							cart_hash = sessionStorage.getItem(cart_hash_key),
 							cookie_hash = Cookies.get('woocommerce_cart_hash'),
 							cart_created = sessionStorage.getItem('wc_cart_created');
-
 							if (cart_hash === null || cart_hash === undefined || cart_hash === '') {
 								cart_hash = '';
 							}
-
 							if (cookie_hash === null || cookie_hash === undefined || cookie_hash === '') {
 								cookie_hash = '';
 							}
-
 							if (cart_hash && (cart_created === null || cart_created === undefined || cart_created === '')) {
 								throw 'No cart_created';
 							}
@@ -175,13 +171,10 @@
 							localStorage.setItem(cart_hash_key, localStorage.getItem(cart_hash_key) + (new Date()).getTime());
 							sessionStorage.setItem(cart_hash_key, sessionStorage.getItem(cart_hash_key) + (new Date()).getTime());
 							sessionStorage.setItem(wc_cart_fragments_params.fragment_name, JSON.stringify(wc_fragments));
-
 							if (wc_fragments && wc_fragments['div.widget_shopping_cart_content'] && cart_hash === cookie_hash) {
-
 								$.each(wc_fragments, function (key, value) {
 									$(key).replaceWith(value);
 								});
-
 								$(document.body).trigger('wc_fragments_loaded');
 							} else {
 								throw 'No fragment';

@@ -80,7 +80,7 @@ class TInvWL_View {
 	 * Get session message variable
 	 *
 	 * @param string $name Name message variable.
-	 * @param mixed  $default Default value.
+	 * @param mixed $default Default value.
 	 *
 	 * @return mixed
 	 */
@@ -97,16 +97,16 @@ class TInvWL_View {
 	 * Set session message variable
 	 *
 	 * @param string $name Name message variable.
-	 * @param mixed  $value Value.
+	 * @param mixed $value Value.
 	 */
 	public static function set_session_arr( $name, $value = array() ) {
-		update_option( self::$_n . $name , $value );
+		update_option( self::$_n . $name, $value );
 	}
 
 	/**
 	 * Set error message
 	 *
-	 * @param string  $msg Message.
+	 * @param string $msg Message.
 	 * @param integer $code Code.
 	 */
 	public static function set_error( $msg = '', $code = 100 ) {
@@ -212,7 +212,7 @@ class TInvWL_View {
 		}
 		$msg = array_pop( $msg );
 
-		return self::_message( 'info', $msg, __( 'Usefil Tip', 'ti-woocommerce-wishlist' ) );
+		return self::_message( 'info', $msg, __( 'Useful Tip', 'ti-woocommerce-wishlist' ) );
 	}
 
 	/**
@@ -260,7 +260,7 @@ class TInvWL_View {
 	 * Ajax templates
 	 *
 	 * @param string $_template_name If empty returned json array.
-	 * @param array  $_data Parameter for template.
+	 * @param array $_data Parameter for template.
 	 * @param string $_type Folder section.
 	 */
 	public static function ajax( $_template_name, $_data = array(), $_type = '' ) {
@@ -293,7 +293,7 @@ class TInvWL_View {
 	 * Create global template
 	 *
 	 * @param string $_template_name Name file.
-	 * @param array  $_data Parameter for template.
+	 * @param array $_data Parameter for template.
 	 */
 	public static function render( $_template_name, $_data = array() ) {
 		$_data = apply_filters( 'tinv_view_general', $_data );
@@ -307,8 +307,8 @@ class TInvWL_View {
 	 * Create template
 	 *
 	 * @param string $_template_name Name file.
-	 * @param array  $_data Parameter for template.
-	 * @param type   $_type Folder section.
+	 * @param array $_data Parameter for template.
+	 * @param type $_type Folder section.
 	 */
 	public static function view( $_template_name, $_data = array(), $_type = 'admin' ) {
 		if ( is_array( $_template_name ) ) {
@@ -366,7 +366,7 @@ class TInvWL_View {
 	 *
 	 * @param string $page Page title.
 	 * @param string $cat Category title.
-	 * @param array  $arg Arguments array.
+	 * @param array $arg Arguments array.
 	 *
 	 * @return string
 	 */

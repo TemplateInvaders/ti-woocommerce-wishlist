@@ -589,7 +589,7 @@ class TInvWL_Public_AddToWishlist {
 			'variation_id'	 => 0,
 			'loop'			 => 'no',
 		);
-		if ( $product ) {
+		if ( $product && is_a( $product, 'WC_Product' ) ) {
 			$default['product_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
 			$default['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 ) );
 		}

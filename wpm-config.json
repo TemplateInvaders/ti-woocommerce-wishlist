@@ -1,0 +1,11 @@
+{
+  "admin_pages": [
+    "toplevel_page_tinvwl"
+  ],
+  "options": {
+    "tinvwl-table": {
+      "text_add_select_to_cart": {},
+      "text_add_all_to_cart": {}
+    }
+  }
+}

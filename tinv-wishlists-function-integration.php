@@ -185,14 +185,14 @@ if ( ! function_exists( 'tinvwl_wp_fastest_cache_reject' ) ) {
 		if ( defined( 'WPFC_WP_PLUGIN_DIR' ) ) {
 			if ( $rules_json = get_option( 'WpFastestCacheExclude' ) ) {
 				if ( 'null' !== $rules_json ) {
-					$ids		 = array(
+					$ids       = array(
 						tinv_get_option( 'page', 'wishlist' ),
 						tinv_get_option( 'page', 'manage' ),
 					);
-					$pages		 = $ids;
-					$languages	 = apply_filters( 'wpml_active_languages', array(), array(
-						'skip_missing'	 => 0,
-						'orderby'		 => 'code',
+					$pages     = $ids;
+					$languages = apply_filters( 'wpml_active_languages', array(), array(
+						'skip_missing' => 0,
+						'orderby'      => 'code',
 					) );
 					if ( ! empty( $languages ) ) {
 						foreach ( $ids as $id ) {
@@ -208,30 +208,30 @@ if ( ! function_exists( 'tinvwl_wp_fastest_cache_reject' ) ) {
 							$pages[ $i ] = preg_replace( "/^\//", '', str_replace( get_site_url(), '', get_permalink( $page ) ) ); // @codingStandardsIgnoreLine Squiz.Strings.DoubleQuoteUsage.NotRequired
 						}
 					}
-					$pages	 = array_unique( $pages );
-					$pages	 = array_filter( $pages );
+					$pages = array_unique( $pages );
+					$pages = array_filter( $pages );
 
 					$rules_std = json_decode( $rules_json, true );
-					$ex_pages = array();
+					$ex_pages  = array();
 					foreach ( $rules_std as $key => $value ) {
 						$value['type'] = isset( $value['type'] ) ? $value['type'] : 'page';
 						if ( 'page' === $value['type'] ) {
 							$ex_pages[] = $value['content'];
 						}
 					}
-					$ex_pages	 = array_unique( $ex_pages );
-					$ex_pages	 = array_filter( $ex_pages );
-					$changed	 = false;
+					$ex_pages = array_unique( $ex_pages );
+					$ex_pages = array_filter( $ex_pages );
+					$changed  = false;
 
 					foreach ( $pages as $page ) {
 						$page = preg_replace( '/\/$/', '', $page );
 
 						if ( ! in_array( $page, $ex_pages ) ) {
-							$changed	 = true;
+							$changed     = true;
 							$rules_std[] = array(
-								'prefix' => 'startwith',
+								'prefix'  => 'startwith',
 								'content' => $page,
-								'type' => 'page',
+								'type'    => 'page',
 							);
 						}
 					}
@@ -253,6 +253,7 @@ if ( function_exists( 'tinvwl_comet_cache_reject' ) ) {
 	 * Set define disabled for Comet Cache
 	 *
 	 * @param mixed $data Any content.
+	 *
 	 * @return mixed
 	 */
 	function tinvwl_comet_cache_reject( $data = '' ) {
@@ -284,7 +285,7 @@ if ( ! function_exists( 'gf_productaddon_support' ) ) {
 			 * Change text for button add to cart
 			 *
 			 * @param string $text_add_to_cart Text "Add to cart".
-			 * @param array  $wl_product Wishlist product.
+			 * @param array $wl_product Wishlist product.
 			 * @param object $product WooCommerce Product.
 			 *
 			 * @return string
@@ -304,7 +305,7 @@ if ( ! function_exists( 'gf_productaddon_support' ) ) {
 			 * Check for make redirect to url
 			 *
 			 * @param boolean $need Need redirect or not.
-			 * @param object  $product WooCommerce Product.
+			 * @param object $product WooCommerce Product.
 			 *
 			 * @return boolean
 			 */
@@ -384,7 +385,7 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare' ) ) {
 				$post_data['product_id'] = $woo_wpml->products->get_original_product_id( $post_data['product_id'] );
 			}
 			if ( array_key_exists( 'product_id', $post_data ) && ! empty( $post_data['product_id'] ) && array_key_exists( 'product_variation', $post_data ) && ! empty( $post_data['product_variation'] ) ) {
-				$original_product_language = $woo_wpml->products->get_original_product_language( $post_data['product_id'] );
+				$original_product_language      = $woo_wpml->products->get_original_product_language( $post_data['product_id'] );
 				$post_data['product_variation'] = apply_filters( 'translate_object_id', $post_data['product_variation'], 'product_variation', true, $original_product_language );
 			}
 		}
@@ -412,7 +413,7 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare' ) ) {
 			}
 			if ( array_key_exists( 'product_id', $attr ) && ! empty( $attr['product_id'] ) && array_key_exists( 'variation_id', $attr ) && ! empty( $attr['variation_id'] ) ) {
 				$original_product_language = $woo_wpml->products->get_original_product_language( $attr['product_id'] );
-				$attr['variation_id'] = apply_filters( 'translate_object_id', $attr['variation_id'], 'product_variation', true, $original_product_language );
+				$attr['variation_id']      = apply_filters( 'translate_object_id', $attr['variation_id'], 'product_variation', true, $original_product_language );
 			}
 		}
 
@@ -433,16 +434,16 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare_product' ) ) {
 	 */
 	function tinvwl_wpml_addtowishlist_out_prepare_product( $product ) {
 		if ( class_exists( 'woocommerce_wpml' ) && is_object( $product ) ) {
-			$woo_wpml		 = woocommerce_wpml::instance();
-			$product_id		 = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() );
-			$variation_id	 = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
+			$woo_wpml     = woocommerce_wpml::instance();
+			$product_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() );
+			$variation_id = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
 
 			if ( ! empty( $product_id ) ) {
 				$product_id = $woo_wpml->products->get_original_product_id( $product_id );
 			}
 			if ( ! empty( $product_id ) && ! empty( $variation_id ) ) {
 				$original_product_language = $woo_wpml->products->get_original_product_language( $product_id );
-				$variation_id = apply_filters( 'translate_object_id', $variation_id, 'product_variation', true, $original_product_language );
+				$variation_id              = apply_filters( 'translate_object_id', $variation_id, 'product_variation', true, $original_product_language );
 			}
 			if ( ! empty( $product_id ) ) {
 				$product = wc_get_product( $variation_id ? $variation_id : $product_id );
@@ -488,7 +489,7 @@ if ( ! function_exists( 'tinvwl_wpml_filter_link' ) ) {
 	 * Corect add wishlist key for WPML plugin.
 	 *
 	 * @param string $full_link Link for page.
-	 * @param array  $l Language.
+	 * @param array $l Language.
 	 *
 	 * @return string
 	 */
@@ -522,7 +523,7 @@ if ( ! function_exists( 'tinvwl_gift_card_add' ) ) {
 	 * Support WooCommerce - Gift Cards
 	 * Redirect to page gift card, if requires that customers enter a name and email when purchasing a Gift Card.
 	 *
-	 * @param boolean     $redirect Default value to redirect.
+	 * @param boolean $redirect Default value to redirect.
 	 * @param \WC_Product $product Product data.
 	 *
 	 * @return boolean
@@ -552,7 +553,7 @@ if ( ! function_exists( 'tinvwl_gift_card_add_url' ) ) {
 	 * Support WooCommerce - Gift Cards
 	 * Redirect to page gift card, if requires that customers enter a name and email when purchasing a Gift Card.
 	 *
-	 * @param string      $redirect_url Default value to redirect.
+	 * @param string $redirect_url Default value to redirect.
 	 * @param \WC_Product $product Product data.
 	 *
 	 * @return boolean
@@ -642,7 +643,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_bookings' ) ) {
 	/**
 	 * Set descrition for meta WooCommerce Bookings
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Priduct ID.
 	 * @param integer $variation_id Variation Product ID.
 	 *
@@ -682,8 +683,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_bookings' ) ) {
 	/**
 	 * Modify price for WooCommerce Bookings
 	 *
-	 * @param string      $price Returned price.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
@@ -734,9 +735,9 @@ if ( ! function_exists( 'tinvwl_item_status_woocommerce_bookings' ) ) {
 	/**
 	 * Modify availability for WooCommerce Bookings
 	 *
-	 * @param string      $status Status availability.
-	 * @param string      $availability Default availability.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $status Status availability.
+	 * @param string $availability Default availability.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return type
@@ -795,7 +796,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_composite_product
 	/**
 	 * Set descrition for meta WooCommerce Composite Products
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 *
 	 * @return array
@@ -816,7 +817,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 	/**
 	 * Add rows for sub product for WooCommerce Composite Products
 	 *
-	 * @param array       $wl_product Wishlist Product.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 */
 	function tinvwl_row_woocommerce_composite_products( $wl_product, $product ) {
@@ -862,8 +863,8 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 						$availability['class'] = '';
 					}
 					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
-					$row_string = '<tr>';
-					$row_string .= '<td colspan="2"></td>&nbsp;<td class="product-thumbnail">%2$s</td><td class="product-name">%1$s:<br/>%3$s</td>';
+					$row_string        = '<tr>';
+					$row_string        .= '<td colspan="2"></td>&nbsp;<td class="product-thumbnail">%2$s</td><td class="product-name">%1$s:<br/>%3$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
 						$row_string .= '<td class="product-price">%3$s &times; %6$s</td>';
 					}
@@ -892,17 +893,17 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 	/**
 	 * Modify price for WooCommerce Composite Products
 	 *
-	 * @param string      $price Returned price.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
 	 */
 	function tinvwl_item_price_woocommerce_composite_products( $price, $wl_product, $product ) {
 		if ( is_object( $product ) && $product->is_type( 'composite' ) && array_key_exists( 'wccp_component_selection', $wl_product['meta'] ) ) {
-			$components = $product->get_components();
-			$_price			 = $product->get_price();
-			$regular_price	 = $product->get_regular_price();
+			$components    = $product->get_components();
+			$_price        = $product->get_price();
+			$regular_price = $product->get_regular_price();
 			foreach ( $components as $component_id => $component ) {
 				$composited_product_id       = ! empty( $wl_product['meta']['wccp_component_selection'][ $component_id ] ) ? absint( $wl_product['meta']['wccp_component_selection'][ $component_id ] ) : '';
 				$composited_product_quantity = isset( $wl_product['meta']['wccp_component_quantity'][ $component_id ] ) ? absint( $wl_product['meta']['wccp_component_quantity'][ $component_id ] ) : $component->get_quantity( 'min' );
@@ -912,8 +913,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 				if ( $composited_product_id ) {
 					$composited_product_wrapper = $component->get_option( $composited_variation_id ? $composited_variation_id : $composited_product_id );
 					if ( $component->is_priced_individually() ) {
-						$_price			 += $composited_product_wrapper->get_price() * $composited_product_quantity;
-						$regular_price	 += $composited_product_wrapper->get_regular_price() * $composited_product_quantity;
+						$_price        += $composited_product_wrapper->get_price() * $composited_product_quantity;
+						$regular_price += $composited_product_wrapper->get_regular_price() * $composited_product_quantity;
 					}
 				}
 			}
@@ -935,7 +936,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' 
 	/**
 	 * Set descrition for meta WooCommerce Product Bundles
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 *
 	 * @return array
@@ -957,7 +958,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	/**
 	 * Add rows for sub product for WooCommerce Product Bundles
 	 *
-	 * @param array       $wl_product Wishlist Product.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 */
 	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product ) {
@@ -968,9 +969,9 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 			$bundled_items = $product->get_bundled_items();
 			if ( ! empty( $bundled_items ) ) {
 				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
-					$bundled_product_id						 = $bundled_item->product_id;
-					$bundled_item_variation_id_request_key	 = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
-					$bundled_variation_id					 = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
+					$bundled_product_id                    = $bundled_item->product_id;
+					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
+					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
 					if ( ! empty( $bundled_variation_id ) ) {
 						$bundled_item->product = wc_get_product( $bundled_variation_id );
 					}
@@ -1042,8 +1043,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 	/**
 	 * Modify price for WooCommerce Product Bundles
 	 *
-	 * @param string      $price Returned price.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
@@ -1099,7 +1100,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_mix_and_match_pro
 	/**
 	 * Set descrition for meta WooCommerce Mix and Match
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 *
 	 * @return array
@@ -1123,7 +1124,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_mix_and_match_products' ) ) {
 	/**
 	 * Add rows for sub product for WooCommerce Mix and Match
 	 *
-	 * @param array       $wl_product Wishlist Product.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 */
 	function tinvwl_row_woocommerce_mix_and_match_products( $wl_product, $product ) {
@@ -1188,8 +1189,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_mix_and_match_products' )
 	/**
 	 * Modify price for WooCommerce Mix and Match
 	 *
-	 * @param string      $price Returned price.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
@@ -1232,6 +1233,7 @@ if ( ! function_exists( 'tinvwl_add_form_woocommerce_mix_and_match_products' ) )
 	 * Remove empty meta for WooCommerce Mix and Match
 	 *
 	 * @param array $form Post form data.
+	 *
 	 * @return array
 	 */
 	function tinvwl_add_form_woocommerce_mix_and_match_products( $form = array() ) {
@@ -1260,7 +1262,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_yith_woocommerce_product_bund
 	/**
 	 * Set descrition for meta WooCommerce Mix and Match
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 *
 	 * @return array
@@ -1284,9 +1286,9 @@ if ( ! function_exists( 'tinvwl_item_status_yith_woocommerce_product_bundles' ) 
 	/**
 	 * Modify status for YITH WooCommerce Product Bundles
 	 *
-	 * @param string      $availability_html Returned availability status.
-	 * @param string      $availability Availability status.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $availability_html Returned availability status.
+	 * @param string $availability Availability status.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
@@ -1307,7 +1309,7 @@ if ( ! function_exists( 'tinvwl_item_status_yith_woocommerce_product_bundles' ) 
 			}
 
 			if ( ! $response ) {
-				$availability = array(
+				$availability      = array(
 					'class'        => 'out-of-stock',
 					'availability' => __( 'Out of stock', 'woocommerce' ),
 				);
@@ -1326,7 +1328,7 @@ if ( ! function_exists( 'tinvwl_row_yith_woocommerce_product_bundles' ) ) {
 	/**
 	 * Add rows for sub product for YITH WooCommerce Product Bundles
 	 *
-	 * @param array       $wl_product Wishlist Product.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 */
 	function tinvwl_row_yith_woocommerce_product_bundles( $wl_product, $product ) {
@@ -1401,7 +1403,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_add_on' )
 	/**
 	 * Set descrition for meta WooCommerce Product Add-on
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 *
 	 * @return array
@@ -1411,6 +1413,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_add_on' )
 		if ( ! empty( $personalized_meta ) ) {
 			$meta = array();
 		}
+
 		return $meta;
 	}
 
@@ -1422,8 +1425,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 	/**
 	 * Set descrition for meta WooCommerce Product Add-on
 	 *
-	 * @param array       $meta Meta array.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param array $meta Meta array.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return array
@@ -1443,9 +1446,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 						continue;
 					}
 
-					$element_name	 = strtolower( preg_replace( '![^a-z0-9]+!i', '_', $__meta->data_name ) );
-					$element_value	 = '';
-					$thefiles_key	 = 'thefile_' . $element_name;
+					$element_name  = strtolower( preg_replace( '![^a-z0-9]+!i', '_', $__meta->data_name ) );
+					$element_value = '';
+					$thefiles_key  = 'thefile_' . $element_name;
 					if ( ! isset( $_meta[ $element_name ] ) && ! isset( $_meta[ $thefiles_key ] ) ) {
 						continue;
 					}
@@ -1458,22 +1461,22 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 							break;
 						case 'select':
 						case 'radio':
-							$element_value	 = sanitize_text_field( $_meta[ $element_name ] );
+							$element_value = sanitize_text_field( $_meta[ $element_name ] );
 							break;
 						case 'file':
 						case 'facebook':
 							break;
 						case 'image':
-							$element_value	 = isset( $_meta[ $element_name ] ) ? sanitize_text_field( $_meta[ $element_name ] ) : '';
+							$element_value = isset( $_meta[ $element_name ] ) ? sanitize_text_field( $_meta[ $element_name ] ) : '';
 						case 'section':
 							if ( ! is_array( $element_value ) ) {
 								$post_element_name = '';
 								if ( isset( $_meta[ $element_name ] ) && is_array( $_meta[ $element_name ] ) ) {
-									$post_element_name	 = array_map( 'sanitize_text_field', wp_unslash( $_meta[ $element_name ] ) );
-									$nele				 = array();
+									$post_element_name = array_map( 'sanitize_text_field', wp_unslash( $_meta[ $element_name ] ) );
+									$nele              = array();
 									foreach ( $post_element_name as $ele ) {
-										$ele	 = stripslashes( nl2br( $ele ) );
-										$nele[]	 = $ele;
+										$ele    = stripslashes( nl2br( $ele ) );
+										$nele[] = $ele;
 									}
 									$post_element_name = $nele;
 								} else {
@@ -1496,38 +1499,38 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 									$_v = '';
 									foreach ( $element_value as $selected ) {
 										$selecte_image_meta = json_decode( stripslashes( $selected ) );
-										$_v .= $selecte_image_meta->title . ',';
+										$_v                 .= $selecte_image_meta->title . ',';
 									}
 									$item_meta[] = array(
-										'key'		 => $__meta->title,
-										'display'	 => __( 'Photos imported - ', 'nm-personalizedproduct' ) . count( $element_value ),
+										'key'     => $__meta->title,
+										'display' => __( 'Photos imported - ', 'nm-personalizedproduct' ) . count( $element_value ),
 									);
 								} else {
-									$selecte_image_meta	 = json_decode( stripslashes( $element_value ) );
-									$item_meta[]		 = array(
-										'key'		 => $__meta->title,
-										'display'	 => $selecte_image_meta->title,
+									$selecte_image_meta = json_decode( stripslashes( $element_value ) );
+									$item_meta[]        = array(
+										'key'     => $__meta->title,
+										'display' => $selecte_image_meta->title,
 									);
 								}
 								break;
 							default:
 								if ( is_array( $element_value ) ) {
-									list($filekey, $filename) = each( $element_value );
+									list( $filekey, $filename ) = each( $element_value );
 									if ( NM_PersonalizedProduct::get_instance()->is_image( $filename ) ) {
 										$item_meta[] = array(
-											'key'		 => $__meta->title,
-											'display'	 => NM_PersonalizedProduct::get_instance()->make_filename_link( $element_value ),
+											'key'     => $__meta->title,
+											'display' => NM_PersonalizedProduct::get_instance()->make_filename_link( $element_value ),
 										);
 									} else {
 										$item_meta[] = array(
-											'key'		 => $__meta->title,
-											'display'	 => implode( ',', $element_value ),
+											'key'     => $__meta->title,
+											'display' => implode( ',', $element_value ),
 										);
 									}
 								} else {
 									$item_meta[] = array(
-										'key'		 => $__meta->title,
-										'display'	 => stripslashes( $element_value ),
+										'key'     => $__meta->title,
+										'display' => stripslashes( $element_value ),
 									);
 								}
 								break;
@@ -1629,4 +1632,12 @@ if ( ! function_exists( 'tinvwl_fs' ) ) {
 	}
 
 	tinvwl_fs()->add_action( 'after_uninstall', 'uninstall_tinv_wishlist' );
+} // End if().
+
+// WP Multilang string translations.
+if ( ! function_exists( 'wpm_translate_string' ) ) {
+
+	add_filter( 'table-text_add_select_to_cart', 'wpm_translate_string' );
+	add_filter( 'table-text_add_all_to_cart', 'wpm_translate_string' );
+
 } // End if().

@@ -154,6 +154,7 @@ class TInvWL_Public_AddToWishlist {
 			$wishlist = apply_filters( 'tinvwl_addtowishlist_wishlist', $wishlist );
 			if ( empty( $wishlist ) ) {
 				$data['status'] = false;
+				$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 				ob_clean();
 				wp_send_json( $data );
 			}
@@ -163,10 +164,10 @@ class TInvWL_Public_AddToWishlist {
 			$data['icon']	 = 'icon_big_times';
 			if ( tinv_get_option( 'general', 'redirect_require_login' ) ) {
 				$data['msg']			 = array();
-				$data['force_redirect']	 = wc_get_page_permalink( 'myaccount' );
+				$data['force_redirect']	 = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
 			} else {
 				$data['msg'][]				 = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
-				$data['dialog_custom_url']	 = wc_get_page_permalink( 'myaccount' );
+				$data['dialog_custom_url']	 = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
 				$data['dialog_custom_html']	 = esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg']	 = array_unique( $data['msg'] );
@@ -174,6 +175,7 @@ class TInvWL_Public_AddToWishlist {
 			if ( ! empty( $data['msg'] ) ) {
 				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
 			}
+			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			ob_clean();
 			wp_send_json( $data );
 		} else {
@@ -318,7 +320,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 			$data['make_remove'] = $data['status'];
 		}
-		$data = apply_filters( $this->_n . '_addtowishlist_return_ajax', $data, $post, $form, $product );
+		$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post, $form, $product );
 		ob_clean();
 		wp_send_json( $data );
 	}

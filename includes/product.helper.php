@@ -543,22 +543,6 @@ class TInvWL_Product {
 			$meta = array();
 		}
 		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta, $product_id, $variation_id );
-		if ( ! empty( $variation_id ) ) {
-			$product_data	 = $this->product_data( $product_id, $variation_id );
-			if ( is_object( $product_data ) ) {
-				$attributes		 = array_keys( (array) $product_data->get_variation_attributes() );
-				foreach ( $attributes as $attribute ) {
-					if ( array_key_exists( $attribute, $meta ) ) {
-						unset( $meta[ $attribute ] );
-						continue;
-					}
-					$attribute = 'attribute_' . sanitize_title( $attribute );
-					if ( array_key_exists( $attribute, $meta ) ) {
-						unset( $meta[ $attribute ] );
-					}
-				}
-			}
-		}
 		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'undefined' ) as $field ) {
 			if ( array_key_exists( $field, $meta ) ) {
 				unset( $meta[ $field ] );

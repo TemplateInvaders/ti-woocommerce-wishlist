@@ -165,9 +165,9 @@ class TInvWL_Public_AddToWishlist {
 				$data['msg']			 = array();
 				$data['force_redirect']	 = wc_get_page_permalink( 'myaccount' );
 			} else {
-				$data['msg'][]				 = __( 'Please, login to add products to Wishlist', '*ti-woocommerce-wishlist' );
+				$data['msg'][]				 = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
 				$data['dialog_custom_url']	 = wc_get_page_permalink( 'myaccount' );
-				$data['dialog_custom_html']	 = esc_html( __( 'Login', '*ti-woocommerce-wishlist' ) );
+				$data['dialog_custom_html']	 = esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg']	 = array_unique( $data['msg'] );
 			$data['msg']	 = implode( '<br>', $data['msg'] );

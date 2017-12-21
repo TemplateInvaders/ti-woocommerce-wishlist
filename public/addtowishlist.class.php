@@ -431,7 +431,7 @@ class TInvWL_Public_AddToWishlist {
 		global $product;
 
 		if ( $product ) {
-			if ( apply_filters( 'tinvwl_allow_addtowishlist_single_product_summary', ( ! $product->is_purchasable() && '' == $product->get_price() ) || ( $product->is_purchasable() && 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) && ! $product->is_in_stock() ), $product ) ) {
+			if ( apply_filters( 'tinvwl_allow_addtowishlist_single_product_summary', ( ! $product->is_purchasable() && '' == $product->get_price() && 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) || ( $product->is_purchasable() && 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) && ! $product->is_in_stock() ), $product ) ) {
 				$this->htmloutput();
 			}
 		}

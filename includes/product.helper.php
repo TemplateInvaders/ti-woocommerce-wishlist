@@ -543,7 +543,7 @@ class TInvWL_Product {
 			$meta = array();
 		}
 		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta, $product_id, $variation_id );
-		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'undefined' ) as $field ) {
+		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'undefined', 'product_sku' ) as $field ) {
 			if ( array_key_exists( $field, $meta ) ) {
 				unset( $meta[ $field ] );
 			}

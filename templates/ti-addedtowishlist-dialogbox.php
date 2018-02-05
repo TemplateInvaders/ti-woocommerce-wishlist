@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<button class="button tinvwl_button_view tinvwl-btn-onclick" data-url="<?php echo esc_url( $wishlist_url ); ?>" type="button"><i class="fa fa-heart-o"></i><?php echo esc_html( tinv_get_option( 'general', 'text_browse' ) ); ?></button>
 					<?php endif; ?>
 					<?php if ( isset( $dialog_custom_url ) && isset( $dialog_custom_html ) ) : ?>
-						<button class="buttin tinvwl_button_view tinvwl-btn-onclick" data-url="<?php echo esc_url( $dialog_custom_url ); ?>" type="button"><?php echo $dialog_custom_html; // WPCS: xss ok. ?></button>
+						<button class="button tinvwl_button_view tinvwl-btn-onclick" data-url="<?php echo esc_url( $dialog_custom_url ); ?>" type="button"><?php echo $dialog_custom_html; // WPCS: xss ok. ?></button>
 					<?php endif; ?>
 				</div>
 				<div class="tinv-wishlist-clear"></div>

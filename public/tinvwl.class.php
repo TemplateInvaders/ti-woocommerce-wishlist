@@ -80,10 +80,10 @@ class TInvWL_Public_TInvWL {
 		add_filter( 'woocommerce_locate_core_template', array( $this, 'locate_template' ), 10, 3 );
 		add_filter( 'woocommerce_locate_template', array( $this, 'locate_template' ), 10, 3 );
 
-		$this->addto		 = TInvWL_Public_AddToWishlist::instance( $this->_n );
-		$this->view			 = TInvWL_Public_Wishlist_View::instance( $this->_n );
-		$this->cart			 = TInvWL_Public_Cart::instance( $this->_n );
-		$this->topwishlist	 = TInvWL_Public_TopWishlist::instance( $this->_n );
+		$this->addto       = TInvWL_Public_AddToWishlist::instance( $this->_n );
+		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_n );
+		$this->cart        = TInvWL_Public_Cart::instance( $this->_n );
+		$this->topwishlist = TInvWL_Public_TopWishlist::instance( $this->_n );
 	}
 
 	/**
@@ -188,11 +188,11 @@ class TInvWL_Public_TInvWL {
 		$pages          = array( $id );
 		$language_codes = array();
 		if ( function_exists( 'pll_languages_list' ) ) {
-			$language_codes	 = implode( '|', pll_languages_list() );
-			$translations	 = PLL()->model->post->get_translations( $id );
-			$pages			 = array_merge( $pages, array_values( $translations ) );
+			$language_codes = implode( '|', pll_languages_list() );
+			$translations   = PLL()->model->post->get_translations( $id );
+			$pages          = array_merge( $pages, array_values( $translations ) );
 		} else {
-			$languages      = apply_filters( 'wpml_active_languages', array(), array(
+			$languages = apply_filters( 'wpml_active_languages', array(), array(
 				'skip_missing' => 0,
 				'orderby'      => 'code',
 			) );
@@ -241,25 +241,25 @@ class TInvWL_Public_TInvWL {
 	 * Create social meta tags
 	 */
 	function add_meta_tags() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' )  || tinv_get_option( 'social', 'google' ) ) ) {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) ) {
 			$wishlist = tinv_wishlist_get( '', false );
 			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
 				if ( is_user_logged_in() ) {
-					$user		 = get_user_by( 'id', $wishlist['author'] );
+					$user = get_user_by( 'id', $wishlist['author'] );
 					if ( $user ) {
-						$user_name	 = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
-						$user		 = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+						$user_name = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
+						$user      = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
 					} else {
-						$user_name	 = '';
-						$user		 = '';
+						$user_name = '';
+						$user      = '';
 					}
 				} else {
-					$user_name	 = '';
-					$user		 = '';
+					$user_name = '';
+					$user      = '';
 				}
 
-				$wlp      = new TInvWL_Product( $wishlist );
-				$products = $wlp->get_wishlist( array(
+				$wlp            = new TInvWL_Product( $wishlist );
+				$products       = $wlp->get_wishlist( array(
 					'count'    => 999999,
 					'order_by' => 'date',
 					'order'    => 'DESC',
@@ -273,18 +273,18 @@ class TInvWL_Public_TInvWL {
 						}
 					}
 				}
-				$product  = array_shift( $products );
-				$image    = '';
+				$product = array_shift( $products );
+				$image   = '';
 				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
 					list( $image, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
 				}
 
 				$meta = apply_filters( 'tinvwl_social_header_meta', array(
-					'url'			 => tinv_url_wishlist( $wishlist['share_key'] ),
-					'type'			 => 'product.group',
-					'title'			 => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
-					'description'	 => implode( ', ', $products_title ),
-					'image'			 => $image,
+					'url'         => tinv_url_wishlist( $wishlist['share_key'] ),
+					'type'        => 'product.group',
+					'title'       => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
+					'description' => implode( ', ', $products_title ),
+					'image'       => $image,
 				) );
 				if ( tinv_get_option( 'social', 'facebook' ) ) {
 					foreach ( $meta as $name => $content ) {
@@ -435,11 +435,15 @@ class TInvWL_Public_TInvWL {
 	 */
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/public' . $suffix . '.js', array( 'jquery', 'js-cookie', 'wc-cart-fragments' ), $this->_v, true );
+		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/public' . $suffix . '.js', array(
+			'jquery',
+			'js-cookie',
+			'wc-cart-fragments'
+		), $this->_v, true );
 		wp_localize_script( $this->_n, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
-			'text_already_in'            => tinv_get_option( 'general', 'text_already_in' ),
-			'simple_flow'		         => tinv_get_option( 'general', 'simple_flow' ),
+			'text_already_in'            => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
+			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );
@@ -470,30 +474,30 @@ class TInvWL_Public_TInvWL {
 	 * @param integer $user_id New user id.
 	 */
 	function transfert_local_to_user_register( $user_id ) {
-		$wl			 = new TInvWL_Wishlist( $this->_n );
-		$wishlist	 = $wl->get_by_sharekey_default();
+		$wl       = new TInvWL_Wishlist( $this->_n );
+		$wishlist = $wl->get_by_sharekey_default();
 		if ( ! empty( $wishlist ) ) {
-			$wishlist	 = array_shift( $wishlist );
+			$wishlist = array_shift( $wishlist );
 			if ( empty( $wishlist['author'] ) ) {
-				$wlpl		 = new TInvWL_Product( $wishlist );
-				$wl->user = $user_id;
-				$_wishlist	 = $wl->get_by_user_default( $user_id );
+				$wlpl      = new TInvWL_Product( $wishlist );
+				$wl->user  = $user_id;
+				$_wishlist = $wl->get_by_user_default( $user_id );
 				if ( empty( $_wishlist ) ) {
 					$wishlist['author'] = $user_id;
 					unset( $wishlist['title'] );
 					$wl->update( $wishlist['ID'], $wishlist );
-					$wlp		 = new TInvWL_Product( $wishlist, $this->_n );
-					$products	 = $wlp->get_wishlist( array( 'external' => false ) );
+					$wlp      = new TInvWL_Product( $wishlist, $this->_n );
+					$products = $wlp->get_wishlist( array( 'external' => false ) );
 					foreach ( $products as $product ) {
 						$product['author'] = $user_id;
 						$wlp->update( $product );
 					}
 				} else {
-					$_wishlist	 = array_shift( $_wishlist );
+					$_wishlist = array_shift( $_wishlist );
 					if ( $wishlist['ID'] != $_wishlist['ID'] ) {
-						$wlp		 = new TInvWL_Product( $_wishlist, $this->_n );
-						$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
-						$added = true;
+						$wlp      = new TInvWL_Product( $_wishlist, $this->_n );
+						$products = $wlpl->get_wishlist( array( 'external' => false ) );
+						$added    = true;
 						foreach ( $products as $product ) {
 							unset( $product['author'] );
 							unset( $product['wishlist_id'] );
@@ -513,8 +517,8 @@ class TInvWL_Public_TInvWL {
 	 * Set the default wishlist key if the user loguot
 	 */
 	public function set_user_sharekey() {
-		$wl			 = new TInvWL_Wishlist( $this->_n );
-		$wishlist	 = $wl->get_by_user_default();
+		$wl       = new TInvWL_Wishlist( $this->_n );
+		$wishlist = $wl->get_by_user_default();
 		if ( ! empty( $wishlist ) ) {
 			$wishlist = array_shift( $wishlist );
 			$wl->set_sharekey( $wishlist['share_key'] );
@@ -581,8 +585,8 @@ class TInvWL_Public_TInvWL {
 	 * Export cookies wishlist to database
 	 */
 	function legacy_transfer() {
-		$wlpl		 = TInvWL_Product_Legacy::instance( $this->_n );
-		$products	 = $wlpl->get_wishlist( array( 'external' => false ) );
+		$wlpl     = TInvWL_Product_Legacy::instance( $this->_n );
+		$products = $wlpl->get_wishlist( array( 'external' => false ) );
 		if ( ! empty( $products ) && is_array( $products ) ) {
 			$wl       = new TInvWL_Wishlist( $this->_n );
 			$wishlist = $wl->add_user_default();

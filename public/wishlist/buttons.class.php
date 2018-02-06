@@ -68,7 +68,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		if ( tinv_get_option( 'table', 'colm_checkbox' ) && tinv_get_option( 'table', 'add_select_to_cart' ) ) {
 			$buttons[] = array(
 				'name'     => 'product_selected',
-				'title'    => apply_filters( 'table-text_add_select_to_cart', tinv_get_option( 'table', 'text_add_select_to_cart' ) ),
+				'title'    => apply_filters( 'tinvwl-table-text_add_select_to_cart', tinv_get_option( 'table', 'text_add_select_to_cart' ) ),
 				'method'   => array( __CLASS__, 'apply_action_add_selected' ),
 				'priority' => 25,
 			);
@@ -80,7 +80,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		if ( tinv_get_option( 'table', 'add_all_to_cart' ) ) {
 			$buttons[] = array(
 				'name'     => 'product_all',
-				'title'    => apply_filters( 'table-text_add_all_to_cart', tinv_get_option( 'table', 'text_add_all_to_cart' ) ),
+				'title'    => apply_filters( 'tinvwl-table-text_add_all_to_cart', tinv_get_option( 'table', 'text_add_all_to_cart' ) ),
 				'method'   => array( __CLASS__, 'add_all' ),
 				'priority' => 30,
 			);
@@ -292,10 +292,14 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return string
 	 */
 	public static function apply_action_before() {
-		$options         = array(
-			''             => __( 'Actions', 'ti-woocommerce-wishlist' ),
-			'add_selected' => tinv_get_option( 'product_table', 'text_add_to_cart' ),
+		$options = array(
+			'' => __( 'Actions', 'ti-woocommerce-wishlist' ),
 		);
+
+		if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
+			$options['add_selected'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
+		}
+
 		$wishlist_curent = tinv_wishlist_get();
 		if ( $wishlist_curent['is_owner'] ) {
 			$options['remove'] = __( 'Remove', 'ti-woocommerce-wishlist' );

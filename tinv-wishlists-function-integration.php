@@ -1552,6 +1552,95 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 	add_filter( 'tinvwl_wishlist_item_meta_data', 'tinv_wishlist_item_meta_woocommerce_product_add_on', 10, 3 );
 } // End if().
 
+if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_options' ) ) {
+
+	/**
+	 * Set descrition for meta WooCommerce TM Extra Product Options
+	 *
+	 * @param array   $meta Meta array.
+	 * @param integer $product_id Product ID.
+	 * @param integer $variation_id Product variation ID.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_metasupport_woocommerce_tm_extra_product_options( $meta, $product_id, $variation_id ) {
+		if ( array_key_exists( 'tcaddtocart', $meta ) && function_exists( 'TM_EPO_API' ) && function_exists( 'TM_EPO' ) ) {
+			$has_epo = TM_EPO_API()->has_options( $product_id );
+			if ( TM_EPO_API()->is_valid_options( $has_epo ) ) {
+				$post_data = array();
+				foreach ( $meta as $key => $value ) {
+					$post_data[ $key ] = $value['display'];
+				}
+				$cart_item = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $post_data );
+
+				if ( 'normal' == TM_EPO()->tm_epo_hide_options_in_cart && 'advanced' != TM_EPO()->tm_epo_cart_field_display && ! empty( $cart_item['tmcartepo'] ) ) {
+					$cart_item['quantity']			 = 1;
+					$cart_item['data']				 = wc_get_product( $variation_id ? $variation_id : $product_id );
+					$cart_item['tm_cart_item_key']	 = '';
+					$item_data = TM_EPO()->get_item_data_array( array(), $cart_item );
+
+					foreach ( $item_data as $key => $data ) {
+						// Set hidden to true to not display meta on cart.
+						if ( ! empty( $data['hidden'] ) ) {
+							unset( $item_data[ $key ] );
+							continue;
+						}
+						$item_data[ $key ]['key']		 = ! empty( $data['key'] ) ? $data['key'] : $data['name'];
+						$item_data[ $key ]['display']	 = ! empty( $data['display'] ) ? $data['display'] : $data['value'];
+					}
+
+					return $item_data;
+				}
+			}
+			return array();
+		}
+
+		return $meta;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_options', 10, 3 );
+} // End if().
+
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options' ) ) {
+
+	/**
+	 * Modify price for WooCommerce TM Extra Product Options
+	 *
+	 * @param string      $price Returned price.
+	 * @param array       $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_tm_extra_product_options( $price, $wl_product, $product ) {
+		if ( array_key_exists( 'tcaddtocart', (array) @$wl_product['meta'] ) && function_exists( 'TM_EPO_API' ) && function_exists( 'TM_EPO' ) && TM_EPO()->tm_epo_hide_options_in_cart == 'normal' ) {
+			$product_id = $wl_product['product_id'];
+			$has_epo = TM_EPO_API()->has_options( $product_id );
+			if ( TM_EPO_API()->is_valid_options( $has_epo ) ) {
+				$cart_item = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
+				$cart_item['quantity']	 = 1;
+				$cart_item['data']		 = $product;
+
+				$product_price = apply_filters( 'wc_epo_add_cart_item_original_price', $cart_item['data']->get_price(), $cart_item );
+				if ( ! empty( $cart_item['tmcartepo'] ) ) {
+					$to_currency = tc_get_woocommerce_currency();
+					foreach ( $cart_item['tmcartepo'] as $value ) {
+						if ( array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
+							$value = floatval( $value['price_per_currency'][ $to_currency ] );
+							$product_price += $value;
+						}
+					}
+				}
+
+				$price = apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', TM_EPO()->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
+			}
+		}
+		return $price;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_tm_extra_product_options', 10, 3 );
+} // End if().
+
 if ( ! function_exists( 'TII18n' ) ) {
 
 	/**

@@ -353,14 +353,18 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 
 					// If this is a custom option slug, get the options name.
 				} else {
-					$value              = apply_filters( 'woocommerce_variation_option_name', $value );
-					$product_attributes = $product->get_attributes();
-
-					if ( isset( $product_attributes[ str_replace( 'attribute_', '', $name ) ] ) ) {
-						$label = wc_attribute_label( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_attributes[ str_replace( 'attribute_', '', $name ) ]['name'] : str_replace( 'attribute_', '', $name ) ) );
+					$value				 = apply_filters( 'woocommerce_variation_option_name', $value );
+					$product_attributes	 = $product->get_attributes();
+					$_name				 = str_replace( 'attribute_', '', $name );
+					if ( isset( $product_attributes[ $_name ] ) ) {
+						$_name	 = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_attributes[ $_name ]['name'] : $_name;
+						$label	 = wc_attribute_label( $_name, $product );
 					} else {
 						$label = $name;
 					}
+				}
+				if ( '' === $value ) {
+					continue;
 				}
 				$item_data[] = array(
 					'key'   => $label,

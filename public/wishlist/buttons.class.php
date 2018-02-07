@@ -35,7 +35,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @param string $plugin_name Plugin name.
 	 */
 	public static function init( $plugin_name = TINVWL_PREFIX ) {
-		self::$_n = $plugin_name;
+		self::$_n    = $plugin_name;
 		self::$event = 'tinvwl_after_wishlist_table';
 		self::htmloutput();
 	}
@@ -48,37 +48,47 @@ class TInvWL_Public_Wishlist_Buttons {
 	private static function prepare() {
 		$buttons = array();
 		if ( tinv_get_option( 'table', 'colm_checkbox' ) && tinv_get_option( 'table', 'colm_actions' ) ) {
-			$buttons[]	 = array(
-				'name'		 => 'product_apply',
-				'title'		 => sprintf( __( 'Apply %s', 'ti-woocommerce-wishlist' ), "<span class='tinvwl-mobile'>" . __( 'Action', 'ti-woocommerce-wishlist' ) . '</span>' ),
-				'method'	 => array( __CLASS__, 'apply_action' ),
-				'before'	 => array( __CLASS__, 'apply_action_before' ),
-				'priority'	 => 10,
-				'condition'	 => '$a["is_owner"]',
+			$buttons[] = array(
+				'name'      => 'product_apply',
+				'title'     => sprintf( __( 'Apply %s', 'ti-woocommerce-wishlist' ), "<span class='tinvwl-mobile'>" . __( 'Action', 'ti-woocommerce-wishlist' ) . '</span>' ),
+				'method'    => array( __CLASS__, 'apply_action' ),
+				'before'    => array( __CLASS__, 'apply_action_before' ),
+				'priority'  => 10,
+				'condition' => '$a["is_owner"]',
 			);
-			add_filter( self::$_n . '_prepare_attr__button_product_apply', array( __CLASS__, 'add_break_class_input' ) );
-			add_filter( self::$_n . '_prepare_attr__button_product_apply', array( __CLASS__, 'add_break_class_checkbox' ) );
+			add_filter( self::$_n . '_prepare_attr__button_product_apply', array(
+				__CLASS__,
+				'add_break_class_input'
+			) );
+			add_filter( self::$_n . '_prepare_attr__button_product_apply', array(
+				__CLASS__,
+				'add_break_class_checkbox'
+			) );
 		}
 		if ( tinv_get_option( 'table', 'colm_checkbox' ) && tinv_get_option( 'table', 'add_select_to_cart' ) ) {
-			$buttons[]	 = array(
-				'name'		 => 'product_selected',
-				'title'		 => tinv_get_option( 'table', 'text_add_select_to_cart' ),
-				'method'	 => array( __CLASS__, 'apply_action_add_selected' ),
-				'priority'	 => 25,
+			$buttons[] = array(
+				'name'     => 'product_selected',
+				'title'    => apply_filters( 'tinvwl-table-text_add_select_to_cart', tinv_get_option( 'table', 'text_add_select_to_cart' ) ),
+				'method'   => array( __CLASS__, 'apply_action_add_selected' ),
+				'priority' => 25,
 			);
-			add_filter( self::$_n . '_prepare_attr__button_product_selected', array( __CLASS__, 'add_break_class_checkbox' ) );
+			add_filter( self::$_n . '_prepare_attr__button_product_selected', array(
+				__CLASS__,
+				'add_break_class_checkbox'
+			) );
 		}
 		if ( tinv_get_option( 'table', 'add_all_to_cart' ) ) {
 			$buttons[] = array(
-				'name'		 => 'product_all',
-				'title'		 => tinv_get_option( 'table', 'text_add_all_to_cart' ),
-				'method'	 => array( __CLASS__, 'add_all' ),
-				'priority'	 => 30,
+				'name'     => 'product_all',
+				'title'    => apply_filters( 'tinvwl-table-text_add_all_to_cart', tinv_get_option( 'table', 'text_add_all_to_cart' ) ),
+				'method'   => array( __CLASS__, 'add_all' ),
+				'priority' => 30,
 			);
 			add_filter( self::$_n . '_prepare_attr__button_product_selected', array( __CLASS__, 'class_action' ) );
 			add_filter( self::$_n . '_prepare_attr__button_product_all', array( __CLASS__, 'class_action' ) );
 		}
-		$buttons	 = apply_filters( 'tinvwl_manage_buttons_create', $buttons );
+		$buttons = apply_filters( 'tinvwl_manage_buttons_create', $buttons );
+
 		return $buttons;
 	}
 
@@ -96,6 +106,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * Add break class
 	 *
 	 * @param array $attr Attributes.
+	 *
 	 * @return array
 	 */
 	public static function add_break_class_input( $attr ) {
@@ -104,6 +115,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		} else {
 			$attr['class'] = 'tinvwl-break-input';
 		}
+
 		return $attr;
 	}
 
@@ -111,6 +123,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * Add break class
 	 *
 	 * @param array $attr Attributes.
+	 *
 	 * @return array
 	 */
 	public static function add_break_class_checkbox( $attr ) {
@@ -119,6 +132,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		} else {
 			$attr['class'] = 'tinvwl-break-checkbox';
 		}
+
 		return $attr;
 	}
 
@@ -126,6 +140,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * Create button and action
 	 *
 	 * @param array $button Structure for button.
+	 *
 	 * @return boolean
 	 */
 	public static function addbutton( $button ) {
@@ -164,19 +179,20 @@ class TInvWL_Public_Wishlist_Buttons {
 	/**
 	 * Create html button
 	 *
-	 * @param string  $value Vaule for tinvwl-action.
-	 * @param string  $title HTML title for button.
-	 * @param string  $submit Type button.
+	 * @param string $value Vaule for tinvwl-action.
+	 * @param string $title HTML title for button.
+	 * @param string $submit Type button.
 	 * @param boolean $echo Retun or echo.
+	 *
 	 * @return string
 	 */
 	public static function button( $value, $title, $submit, $echo = true ) {
 		$html = apply_filters( self::$_n . '_before__button_' . $value, '' );
-		$attr	 = array(
-			'type'	 => $submit,
-			'class'	 => 'button',
-			'name'	 => 'tinvwl-action',
-			'value'	 => $value,
+		$attr = array(
+			'type'  => $submit,
+			'class' => 'button',
+			'name'  => 'tinvwl-action',
+			'value' => $value,
 		);
 		$attr = apply_filters( self::$_n . '_prepare_attr__button_' . $value, $attr );
 		foreach ( $attr as $key => &$value ) {
@@ -207,6 +223,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * Add class 'alt' to button
 	 *
 	 * @param array $attr Attributes for button.
+	 *
 	 * @return array
 	 */
 	public static function class_action( $attr ) {
@@ -215,21 +232,23 @@ class TInvWL_Public_Wishlist_Buttons {
 		} else {
 			$attr['class'] = 'alt';
 		}
+
 		return $attr;
 	}
 
 	/**
 	 * Apply action for product_all
 	 *
-	 * @param array   $wishlist Wishlist object.
-	 * @param array   $selected Not used.
-	 * @param array   $_quantity Not used.
+	 * @param array $wishlist Wishlist object.
+	 * @param array $selected Not used.
+	 * @param array $_quantity Not used.
 	 * @param boolean $owner Owner this wishlist.
+	 *
 	 * @return boolean
 	 */
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		$products = self::get_current_products( $wishlist );
-		$result = $errors = array();
+		$result   = $errors = array();
 		foreach ( $products as $product ) {
 			$product_data = wc_get_product( $product['variation_id'] ? $product['variation_id'] : $product['product_id'] );
 
@@ -241,9 +260,9 @@ class TInvWL_Public_Wishlist_Buttons {
 				$errors[] = $product['product_id'];
 				continue;
 			}
-			$product	 = $product['ID'];
-			$quantity	 = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
-			$add		 = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
+			$product  = $product['ID'];
+			$quantity = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
+			$add      = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
 			} else {
@@ -260,8 +279,10 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 		if ( ! empty( $result ) ) {
 			wc_add_to_cart_message( $result, true );
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -272,23 +293,29 @@ class TInvWL_Public_Wishlist_Buttons {
 	 */
 	public static function apply_action_before() {
 		$options = array(
-			''				 => __( 'Actions', 'ti-woocommerce-wishlist' ),
-			'add_selected'	 => tinv_get_option( 'product_table', 'text_add_to_cart' ),
+			'' => __( 'Actions', 'ti-woocommerce-wishlist' ),
 		);
+
+		if ( tinv_get_option( 'product_table', 'add_select_to_cart' ) ) {
+			$options['add_selected'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
+		}
+
 		$wishlist_curent = tinv_wishlist_get();
 		if ( $wishlist_curent['is_owner'] ) {
 			$options['remove'] = __( 'Remove', 'ti-woocommerce-wishlist' );
 		}
+
 		return TInvWL_Form::_select( 'product_actions', '', array( 'class' => 'tinvwl-break-input-filed' ), $options );
 	}
 
 	/**
 	 * Apply action for product_actions
 	 *
-	 * @param array   $wishlist Wishlist object.
-	 * @param array   $selected Array selected products.
-	 * @param array   $_quantity Array quantity products.
+	 * @param array $wishlist Wishlist object.
+	 * @param array $selected Array selected products.
+	 * @param array $_quantity Array quantity products.
 	 * @param boolean $owner Owner this wishlist.
+	 *
 	 * @return boolean
 	 */
 	public static function apply_action( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
@@ -309,10 +336,11 @@ class TInvWL_Public_Wishlist_Buttons {
 	/**
 	 * Apply action for product_actions add_selected
 	 *
-	 * @param array   $wishlist Wishlist object.
-	 * @param array   $selected Array selected products.
-	 * @param array   $_quantity Array quantity products.
+	 * @param array $wishlist Wishlist object.
+	 * @param array $selected Array selected products.
+	 * @param array $_quantity Array quantity products.
 	 * @param boolean $owner Owner this wishlist.
+	 *
 	 * @return boolean
 	 */
 	public static function apply_action_add_selected( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
@@ -337,8 +365,8 @@ class TInvWL_Public_Wishlist_Buttons {
 						continue;
 					}
 				}
-				$quantity	 = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
-				$add		 = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
+				$quantity = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
+				$add      = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
 				if ( $add ) {
 					$result = tinv_array_merge( $result, $add );
 				} else {
@@ -355,19 +383,22 @@ class TInvWL_Public_Wishlist_Buttons {
 			}
 			if ( ! empty( $result ) ) {
 				wc_add_to_cart_message( $result, true );
+
 				return true;
 			}
 		} // End if().
+
 		return false;
 	}
 
 	/**
 	 * Apply action for product_actions remove
 	 *
-	 * @param array   $wishlist Wishlist object.
-	 * @param array   $selected Array selected products.
-	 * @param array   $_quantity Not used.
+	 * @param array $wishlist Wishlist object.
+	 * @param array $selected Array selected products.
+	 * @param array $_quantity Not used.
 	 * @param boolean $owner Owner this wishlist.
+	 *
 	 * @return boolean
 	 */
 	public static function apply_action_remove( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
@@ -385,8 +416,8 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 
 		$products = $wlp->get_wishlist( array(
-			'ID'		 => $selected,
-			'count'		 => 100,
+			'ID'    => $selected,
+			'count' => 100,
 		) );
 
 		$titles = array();
@@ -411,6 +442,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * Get product bu wishlist
 	 *
 	 * @param array $wishlist Wishlist object.
+	 *
 	 * @return array
 	 */
 	public static function get_current_products( $wishlist = null ) {
@@ -427,24 +459,24 @@ class TInvWL_Public_Wishlist_Buttons {
 			return array();
 		}
 
-		$paged		 = get_query_var( 'paged', 1 );
-		$paged		 = 1 < $paged ? $paged : 1;
-		$per_page	 = apply_filters( 'tinvwl_wishlist_buttons_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
+		$paged    = get_query_var( 'paged', 1 );
+		$paged    = 1 < $paged ? $paged : 1;
+		$per_page = apply_filters( 'tinvwl_wishlist_buttons_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
 			'options' => array(
-				'default'	 => 10,
-				'min_range'	 => 1,
+				'default'   => 10,
+				'min_range' => 1,
 			),
 		) ) );
 
 		$product_data = array(
-			'count'		 => $per_page,
-			'offset'	 => $per_page * ($paged - 1),
-			'external'	 => false,
+			'count'    => $per_page,
+			'offset'   => $per_page * ( $paged - 1 ),
+			'external' => false,
 		);
 
-		$product_data	 = apply_filters( 'tinvwl_before_get_current_product', $product_data );
-		$products		 = $wlp->get_wishlist( $product_data );
-		$products		 = apply_filters( 'tinvwl_after_get_current_product', $products );
+		$product_data = apply_filters( 'tinvwl_before_get_current_product', $product_data );
+		$products     = $wlp->get_wishlist( $product_data );
+		$products     = apply_filters( 'tinvwl_after_get_current_product', $products );
 
 		return $products;
 	}

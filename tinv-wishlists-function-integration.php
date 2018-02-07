@@ -1635,7 +1635,7 @@ if ( ! function_exists( 'tinvwl_fs' ) ) {
 } // End if().
 
 // WP Multilang string translations.
-if ( ! function_exists( 'wpm_translate_string' ) ) {
+if ( function_exists( 'wpm_translate_string' ) ) {
 
 	add_filter( 'tinvwl-general-default_title', 'wpm_translate_string' );
 	add_filter( 'tinvwl-general-text_browse', 'wpm_translate_string' );

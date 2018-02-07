@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-14 22:49+0700\n"
+"POT-Creation-Date: 2018-02-08 00:02+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -20,7 +20,7 @@ msgstr ""
 "_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
 "esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: freemius\n"
 
@@ -206,17 +206,17 @@ msgid ""
 msgstr ""
 
 #: admin/settings/general.class.php:239 admin/settings/general.class.php:339
-#: includes/wizard.class.php:400
+#: includes/wizard.class.php:407
 msgid "After \"Add to Cart\" button"
 msgstr ""
 
 #: admin/settings/general.class.php:240 admin/settings/general.class.php:340
-#: includes/wizard.class.php:401
+#: includes/wizard.class.php:408
 msgid "Before \"Add to Cart\" button"
 msgstr ""
 
 #: admin/settings/general.class.php:241 admin/settings/general.class.php:342
-#: includes/wizard.class.php:402
+#: includes/wizard.class.php:409
 msgid "Custom position with code"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgid "Link"
 msgstr ""
 
 #: admin/settings/general.class.php:251 admin/settings/general.class.php:353
-#: includes/wizard.class.php:389
+#: includes/wizard.class.php:396
 msgid "Button"
 msgstr ""
 
@@ -910,52 +910,52 @@ msgstr ""
 msgid "read documentation"
 msgstr ""
 
-#: includes/wizard.class.php:258
+#: includes/wizard.class.php:264
 msgid "Introduction"
 msgstr ""
 
-#: includes/wizard.class.php:274 views/wizard/step-page.php:16
+#: includes/wizard.class.php:280 views/wizard/step-page.php:16
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:282 includes/wizard.class.php:312
-#: public/tinvwl.class.php:536
+#: includes/wizard.class.php:288 includes/wizard.class.php:319
+#: public/tinvwl.class.php:540
 msgid "Wishlist"
 msgstr ""
 
-#: includes/wizard.class.php:286
+#: includes/wizard.class.php:292
 msgid "Create Automatically"
 msgstr ""
 
-#: includes/wizard.class.php:287
+#: includes/wizard.class.php:293
 msgid "Create new Page"
 msgstr ""
 
-#: includes/wizard.class.php:433
+#: includes/wizard.class.php:440
 msgid "Processing"
 msgstr ""
 
-#: includes/wizard.class.php:443
+#: includes/wizard.class.php:450
 msgid "Automatically"
 msgstr ""
 
-#: includes/wizard.class.php:444
+#: includes/wizard.class.php:451
 msgid "Manual"
 msgstr ""
 
-#: includes/wizard.class.php:468 views/wizard/step-social.php:18
+#: includes/wizard.class.php:475 views/wizard/step-social.php:18
 msgid "Share"
 msgstr ""
 
-#: includes/wizard.class.php:509
+#: includes/wizard.class.php:516
 msgid "Ready!"
 msgstr ""
 
-#: public/addtowishlist.class.php:168
+#: public/addtowishlist.class.php:169
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:170
+#: public/addtowishlist.class.php:171
 msgid "Login"
 msgstr ""
 
@@ -964,11 +964,11 @@ msgstr ""
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: public/tinvwl.class.php:440
+#: public/tinvwl.class.php:444
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:443
+#: public/tinvwl.class.php:447
 msgid ""
 "Please select some product options before adding this product to your "
 "wishlist."
@@ -995,13 +995,13 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:256 public/wishlist/buttons.class.php:351
+#: public/wishlist/buttons.class.php:275 public/wishlist/buttons.class.php:379
 #, php-format
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:259 public/wishlist/buttons.class.php:354
+#: public/wishlist/buttons.class.php:278 public/wishlist/buttons.class.php:382
 #, php-format
 msgid ""
 "Product %s could not be added to cart because some options are not "
@@ -1014,49 +1014,49 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/buttons.class.php:275
+#: public/wishlist/buttons.class.php:296
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:280
+#: public/wishlist/buttons.class.php:305
 msgid "Remove"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:395 public/wishlist/view.class.php:252
+#: public/wishlist/buttons.class.php:426 public/wishlist/view.class.php:262
 #, php-format
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:400
+#: public/wishlist/buttons.class.php:431
 #, php-format
 msgid "%s has been successfully removed from wishlist."
 msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/view.class.php:254
+#: public/wishlist/view.class.php:264
 #, php-format
 msgid "%s has been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:256
+#: public/wishlist/view.class.php:266
 #, php-format
 msgid "%s has not been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:341
+#: public/wishlist/view.class.php:357
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:421
+#: public/wishlist/view.class.php:442
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:430
+#: public/wishlist/view.class.php:451
 msgid "Next Page"
 msgstr ""
 
-#: templates/ti-addedtowishlist-dialogbox.php:22
+#: templates/ti-addedtowishlist-dialogbox.php:23
 msgid "Close"
 msgstr ""
 
@@ -1101,46 +1101,46 @@ msgid "Stock Status"
 msgstr ""
 
 #: templates/ti-wishlist-user.php:110 templates/ti-wishlist.php:114
-#: tinv-wishlists-function-integration.php:864
-#: tinv-wishlists-function-integration.php:1013
-#: tinv-wishlists-function-integration.php:1160
-#: tinv-wishlists-function-integration.php:1373
+#: tinv-wishlists-function-integration.php:865
+#: tinv-wishlists-function-integration.php:1014
+#: tinv-wishlists-function-integration.php:1161
+#: tinv-wishlists-function-integration.php:1375
 msgid "In stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:295
+#: tinv-wishlists-function-integration.php:296
 msgid "Select options"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:589
+#: tinv-wishlists-function-integration.php:590
 msgid "Note"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:592
+#: tinv-wishlists-function-integration.php:593
 msgid "To"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:595
+#: tinv-wishlists-function-integration.php:596
 msgid "To Email"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:598
+#: tinv-wishlists-function-integration.php:599
 msgid "Address"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:601
+#: tinv-wishlists-function-integration.php:602
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1312
+#: tinv-wishlists-function-integration.php:1314
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1503
+#: tinv-wishlists-function-integration.php:1506
 msgid "Photos imported - "
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1610
+#: tinv-wishlists-function-integration.php:1702
 #, php-format
 msgid ""
 "Please help us improve %2$s! If you opt-in, some data about your usage of "
@@ -1148,18 +1148,18 @@ msgid ""
 "work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1624
+#: tinv-wishlists-function-integration.php:1716
 #, php-format
 msgid ""
 "Allow %6$s to collect some usage data with %5$s to make the plugin even more "
 "awesome. If you skip this, that's okay! %2$s will still work just fine."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1624
+#: tinv-wishlists-function-integration.php:1716
 msgid "WooCommerce Wishlist Plugin"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1624
+#: tinv-wishlists-function-integration.php:1716
 msgid "TemplateInvaders"
 msgstr ""
 

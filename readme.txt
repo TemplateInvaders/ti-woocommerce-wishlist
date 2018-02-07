@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.5.14
+Stable tag: 1.6.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,7 +48,7 @@ WooCommerce Wishlist is a simple but powerful tool that can help you to convert 
 + Product variations Support
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
-We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/).
+We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax).
 It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with [WP Rocket](https://wp-rocket.me/), [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) and [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugins.
 
 = Add to Wishlist button =
@@ -63,7 +63,7 @@ WooCommerce Wishlist Plugin comes with over 60 appearance options such as colors
 
 = Translation Ready =
 
-You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
+You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/), [WP Multilang](https://wordpress.org/plugins/wp-multilang/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
 
 = Responsive & Retina Ready =
 We know how important responsive website for the online store in nowadays.
@@ -128,6 +128,19 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.6.0 =
+*Release Date - 08 February 2018*
+
+* Fixed Fatal error: if $product is not WooCommerce product
+* Fixed an issue when "Add to Wishlist" button didn't appear on a product details page for products without price 
+* Fixed text domains for some strings
+* Fixed an issue with displaying SKU attribute after adding products to Wishlist from a catalog
+* Added filters <i>tinvwl_addtowishlist_login_page</i> and <i>tinvwl_addtowishlist_return_ajax</i> that will be helpful to override "Require Login" popup.
+* Improved variable products processing when adding to Wishlist
+* Improved compatibility with WooCommerce 3.3.x
+* Added support for [WP Multilang](https://wordpress.org/plugins/wp-multilang/) plugin
+* Added support for [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax) plugin
 
 = 1.5.14 =
 *Release Date - 14 December 2017*

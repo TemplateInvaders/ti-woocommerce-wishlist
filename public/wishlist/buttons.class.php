@@ -296,7 +296,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			'' => __( 'Actions', 'ti-woocommerce-wishlist' ),
 		);
 
-		if ( tinv_get_option( 'product_table', 'add_select_to_cart' ) ) {
+		if ( tinv_get_option( 'table', 'add_select_to_cart' ) ) {
 			$options['add_selected'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 		}
 

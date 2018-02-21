@@ -172,10 +172,10 @@ class TInvWL_Public_AddToWishlist {
 			}
 			$data['msg'] = array_unique( $data['msg'] );
 			$data['msg'] = implode( '<br>', $data['msg'] );
+			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			if ( ! empty( $data['msg'] ) ) {
 				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
 			}
-			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			ob_clean();
 			wp_send_json( $data );
 		} else {

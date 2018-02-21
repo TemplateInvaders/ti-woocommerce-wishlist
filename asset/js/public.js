@@ -224,6 +224,9 @@
 						return o2;
 					}
 				};
+                if ( 'button' === type_elm ) {
+                    return;
+                }
 				while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {
 					var n_name = name_elm.match(/^(.+)\[([^\[\]]*?)\]$/);
 					if (3 === n_name.length) {
@@ -528,7 +531,7 @@
 	$(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function () {
 		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
 	});
-	$(window).load(function () {
+	$(window).on('load', function () {
 		if ($('.tinv-wishlist.woocommerce').length && $('.woocommerce-message').length) {
 			$(document.body).on('wc_fragments_refreshed.wishlist', function () {
 				if (typeof wc_cart_fragments_params === 'undefined') {

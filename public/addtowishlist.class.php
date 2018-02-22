@@ -172,10 +172,10 @@ class TInvWL_Public_AddToWishlist {
 			}
 			$data['msg'] = array_unique( $data['msg'] );
 			$data['msg'] = implode( '<br>', $data['msg'] );
-			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			if ( ! empty( $data['msg'] ) ) {
-				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
+				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 			}
+			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			ob_clean();
 			wp_send_json( $data );
 		} else {
@@ -312,7 +312,7 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = implode( '<br>', $data['msg'] );
 		if ( ! empty( $data['msg'] ) ) {
 			$data['msg'] = apply_filters( $this->_n . '_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
-			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
+			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 		}
 		if ( ! tinv_get_option( 'general', 'show_notice' ) && array_key_exists( 'msg', $data ) ) {
 			unset( $data['msg'] );

@@ -1098,7 +1098,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_mix_and_match_products' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Mix and Match
+	 * Set description for meta WooCommerce Mix and Match
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -1434,108 +1434,117 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 	function tinv_wishlist_item_meta_woocommerce_product_add_on( $meta, $wl_product, $product ) {
 		$personalized_meta = absint( get_post_meta( $wl_product['product_id'], '_product_meta_id', true ) );
 		if ( ! empty( $personalized_meta ) && class_exists( 'NM_PersonalizedProduct' ) ) {
-			$_meta             = $wl_product['meta'];
-			$single_meta       = NM_PersonalizedProduct::get_instance()->get_product_meta( $personalized_meta );
-			$product_meta      = json_decode( $single_meta->the_meta );
-			$product_meta_data = array();
-			$item_meta         = array();
+
+			$product_meta = $wl_product['meta']['ppom']['fields'];
 
 			if ( $product_meta ) {
-				foreach ( $product_meta as $__meta ) {
-					if ( ! isset( $__meta->data_name ) ) {
+
+				$item_meta = array();
+
+				foreach ( $product_meta as $key => $value ) {
+
+					if ( empty( $value ) ) {
 						continue;
 					}
 
-					$element_name  = strtolower( preg_replace( '![^a-z0-9]+!i', '_', $__meta->data_name ) );
-					$element_value = '';
-					$thefiles_key  = 'thefile_' . $element_name;
-					if ( ! isset( $_meta[ $element_name ] ) && ! isset( $_meta[ $thefiles_key ] ) ) {
+					$product_id = $wl_product['product_id'];
+					$field_meta = ppom_get_field_meta_by_dataname( $product_id, $key );
+
+					if ( empty( $field_meta ) ) {
 						continue;
 					}
 
-					switch ( $__meta->type ) {
-						case 'checkbox':
-							if ( array_key_exists( $element_name, $_meta ) ) {
-								$element_value = implode( ',', array_map( 'sanitize_text_field', wp_unslash( $_meta[ $element_name ] ) ) );
+					$field_type  = $field_meta['type'];
+					$field_title = $field_meta['title'];
+
+
+					switch ( $field_type ) {
+						case 'quantities':
+							$total_qty = 0;
+							foreach ( $value as $label => $qty ) {
+								if ( ! empty( $qty ) ) {
+									$item_meta[] = array(
+										'key'     => $label,
+										'display' => $qty,
+									);
+									$total_qty   += $qty;
+								}
 							}
 							break;
-						case 'select':
-						case 'radio':
-							$element_value = sanitize_text_field( $_meta[ $element_name ] );
-							break;
+
 						case 'file':
-						case 'facebook':
+							$file_thumbs_html = '';
+							foreach ( $value as $file_id => $file_uploaded ) {
+								$file_name        = $file_uploaded['org'];
+								$file_thumbs_html .= ppom_show_file_thumb( $file_name );
+							}
+							$item_meta[] = array(
+								'key'     => $field_title,
+								'display' => $file_thumbs_html,
+							);
+
 							break;
+
+						case 'cropper':
+							$file_thumbs_html = '';
+							foreach ( $value as $file_id => $file_cropped ) {
+
+								$file_name        = $file_cropped['org'];
+								$file_thumbs_html .= ppom_show_file_thumb( $file_name, true );
+							}
+							$item_meta[] = array(
+								'key'     => $field_title,
+								'display' => $file_thumbs_html,
+							);
+							break;
+
 						case 'image':
-							$element_value = isset( $_meta[ $element_name ] ) ? sanitize_text_field( $_meta[ $element_name ] ) : '';
-						case 'section':
-							if ( ! is_array( $element_value ) ) {
-								$post_element_name = '';
-								if ( isset( $_meta[ $element_name ] ) && is_array( $_meta[ $element_name ] ) ) {
-									$post_element_name = array_map( 'sanitize_text_field', wp_unslash( $_meta[ $element_name ] ) );
-									$nele              = array();
-									foreach ( $post_element_name as $ele ) {
-										$ele    = stripslashes( nl2br( $ele ) );
-										$nele[] = $ele;
-									}
-									$post_element_name = $nele;
-								} else {
-									$post_element_name = sanitize_text_field( $_meta[ $element_name ] );
-								}
-								if ( $post_element_name != '' ) { // @codingStandardsIgnoreLine WordPress.PHP.YodaConditions.NotYoda
-									$element_value = $post_element_name;
+							if ( $value ) {
+								foreach ( $value as $id => $images_meta ) {
+									$images_meta = json_decode( stripslashes( $images_meta ), true );
+									$image_url   = stripslashes( $images_meta['link'] );
+									$image_html  = '<img class="img-thumbnail" style="width:' . esc_attr( ppom_get_thumbs_size() ) . '" src="' . esc_url( $image_url ) . '" title="' . esc_attr( $images_meta['title'] ) . '">';
+									$meta_key    = $field_title . '(' . $images_meta['title'] . ')';
+									$item_meta[] = array(
+										'key'     => $meta_key,
+										'display' => $image_html,
+									);
 								}
 							}
 							break;
-						default:
-							$element_value = sanitize_text_field( $_meta[ $element_name ] );
-					} // End switch().
-					if ( ! empty( $element_value ) ) {
-						switch ( $__meta->type ) {
-							case 'image':
-								// If selected designs are more then one.
-								if ( is_array( $element_value ) ) {
 
-									$_v = '';
-									foreach ( $element_value as $selected ) {
-										$selecte_image_meta = json_decode( stripslashes( $selected ) );
-										$_v                 .= $selecte_image_meta->title . ',';
-									}
+						case 'audio':
+							if ( $value ) {
+								$ppom_file_count = 1;
+								foreach ( $value as $id => $audio_meta ) {
+									$audio_meta  = json_decode( stripslashes( $audio_meta ), true );
+									$audio_url   = stripslashes( $audio_meta['link'] );
+									$audio_html  = '<a href="' . esc_url( $audio_url ) . '" title="' . esc_attr( $audio_meta['title'] ) . '">' . $audio_meta['title'] . '</a>';
+									$meta_key    = $field_title . ': ' . $ppom_file_count ++;
 									$item_meta[] = array(
-										'key'     => $__meta->title,
-										'display' => __( 'Photos imported - ', 'nm-personalizedproduct' ) . count( $element_value ),
-									);
-								} else {
-									$selecte_image_meta = json_decode( stripslashes( $element_value ) );
-									$item_meta[]        = array(
-										'key'     => $__meta->title,
-										'display' => $selecte_image_meta->title,
+										'key'     => $meta_key,
+										'display' => $audio_html,
 									);
 								}
-								break;
-							default:
-								if ( is_array( $element_value ) ) {
-									list( $filekey, $filename ) = each( $element_value );
-									if ( NM_PersonalizedProduct::get_instance()->is_image( $filename ) ) {
-										$item_meta[] = array(
-											'key'     => $__meta->title,
-											'display' => NM_PersonalizedProduct::get_instance()->make_filename_link( $element_value ),
-										);
-									} else {
-										$item_meta[] = array(
-											'key'     => $__meta->title,
-											'display' => implode( ',', $element_value ),
-										);
-									}
-								} else {
-									$item_meta[] = array(
-										'key'     => $__meta->title,
-										'display' => stripslashes( $element_value ),
-									);
-								}
-								break;
-						} // End switch().
-					} // End if().
+							}
+							break;
+
+						case 'bulkquantity':
+							$item_meta[] = array(
+								'key'     => $key,
+								'display' => $value['option'] . ' (' . $value['qty'] . ')',
+							);
+							break;
+
+						default:
+							$value       = is_array( $value ) ? implode( ",", $value ) : $value;
+							$item_meta[] = array(
+								'key'     => $field_title,
+								'display' => stripcslashes( $value ),
+							);
+							break;
+					}
+
 				} // End foreach().
 			} // End if().
 
@@ -1557,7 +1566,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 	/**
 	 * Set descrition for meta WooCommerce TM Extra Product Options
 	 *
-	 * @param array   $meta Meta array.
+	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
 	 * @param integer $variation_id Product variation ID.
 	 *
@@ -1574,10 +1583,10 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 				$cart_item = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $post_data );
 
 				if ( 'normal' == TM_EPO()->tm_epo_hide_options_in_cart && 'advanced' != TM_EPO()->tm_epo_cart_field_display && ! empty( $cart_item['tmcartepo'] ) ) {
-					$cart_item['quantity']			 = 1;
-					$cart_item['data']				 = wc_get_product( $variation_id ? $variation_id : $product_id );
-					$cart_item['tm_cart_item_key']	 = '';
-					$item_data = TM_EPO()->get_item_data_array( array(), $cart_item );
+					$cart_item['quantity']         = 1;
+					$cart_item['data']             = wc_get_product( $variation_id ? $variation_id : $product_id );
+					$cart_item['tm_cart_item_key'] = '';
+					$item_data                     = TM_EPO()->get_item_data_array( array(), $cart_item );
 
 					foreach ( $item_data as $key => $data ) {
 						// Set hidden to true to not display meta on cart.
@@ -1585,13 +1594,14 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 							unset( $item_data[ $key ] );
 							continue;
 						}
-						$item_data[ $key ]['key']		 = ! empty( $data['key'] ) ? $data['key'] : $data['name'];
-						$item_data[ $key ]['display']	 = ! empty( $data['display'] ) ? $data['display'] : $data['value'];
+						$item_data[ $key ]['key']     = ! empty( $data['key'] ) ? $data['key'] : $data['name'];
+						$item_data[ $key ]['display'] = ! empty( $data['display'] ) ? $data['display'] : $data['value'];
 					}
 
 					return $item_data;
 				}
 			}
+
 			return array();
 		}
 
@@ -1606,8 +1616,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 	/**
 	 * Modify price for WooCommerce TM Extra Product Options
 	 *
-	 * @param string      $price Returned price.
-	 * @param array       $wl_product Wishlist Product.
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
@@ -1615,18 +1625,18 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 	function tinvwl_item_price_woocommerce_tm_extra_product_options( $price, $wl_product, $product ) {
 		if ( array_key_exists( 'tcaddtocart', (array) @$wl_product['meta'] ) && function_exists( 'TM_EPO_API' ) && function_exists( 'TM_EPO' ) && TM_EPO()->tm_epo_hide_options_in_cart == 'normal' ) {
 			$product_id = $wl_product['product_id'];
-			$has_epo = TM_EPO_API()->has_options( $product_id );
+			$has_epo    = TM_EPO_API()->has_options( $product_id );
 			if ( TM_EPO_API()->is_valid_options( $has_epo ) ) {
-				$cart_item = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
-				$cart_item['quantity']	 = 1;
-				$cart_item['data']		 = $product;
+				$cart_item             = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
+				$cart_item['quantity'] = 1;
+				$cart_item['data']     = $product;
 
 				$product_price = apply_filters( 'wc_epo_add_cart_item_original_price', $cart_item['data']->get_price(), $cart_item );
 				if ( ! empty( $cart_item['tmcartepo'] ) ) {
 					$to_currency = tc_get_woocommerce_currency();
 					foreach ( $cart_item['tmcartepo'] as $value ) {
 						if ( array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
-							$value = floatval( $value['price_per_currency'][ $to_currency ] );
+							$value         = floatval( $value['price_per_currency'][ $to_currency ] );
 							$product_price += $value;
 						}
 					}
@@ -1635,6 +1645,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 				$price = apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', TM_EPO()->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
 			}
 		}
+
 		return $price;
 	}
 

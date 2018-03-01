@@ -330,7 +330,7 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 		$item_data      = array();
 		$variation_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
 		$variation_data = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_data : ( $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array() );
-		if ( ! empty( $variation_id ) && is_array( $variation_data ) ) {
+		if ( ! empty( $variation_id ) && is_array( $variation_data ) && is_array( $wl_product ) ) {
 			foreach ( $variation_data as $name => $value ) {
 				if ( '' === $value ) {
 					// Could be any value that saved to a custom meta.
@@ -353,12 +353,12 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 
 					// If this is a custom option slug, get the options name.
 				} else {
-					$value				 = apply_filters( 'woocommerce_variation_option_name', $value );
-					$product_attributes	 = $product->get_attributes();
-					$_name				 = str_replace( 'attribute_', '', $name );
+					$value              = apply_filters( 'woocommerce_variation_option_name', $value );
+					$product_attributes = $product->get_attributes();
+					$_name              = str_replace( 'attribute_', '', $name );
 					if ( isset( $product_attributes[ $_name ] ) ) {
-						$_name	 = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_attributes[ $_name ]['name'] : $_name;
-						$label	 = wc_attribute_label( $_name, $product );
+						$_name = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_attributes[ $_name ]['name'] : $_name;
+						$label = wc_attribute_label( $_name, $product );
 					} else {
 						$label = $name;
 					}

@@ -17,6 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class TInvWL_Update {
 
 	/**
+	 * Plugin name
+	 *
+	 * @var string
+	 */
+	private $_n;
+
+	/**
 	 * Version
 	 *
 	 * @var string
@@ -42,14 +49,15 @@ class TInvWL_Update {
 	 *
 	 * @param string $version Version.
 	 * @param string $previous_version Previous Version.
+	 *
 	 * @return boolean
 	 */
 	function __construct( $version, $previous_version = 0 ) {
-		$lists = get_class_methods( $this );
-
-		$this->_v	 = $version;
+		$lists       = get_class_methods( $this );
+		$this->_n    = TINVWL_PREFIX;
+		$this->_v    = $version;
 		$this->_prev = $previous_version;
-		$lists		 = array_filter( $lists, array( $this, 'filter' ) );
+		$lists       = array_filter( $lists, array( $this, 'filter' ) );
 		if ( empty( $lists ) ) {
 			return false;
 		}
@@ -57,6 +65,7 @@ class TInvWL_Update {
 		foreach ( $lists as $method ) {
 			call_user_func( array( $this, $method ), $previous_version );
 		}
+
 		return true;
 	}
 
@@ -64,6 +73,7 @@ class TInvWL_Update {
 	 * Filter methods
 	 *
 	 * @param string $method Method name from this class.
+	 *
 	 * @return boolean
 	 */
 	public function filter( $method ) {
@@ -73,6 +83,7 @@ class TInvWL_Update {
 		if ( version_compare( $this->_prev, $this->prepare( $method ), 'ge' ) ) {
 			return false;
 		}
+
 		return version_compare( $this->_v, $this->prepare( $method ), 'ge' );
 	}
 
@@ -81,6 +92,7 @@ class TInvWL_Update {
 	 *
 	 * @param string $method1 Method name first from this class.
 	 * @param string $method2 Method name second from this class.
+	 *
 	 * @return type
 	 */
 	public function sort( $method1, $method2 ) {
@@ -91,11 +103,13 @@ class TInvWL_Update {
 	 * Conver method name to version
 	 *
 	 * @param string $method Method name from this class.
+	 *
 	 * @return string
 	 */
 	public function prepare( $method ) {
-		$method	 = preg_replace( self::REGEXP, '', $method );
-		$method	 = str_replace( '_', '.', $method );
+		$method = preg_replace( self::REGEXP, '', $method );
+		$method = str_replace( '_', '.', $method );
+
 		return $method;
 	}
 
@@ -139,5 +153,16 @@ class TInvWL_Update {
 		if ( $value = tinv_get_option( 'table', 'text_add_all_to_card' ) ) {
 			tinv_update_option( 'table', 'text_add_all_to_cart', $value );
 		}
+	}
+
+	/**
+	 * Clean up empty wishlists.
+	 */
+	function up_p_1_6_1() {
+		global $wpdb;
+		$wishlists_table       = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'lists' );
+		$wishlists_items_table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'items' );
+		$sql                   = "DELETE FROM wl USING `{$wishlists_table}` AS wl WHERE NOT EXISTS( SELECT * FROM `{$wishlists_items_table}` WHERE {$wishlists_items_table}.wishlist_id = wl.ID ) AND wl.type='default'";
+		$cleanup               = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}
 }

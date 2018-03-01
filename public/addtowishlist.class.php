@@ -154,7 +154,7 @@ class TInvWL_Public_AddToWishlist {
 			$wishlist = apply_filters( 'tinvwl_addtowishlist_wishlist', $wishlist );
 			if ( empty( $wishlist ) ) {
 				$data['status'] = false;
-				$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
+				$data           = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 				ob_clean();
 				wp_send_json( $data );
 			}
@@ -163,16 +163,16 @@ class TInvWL_Public_AddToWishlist {
 			$data['status'] = false;
 			$data['icon']   = 'icon_big_times';
 			if ( tinv_get_option( 'general', 'redirect_require_login' ) ) {
-				$data['msg']			 = array();
-				$data['force_redirect']	 = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
+				$data['msg']            = array();
+				$data['force_redirect'] = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
 			} else {
-				$data['msg'][]				 = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
-				$data['dialog_custom_url']	 = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
-				$data['dialog_custom_html']	 = esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
+				$data['msg'][]              = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
+				$data['dialog_custom_url']  = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
+				$data['dialog_custom_html'] = esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg'] = array_unique( $data['msg'] );
 			$data['msg'] = implode( '<br>', $data['msg'] );
-			$data = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
+			$data        = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post );
 			if ( ! empty( $data['msg'] ) ) {
 				$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', $data );
 			}
@@ -521,7 +521,7 @@ class TInvWL_Public_AddToWishlist {
 	 */
 	function button( $echo = true ) {
 		$content    = apply_filters( 'tinvwl_wishlist_button_before', '' );
-		$text       = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' );
+		$text       = ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_text' ) ) ? apply_filters( 'tinvwl-add_to_wishlist_catalog-text', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ) : '';
 		$icon       = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon' );
 		$icon_class = '';
 		$action     = 'addto';
@@ -567,7 +567,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( 'button' == tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'type' ) ) { // WPCS: loose comparison ok.
 			$icon .= ' button';
 		}
-		
+
 		$icon .= ' tinvwl-position-' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'position' );
 
 		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="%s" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="%s">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );

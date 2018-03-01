@@ -46,6 +46,13 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return array
 	 */
 	private static function prepare() {
+
+		// WP Multilang string translations.
+		if ( function_exists( 'wpm_translate_string' ) ) {
+			add_filter( 'tinvwl-table-text_add_select_to_cart', 'wpm_translate_string' );
+			add_filter( 'tinvwl-table-text_add_all_to_cart', 'wpm_translate_string' );
+		}
+
 		$buttons = array();
 		if ( tinv_get_option( 'table', 'colm_checkbox' ) && tinv_get_option( 'table', 'colm_actions' ) ) {
 			$buttons[] = array(

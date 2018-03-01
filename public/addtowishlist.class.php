@@ -510,6 +510,7 @@ class TInvWL_Public_AddToWishlist {
 			'browse_in_wishlist'  => apply_filters( 'tinvwl-general-text_browse', tinv_get_option( 'general', 'text_browse' ) ),
 			'product_in_wishlist' => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
 			'product_to_wishlist' => apply_filters( 'tinvwl-general-text_added_to', tinv_get_option( 'general', 'text_added_to' ) ),
+			'loop'                => $this->is_loop,
 		);
 		tinv_wishlist_template( 'ti-addtowishlist.php', $data );
 	}

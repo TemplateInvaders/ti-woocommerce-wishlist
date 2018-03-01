@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<span>
 				<i class="fa fa-info"></i>
 			</span>
-			<a class="tinvwl-help" href="javascript:void(0)" data-container="body" data-toggle="popover" data-trigger="manual" data-placement="left" data-html="true">
+			<a class="tinvwl-help" href="javascript:void(0)" data-container="body" data-toggle="popover" data-trigger="manual" data-placement="left" data-html="true" rel="nofollow">
 				<i class="fa fa-info"></i>
 			</a>
 		</span>

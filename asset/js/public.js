@@ -11,8 +11,10 @@
 				dialogbutton: '.tinvwl_button_add'
 			},
 			redirectTimer: null,
-			onPrepareList: function () {},
-			onGetDialogBox: function () {},
+			onPrepareList: function () {
+			},
+			onGetDialogBox: function () {
+			},
 			onPrepareDialogBox: function () {
 				if (!$('body > .tinv-wishlist').length) {
 					$('body').append($('<div>').addClass('tinv-wishlist'));
@@ -22,14 +24,16 @@
 			onCreateWishList: function (wishlist) {
 				$(this).append($('<option>').html(wishlist.title).attr('value', wishlist.ID).toggleClass('tinv_in_wishlist', wishlist.in));
 			},
-			onSelectWishList: function () {},
+			onSelectWishList: function () {
+			},
 			onDialogShow: function () {
 				$(this).addClass('tinv-modal-open');
 			},
 			onDialogHide: function () {
 				$(this).removeClass('tinv-modal-open');
 			},
-			onInited: function () {},
+			onInited: function () {
+			},
 			onClick: function () {
 				if ($(this).is('.disabled-add-wishlist')) {
 					return false;
@@ -40,14 +44,15 @@
 					s.onActionProduct.call(this);
 				}
 			},
-			onPrepareDataAction: function () {},
+			onPrepareDataAction: function () {
+			},
 			filterProductAlreadyIn: function (WList) {
 				var WList = WList || [],
-				data = {};
+					data = {};
 				$('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select').each(function () {
 					var name_elm = $(this).attr('name'),
-					type_elm = $(this).attr('type'),
-					value_elm = $(this).val();
+						type_elm = $(this).attr('type'),
+						value_elm = $(this).val();
 					if ('checkbox' === type_elm || 'radio' === type_elm) {
 						if ($(this).is(':checked')) {
 							data['form' + name_elm] = value_elm;
@@ -72,16 +77,16 @@
 				$(this).parent().parent().find('.already-in').remove();
 				var text = '';
 				switch (WList.length) {
-				case 0:
-					break;
-				default:
-					var text = $('<ul>');
-					$.each(WList, function (k, wishlist) {
-						text.append($('<li>').html($('<a>').html(wishlist.title).attr({
-									href: wishlist.url
-								})).attr('value', wishlist.ID));
-					});
-					break;
+					case 0:
+						break;
+					default:
+						var text = $('<ul>');
+						$.each(WList, function (k, wishlist) {
+							text.append($('<li>').html($('<a>').html(wishlist.title).attr({
+								href: wishlist.url
+							})).attr('value', wishlist.ID));
+						});
+						break;
 				}
 				if (text.length) {
 					$(this).closest('.tinv-modal-inner').find('img').after($('<div>').addClass('already-in').html(s.text_already_in + ' ').append(text));
@@ -93,8 +98,8 @@
 						clearTimeout(s.redirectTimer);
 					}
 					s.redirectTimer = window.setTimeout(function () {
-							window.location.href = url;
-						}, 4000);
+						window.location.href = url;
+					}, 4000);
 				},
 				force_redirect: function (url) {
 					window.location.href = url;
@@ -152,10 +157,10 @@
 					if ($supports_html5_storage) {
 						try {
 							var wc_fragments = $.parseJSON(sessionStorage.getItem(wc_cart_fragments_params.fragment_name)),
-							cart_hash_key = wc_cart_fragments_params.ajax_url.toString() + '-wc_cart_hash',
-							cart_hash = sessionStorage.getItem(cart_hash_key),
-							cookie_hash = Cookies.get('woocommerce_cart_hash'),
-							cart_created = sessionStorage.getItem('wc_cart_created');
+								cart_hash_key = wc_cart_fragments_params.ajax_url.toString() + '-wc_cart_hash',
+								cart_hash = sessionStorage.getItem(cart_hash_key),
+								cookie_hash = Cookies.get('woocommerce_cart_hash'),
+								cart_created = sessionStorage.getItem('wc_cart_created');
 							if (cart_hash === null || cart_hash === undefined || cart_hash === '') {
 								cart_hash = '';
 							}
@@ -188,45 +193,45 @@
 		};
 		sd.onActionProduct = function (id, name) {
 			var data = {
-				form: {},
-				tinv_wishlist_id: id || '',
-				tinv_wishlist_name: name || '',
-				product_type: $(this).attr('data-tinv-wl-producttype'),
-				product_id: $(this).attr('data-tinv-wl-product') || 0,
-				product_variation: $(this).attr('data-tinv-wl-productvariation') || 0,
-				product_action: $(this).attr('data-tinv-wl-action') || 'addto'
-			},
-			a = this;
-			$(a).closest('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select, textarea').each(function () {
+					form: {},
+					tinv_wishlist_id: id || '',
+					tinv_wishlist_name: name || '',
+					product_type: $(this).attr('data-tinv-wl-producttype'),
+					product_id: $(this).attr('data-tinv-wl-product') || 0,
+					product_variation: $(this).attr('data-tinv-wl-productvariation') || 0,
+					product_action: $(this).attr('data-tinv-wl-action') || 'addto'
+				},
+				a = this;
+			$(a).closest('form.cart[method=post], .woocommerce-variation-add-to-cart, .tinvwl-loop-button-wrapper').find('input, select, textarea').each(function () {
 				var name_elm = $(this).attr('name'),
-				type_elm = $(this).attr('type'),
-				value_elm = $(this).val(),
-				count = 10,
-				ti_merge_value = function (o1, o2) {
-					if ('object' === typeof o2) {
-						if ('undefined' === typeof o1) {
-							o1 = {};
-						}
-						for (var i in o2) {
-							if ('' === i) {
-								var j = -1;
-								for (j in o1) {
-									j = j;
-								}
-								j = parseInt(j) + 1;
-								o1[j] = ti_merge_value(o1[i], o2[i]);
-							} else {
-								o1[i] = ti_merge_value(o1[i], o2[i]);
+					type_elm = $(this).attr('type'),
+					value_elm = $(this).val(),
+					count = 10,
+					ti_merge_value = function (o1, o2) {
+						if ('object' === typeof o2) {
+							if ('undefined' === typeof o1) {
+								o1 = {};
 							}
+							for (var i in o2) {
+								if ('' === i) {
+									var j = -1;
+									for (j in o1) {
+										j = j;
+									}
+									j = parseInt(j) + 1;
+									o1[j] = ti_merge_value(o1[i], o2[i]);
+								} else {
+									o1[i] = ti_merge_value(o1[i], o2[i]);
+								}
+							}
+							return o1;
+						} else {
+							return o2;
 						}
-						return o1;
-					} else {
-						return o2;
-					}
-				};
-                if ( 'button' === type_elm ) {
-                    return;
-                }
+					};
+				if ('button' === type_elm) {
+					return;
+				}
 				while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {
 					var n_name = name_elm.match(/^(.+)\[([^\[\]]*?)\]$/);
 					if (3 === n_name.length) {
@@ -320,8 +325,8 @@
 				var a = this;
 				$(this.tinvwl_dialog).find(s.class.dialogbutton).off('click').on('click', function () {
 					var b = $(a.tinvwl_dialog).find(s.class.select),
-					c = $(a.tinvwl_dialog).find(s.class.newtitle),
-					d;
+						c = $(a.tinvwl_dialog).find(s.class.newtitle),
+						d;
 					if (b.val() || c.val()) {
 						s.onActionProduct.call(a, b.val(), c.val());
 					} else {
@@ -397,7 +402,7 @@
 			},
 			rule: function () {
 				var form_elements = $(this).parents('form').eq(0).find(s.selector),
-				trigger = s.invert;
+					trigger = s.invert;
 				if (0 === form_elements.length) {
 					return s.ifempty;
 				}
@@ -434,15 +439,15 @@
 (function ($) {
 	$('.variations_form').each(function () {
 		var c = $(this),
-		e = c.find('.tinvwl_add_to_wishlist_button');
+			e = c.find('.tinvwl_add_to_wishlist_button');
 		if (e.length) {
 			c.on('hide_variation', function (a) {
 				a.preventDefault();
 				e.addClass('disabled-add-wishlist');
 			}).on('show_variation', function (a, b, d) {
 				var f = JSON.parse(e.attr('data-tinv-wl-list')),
-				j = false,
-				g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
+					j = false,
+					g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 				for (var i in f) {
 					if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
 						j = true;
@@ -459,19 +464,19 @@
 	$(document).ready(function () {
 		$.fn.tinvwl_modal = function (so) {
 			var sd = {
-				showClass: 'tinv-modal-open',
-				modal: '.tinv-modal',
-				onPrepare: function () {
-					if (!$('body > .tinv-wishlist').length) {
-						$('body').append($('<div>').addClass('tinv-wishlist'));
+					showClass: 'tinv-modal-open',
+					modal: '.tinv-modal',
+					onPrepare: function () {
+						if (!$('body > .tinv-wishlist').length) {
+							$('body').append($('<div>').addClass('tinv-wishlist'));
+						}
+						$(this).appendTo('body > .tinv-wishlist');
 					}
-					$(this).appendTo('body > .tinv-wishlist');
-				}
-			},
-			s = $.extend(true, {}, sd, so);
+				},
+				s = $.extend(true, {}, sd, so);
 			return $(this).each(function () {
 				var a = $(this),
-				b = a.next(s.modal);
+					b = a.next(s.modal);
 				s.onPrepare.call(b);
 				a.on('click', function () {
 					b.addClass(s.showClass);

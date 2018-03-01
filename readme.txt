@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,21 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.6.1 =
+*Release Date - 01 March 2018*
+* Fixed an issue with deprecated function create_function(); on PHP 7.2+
+* Fixed an issue with duplicated products in Wishlist
+* Fixed an issue with empty wishlists in database and added cleanup on plugin upgrade
+* Fixed an issue when variable products were not removed from wishlist after adding to cart
+* Fixed PHP undefined notices in Wishlist table
+* Fixed warnings for non-existent products in Wishlist
+* Added new option "Show button text" that allows displaying the only add to wishlist icon
+* Added custom classes for buttons
+* Added "nofollow" attribute for button links
+* Improved compatibility with [WP Multilang](https://wordpress.org/plugins/wp-multilang/) plugin
+* Improved compatibility with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
+* Improved compatibility with [Personalized Product Option Manager](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
 
 = 1.6.0 =
 *Release Date - 08 February 2018*

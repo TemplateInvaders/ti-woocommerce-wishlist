@@ -179,7 +179,11 @@ class TInvWL_Public_Wishlist_Buttons {
 			add_filter( self::$_n . '_after__button_' . $button['name'], $button['after'] );
 		}
 
-		add_action( $button['event'], create_function( '$a', 'if (' . $button['condition'] . '){' . __CLASS__ . '::button("' . $button['name'] . '","' . $button['title'] . '","' . $button['submit'] . '");}' ), $button['priority'] ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.create_function
+		add_action( $button['event'], function () use ( $button ) {
+			if ( $button['condition'] ) {
+				self::button( $button['name'], $button['title'], $button['submit'] );
+			}
+		}, $button['priority'] );
 		add_action( 'tinvwl_action_' . $button['name'], $button['method'], 10, 4 );
 	}
 

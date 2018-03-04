@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -129,7 +129,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 == Changelog ==
 
-= 1.6.1 =
+= 1.6.2 =
+*Release Date - 04 March 2018*
+
+* Added support for [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+* Removed background checks for missed actions inside WooCommerce templates. 
+
 *Release Date - 01 March 2018*
 
 * Fixed an issue with deprecated function create_function(); on PHP 7.2+

@@ -131,6 +131,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 = 1.6.1 =
 *Release Date - 01 March 2018*
+
 * Fixed an issue with deprecated function create_function(); on PHP 7.2+
 * Fixed an issue with duplicated products in Wishlist
 * Fixed an issue with empty wishlists in database and added cleanup on plugin upgrade

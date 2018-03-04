@@ -980,9 +980,15 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 	 */
 	function tinvwl_set_utm() {
 
+		// Forcing partners UTM.
+		if ( class_exists( 'Ocean_Extra' ) && ! defined( 'TINVWL_PARTNER' ) && ! defined( 'TINVWL_CAMPAIGN' ) ) {
+			define( 'TINVWL_PARTNER', 'oceanwporg' );
+			define( 'TINVWL_CAMPAIGN', 'oceanwp_theme' );
+		}
+
 		// Set a source.
 		$source = get_option( TINVWL_PREFIX . '_utm_source' );
-		if ( ! $source ) {
+		if ( ! $source || $source !== defined( 'TINVWL_PARTNER' ) ) {
 			$source = defined( 'TINVWL_PARTNER' ) ? TINVWL_PARTNER : 'wordpress_org';
 			update_option( TINVWL_PREFIX . '_utm_source', $source );
 		}
@@ -991,7 +997,7 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 
 		// Set a medium.
 		$medium = get_option( TINVWL_PREFIX . '_utm_medium' );
-		if ( ! $medium ) {
+		if ( ! $medium || ( 'organic' === $medium && defined( 'TINVWL_PARTNER' ) ) ) {
 			$medium = defined( 'TINVWL_PARTNER' ) ? 'integration' : 'organic';
 			update_option( TINVWL_PREFIX . '_utm_medium', $medium );
 		}
@@ -1000,7 +1006,7 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 
 		// Set a campaign.
 		$campaign = get_option( TINVWL_PREFIX . '_utm_campaign' );
-		if ( ! $campaign ) {
+		if ( ! $campaign || $campaign !== defined( 'TINVWL_CAMPAIGN' ) ) {
 			$campaign = defined( 'TINVWL_PARTNER' ) ? ( defined( 'TINVWL_CAMPAIGN' ) ? TINVWL_CAMPAIGN : TINVWL_PARTNER ) : 'organic';
 			update_option( TINVWL_PREFIX . '_utm_campaign', $campaign );
 		}

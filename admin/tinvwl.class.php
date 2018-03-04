@@ -79,9 +79,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 
 		add_action( 'switch_theme', array( $this, 'admin_notice_outdated_templates' ) );
 		add_action( 'tinvwl_updated', array( $this, 'admin_notice_outdated_templates' ) );
-		add_action( 'wp_ajax_' . $this->_n . '_checker_hook', array( $this, 'validation_template' ) );
+//		add_action( 'wp_ajax_' . $this->_n . '_checker_hook', array( $this, 'validation_template' ) );
 		add_action( 'switch_theme', array( $this, 'clear_notice_validation_template' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_validate_template' ) );
+//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_validate_template' ) );
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
 		$this->scheduled_remove_wishlist();

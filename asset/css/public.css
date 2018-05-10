@@ -1945,3 +1945,11 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 .tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_add_to_wishlist-text {
 	display: none;
 }
+
+@media only screen and (max-width:1024px) {
+	.tinv-wishlist .tinvwl-table-manage-list .product-remove { display: table-cell; }
+}
+
+@media only screen and (max-width:640px) {
+	.tinv-wishlist table.tinvwl-table-manage-list tbody td.product-remove { display: block; }
+}

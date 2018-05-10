@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 04:03+0700\n"
+"POT-Creation-Date: 2018-05-11 04:29+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1056,11 +1056,11 @@ msgstr ""
 msgid "Ready!"
 msgstr ""
 
-#: public/addtowishlist.class.php:169
+#: public/addtowishlist.class.php:172
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:171
+#: public/addtowishlist.class.php:174
 msgid "Login"
 msgstr ""
 
@@ -1080,7 +1080,7 @@ msgid ""
 msgstr ""
 
 #: public/tinvwl.class.php:448
-msgid "No items or action selected."
+msgid "No items or actions are selected."
 msgstr ""
 
 #: public/widget/topwishlist.class.php:24

@@ -173,7 +173,7 @@ class TInvWL_Product_Legacy {
 	 */
 	function add( $data = array() ) {
 		$default = array(
-			'date'			 => date( 'Y-m-d H:i:s' ),
+			'date'			 => current_time( 'Y-m-d H:i:s' ),
 			'product_id'	 => 0,
 			'quantity'		 => 1,
 			'variation_id'	 => 0,

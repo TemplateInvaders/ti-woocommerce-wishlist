@@ -139,7 +139,7 @@ class TInvWL_Product {
 	function add( $data = array(), $meta = array() ) {
 		$default = array(
 			'author'       => $this->user,
-			'date'         => date( 'Y-m-d H:i:s' ),
+			'date'         => current_time( 'Y-m-d H:i:s' ),
 			'in_stock'     => false,
 			'price'        => 0,
 			'product_id'   => 0,

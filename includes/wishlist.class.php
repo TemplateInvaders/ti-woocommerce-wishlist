@@ -172,7 +172,7 @@ class TInvWL_Wishlist {
 
 		$default = array(
 			'author'    => $user_id,
-			'date'      => date( 'Y-m-d H:i:s' ),
+			'date'      => current_time( 'Y-m-d H:i:s' ),
 			'status'    => $this->default_privacy,
 			'share_key' => $this->unique_share_key(),
 			'title'     => $this->default_name,

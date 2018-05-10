@@ -106,16 +106,19 @@ class TInvWL_Public_AddToWishlist {
 				case 'before':
 					add_action( 'tinvwl_after_shop_loop_item', 'tinvwl_view_addto_htmlloop' );
 					add_action( 'woocommerce_after_shop_loop_item', 'tinvwl_view_addto_htmlloop', 9 );
+					add_action( 'ocean_before_archive_product_add_to_cart', 'tinvwl_view_addto_htmlloop' );
 					break;
 				case 'above_thumb':
 					add_action( 'tinvwl_above_thumb_loop_item', 'tinvwl_view_addto_htmlloop' );
 					add_action( 'woocommerce_before_shop_loop_item', 'tinvwl_view_addto_htmlloop', 9 );
+					add_action( 'ocean_before_archive_product_image', 'tinvwl_view_addto_htmlloop' );
 				case 'shortcode':
 					break;
 				case 'after':
 				default: // Compatibility with previous versions.
 					add_action( 'tinvwl_after_shop_loop_item', 'tinvwl_view_addto_htmlloop' );
 					add_action( 'woocommerce_after_shop_loop_item', 'tinvwl_view_addto_htmlloop' );
+					add_action( 'ocean_after_archive_product_add_to_cart', 'tinvwl_view_addto_htmlloop' );
 					break;
 			}
 		}

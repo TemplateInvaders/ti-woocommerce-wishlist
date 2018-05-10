@@ -351,7 +351,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	margin-top: 15px;
 }
 
-.tinv-create-list .input-group + ul {
+.tinv-create-list .tinvwl-input-group + ul {
 	margin-top: 25px;
 }
 
@@ -1214,7 +1214,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	margin: 0;
 }
 
-.tinv-wishlist .tinv-login form .form-row + .input-group-btn {
+.tinv-wishlist .tinv-login form .form-row + .tinvwl-input-group-btn {
 	padding-left: 9px;
 }
 
@@ -1288,7 +1288,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 		margin-top: 10px;
 	}
 
-	.tinv-wishlist.woocommerce .tinv-login form .input-group-btn {
+	.tinv-wishlist.woocommerce .tinv-login form .tinvwl-input-group-btn {
 		display: block;
 		padding: 0;
 		width: auto;
@@ -1655,8 +1655,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 /* Modal Errors */
 
-.tinv-wishlist .input-group.tinvwl-has-error .form-control,
-.tinv-wishlist .tinvwl-has-error:not(.input-group) {
+.tinv-wishlist .tinvwl-input-group.tinvwl-has-error .form-control,
+.tinv-wishlist .tinvwl-has-error:not(.tinvwl-input-group) {
 	border: 2px solid #FF0000;
 }
 
@@ -1673,14 +1673,14 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 /* Bootstrap */
 
-.input-group {
+.tinvwl-input-group {
 	position: relative;
 	display: table;
 	/*width: 100%;*/
 	border-collapse: separate;
 }
 
-.input-group .form-control {
+.tinvwl-input-group .form-control {
 	position: relative;
 	z-index: 1;
 	float: left;
@@ -1689,64 +1689,64 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	margin-bottom: 0;
 }
 
-.input-group .form-control + .input-group-btn {
+.tinvwl-input-group .form-control + .tinvwl-input-group-btn {
 	padding-left: 15px;
 }
 
-.tinv-wishlist .tinvwl-to-left .input-group .form-control + .input-group-btn {
+.tinv-wishlist .tinvwl-to-left .tinvwl-input-group .form-control + .tinvwl-input-group-btn {
 	padding-left: 10px;
 }
 
-.tinv-wishlist .tinv-search-form .input-group .form-control + .input-group-btn {
+.tinv-wishlist .tinv-search-form .tinvwl-input-group .form-control + .tinvwl-input-group-btn {
 	padding-left: 9px;
 }
 
-.input-group-addon,
-.input-group-btn,
-.input-group .form-control {
+.tinvwl-input-group-addon,
+.tinvwl-input-group-btn,
+.tinvwl-input-group .form-control {
 	display: table-cell;
 }
 
-.input-group-addon,
-.input-group-btn {
+.tinvwl-input-group-addon,
+.tinvwl-input-group-btn {
 	width: 1%;
 	white-space: nowrap;
 	vertical-align: top;
 }
 
 @media only screen and (max-width: 640px) {
-	.input-group {
+	.tinvwl-input-group {
 		width: 100%;
 	}
 }
 
 @media only screen and (max-width: 667px) {
-	.input-group:not(.tinvwl-no-full) {
+	.tinvwl-input-group:not(.tinvwl-no-full) {
 		display: block;
 	}
 
-	.input-group:not(.tinvwl-no-full) .form-control {
+	.tinvwl-input-group:not(.tinvwl-no-full) .form-control {
 		float: none;
 	}
 
-	.input-group:not(.tinvwl-no-full) .form-control + .input-group-btn,
-	.tinv-wishlist .tinv-search-form .input-group:not(.tinvwl-no-full) .form-control + .input-group-btn {
+	.tinvwl-input-group:not(.tinvwl-no-full) .form-control + .tinvwl-input-group-btn,
+	.tinv-wishlist .tinv-search-form .tinvwl-input-group:not(.tinvwl-no-full) .form-control + .tinvwl-input-group-btn {
 		padding-top: 10px;
 		padding-left: 0;
 	}
 
-	.input-group:not(.tinvwl-no-full) .input-group-addon,
-	.input-group:not(.tinvwl-no-full) .input-group-btn,
-	.input-group:not(.tinvwl-no-full) .form-control {
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn,
+	.tinvwl-input-group:not(.tinvwl-no-full) .form-control {
 		display: block;
 	}
 
-	.input-group:not(.tinvwl-no-full) .input-group-addon,
-	.input-group:not(.tinvwl-no-full) .input-group-btn,
-	.input-group:not(.tinvwl-no-full) .input-group-addon > input,
-	.input-group:not(.tinvwl-no-full) .input-group-addon > button,
-	.input-group:not(.tinvwl-no-full) .input-group-btn > input,
-	.input-group:not(.tinvwl-no-full) .input-group-btn > button {
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon > input,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon > button,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn > input,
+	.tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn > button {
 		width: 100%;
 	}
 }

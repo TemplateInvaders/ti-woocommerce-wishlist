@@ -2870,12 +2870,12 @@ textarea[name="style_plain-css"] {
 /* Preview Select */
 
 @media (min-width: 1200px) {
-    .tinvwl-empty-select + .input-group-btn {
+    .tinvwl-empty-select + .tinvwl-input-group-btn {
         text-align: right;
     }
 }
 
-.tinvwl-empty-select + .input-group-btn .tinvwl-btn {
+.tinvwl-empty-select + .tinvwl-input-group-btn .tinvwl-btn {
     margin-left: 0;
 }
 
@@ -3018,44 +3018,44 @@ label.one-line {
     }
 }
 
-.input-group-btn {
+.tinvwl-input-group-btn {
     margin-top: 13px;
 }
 
-.input-group {
+.tinvwl-input-group {
     position: relative;
     display: table;
     border-collapse: separate;
 }
 
-.input-group-addon,
-.input-group-btn {
+.tinvwl-input-group-addon,
+.tinvwl-input-group-btn {
     width: 1%;
     white-space: nowrap;
     vertical-align: middle;
 }
 
-.input-group-btn {
+.tinvwl-input-group-btn {
     margin-top: 0;
     position: relative;
     white-space: nowrap;
 }
 
-.input-group-btn .tinvwl-btn {
+.tinvwl-input-group-btn .tinvwl-btn {
     margin-left: 10px;
 }
 
-.input-group-btn > .btn {
+.tinvwl-input-group-btn > .btn {
     position: relative;
 }
 
-.input-group .form-control,
-.input-group-addon,
-.input-group-btn {
+.tinvwl-input-group .form-control,
+.tinvwl-input-group-addon,
+.tinvwl-input-group-btn {
     display: table-cell;
 }
 
-.input-group .form-control {
+.tinvwl-input-group .form-control {
     position: relative;
     z-index: 2;
     float: left;
@@ -3064,31 +3064,31 @@ label.one-line {
 }
 
 @media only screen and (max-width: 1199px) {
-    .input-group:not(.tinvwl-no-full) {
+    .tinvwl-input-group:not(.tinvwl-no-full) {
         display: block;
     }
 
-    .input-group:not(.tinvwl-no-full) .form-control {
+    .tinvwl-input-group:not(.tinvwl-no-full) .form-control {
         float: none;
     }
 
-    .input-group:not(.tinvwl-no-full) .form-control + .input-group-btn {
+    .tinvwl-input-group:not(.tinvwl-no-full) .form-control + .tinvwl-input-group-btn {
         padding-top: 10px;
         padding-left: 0;
     }
 
-    .input-group:not(.tinvwl-no-full) .input-group-addon,
-    .input-group:not(.tinvwl-no-full) .input-group-btn,
-    .input-group:not(.tinvwl-no-full) .form-control {
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn,
+    .tinvwl-input-group:not(.tinvwl-no-full) .form-control {
         display: block;
     }
 
-    .input-group:not(.tinvwl-no-full) .input-group-addon,
-    .input-group:not(.tinvwl-no-full) .input-group-btn,
-    .input-group:not(.tinvwl-no-full) .input-group-addon > input,
-    .input-group:not(.tinvwl-no-full) .input-group-addon > button,
-    .input-group:not(.tinvwl-no-full) .input-group-btn > input,
-    .input-group:not(.tinvwl-no-full) .input-group-btn > button {
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon > input,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon > button,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn > input,
+    .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn > button {
         margin-left: 0;
     }
 }
@@ -3117,16 +3117,16 @@ label.one-line {
     .form-inline .form-control-static {
         display: inline-block;
     }
-    .form-inline .input-group {
+    .form-inline .tinvwl-input-group {
         display: inline-table;
         vertical-align: middle;
     }
-    .form-inline .input-group .input-group-addon,
-    .form-inline .input-group .input-group-btn,
-    .form-inline .input-group .form-control {
+    .form-inline .tinvwl-input-group .tinvwl-input-group-addon,
+    .form-inline .tinvwl-input-group .tinvwl-input-group-btn,
+    .form-inline .tinvwl-input-group .form-control {
         width: auto;
     }
-    .form-inline .input-group > .form-control {
+    .form-inline .tinvwl-input-group > .form-control {
         width: 100%;
     }
     .form-inline .control-label label {

@@ -484,7 +484,7 @@
 			});
 		};
 		$('.tinv-modal-btn').tinvwl_modal({});
-		$('#tinvwl_manage_actions, #tinvwl_product_actions').addClass('form-control').parent().wrapInner('<div class="input-group tinvwl-no-full">').find('button').wrap('<span class="input-group-btn">');
+		$('#tinvwl_manage_actions, #tinvwl_product_actions').addClass('form-control').parent().wrapInner('<div class="tinvwl-input-group tinvwl-no-full">').find('button').wrap('<span class="tinvwl-input-group-btn">');
 		$('.tinv-lists-nav').each(function () {
 			if (!$.trim($(this).html()).length) {
 				$(this).remove();

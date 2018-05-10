@@ -419,6 +419,7 @@
 		return $(this).each(function () {
 			$(this).on('click', function (event) {
 				if (!s.rule.call($(this))) {
+					alert(window.tinvwl_add_to_wishlist['tinvwl_break_submit']);
 					event.preventDefault();
 				}
 			});

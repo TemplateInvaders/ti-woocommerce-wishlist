@@ -445,6 +445,7 @@ class TInvWL_Public_TInvWL {
 			'text_already_in'            => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
+			'tinvwl_break_submit' => esc_attr__( 'No items or action selected.', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );
 	}

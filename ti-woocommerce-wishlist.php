@@ -132,5 +132,5 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 
 register_activation_hook( __FILE__, 'activation_tinv_wishlist' );
 register_deactivation_hook( __FILE__, 'deactivation_tinv_wishlist' );
-
+register_uninstall_hook( __FILE__, 'uninstall_tinv_wishlist' );
 add_action( 'plugins_loaded', 'run_tinv_wishlist', 11 );

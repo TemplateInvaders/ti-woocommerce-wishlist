@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,16 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.7.0 =
+*Release Date - 10 May 2018*
+
+* Fixed an Issue when "Remove Product" button disappears on mobile devices and tablets
+* Fixed "input-group" class compatibility issue with Bootstratp 4
+* Date of products addition changed to WP local time instead of server time
+* Freemius SDK removed completely from plugin
+* Added an alert when items or action are not selected before applying bulk actions on a Wishlist page
+* Improved compatibility with OceanWP WordPress theme
 
 = 1.6.2 =
 *Release Date - 04 March 2018*

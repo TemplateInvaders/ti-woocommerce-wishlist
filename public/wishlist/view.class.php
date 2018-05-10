@@ -195,6 +195,8 @@ class TInvWL_Public_Wishlist_View {
 			if ( empty( $wishlist ) ) {
 				return false;
 			}
+			
+			define( 'DONOTCACHEPAGE', 1 );
 
 			$is_owner = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];
 			$nonce    = filter_input( INPUT_POST, 'wishlist_nonce' );

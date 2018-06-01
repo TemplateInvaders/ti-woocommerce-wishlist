@@ -574,18 +574,6 @@ h6 {
     text-align: right;
 }
 
-.tinvwl-nav .tinvwl-next .tinvwl-btn {
-    /*float: right;*/
-}
-
-@media (max-width: 1199px) {
-    .tinvwl-nav .tinvwl-prev,
-    .tinvwl-nav .tinvwl-next {
-        /*float: none;
-        text-align: left;*/
-    }
-}
-
 .tinvwl-nav .tinvwl-btn + .tinvwl-btn {
     margin-left: 20px;
 }
@@ -1069,10 +1057,6 @@ a.tinvwl-btn:not(:disabled):focus {
 
     .tinvwl-header .tinvwl-status-panel > a + a {
         margin-left: 9px;
-    }
-
-    .tinvwl-header {
-        padding: 18px 0 25px;
     }
 
     .tinwl-logo, .tinwl-logo h2,

@@ -1454,11 +1454,11 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 		$personalized_meta = absint( get_post_meta( $wl_product['product_id'], '_product_meta_id', true ) );
 		if ( ! empty( $personalized_meta ) && class_exists( 'NM_PersonalizedProduct' ) ) {
 
-			$product_meta = $wl_product['meta']['ppom']['fields'];
+			$product_meta = ( isset( $wl_product['meta']['ppom'] ) ) ? $wl_product['meta']['ppom']['fields'] : '';
+
+			$item_meta = array();
 
 			if ( $product_meta ) {
-
-				$item_meta = array();
 
 				foreach ( $product_meta as $key => $value ) {
 

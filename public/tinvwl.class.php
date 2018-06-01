@@ -437,7 +437,7 @@ class TInvWL_Public_TInvWL {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/public' . $suffix . '.js', array(
 			'jquery',
-			'js-cookie',
+			version_compare( WC_VERSION, '3.0.0', '<' ) ? 'jquery-cookie' : 'js-cookie',
 			'wc-cart-fragments'
 		), $this->_v, true );
 		wp_localize_script( $this->_n, 'tinvwl_add_to_wishlist', array(
@@ -445,7 +445,7 @@ class TInvWL_Public_TInvWL {
 			'text_already_in'            => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
-			'tinvwl_break_submit' => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
+			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 		) );
 		wp_enqueue_script( $this->_n );
 	}

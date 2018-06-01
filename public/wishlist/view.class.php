@@ -195,7 +195,7 @@ class TInvWL_Public_Wishlist_View {
 			if ( empty( $wishlist ) ) {
 				return false;
 			}
-			
+
 			define( 'DONOTCACHEPAGE', 1 );
 
 			$is_owner = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];
@@ -391,6 +391,16 @@ class TInvWL_Public_Wishlist_View {
 		if ( $wishlist['is_owner'] ) {
 			tinv_wishlist_template( 'ti-wishlist.php', $data );
 		} else {
+			if ( class_exists( 'WC_Catalog_Visibility_Options' ) ) {
+				global $wc_cvo;
+				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_atc' ) ) {
+					unset( $data['wishlist_table_row']['add_to_cart'] );
+				}
+				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_prices' ) ) {
+					unset( $data['wishlist_table_row']['colm_price'] );
+				}
+			}
+
 			tinv_wishlist_template( 'ti-wishlist-user.php', $data );
 		}
 	}

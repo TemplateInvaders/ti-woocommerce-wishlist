@@ -93,12 +93,14 @@ class TInvWL_Public_AddToWishlist {
 				add_action( 'tinvwl_single_product_summary', 'tinvwl_view_addto_htmlout' );
 				add_action( 'woocommerce_before_add_to_cart_button', 'tinvwl_view_addto_html', 20 );
 				add_action( 'woocommerce_single_product_summary', 'tinvwl_view_addto_htmlout', 29 );
+				add_action( 'catalog_visibility_before_alternate_add_to_cart_button', 'tinvwl_view_addto_html' );
 				break;
 			case 'after':
 				add_action( 'tinvwl_after_add_to_cart_button', 'tinvwl_view_addto_html' );
 				add_action( 'tinvwl_single_product_summary', 'tinvwl_view_addto_htmlout' );
 				add_action( 'woocommerce_after_add_to_cart_button', 'tinvwl_view_addto_html', 0 );
 				add_action( 'woocommerce_single_product_summary', 'tinvwl_view_addto_htmlout', 31 );
+				add_action( 'catalog_visibility_after_alternate_add_to_cart_button', 'tinvwl_view_addto_html' );
 				break;
 		}
 		if ( tinv_get_option( 'add_to_wishlist_catalog', 'show_in_loop' ) ) {

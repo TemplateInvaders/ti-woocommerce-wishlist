@@ -179,9 +179,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$user_info = get_userdata( $user_id );
 
 		wp_add_inline_script( $this->_n, 'window.intercomSettings = {
-			app_id: "zyh6v0pc",	
-			email: "' . $user_info->user_email . '",
-			name: "' . $user_info->user_nicename . '",						
+			app_id: "zyh6v0pc",				
 			"Website": "' . get_site_url() . '",
 			"Plugin name": "WooCommerce Wishlist Plugin",
 			"Plugin version":"' . TINVWL_FVERSION . '",

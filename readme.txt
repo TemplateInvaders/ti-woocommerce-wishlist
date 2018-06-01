@@ -145,6 +145,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Added support for [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
 * Removed background checks for missed actions inside WooCommerce templates. 
 
+= 1.6.1 =
 *Release Date - 01 March 2018*
 
 * Fixed an issue with deprecated function create_function(); on PHP 7.2+

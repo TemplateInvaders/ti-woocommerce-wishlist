@@ -91,7 +91,7 @@ class TInvWL_Public_AddToWishlist {
 			case 'before':
 				add_action( 'tinvwl_before_add_to_cart_button', 'tinvwl_view_addto_html' );
 				add_action( 'tinvwl_single_product_summary', 'tinvwl_view_addto_htmlout' );
-				add_action( 'woocommerce_before_add_to_cart_button', 'tinvwl_view_addto_html', 0 );
+				add_action( 'woocommerce_before_add_to_cart_button', 'tinvwl_view_addto_html', 20 );
 				add_action( 'woocommerce_single_product_summary', 'tinvwl_view_addto_htmlout', 29 );
 				break;
 			case 'after':

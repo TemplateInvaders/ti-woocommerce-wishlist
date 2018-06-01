@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.7.0
+Stable tag: 1.7.01
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,6 +12,9 @@ Allow your store guests and customers to add products to Wishlist.
 Add Wishlist functionality to your store for free.
 
 == Description ==
+
+= GDPR Ready =
+The WooCommerce Wishlist plugin does not not collect any personal data from website visitors which makes it GDPR compliant.
 
 = Increase Sales and Conversions =
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
@@ -128,6 +131,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.7.1 =
+*Release Date - 01 June 2018*
+
+* WooCommerce 3.4.x support
+* Fixed compatibility issue with Font-Awesome 5+ library used in some themes
+* Fixed JS issue with WooCommerce plugin versions less than 3.0.0
+* Improved compatibility with [Personalized Product Option Manager](https://wordpress.org/plugins/woocommerce-product-addon/) plugin:
+ * Fixed "Add to Wishlist" button position issue
+ * Fixed PHP notices
+* Added support for [WooCommerce Catalog Visibility Options](https://woocommerce.com/products/catalog-visibility-options/?aff=3955) plugin
+* Added support for [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
 
 = 1.7.0 =
 *Release Date - 10 May 2018*

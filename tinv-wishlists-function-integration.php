@@ -1818,3 +1818,190 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 3 );
 } // End if().
+
+
+if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) ) {
+
+	/**
+	 * Set descrition for meta  WooCommerce Product Addons
+	 *
+	 * @param array $meta Meta array.
+	 * @param array $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_item_meta_woocommerce_product_addons( $item_data, $product_id, $variation_id ) {
+
+
+		if ( class_exists( 'WC_Product_Addons' ) ) {
+
+
+			$id = ( $variation_id ) ? $variation_id : $product_id;
+
+			$product_addons = get_product_addons( $id );
+
+			if ( $product_addons ) {
+
+
+				foreach ( $product_addons as $addon ) {
+					foreach ( $addon['options'] as $option ) {
+						$original_data = 'addon-' . $addon['field-name'];
+
+						if ( 'file_upload' === $addon['type'] ) {
+							$original_data = 'addon-' . $addon['field-name'] . '-' . sanitize_title( $option['label'] );
+						}
+
+						$value = isset( $item_data[ $original_data ] ) ? $item_data[ $original_data ]['display'] : '';
+
+						if ( $value == '' ) {
+							continue;
+						}
+
+
+						if ( is_array( $value ) ) {
+							$value = array_map( 'stripslashes', $value );
+						} else {
+							$value = stripslashes( $value );
+						}
+						include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-class-product-addon-field.php' );
+						switch ( $addon['type'] ) {
+							case 'checkbox' :
+							case 'radiobutton' :
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-list.php' );
+								$field = new Product_Addon_Field_List( $addon, $value );
+								break;
+							case 'custom' :
+							case 'custom_textarea' :
+							case 'custom_price' :
+							case 'custom_letters_only' :
+							case 'custom_digits_only' :
+							case 'custom_letters_or_digits' :
+							case 'custom_email' :
+							case 'input_multiplier' :
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-custom.php' );
+								$field = new Product_Addon_Field_Custom( $addon, $value );
+								break;
+							case 'select' :
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-select.php' );
+								$field = new Product_Addon_Field_Select( $addon, $value );
+								break;
+							case 'file_upload' :
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-file-upload.php' );
+								$field = new Product_Addon_Field_File_Upload( $addon, $value, false );
+								break;
+						}
+
+
+						$data = $field->get_cart_item_data();
+
+						unset( $item_data[ $original_data ] );
+						foreach ( $data as $option ) {
+							$name = $option['name'];
+
+							if ( $option['price'] && apply_filters( 'woocommerce_addons_add_price_to_name', '__return_true' ) ) {
+								$name .= ' (' . wc_price( get_product_addon_price_for_display( $option['price'] ) ) . ')';
+							}
+
+							$item_data[] = array(
+								'key'     => $name,
+								'display' => $option['value'],
+							);
+						}
+					}
+				}
+			}
+		}
+
+		return $item_data;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_product_addons', 10, 3 );
+} // End if().
+
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
+
+	/**
+	 * Modify price for  WooCommerce Product Addons.
+	 *
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_product_addons( $price, $wl_product, $product ) {
+
+		if ( class_exists( 'WC_Product_Addons' ) ) {
+
+			$price = 0;
+
+			$product_addons = get_product_addons( $product->get_id() );
+
+			if ( $product_addons ) {
+
+
+				foreach ( $product_addons as $addon ) {
+
+					$original_data = 'addon-' . $addon['field-name'];
+
+					$value = isset( $wl_product['meta'][ $original_data ] ) ? $wl_product['meta'][ $original_data ] : '';
+					if ( $value == '' ) {
+						continue;
+					}
+
+
+					if ( is_array( $value ) ) {
+						$value = array_map( 'stripslashes', $value );
+					} else {
+						$value = stripslashes( $value );
+					}
+					include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-class-product-addon-field.php' );
+					switch ( $addon['type'] ) {
+						case 'checkbox' :
+						case 'radiobutton' :
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-list.php' );
+							$field = new Product_Addon_Field_List( $addon, $value );
+							break;
+						case 'custom' :
+						case 'custom_textarea' :
+						case 'custom_price' :
+						case 'custom_letters_only' :
+						case 'custom_digits_only' :
+						case 'custom_letters_or_digits' :
+						case 'custom_email' :
+						case 'input_multiplier' :
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-custom.php' );
+							$field = new Product_Addon_Field_Custom( $addon, $value );
+							break;
+						case 'select' :
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-select.php' );
+							$field = new Product_Addon_Field_Select( $addon, $value );
+							break;
+						case 'file_upload' :
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-file-upload.php' );
+							$field = new Product_Addon_Field_File_Upload( $addon, $value, false );
+							break;
+					}
+
+
+					$data = $field->get_cart_item_data();
+					foreach ( $data as $option ) {
+						if ( $option['price'] ) {
+							$price += (float) $option['price'];
+						}
+					}
+
+
+				}
+
+				$price = wc_price( $product->get_price() + $price );
+			}
+		}
+
+
+		return $price;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_addons', 10, 3 );
+} // End if().

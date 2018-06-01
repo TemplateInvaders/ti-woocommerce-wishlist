@@ -769,7 +769,7 @@ if ( ! function_exists( 'tinvwl_item_status_woocommerce_bookings' ) ) {
 			$booking_form = new WC_Booking_Form( $product );
 			$cost         = $booking_form->calculate_booking_cost( $wl_product['meta'] );
 			if ( is_wp_error( $cost ) ) {
-				return '<p class="stock out-of-stock"><span><i class="fa fa-times"></i></span><span>' . $cost->get_error_message() . '</span></p>';
+				return '<p class="stock out-of-stock"><span><i class="fati fati-times"></i></span><span>' . $cost->get_error_message() . '</span></p>';
 			}
 		}
 
@@ -881,7 +881,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					if ( ! array_key_exists( 'class', $availability ) ) {
 						$availability['class'] = '';
 					}
-					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2"></td>&nbsp;<td class="product-thumbnail">%2$s</td><td class="product-name">%1$s:<br/>%3$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
@@ -1030,7 +1030,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					if ( ! array_key_exists( 'class', $availability ) ) {
 						$availability['class'] = '';
 					}
-					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2">&nbsp;</td><td class="product-thumbnail">%1$s</td><td class="product-name">%2$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
@@ -1177,7 +1177,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_mix_and_match_products' ) ) {
 					if ( ! array_key_exists( 'class', $availability ) ) {
 						$availability['class'] = '';
 					}
-					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2">&nbsp;</td><td class="product-thumbnail">%1$s</td><td class="product-name">%2$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
@@ -1332,7 +1332,7 @@ if ( ! function_exists( 'tinvwl_item_status_yith_woocommerce_product_bundles' ) 
 					'class'        => 'out-of-stock',
 					'availability' => __( 'Out of stock', 'woocommerce' ),
 				);
-				$availability_html = '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+				$availability_html = '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 			}
 		}
 
@@ -1391,7 +1391,7 @@ if ( ! function_exists( 'tinvwl_row_yith_woocommerce_product_bundles' ) ) {
 					if ( ! array_key_exists( 'class', $availability ) ) {
 						$availability['class'] = '';
 					}
-					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fa fa-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2">&nbsp;</td><td class="product-thumbnail">%1$s</td><td class="product-name">%2$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {

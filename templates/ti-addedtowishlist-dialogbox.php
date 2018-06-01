@@ -20,11 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="tinv-txt"><?php echo $msg; // WPCS: xss ok. ?></div>
 				<div class="tinvwl-buttons-group tinv-wishlist-clear">
 					<button class="button tinvwl_button_close" type="button"><i
-							class="fa fa-times"></i><?php esc_html_e( 'Close', 'ti-woocommerce-wishlist' ); ?></button>
+							class="fati fati-times"></i><?php esc_html_e( 'Close', 'ti-woocommerce-wishlist' ); ?></button>
 					<?php if ( isset( $wishlist_url ) ) : ?>
 						<button class="button tinvwl_button_view tinvwl-btn-onclick"
 						        data-url="<?php echo esc_url( $wishlist_url ); ?>" type="button"><i
-								class="fa fa-heart-o"></i><?php echo esc_html( apply_filters( 'tinvwl-general-text_browse', tinv_get_option( 'general', 'text_browse' ) ) ); ?>
+								class="fati fati-heart-o"></i><?php echo esc_html( apply_filters( 'tinvwl-general-text_browse', tinv_get_option( 'general', 'text_browse' ) ) ); ?>
 						</button>
 					<?php endif; ?>
 					<?php if ( isset( $dialog_custom_url ) && isset( $dialog_custom_html ) ) : ?>

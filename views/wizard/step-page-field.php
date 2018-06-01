@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="form-group">
 		<?php echo TInvWL_Form::_label( sprintf( 'page_%s', $key ), $label, array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 		<div class="tinvwl-page-select <?php echo $page_field['error'] ? esc_attr( 'tinvwl-error ' ) : '' ?>col-md-6">
-			<?php if ( $page_field['error'] ) : ?><span class="tinvwl-error-icon"><i class="fa fa-exclamation-triangle"></i></span><?php endif; ?>
+			<?php if ( $page_field['error'] ) : ?><span class="tinvwl-error-icon"><i class="fati fati-exclamation-triangle"></i></span><?php endif; ?>
 			<?php
 			$select_extra = array(
 				'class'		 => 'form-control',

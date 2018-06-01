@@ -1,5 +1,5 @@
 @font-face {
-	font-family: 'FontAwesome';
+	font-family: 'TIFontAwesome';
 	src:  url('../fonts/fontawesome-webfont.eot?12s0n5');
 	src:  url('../fonts/fontawesome-webfont.eot?12s0n5#iefix') format('embedded-opentype'),
 	url('../fonts/fontawesome-webfont.ttf?12s0n5') format('truetype'),
@@ -9,9 +9,9 @@
 	font-style: normal;
 }
 
-.fa {
+.fati {
 	/* use !important to prevent issues with browser extensions that change fonts */
-	font-family: 'FontAwesome' !important;
+	font-family: 'TIFontAwesome' !important;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -24,51 +24,51 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.fa-wrench:before {
+.fati-wrench:before {
 	content: "\e91a";
 }
-.fa-times:before {
+.fati-times:before {
 	content: "\e901";
 }
-.fa-star:before {
+.fati-star:before {
 	content: "\e902";
 }
-.fa-shopping-cart:before {
+.fati-shopping-cart:before {
 	content: "\e904";
 }
-.fa-magic:before {
+.fati-magic:before {
 	content: "\e908";
 }
-.fa-info:before {
+.fati-info:before {
 	content: "\e90a";
 }
-.fa-heart-o:before {
+.fati-heart-o:before {
 	content: "\e90b";
 }
-.fa-heart:before {
+.fati-heart:before {
 	content: "\e90c";
 }
-.fa-graduation-cap:before {
+.fati-graduation-cap:before {
 	content: "\e90d";
 }
-.fa-floppy-o:before {
+.fati-floppy-o:before {
 	content: "\e90e";
 }
-.fa-eyedropper:before {
+.fati-eyedropper:before {
 	content: "\e90f";
 }
-.fa-exclamation-triangle:before {
+.fati-exclamation-triangle:before {
 	content: "\e911";
 }
-.fa-chevron-left:before {
+.fati-chevron-left:before {
 	content: "\e913";
 }
-.fa-chevron-right:before {
+.fati-chevron-right:before {
 	content: "\e914";
 }
-.fa-check:before {
+.fati-check:before {
 	content: "\e916";
 }
-.fa-arrow-left:before {
+.fati-arrow-left:before {
 	content: "\e919";
 }

@@ -29,35 +29,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<ul class="tinvwl-features">
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#manage"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Multi-Wishlist - allow customer to create wshlists.', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Multi-Wishlist - allow customer to create wshlists.', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#follow"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Follow - customers can follow each others wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Follow - customers can follow each others wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#other"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Advanced Processing Options', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Advanced Processing Options', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#shortcodes"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Shortcodes & Widgets: Search, Recent Wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Shortcodes & Widgets: Search, Recent Wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#manage"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Allow to change product quantity in wishlist table', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Allow to change product quantity in wishlist table', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#login"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Allow guests to create wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Allow guests to create wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#emails"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'Ask for an Estimate', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'Ask for an Estimate', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 						<li>
 							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#button"><i
-									class="fa fa-check"></i><span><?php esc_html_e( 'A lot of other features...', 'ti-woocommerce-wishlist' ) ?></span></a>
+									class="fati fati-check"></i><span><?php esc_html_e( 'A lot of other features...', 'ti-woocommerce-wishlist' ) ?></span></a>
 						</li>
 					</ul>
 				</div>

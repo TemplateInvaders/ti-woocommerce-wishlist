@@ -111,19 +111,19 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 					array(
 						'type'	 => 'button_submit',
 						'name'	 => 'setting_save',
-						'std'	 => '<span><i class="fa fa-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
+						'std'	 => '<span><i class="fati fati-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
 						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
 					),
 					array(
 						'type'	 => 'button_submit',
 						'name'	 => 'setting_reset',
-						'std'	 => '<span><i class="fa fa-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
+						'std'	 => '<span><i class="fati fati-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
 						'extra'	 => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
 					),
 					array(
 						'type'	 => 'button_submit_quick',
 						'name'	 => 'setting_save_quick',
-						'std'	 => '<span><i class="fa fa-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
+						'std'	 => '<span><i class="fati fati-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
 					),
 				),
 			),

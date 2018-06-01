@@ -64,7 +64,7 @@ function TInvWL($, h) {
 				});
 			});
 			$(document).on('click', function (e) {
-				if (!$(e.target).is(formColor + ', .iris-picker, .iris-picker-inner, .iris-slider-offset, .tinvwl-eyedropper, .tinvwl-eyedropper .fa-eyedropper')) {
+				if (!$(e.target).is(formColor + ', .iris-picker, .iris-picker-inner, .iris-slider-offset, .tinvwl-eyedropper, .tinvwl-eyedropper .fati-eyedropper')) {
 					$(formColor).iris('hide');
 				} else {
 					$(formColor).not($(e.target).closest('.tinvwl-color-picker').find(formColor)).iris('hide');

@@ -197,7 +197,7 @@ class TInvWL_Form {
 			'name'	 => is_array( $data ) ? '' : $data,
 			'value'	 => $value,
 		);
-		return sprintf( '<div class="tinvwl-color-picker"><div class="tinvwl-input-group tinvwl-no-full"><input %s%s /><div class="tinvwl-input-group-btn"><div class="tinvwl-eyedropper"><a href="javascript:void(0);"><i class="fa fa-eyedropper"></i></a></div></div></div></div>', self::__parseatr( $data, $defaults ), self::__atrtostr( $extra ) );
+		return sprintf( '<div class="tinvwl-color-picker"><div class="tinvwl-input-group tinvwl-no-full"><input %s%s /><div class="tinvwl-input-group-btn"><div class="tinvwl-eyedropper"><a href="javascript:void(0);"><i class="fati fati-eyedropper"></i></a></div></div></div></div>', self::__parseatr( $data, $defaults ), self::__atrtostr( $extra ) );
 	}
 
 	/**

@@ -134,17 +134,17 @@ and open the template in the editor.
 	margin-right: 0;
 }
 
-.tinv-wishlist a i.fa-chevron-left,
-.tinv-wishlist a i.fa-chevron-right {
+.tinv-wishlist a i.fati-chevron-left,
+.tinv-wishlist a i.fati-chevron-right {
 	/*font-size: 10px;*/
 }
 
-.tinv-wishlist .button i.fa-chevron-left,
-.tinv-wishlist .button i.fa-chevron-right {
+.tinv-wishlist .button i.fati-chevron-left,
+.tinv-wishlist .button i.fati-chevron-right {
 	/*vertical-align: middle;*/
 }
 
-.tinv-wishlist .tinvwl-estimate-wrap a i.fa-envelope-o {
+.tinv-wishlist .tinvwl-estimate-wrap a i.fati-envelope-o {
 	/*font-size: 12px;*/
 }
 

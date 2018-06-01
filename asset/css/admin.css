@@ -782,7 +782,7 @@ a.tinvwl-btn {
     font-size: 16px;
 }
 
-.tinvwl-btn.w-icon i.fa-graduation-cap {
+.tinvwl-btn.w-icon i.fati-graduation-cap {
     vertical-align: text-bottom;
 }
 
@@ -2604,20 +2604,20 @@ textarea[name="style_plain-css"] {
     color: #4b4b4b;
 }
 
-#wpfooter .fa-heart {
+#wpfooter .fati-heart {
     margin: 0 3px;
 }
 
-#wpfooter .fa-star {
+#wpfooter .fati-star {
     font-size: 12px;
     margin: 0 1px;
 }
 
-#wpfooter span .fa-star:first-of-type {
+#wpfooter span .fati-star:first-of-type {
     margin-left: 6px;
 }
 
-#wpfooter span .fa-star:last-of-type {
+#wpfooter span .fati-star:last-of-type {
     margin-left: 3px;
 }
 

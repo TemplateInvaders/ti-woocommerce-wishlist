@@ -22,7 +22,7 @@
 				$(this).appendTo('body > .tinv-wishlist');
 			},
 			onCreateWishList: function (wishlist) {
-				$(this).append($('<option>').html(wishlist.title).attr('value', wishlist.ID).toggleClass('tinv_in_wishlist', wishlist.in));
+				$(this).append($('<option>').html(wishlist.title).val(wishlist.ID).toggleClass('tinv_in_wishlist', wishlist.in));
 			},
 			onSelectWishList: function () {
 			},
@@ -84,7 +84,7 @@
 						$.each(WList, function (k, wishlist) {
 							text.append($('<li>').html($('<a>').html(wishlist.title).attr({
 								href: wishlist.url
-							})).attr('value', wishlist.ID));
+							})).val(wishlist.ID));
 						});
 						break;
 				}
@@ -202,7 +202,7 @@
 					product_action: $(this).attr('data-tinv-wl-action') || 'addto'
 				},
 				a = this;
-			$(a).closest('form.cart[method=post], .woocommerce-variation-add-to-cart, .tinvwl-loop-button-wrapper').find('input, select, textarea').each(function () {
+			$(a).closest('form.cart[method=post], .tinvwl-loop-button-wrapper').find('input, select, textarea').each(function () {
 				var name_elm = $(this).attr('name'),
 					type_elm = $(this).attr('type'),
 					value_elm = $(this).val(),
@@ -229,7 +229,7 @@
 							return o2;
 						}
 					};
-				if ('button' === type_elm) {
+				if ('button' === type_elm || name_elm.substr(0, 10) == "attribute_") {
 					return;
 				}
 				while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {

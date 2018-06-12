@@ -852,11 +852,10 @@ if ( ! function_exists( 'tinv_wishlistmeta' ) ) {
 	 * @return string
 	 */
 	function tinv_wishlistmeta( $meta = '', $wl_product, $product ) {
-		if ( empty( $meta ) ) {
-			if ( array_key_exists( 'meta', $wl_product ) ) {
-				$meta = apply_filters( 'tinvwl_wishlist_item_meta_wishlist_output', tinv_wishlist_print_meta( $wl_product['meta'] ), $wl_product, $product );
-			}
+		if ( array_key_exists( 'meta', $wl_product ) ) {
+			$wlmeta = apply_filters( 'tinvwl_wishlist_item_meta_wishlist_output', tinv_wishlist_print_meta( $wl_product['meta'] ), $wl_product, $product );
 		}
+		$meta .= $wlmeta;
 
 		return $meta;
 	}

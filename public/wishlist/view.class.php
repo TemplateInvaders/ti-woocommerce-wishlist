@@ -196,7 +196,7 @@ class TInvWL_Public_Wishlist_View {
 				return false;
 			}
 
-			define( 'DONOTCACHEPAGE', 1 );
+			WC_Cache_Helper::set_nocache_constants();
 
 			$is_owner = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];
 			$nonce    = filter_input( INPUT_POST, 'wishlist_nonce' );

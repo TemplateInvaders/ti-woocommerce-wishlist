@@ -837,7 +837,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 	 * Add rows for sub product for WooCommerce Composite Products
 	 *
 	 * @param array $wl_product Wishlist Product.
-	 * @param \WC_Product $product Woocommerce Product.
+	 * @param \WC_Product_Composite $product Woocommerce Product.
 	 */
 	function tinvwl_row_woocommerce_composite_products( $wl_product, $product ) {
 		if ( is_object( $product ) && $product->is_type( 'composite' ) && array_key_exists( 'wccp_component_selection', $wl_product['meta'] ) ) {
@@ -868,6 +868,22 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					$product_image = $composited_product->get_image();
 					$product_title = $composited_product->get_title();
 					$product_price = $composited_product->get_price_html();
+
+					$component_option = $product->get_component_option( $component_id, $composited_product_id );
+
+					if ( $component_option ) {
+						if ( false === $component_option->is_priced_individually() && $composited_product->get_price() == 0 ) {
+							$product_price = '';
+						} elseif ( false === $component_option->get_component()->is_subtotal_visible( 'cart' ) ) {
+							$product_price = '';
+						} elseif ( apply_filters( 'woocommerce_add_composited_cart_item_prices', true ) ) {
+							if ( $product_price ) {
+								$product_price = '<span class="component_table_item_price">' . $product_price . '</span>';
+							}
+						}
+					}
+
+
 					if ( $composited_product->is_visible() ) {
 						$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );
 						$product_title = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_title );
@@ -881,17 +897,20 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					if ( ! array_key_exists( 'class', $availability ) ) {
 						$availability['class'] = '';
 					}
-					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist-premium' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="fati fati-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2"></td>&nbsp;<td class="product-thumbnail">%2$s</td><td class="product-name">%1$s:<br/>%3$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
-						$row_string .= '<td class="product-price">%3$s &times; %6$s</td>';
+						$row_string .= ( $product_price ) ? '<td class="product-price">%4$s &times; %6$s</td>' : '<td class="product-price">%4$s</td>';
 					}
 					if ( tinv_get_option( 'product_table', 'colm_date' ) ) {
 						$row_string .= '<td class="product-date">&nbsp;</td>';
 					}
 					if ( tinv_get_option( 'product_table', 'colm_stock' ) ) {
 						$row_string .= '<td class="product-stock">%5$s</td>';
+					}
+					if ( tinv_get_option( 'product_table', 'colm_quantity' ) ) {
+						$row_string .= '<td class="product-quantity">&nbsp;</td>';
 					}
 					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
@@ -1934,12 +1953,11 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 
 		if ( class_exists( 'WC_Product_Addons' ) ) {
 
-			$price = 0;
-
 			$product_addons = get_product_addons( $product->get_id() );
 
 			if ( $product_addons ) {
 
+				$price = 0;
 
 				foreach ( $product_addons as $addon ) {
 

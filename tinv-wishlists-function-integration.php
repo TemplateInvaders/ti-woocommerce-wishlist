@@ -68,50 +68,6 @@ if ( ! function_exists( 'tinvwl_rocket_reject_cookies' ) ) {
 	add_filter( 'rocket_cache_reject_cookies', 'tinvwl_rocket_reject_cookies' );
 }
 
-if ( ! function_exists( 'tinvwl_supercache_reject_uri' ) ) {
-
-	/**
-	 * Disable cache for WP Super Cache
-	 *
-	 * @global array $cache_rejected_uri
-	 *
-	 * @param string $buffer Intercepted the output of the page.
-	 *
-	 * @return string
-	 */
-	function tinvwl_supercache_reject_uri( $buffer ) {
-		global $cache_rejected_uri;
-		if ( ! is_null( $cache_rejected_uri ) && is_array( $cache_rejected_uri ) ) {
-			$ids       = array(
-				tinv_get_option( 'page', 'wishlist' ),
-			);
-			$pages     = $ids;
-			$languages = apply_filters( 'wpml_active_languages', array(), array(
-				'skip_missing' => 0,
-				'orderby'      => 'code',
-			) );
-			if ( ! empty( $languages ) ) {
-				foreach ( $ids as $id ) {
-					foreach ( $languages as $l ) {
-						$pages[] = apply_filters( 'wpml_object_id', $id, 'page', true, $l['language_code'] );
-					}
-				}
-				$pages = array_unique( $pages );
-			}
-			$pages = array_filter( $pages );
-			if ( ! empty( $pages ) ) {
-				foreach ( $pages as $page ) {
-					$cache_rejected_uri[] = str_replace( get_site_url(), '', get_permalink( $page ) );
-				}
-			}
-		}
-
-		return $buffer;
-	}
-
-	add_filter( 'wp_cache_ob_callback_filter', 'tinvwl_supercache_reject_uri' );
-} // End if().
-
 if ( ! function_exists( 'tinvwl_w3total_reject_uri' ) ) {
 
 	/**

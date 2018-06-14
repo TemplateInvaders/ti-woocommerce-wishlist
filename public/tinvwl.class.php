@@ -154,7 +154,7 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function locate_template( $core_file, $template, $template_base ) {
-		$_core_file = tinv_wishlist_locate_template( $template );
+		$_core_file = tinv_wishlist_locate_template( $template, $template_base );
 		if ( empty( $_core_file ) ) {
 			return $core_file;
 		}

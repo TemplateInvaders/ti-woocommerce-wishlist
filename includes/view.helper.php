@@ -357,7 +357,7 @@ class TInvWL_View {
 	 */
 	private static function status_panel() {
 		return array(
-			sprintf( '<a class="tinvwl-btn grey w-icon md-icon smaller-txt" href="%s"><i class="fati fati-graduation-cap"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/documentation/ti-woocommerce-wishlist?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_documentation&partner=' . TINVWL_UTM_SOURCE, __( 'read documentation', 'ti-woocommerce-wishlist' ) ),
+			sprintf( '<a class="tinvwl-btn grey w-icon md-icon smaller-txt" href="%s"><i class="fati fati-graduation-cap"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_documentation&partner=' . TINVWL_UTM_SOURCE, __( 'read documentation', 'ti-woocommerce-wishlist' ) ),
 		);
 	}
 

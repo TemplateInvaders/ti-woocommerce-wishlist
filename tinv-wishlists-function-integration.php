@@ -11,45 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if ( ! function_exists( 'tinvwl_rocket_reject_uri' ) ) {
-
-	/**
-	 * Disable cache for WP Rocket
-	 *
-	 * @param array $uri URI.
-	 *
-	 * @return array
-	 */
-	function tinvwl_rocket_reject_uri( $uri = array() ) {
-		$ids       = array(
-			tinv_get_option( 'page', 'wishlist' ),
-		);
-		$pages     = $ids;
-		$languages = apply_filters( 'wpml_active_languages', array(), array(
-			'skip_missing' => 0,
-			'orderby'      => 'code',
-		) );
-		if ( ! empty( $languages ) ) {
-			foreach ( $ids as $id ) {
-				foreach ( $languages as $l ) {
-					$pages[] = apply_filters( 'wpml_object_id', $id, 'page', true, $l['language_code'] );
-				}
-			}
-			$pages = array_unique( $pages );
-		}
-		$pages = array_filter( $pages );
-		if ( ! empty( $pages ) ) {
-			foreach ( $pages as $page ) {
-				$uri[] = str_replace( get_site_url(), '', get_permalink( $page ) );
-			}
-		}
-
-		return $uri;
-	}
-
-	add_filter( 'rocket_cache_reject_uri', 'tinvwl_rocket_reject_uri' );
-} // End if().
-
 if ( ! function_exists( 'tinvwl_rocket_reject_cookies' ) ) {
 
 	/**
@@ -67,70 +28,6 @@ if ( ! function_exists( 'tinvwl_rocket_reject_cookies' ) ) {
 
 	add_filter( 'rocket_cache_reject_cookies', 'tinvwl_rocket_reject_cookies' );
 }
-
-if ( ! function_exists( 'tinvwl_w3total_reject_uri' ) ) {
-
-	/**
-	 * Disable cache for W3 Total Cache
-	 */
-	function tinvwl_w3total_reject_uri() {
-		if ( ! function_exists( 'w3tc_pgcache_flush' ) || ! function_exists( 'w3_instance' ) ) {
-			return;
-		}
-		$ids       = array(
-			tinv_get_option( 'page', 'wishlist' ),
-		);
-		$pages     = $ids;
-		$languages = apply_filters( 'wpml_active_languages', array(), array(
-			'skip_missing' => 0,
-			'orderby'      => 'code',
-		) );
-		if ( ! empty( $languages ) ) {
-			foreach ( $ids as $id ) {
-				foreach ( $languages as $l ) {
-					$pages[] = apply_filters( 'wpml_object_id', $id, 'page', true, $l['language_code'] );
-				}
-			}
-			$pages = array_unique( $pages );
-		}
-		$pages = array_filter( $pages );
-		if ( ! empty( $pages ) ) {
-			foreach ( $pages as $i => $page ) {
-				$pages[ $i ] = preg_replace( "/^\//", '', str_replace( get_site_url(), '', get_permalink( $page ) ) ); // @codingStandardsIgnoreLine Squiz.Strings.DoubleQuoteUsage.NotRequired
-			}
-		}
-		$pages = array_unique( $pages );
-		$pages = array_filter( $pages );
-
-		$config = w3_instance( 'W3_Config' );
-		if ( ! empty( $pages ) ) {
-			$sections = array( 'dbcache.reject.uri', 'pgcache.reject.uri' );
-			foreach ( $sections as $section ) {
-				$settings = array_map( 'trim', $config->get_array( $section ) );
-				$changed  = false;
-				foreach ( $pages as $page ) {
-					if ( ! in_array( $page, $settings ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
-						$settings[] = $page;
-						$changed    = true;
-					}
-				}
-				if ( $changed ) {
-					$config->set( $section, $settings );
-					$config->save();
-				}
-			}
-		}
-
-		$settings = array_map( 'trim', $config->get_array( 'pgcache.reject.cookie' ) );
-		if ( ! in_array( 'tinv_wishlist', $settings ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
-			$settings[] = 'tinv_wishlist';
-			$config->set( 'pgcache.reject.cookie', $settings );
-			$config->save();
-		}
-	}
-
-	add_action( 'admin_init', 'tinvwl_w3total_reject_uri' );
-} // End if().
 
 if ( ! function_exists( 'tinvwl_wp_fastest_cache_reject' ) ) {
 

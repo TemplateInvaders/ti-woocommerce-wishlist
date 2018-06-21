@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.7.01
+Stable tag: 1.7.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,7 +14,7 @@ Add Wishlist functionality to your store for free.
 == Description ==
 
 = GDPR Ready =
-The WooCommerce Wishlist plugin does not not collect any personal data from website visitors which makes it GDPR compliant.
+The WooCommerce Wishlist plugin does not collect any personal data from website visitors which makes it GDPR compliant.
 
 = Increase Sales and Conversions =
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
@@ -51,7 +51,7 @@ WooCommerce Wishlist is a simple but powerful tool that can help you to convert 
 + Product variations Support
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
-We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax).
+We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
 It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with [WP Rocket](https://wp-rocket.me/), [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) and [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugins.
 
 = Add to Wishlist button =
@@ -65,7 +65,6 @@ You can show/hide any column in wishlist table on wishlist page. So it is for yo
 WooCommerce Wishlist Plugin comes with over 60 appearance options such as colors, font size, borders, etc. Not enough? You can add your custom CSS styles directly in admin panel.
 
 = Translation Ready =
-
 You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/), [WP Multilang](https://wordpress.org/plugins/wp-multilang/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
 
 = Responsive & Retina Ready =
@@ -131,6 +130,15 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.7.2 =
+*Release Date - 21 June 2018*
+
+* Fixed WooCommerce templates location issue
+* Fixed JavaScript condition for products custom attributes
+* Improved compatibility with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Improved compatibility with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+* Improved compatibility with [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/), [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/), [WP Rocket](https://wp-rocket.me/) plugins
 
 = 1.7.1 =
 *Release Date - 01 June 2018*
@@ -493,6 +501,3 @@ You are excited from the "WooCommerce Wishlist" plugin and want to contribute? G
 == Documentation ==
 Full documentation is available [here](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation).
 
-== Upgrade Notice ==
-= 1.5 =
-Improved frontend performance. Added plugin support for [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955).

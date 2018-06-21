@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 04:29+0700\n"
+"POT-Creation-Date: 2018-06-21 22:22+0700\n"
 "POT-Revision-Date: Sun Apr 10 2016 12:21:06 GMT+0200 (VÃ¤steuropa, "
 "sommartid)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -717,7 +717,7 @@ msgstr ""
 msgid "Accent Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:214
+#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:212
 #: views/wizard/finish.php:31
 msgid "Upgrade to Premium"
 msgstr ""
@@ -774,14 +774,14 @@ msgstr ""
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:253
+#: admin/tinvwl.class.php:251
 #, php-format
 msgid ""
 "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out "
 "of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:279
+#: admin/tinvwl.class.php:277
 #, php-format
 msgid ""
 "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce "
@@ -792,7 +792,7 @@ msgid ""
 "the theme."
 msgstr ""
 
-#: admin/tinvwl.class.php:404
+#: admin/tinvwl.class.php:402
 #, php-format
 msgid ""
 "The \"Add to Wishlist\" button may work improperly in a product type \"%1$s"
@@ -1056,11 +1056,11 @@ msgstr ""
 msgid "Ready!"
 msgstr ""
 
-#: public/addtowishlist.class.php:172
+#: public/addtowishlist.class.php:174
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:174
+#: public/addtowishlist.class.php:176
 msgid "Login"
 msgstr ""
 
@@ -1157,11 +1157,11 @@ msgstr ""
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:444
+#: public/wishlist/view.class.php:454
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:453
+#: public/wishlist/view.class.php:463
 msgid "Next Page"
 msgstr ""
 
@@ -1206,42 +1206,42 @@ msgid "Stock Status"
 msgstr ""
 
 #: templates/ti-wishlist-user.php:114 templates/ti-wishlist.php:120
-#: tinv-wishlists-function-integration.php:884
-#: tinv-wishlists-function-integration.php:1033
-#: tinv-wishlists-function-integration.php:1180
-#: tinv-wishlists-function-integration.php:1394
+#: tinv-wishlists-function-integration.php:753
+#: tinv-wishlists-function-integration.php:905
+#: tinv-wishlists-function-integration.php:1052
+#: tinv-wishlists-function-integration.php:1266
 msgid "In stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:296
+#: tinv-wishlists-function-integration.php:149
 msgid "Select options"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:609
+#: tinv-wishlists-function-integration.php:462
 msgid "Note"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:612
+#: tinv-wishlists-function-integration.php:465
 msgid "To"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:615
+#: tinv-wishlists-function-integration.php:468
 msgid "To Email"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:618
+#: tinv-wishlists-function-integration.php:471
 msgid "Address"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:621
+#: tinv-wishlists-function-integration.php:474
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1333
+#: tinv-wishlists-function-integration.php:1205
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1739
+#: tinv-wishlists-function-integration.php:1611
 msgid "Base price"
 msgstr ""
 

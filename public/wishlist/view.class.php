@@ -235,31 +235,31 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function wishlist_actions( $wishlist, $owner = false ) {
 		$post = filter_input_array( INPUT_POST, array(
-			'wishlist_pr'              => array(
+			'wishlist_pr'        => array(
 				'filter' => FILTER_VALIDATE_INT,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
-			'wishlist_qty'             => array(
+			'wishlist_qty'       => array(
 				'filter'  => FILTER_VALIDATE_INT,
 				'flags'   => FILTER_FORCE_ARRAY,
 				'options' => array( 'min_range' => 0, 'default' => 1 ),
 			),
-			'tinvwl - add - to - cart' => FILTER_VALIDATE_INT,
-			'tinvwl - remove'          => FILTER_VALIDATE_INT,
-			'tinvwl - action'          => FILTER_SANITIZE_STRING,
+			'tinvwl-add-to-cart' => FILTER_VALIDATE_INT,
+			'tinvwl-remove'      => FILTER_VALIDATE_INT,
+			'tinvwl-action'      => FILTER_SANITIZE_STRING,
 		) );
 
-		if ( ! empty( $post['tinvwl - add - to - cart'] ) ) {
-			$product  = $post['tinvwl - add - to - cart'];
+		if ( ! empty( $post['tinvwl-add-to-cart'] ) ) {
+			$product  = $post['tinvwl-add-to-cart'];
 			$quantity = array_key_exists( $product, (array) $post['wishlist_qty'] ) ? $post['wishlist_qty'][ $product ] : 1;
 
 			return $this->button_addtocart( $wishlist, $product, $quantity, $owner );
 		}
-		if ( ! empty( $post['tinvwl - remove'] ) ) {
+		if ( ! empty( $post['tinvwl-remove'] ) ) {
 			if ( ! $wishlist['is_owner'] ) {
 				return false;
 			}
-			$product = $post['tinvwl - remove'];
+			$product = $post['tinvwl-remove'];
 			if ( 0 === $wishlist['ID'] ) {
 				$wlp = TInvWL_Product_Local::instance();
 			} else {
@@ -273,16 +273,16 @@ class TInvWL_Public_Wishlist_View {
 			if ( empty( $product_data ) ) {
 				return false;
 			}
-			$title = sprintf( __( ' & ldquo;%s & rdquo;', 'ti - woocommerce - wishlist' ), $product_data['data']->get_title() );
+			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product_data['data']->get_title() );
 			if ( $wlp->remove( $product ) ) {
-				wc_add_notice( sprintf( __( ' % s has been removed from wishlist . ', 'ti - woocommerce - wishlist' ), $title ) );
+				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
-				wc_add_notice( sprintf( __( ' % s has not been removed from wishlist . ', 'ti - woocommerce - wishlist' ), $title ), 'error' );
+				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );
 			}
 
 			return true;
 		}
-		do_action( 'tinvwl_action_' . $post['tinvwl - action'], $wishlist, $post['wishlist_pr'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
+		do_action( 'tinvwl_action_' . $post['tinvwl-action'], $wishlist, $post['wishlist_pr'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**
@@ -353,7 +353,7 @@ class TInvWL_Public_Wishlist_View {
 				return $this->wishlist_empty( array(), array(
 					'ID'        => '',
 					'author'    => get_current_user_id(),
-					'title'     => apply_filters( 'tinvwl - general - default_title', tinv_get_option( 'general', 'default_title' ) ),
+					'title'     => apply_filters( 'tinvwl-general-default_title', tinv_get_option( 'general', 'default_title' ) ),
 					'status'    => 'private',
 					'type'      => 'default',
 					'share_key' => '',
@@ -368,7 +368,7 @@ class TInvWL_Public_Wishlist_View {
 		}
 		if ( 'default' !== $wishlist['type'] && ! tinv_get_option( 'general', 'multi' ) ) {
 			if ( $wishlist['is_owner'] ) {
-				printf( ' < p><a href = "%s" >%s </p ><script type = "text/javascript" > window . location . href = "%s" </script > ', esc_attr( tinv_url_wishlist_default() ), esc_html__( 'Return to Wishlist', 'ti - woocommerce - wishlist' ), esc_attr( tinv_url_wishlist_default() ) );
+				printf( '<p><a href="%s">%s</p><script type="text/javascript">window.location.href="%s"</script>', esc_attr( tinv_url_wishlist_default() ), esc_html__( 'Return to Wishlist', 'ti-woocommerce-wishlist' ), esc_attr( tinv_url_wishlist_default() ) );
 
 				return false;
 			} else {
@@ -391,7 +391,7 @@ class TInvWL_Public_Wishlist_View {
 		}
 
 		$wishlist_table_row                     = tinv_get_option( 'product_table' );
-		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl - product_table - text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
+		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 
 		$data = array(
 			'products'           => $products,
@@ -401,7 +401,7 @@ class TInvWL_Public_Wishlist_View {
 		);
 
 		if ( $wishlist['is_owner'] ) {
-			tinv_wishlist_template( 'ti - wishlist . php', $data );
+			tinv_wishlist_template( 'ti-wishlist.php', $data );
 		} else {
 			if ( class_exists( 'WC_Catalog_Visibility_Options' ) ) {
 				global $wc_cvo;
@@ -413,7 +413,7 @@ class TInvWL_Public_Wishlist_View {
 				}
 			}
 
-			tinv_wishlist_template( 'ti - wishlist - user . php', $data );
+			tinv_wishlist_template( 'ti-wishlist-user.php', $data );
 		}
 	}
 
@@ -426,7 +426,7 @@ class TInvWL_Public_Wishlist_View {
 		$data = array(
 			'wishlist' => $wishlist,
 		);
-		tinv_wishlist_template( 'ti - wishlist - null . php', $data );
+		tinv_wishlist_template( 'ti-wishlist-null.php', $data );
 	}
 
 	/**
@@ -441,7 +441,7 @@ class TInvWL_Public_Wishlist_View {
 			'wishlist'       => $wishlist,
 			'wishlist_table' => tinv_get_option( 'table' ),
 		);
-		tinv_wishlist_template( 'ti - wishlist - empty.php', $data );
+		tinv_wishlist_template( 'ti-wishlist-empty.php', $data );
 	}
 
 	/**
@@ -454,7 +454,7 @@ class TInvWL_Public_Wishlist_View {
 		$data = array(
 			'wishlist' => $wishlist,
 		);
-		tinv_wishlist_template( 'ti - wishlist - header . php', $data );
+		tinv_wishlist_template( 'ti-wishlist-header.php', $data );
 	}
 
 	/**
@@ -463,7 +463,7 @@ class TInvWL_Public_Wishlist_View {
 	function page_prev() {
 		$paged = get_query_var( 'paged', 1 );
 		$paged = 1 < $paged ? $paged - 1 : 0;
-		$this->page( $paged, sprintf( ' < i class="fati fati-chevron-left" ></i >%s', __( 'Previous Page', 'ti - woocommerce - wishlist' ) ), array( 'class' => 'button tinv - prev' ) );
+		$this->page( $paged, sprintf( '<i class="fati fati-chevron-left"></i>%s', __( 'Previous Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-prev' ) );
 	}
 
 	/**
@@ -472,7 +472,7 @@ class TInvWL_Public_Wishlist_View {
 	function page_next() {
 		$paged = get_query_var( 'paged', 1 );
 		$paged = 1 < $paged ? $paged + 1 : 2;
-		$this->page( $paged, sprintf( ' % s < i class="fati fati-chevron-right" ></i > ', __( 'Next Page', 'ti - woocommerce - wishlist' ) ), array( 'class' => 'button tinv - next' ) );
+		$this->page( $paged, sprintf( '%s<i class="fati fati-chevron-right"></i>', __( 'Next Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-next' ) );
 	}
 
 	/**
@@ -489,7 +489,7 @@ class TInvWL_Public_Wishlist_View {
 		if ( is_array( $style ) ) {
 			$style = TInvWL_Form::__atrtostr( $style );
 		}
-		printf( ' < a href = "%s" % s >%s </a > ', esc_url( $link ), $style, $text ); // WPCS: xss ok.
+		printf( '<a href="%s" %s>%s</a>', esc_url( $link ), $style, $text ); // WPCS: xss ok.
 	}
 
 	/**

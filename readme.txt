@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.7.3 =
+*Release Date - 22 June 2018*
+
+* Fixed WC_Cache method compatibility for WooCommerce prior to 3.2.0
 
 = 1.7.2 =
 *Release Date - 21 June 2018*

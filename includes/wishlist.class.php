@@ -195,6 +195,12 @@ class TInvWL_Wishlist {
 		if ( $wpdb->insert( $this->table, $data ) ) { // @codingStandardsIgnoreLine WordPress.VIP.DirectDatabaseQuery.DirectQuery
 			$data['ID'] = $wpdb->insert_id;
 
+			/* Run a 3rd party code when a new wishlist created.
+			 *
+			 * @param array $data A wishlist data.
+			 * */
+			do_action( 'tinvwl_wishlist_created', $data );
+
 			return $data;
 		}
 

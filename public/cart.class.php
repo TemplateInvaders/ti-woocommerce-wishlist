@@ -47,12 +47,14 @@ class TInvWL_Public_Cart {
 	 * Get this class object
 	 *
 	 * @param string $plugin_name Plugin name.
+	 *
 	 * @return \TInvWL_Public_Cart
 	 */
 	public static function instance( $plugin_name = TINVWL_PREFIX ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name );
 		}
+
 		return self::$_instance;
 	}
 
@@ -62,7 +64,7 @@ class TInvWL_Public_Cart {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		self::$_n	 = $plugin_name;
+		self::$_n = $plugin_name;
 		$this->define_hooks();
 	}
 
@@ -82,9 +84,10 @@ class TInvWL_Public_Cart {
 	/**
 	 * Add product to cart from wishlist
 	 *
-	 * @param array   $wishlist Wishlist object.
+	 * @param array $wishlist Wishlist object.
 	 * @param integer $wl_product Wishlist product id.
 	 * @param integer $wl_quantity Product quantity.
+	 *
 	 * @return boolean
 	 */
 	public static function add( $wishlist = null, $wl_product = 0, $wl_quantity = 1 ) {
@@ -108,11 +111,11 @@ class TInvWL_Public_Cart {
 
 		self::prepare_post( $product );
 
-		$product = apply_filters( 'tinvwl_addproduct_tocart', $product );
-		$product_id		 = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $product['product_id'] ) );
-		$quantity		 = empty( $wl_quantity ) ? 1 : wc_stock_amount( $wl_quantity );
-		$variation_id	 = $product['variation_id'];
-		$variations		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product['data']->variation_data : ( $product['data']->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product['data']->get_id() ) : array() ) );
+		$product      = apply_filters( 'tinvwl_addproduct_tocart', $product );
+		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $product['product_id'] ) );
+		$quantity     = empty( $wl_quantity ) ? 1 : wc_stock_amount( $wl_quantity );
+		$variation_id = $product['variation_id'];
+		$variations   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product['data']->variation_data : ( $product['data']->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product['data']->get_id() ) : array() ) );
 
 		if ( ! empty( $variation_id ) && is_array( $variations ) ) {
 			foreach ( $variations as $name => $value ) {
@@ -132,7 +135,14 @@ class TInvWL_Public_Cart {
 		if ( $passed_validation ) {
 			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations );
 			if ( $cart_item_key ) {
-				do_action( 'tinvwl_addedproduct_tocart', $cart_item_key, $product_id, $quantity, $variation_id );
+
+				/* Run a 3rd party code when product added to a cart from a wishlist.
+				 *
+				 * @param string $cart_item_key cart product unique key.
+				 * @param integer $quantity Product quantity.
+				 * @param array $product product data.
+				 * */
+				do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
 				if ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' ) ) {
 					self::ar_f_wl( $wishlist, $product_id, $quantity, $variation_id, $product['meta'] );
 				}
@@ -141,10 +151,12 @@ class TInvWL_Public_Cart {
 				if ( get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes' ) {
 					wp_safe_redirect( wc_get_cart_url() );
 				}
+
 				return array( $product_id => $quantity );
 			}
 		}
 		self::unprepare_post();
+
 		return false;
 	}
 
@@ -154,14 +166,14 @@ class TInvWL_Public_Cart {
 	 * @param array $product Wishlist Product.
 	 */
 	public static function prepare_post( $product ) {
-		self::$_post	 = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-		self::$_request	 = $_REQUEST;
+		self::$_post    = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+		self::$_request = $_REQUEST;
 		if ( array_key_exists( 'meta', $product ) && ! empty( $product['meta'] ) ) {
-			$_POST		 = $product['meta']; // May be a conflict there will be no GET attributes.
-			$_REQUEST	 = $product['meta'];
+			$_POST    = $product['meta']; // May be a conflict there will be no GET attributes.
+			$_REQUEST = $product['meta'];
 		} else {
-			$_POST		 = array();
-			$_REQUEST	 = array();
+			$_POST    = array();
+			$_REQUEST = array();
 		}
 	}
 
@@ -169,15 +181,16 @@ class TInvWL_Public_Cart {
 	 * Unrepare _POST data
 	 */
 	public static function unprepare_post() {
-		$_POST		 = self::$_post;
-		$_REQUEST	 = self::$_request;
+		$_POST    = self::$_post;
+		$_REQUEST = self::$_request;
 	}
 
 	/**
 	 * Get product added from wishlist
 	 *
 	 * @param string $cart_item_key Cart product key.
-	 * @param array  $wishlist Wishlist object.
+	 * @param array $wishlist Wishlist object.
+	 *
 	 * @return array
 	 */
 	public static function get_item_data( $cart_item_key, $wishlist = null ) {
@@ -196,13 +209,14 @@ class TInvWL_Public_Cart {
 	/**
 	 * Set product added from wishlist
 	 *
-	 * @param string  $cart_item_key Cart product key.
-	 * @param array   $wishlist Wishlist object.
+	 * @param string $cart_item_key Cart product key.
+	 * @param array $wishlist Wishlist object.
 	 * @param integer $quantity Product quantity.
+	 *
 	 * @return boolean
 	 */
 	public static function set_item_data( $cart_item_key, $wishlist, $quantity = 1 ) {
-		$data = (array) WC()->session->get( '_tinvwl_wishlist_cart', array() );
+		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $data[ $cart_item_key ] ) ) {
 			$data[ $cart_item_key ] = array();
 		}
@@ -214,6 +228,7 @@ class TInvWL_Public_Cart {
 		}
 
 		WC()->session->set( 'tinvwl_wishlist_cart', $data );
+
 		return true;
 	}
 
@@ -221,13 +236,15 @@ class TInvWL_Public_Cart {
 	 * Remove product added from wishlist
 	 *
 	 * @param string $cart_item_key Cart product key.
-	 * @param array  $wishlist Wishlist object.
+	 * @param array $wishlist Wishlist object.
+	 *
 	 * @return boolean
 	 */
 	public static function remove_item_data( $cart_item_key = null, $wishlist = null ) {
 		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $cart_item_key ) ) {
 			WC()->session->set( 'tinvwl_wishlist_cart', array() );
+
 			return true;
 		}
 		if ( ! array_key_exists( $cart_item_key, $data ) ) {
@@ -242,6 +259,7 @@ class TInvWL_Public_Cart {
 			unset( $data[ $cart_item_key ][ $wishlist ] );
 		}
 		WC()->session->set( 'tinvwl_wishlist_cart', $data );
+
 		return true;
 	}
 
@@ -249,7 +267,7 @@ class TInvWL_Public_Cart {
 	 * Add meta data for product when created order
 	 *
 	 * @param string $item_id Order item id.
-	 * @param string $values Not used.
+	 * @param array $values order item data.
 	 * @param string $cart_item_key Cart product key.
 	 */
 	public function add_order_item_meta( $item_id, $values, $cart_item_key ) {
@@ -257,6 +275,21 @@ class TInvWL_Public_Cart {
 		$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $cart_item_key, $values );
 		if ( ! empty( $data ) ) {
 			wc_add_order_item_meta( $item_id, '_tinvwl_wishlist_cart', $data );
+
+			$wishlist = null;
+
+			reset( $data );
+			$share_key = key( $data );
+
+			$wl       = new TInvWL_Wishlist();
+			$wishlist = $wl->get_by_share_key( $share_key );
+			/* Run a 3rd party code when product purchased from wishlist.
+			 *
+			 * @param string $item_id Order item id.
+			 * @param array $values order item data.
+			 * @param array $wishlist A wishlist data where product added from.
+			 * */
+			do_action( 'tinvwl_product_purchased', $item_id, $values, $wishlist );
 		}
 	}
 
@@ -269,24 +302,42 @@ class TInvWL_Public_Cart {
 		foreach ( $order->get_items() as $item ) {
 			$data = self::get_item_data( $item->legacy_cart_item_key );
 			$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $item->legacy_cart_item_key, $item->legacy_values );
-			$item->update_meta_data( '_tinvwl_wishlist_cart', $data );
+			if ( ! empty( $data ) ) {
+				$item->update_meta_data( '_tinvwl_wishlist_cart', $data );
+
+				$wishlist = null;
+
+				reset( $data );
+				$share_key = key( $data );
+
+				$wl       = new TInvWL_Wishlist();
+				$wishlist = $wl->get_by_share_key( $share_key );
+				/* Run a 3rd party code when product purchased from wishlist.
+				 *
+				 * @param WC_order $order Order object.
+				 * @param WC_Order_Item_Product $item Order item product object.
+				 * @param array $wishlist A wishlist data where product added from.
+				 * */
+				do_action( 'tinvwl_product_purchased', $order, $item, $wishlist );
+			}
 		}
 	}
 
 	/**
 	 * Autoremove product from wishlist
 	 *
-	 * @param array   $wishlist Wishlist object.
+	 * @param array $wishlist Wishlist object.
 	 * @param integer $product_id Product id.
 	 * @param integer $quantity Quantity product.
 	 * @param integer $variation_id Variation product id.
-	 * @param array   $meta Meta array for post form.
+	 * @param array $meta Meta array for post form.
+	 *
 	 * @return integer
 	 */
 	private static function ar_f_wl( $wishlist, $product_id, $quantity = 1, $variation_id = 0, $meta = array() ) {
-		$product_id		 = absint( $product_id );
-		$quantity		 = absint( $quantity );
-		$variation_id	 = absint( $variation_id );
+		$product_id   = absint( $product_id );
+		$quantity     = absint( $quantity );
+		$variation_id = absint( $variation_id );
 		if ( ! tinv_get_option( 'processing', 'autoremove' ) || empty( $wishlist ) || empty( $product_id ) || empty( $quantity ) ) {
 			return $quantity;
 		}
@@ -299,17 +350,18 @@ class TInvWL_Public_Cart {
 		if ( empty( $wlp ) ) {
 			return 0;
 		}
-		$products	 = $wlp->get_wishlist( array(
-			'product_id'	 => $product_id,
-			'variation_id'	 => $variation_id,
-			'meta'			 => $meta,
-			'external'		 => false,
+		$products = $wlp->get_wishlist( array(
+			'product_id'   => $product_id,
+			'variation_id' => $variation_id,
+			'meta'         => $meta,
+			'external'     => false,
 		) );
-		$product	 = array_shift( $products );
+		$product  = array_shift( $products );
 		if ( empty( $product ) ) {
 			return $quantity;
 		}
 		$wlp->remove_product_from_wl( 0, $product_id, $variation_id, $product['meta'] );
+
 		return 0;
 	}
 }

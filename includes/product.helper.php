@@ -183,6 +183,12 @@ class TInvWL_Product {
 		if ( $wpdb->insert( $this->table, $data ) ) { // @codingStandardsIgnoreLine WordPress.VIP.DirectDatabaseQuery.DirectQuery
 			$id = $wpdb->insert_id;
 
+			/* Run a 3rd party code when product added to a wishlist.
+			 *
+			 * @param array $data product data including author and wishlist IDs.
+			 * */
+			do_action( 'tinvwl_product_added', $data );
+
 			return $id;
 		}
 
@@ -542,19 +548,23 @@ class TInvWL_Product {
 	 *
 	 * @global wpdb $wpdb
 	 *
-	 * @param integer $id Product id.
+	 * @param array $data Product data.
 	 *
 	 * @return boolean
 	 */
-	function remove( $id = 0 ) {
-		if ( empty( $id ) ) {
+	function remove( $data ) {
+		if ( ! isset( $data['ID'] ) || empty( $data['ID'] ) ) {
 			return false;
 		}
 
 		global $wpdb;
-		$result = false !== $wpdb->delete( $this->table, array( 'ID' => $id ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+		$result = false !== $wpdb->delete( $this->table, array( 'ID' => $data['ID'] ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
-			do_action( 'tinvwl_wishlist_product_removed_by_id', $id );
+			/* Run a 3rd party code when product removed from a wishlist.
+			 *
+			 * @param array $data product data including author and wishlist IDs.
+			 * */
+			do_action( 'tinvwl_product_removed', $data );
 		}
 
 		return $result;

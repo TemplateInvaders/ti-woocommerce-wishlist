@@ -274,7 +274,7 @@ class TInvWL_Public_Wishlist_View {
 				return false;
 			}
 			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product_data['data']->get_title() );
-			if ( $wlp->remove( $product ) ) {
+			if ( $wlp->remove($product_data ) ) {
 				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
 				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );

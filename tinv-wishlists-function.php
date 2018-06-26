@@ -1013,3 +1013,15 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 		define( 'TINVWL_UTM_CAMPAIGN', $campaign );
 	}
 } // End if().
+
+if ( ! function_exists( 'is_wishlist' ) ) {
+
+	/**
+	 * is_wishlist - Returns true when viewing the wishlist page.
+	 *
+	 * @return bool
+	 */
+	function is_wishlist() {
+		return ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) );
+	}
+}

@@ -104,6 +104,12 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'checkboxonoff',
+						'name'  => 'processing_redirect_checkout',
+						'text'  => __( 'Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+					),
+					array(
+						'type'  => 'checkboxonoff',
 						'name'  => 'processing_autoremove_anyone',
 						'text'  => __( 'Remove by anyone', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
@@ -707,6 +713,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		$data['general']['page_wishlist']                = $data['page']['wishlist'];
 		$data['general']['processing_autoremove']        = $data['processing']['autoremove'];
 		$data['general']['processing_autoremove_anyone'] = $data['processing']['autoremove_anyone'];
+		$data['general']['processing_redirect_checkout'] = $data['processing']['redirect_checkout'];
 
 		return $data;
 	}
@@ -724,6 +731,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		tinv_update_option( 'page', 'wishlist', $data['general']['page_wishlist'] );
 		tinv_update_option( 'processing', 'autoremove', $data['general']['processing_autoremove'] );
 		tinv_update_option( 'processing', 'autoremove_anyone', $data['general']['processing_autoremove_anyone'] );
+		tinv_update_option( 'processing', 'redirect_checkout', $data['general']['processing_redirect_checkout'] );
 		tinv_update_option( 'processing', 'autoremove_status', 'tinvwl-addcart' );
 		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
 			foreach ( $data as $key => $value ) {

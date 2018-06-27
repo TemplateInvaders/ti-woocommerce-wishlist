@@ -179,7 +179,6 @@ class TInvWL_Wizard {
 			'dashicons',
 			'install'
 		), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'assets/css/font-awesome.min.css', array(), $this->_v, 'all' );
 	}
 
 	/**

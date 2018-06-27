@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		esc_html_e( 'Thank you for choosing the Wishlist plugin by TemplateInvaders to enhance your WooCommerce store!', 'ti-woocommerce-wishlist' );
 		esc_html_e( 'This quick setup wizard will help you configure the basic settings.', 'ti-woocommerce-wishlist' );
 		?></div>
-	<?php echo TInvWL_Form::_button_submit( 'continue', '<i class="fati fati-magic"></i>' . __( 'let’s go', 'ti-woocommerce-wishlist' ), array( 'class' => 'tinvwl-btn red w-icon xl-icon round' ) ); // WPCS: xss ok. ?>
+	<?php echo TInvWL_Form::_button_submit( 'continue', '<i class="ftinvwl ftinvwl-magic"></i>' . __( 'let’s go', 'ti-woocommerce-wishlist' ), array( 'class' => 'tinvwl-btn red w-icon xl-icon round' ) ); // WPCS: xss ok. ?>
 	<div class="tinv-wishlist-clear"></div>
 	<a class="tinvwl-skip" href="<?php echo esc_url( admin_url() ); ?>" ><?php esc_html_e( 'Not Right Now', 'ti-woocommerce-wishlist' ); ?></a>
 </div>

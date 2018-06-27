@@ -37,7 +37,6 @@ module.exports = function (grunt) {
 					'assets/css/admin-form.min.css': 'assets/css/admin-form.css',
 					'assets/css/admin-setup.min.css': 'assets/css/admin-setup.css',
 					'assets/css/bootstrap.min.css': 'assets/css/bootstrap.css',
-					'assets/css/font-awesome.min.css': 'assets/css/font-awesome.css',
 					'assets/css/public.min.css': 'assets/css/public.css',
 					'assets/css/theme.min.css': 'assets/css/theme.css'
 				}
@@ -73,6 +72,7 @@ module.exports = function (grunt) {
 					sourceMap: false,
 				},
 				files: {
+					'assets/css/admin.css': 'sass/admin.scss',
 					'assets/css/theme.css': 'sass/theme.scss',
 					'assets/css/public.css': 'sass/public.scss',
 
@@ -142,7 +142,7 @@ module.exports = function (grunt) {
 		'autoprefixer',
 		'cssmin',
 		'header',
-		'makepot',
+		// 'makepot',
 	]);
 
 

@@ -154,7 +154,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	function enqueue_styles() {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
 		wp_enqueue_style( $this->_n, TINVWL_URL . 'assets/css/admin.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'assets/css/font-awesome.min.css', array(), $this->_v, 'all' );
 		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_v, 'all' );
 	}
 
@@ -196,7 +195,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Promo in footer for wishlist
 	 */
 	function promo_footer() {
-		echo 'Made with <i class="fati fati-heart"></i> by <a href="https://templateinvaders.com/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=made_by&partner=' . TINVWL_UTM_SOURCE . '">TemplateInvaders</a><br />If you like WooCommerce Wishlist Plugin please leave us a <a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/#new-post"><span><i class="fati fati-star"></i><i class="fati fati-star"></i><i class="fati fati-star"></i><i class="fati fati-star"></i><i class="fati fati-star"></i></span></a> rating.'; // WPCS: xss ok.
+		echo 'Made with <i class="ftinvwl ftinvwl-heart"></i> by <a href="https://templateinvaders.com/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=made_by&partner=' . TINVWL_UTM_SOURCE . '">TemplateInvaders</a><br />If you like WooCommerce Wishlist Plugin please leave us a <a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/#new-post"><span><i class="ftinvwl ftinvwl-star"></i><i class="ftinvwl ftinvwl-star"></i><i class="ftinvwl ftinvwl-star"></i><i class="ftinvwl ftinvwl-star"></i><i class="ftinvwl ftinvwl-star"></i></span></a> rating.'; // WPCS: xss ok.
 	}
 
 	/**
@@ -207,7 +206,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * @return array
 	 */
 	function status_panel( $panel ) {
-		array_unshift( $panel, sprintf( '<a class="tinvwl-btn red w-icon smaller-txt" href="%s"><i class="fati fati-star"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_upgrade&partner=' . TINVWL_UTM_SOURCE, __( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ) ) );
+		array_unshift( $panel, sprintf( '<a class="tinvwl-btn red w-icon smaller-txt" href="%s"><i class="ftinvwl ftinvwl-star"></i><span class="tinvwl-txt">%s</span></a>', 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=header_upgrade&partner=' . TINVWL_UTM_SOURCE, __( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ) ) );
 
 		return $panel;
 	}

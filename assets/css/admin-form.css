@@ -116,14 +116,14 @@ on off button
 }
 
 .tiwlform-onoff-container .tiwlform-onoff-button:before {
-	content: "\e916";
+	content: "\e91e";
 	font-size: 11px;
-	font-family: 'TIFontAwesome';
+	font-family: 'tinvwl-webfont';
 }
 
 .tiwlform-onoff-container.checked .tiwlform-onoff-button:before {
-	content: "\e916";
-	font-family: 'TIFontAwesome';
+	content: "\e91e";
+	font-family: 'tinvwl-webfont';
 }
 
 .tiwlform-onoff-container.disabled {

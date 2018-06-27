@@ -372,7 +372,6 @@ class TInvWL_Public_TInvWL {
 				wp_add_inline_style( $name_style, $newcss );
 			}
 		}
-		wp_enqueue_style( 'tinvwl-font-awesome', TINVWL_URL . 'assets/css/font-awesome.min.css', array(), $this->_v, 'all' );
 	}
 
 	/**

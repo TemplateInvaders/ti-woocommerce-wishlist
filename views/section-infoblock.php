@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="tinvwl-table">
 		<span class="tinvwl-info-sign tinvwl-cell">
 			<span>
-				<i class="fati fati-info"></i>
+				<i class="ftinvwl ftinvwl-info"></i>
 			</span>
 			<a class="tinvwl-help" href="javascript:void(0)" data-container="body" data-toggle="popover" data-trigger="manual" data-placement="left" data-html="true" rel="nofollow">
-				<i class="fati fati-info"></i>
+				<i class="ftinvwl ftinvwl-info"></i>
 			</a>
 		</span>
 		<span class="tinvwl-info-desc tinvwl-cell"><?php echo $desc; // WPCS: xss ok.  ?></span>

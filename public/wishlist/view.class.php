@@ -463,7 +463,7 @@ class TInvWL_Public_Wishlist_View {
 	function page_prev() {
 		$paged = get_query_var( 'paged', 1 );
 		$paged = 1 < $paged ? $paged - 1 : 0;
-		$this->page( $paged, sprintf( '<i class="fati fati-chevron-left"></i>%s', __( 'Previous Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-prev' ) );
+		$this->page( $paged, sprintf( '<i class="ftinvwl ftinvwl-chevron-left"></i>%s', __( 'Previous Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-prev' ) );
 	}
 
 	/**
@@ -472,7 +472,7 @@ class TInvWL_Public_Wishlist_View {
 	function page_next() {
 		$paged = get_query_var( 'paged', 1 );
 		$paged = 1 < $paged ? $paged + 1 : 2;
-		$this->page( $paged, sprintf( '%s<i class="fati fati-chevron-right"></i>', __( 'Next Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-next' ) );
+		$this->page( $paged, sprintf( '%s<i class="ftinvwl ftinvwl-chevron-right"></i>', __( 'Next Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-next' ) );
 	}
 
 	/**

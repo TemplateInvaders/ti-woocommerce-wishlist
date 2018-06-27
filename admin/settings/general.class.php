@@ -103,10 +103,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'extra' => array( 'tiwl-show' => '.tiwl-processing-autoremove-anyone' ),
 					),
 					array(
-						'type'  => 'checkboxonoff',
-						'name'  => 'processing_redirect_checkout',
-						'text'  => __( 'Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist' ),
-						'std'   => false,
+						'type' => 'checkboxonoff',
+						'name' => 'processing_redirect_checkout',
+						'text' => __( 'Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
 					),
 					array(
 						'type'  => 'checkboxonoff',
@@ -223,6 +223,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'checkboxonoff',
+						'name'  => 'redirect_checkout',
+						'text'  => __( 'Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+						'class' => 'tiwl-processing-redirect-checkout',
+					),
+					array(
+						'type'  => 'checkboxonoff',
 						'name'  => 'autoremove_anyone',
 						'text'  => __( 'Remove by anyone', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
@@ -301,19 +308,19 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'class'   => 'tiwl-button-icon-style',
 					),
 					array(
-						'type'	 => 'checkboxonoff',
-						'name'	 => 'show_text',
-						'text'	 => __( 'Show button text', 'ti-woocommerce-wishlist-premium' ),
-						'std'	 => true,
-						'extra'	 => array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'show_text',
+						'text'  => __( 'Show button text', 'ti-woocommerce-wishlist' ),
+						'std'   => true,
+						'extra' => array(
 							'tiwl-show' => '.tiwl-button-text',
 						),
 					),
 					array(
-						'type'	 => 'group',
-						'id'	 => 'show_text_single',
-						'class'	 => 'tiwl-button-text',
-						'style'	 => 'border-top: 0px; padding-top: 0px;',
+						'type'  => 'group',
+						'id'    => 'show_text_single',
+						'class' => 'tiwl-button-text',
+						'style' => 'border-top: 0px; padding-top: 0px;',
 					),
 					array(
 						'type' => 'text',
@@ -416,19 +423,19 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'class'   => 'tiwl-buttoncat-icon-style',
 					),
 					array(
-						'type'	 => 'checkboxonoff',
-						'name'	 => 'show_text',
-						'text'	 => __( 'Show button text', 'ti-woocommerce-wishlist-premium' ),
-						'std'	 => true,
-						'extra'	 => array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'show_text',
+						'text'  => __( 'Show button text', 'ti-woocommerce-wishlist' ),
+						'std'   => true,
+						'extra' => array(
 							'tiwl-show' => '.tiwl-button-text-catalog',
 						),
 					),
 					array(
-						'type'	 => 'group',
-						'id'	 => 'show_text_single',
-						'class'	 => 'tiwl-button-text-catalog',
-						'style'	 => 'border-top: 0px; padding-top: 0px;',
+						'type'  => 'group',
+						'id'    => 'show_text_single',
+						'class' => 'tiwl-button-text-catalog',
+						'style' => 'border-top: 0px; padding-top: 0px;',
 					),
 					array(
 						'type' => 'text',

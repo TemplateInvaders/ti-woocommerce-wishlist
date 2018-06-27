@@ -24,7 +24,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	function prepare_sections() {
 		$fields_data = array();
 		$fields		 = $this->default_style_settings();
-		$theme_file	 = TINVWL_PATH . implode( DIRECTORY_SEPARATOR, array( 'asset', 'css', 'theme.css' ) );
+		$theme_file	 = TINVWL_PATH . implode( DIRECTORY_SEPARATOR, array( 'assets', 'css', 'theme.css' ) );
 		if ( file_exists( $theme_file ) ) {
 			$fields_data = $this->break_css( file_get_contents( $theme_file ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.file_get_contents
 		}
@@ -164,7 +164,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 					if ( preg_match( $pregx, $value, $matches ) ) {
 						if ( isset( $matches[1] ) ) {
 							$field['std']	 = trim( $matches[1] );
-							$field['std']	 = preg_replace( '/^\.\.\//', TINVWL_URL . 'asset/', $field['std'] );
+							$field['std']	 = preg_replace( '/^\.\.\//', TINVWL_URL . 'assets/', $field['std'] );
 						}
 					}
 				} else {

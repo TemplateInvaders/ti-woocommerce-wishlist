@@ -79,9 +79,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 
 		add_action( 'switch_theme', array( $this, 'admin_notice_outdated_templates' ) );
 		add_action( 'tinvwl_updated', array( $this, 'admin_notice_outdated_templates' ) );
-//		add_action( 'wp_ajax_' . $this->_n . '_checker_hook', array( $this, 'validation_template' ) );
-		add_action( 'switch_theme', array( $this, 'clear_notice_validation_template' ) );
-//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_validate_template' ) );
+
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
 		$this->scheduled_remove_wishlist();
@@ -118,7 +116,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Creation mune and sub-menu
 	 */
 	function action_menu() {
-		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_n, null, TINVWL_URL . 'asset/img/icon_menu.png', 56 );
+		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_n, null, TINVWL_URL . 'assets/img/icon_menu.png', 56 );
 		add_action( "load-$page", array( $this, 'onload' ) );
 		$menu = apply_filters( $this->_n . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
@@ -155,9 +153,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
-		wp_enqueue_style( $this->_n, TINVWL_URL . 'asset/css/admin.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'asset/css/font-awesome.min.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'asset/css/admin-form.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n, TINVWL_URL . 'assets/css/admin.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'assets/css/font-awesome.min.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_v, 'all' );
 	}
 
 	/**
@@ -165,8 +163,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( $this->_n . '-bootstrap', TINVWL_URL . 'asset/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_v, 'all' );
-		wp_register_script( $this->_n, TINVWL_URL . 'asset/js/admin' . $suffix . '.js', array(
+		wp_enqueue_script( $this->_n . '-bootstrap', TINVWL_URL . 'assets/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_v, 'all' );
+		wp_register_script( $this->_n, TINVWL_URL . 'assets/js/admin' . $suffix . '.js', array(
 			'jquery',
 			'wp-color-picker'
 		), $this->_v, 'all' );
@@ -280,150 +278,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		} else {
 			WC_Admin_Notices::remove_notice( 'outdated_templates' );
 		}
-	}
-
-	/**
-	 * Load javascript for validation templates
-	 */
-	function enqueue_scripts_validate_template() {
-		$theme = wp_get_theme();
-		$theme = $theme->get_template();
-		if ( tinv_get_option( 'template_checker', 'theme' ) !== $theme ) {
-			tinv_update_option( 'template_checker', '', array() );
-			tinv_update_option( 'template_checker', 'theme', $theme );
-			tinv_update_option( 'template_checker', 'checked', false );
-			tinv_update_option( 'template_checker', 'time', 0 );
-		}
-		if ( tinv_get_option( 'template_checker', 'checked' ) && absint( tinv_get_option( 'template_checker', 'time' ) ) + HOUR_IN_SECONDS > time() ) {
-			return;
-		}
-		$types = array_keys( wc_get_product_types() );
-		foreach ( $types as $type => $type_name ) {
-			if ( ! tinv_get_option( 'template_checker', 'missing_hook_' . $type ) ) {
-				$data = filter_input_array( INPUT_GET, array(
-					'wc-hide-notice'   => FILTER_DEFAULT,
-					'_wc_notice_nonce' => FILTER_DEFAULT,
-				) );
-				if ( 'missing_hook_' . $type === $data['wc-hide-notice'] && wp_verify_nonce( $data['_wc_notice_nonce'], 'woocommerce_hide_notices_nonce' ) ) {
-					tinv_update_option( 'template_checker', 'missing_hook_' . $type, true );
-				}
-			}
-		}
-		if ( ! tinv_get_option( 'template_checker', 'hide_product_listing' ) ) {
-			$data = filter_input_array( INPUT_GET, array(
-				'wc-hide-notice'   => FILTER_DEFAULT,
-				'_wc_notice_nonce' => FILTER_DEFAULT,
-			) );
-			if ( 'missing_hook_listing' === $data['wc-hide-notice'] && wp_verify_nonce( $data['_wc_notice_nonce'], 'woocommerce_hide_notices_nonce' ) ) {
-				tinv_update_option( 'template_checker', 'hide_product_listing', true );
-			}
-		}
-
-		wp_enqueue_script( $this->_n . '-checker', TINVWL_URL . 'asset/js/admin.checker.min.js', array( 'jquery' ), $this->_v, 'all' );
-	}
-
-	/**
-	 * Validation templates hook from request remote page
-	 */
-	function validation_template() {
-		global $post, $product;
-
-		if ( tinv_get_option( 'template_checker', 'checked' ) ) {
-			return;
-		}
-		if ( absint( tinv_get_option( 'template_checker', 'time' ) ) + HOUR_IN_SECONDS > time() ) {
-			return;
-		}
-		tinv_update_option( 'template_checker', 'time', time() );
-		$tags = array(
-			'woocommerce_single_product_summary'    => 'tinvwl_single_product_summary',
-			'woocommerce_before_add_to_cart_button' => 'tinvwl_before_add_to_cart_button',
-			'woocommerce_after_add_to_cart_button'  => 'tinvwl_after_add_to_cart_button',
-		);
-		$tch  = TInvWL_CheckerHook::instance();
-		$tch->add_action( $tags );
-		$tch->add_action( array_keys( $tags ) );
-
-		$types = wc_get_product_types();
-
-		$check = true;
-		foreach ( $types as $type => $type_name ) {
-			if ( tinv_get_option( 'template_checker', 'missing_hook_' . $type ) ) {
-				continue;
-			}
-
-			if ( function_exists( 'wc_get_products' ) ) {
-				$products = wc_get_products( array(
-					'status' => 'publish',
-					'type'   => $type,
-					'limit'  => 1,
-				) );
-			} else {
-				$products = array_map( 'wc_get_product', get_posts( array(
-					'post_type'   => 'product',
-					'post_status' => 'publish',
-					'numberposts' => 1,
-					'tax_query'   => array(
-						array(
-							'taxonomy' => 'product_type',
-							'field'    => 'slug',
-							'terms'    => $type,
-						),
-					),
-				) ) );
-			}
-			if ( ! empty( $products ) ) {
-				$product = array_shift( $products );
-				$post    = get_post( $product->get_id() ); // @codingStandardsIgnoreLine  WordPress.Variables.GlobalVariables.OverrideProhibited
-				$result  = $tch->run( array(
-					'template'      => array(
-						'content-single-product.php',
-						'single-product/add-to-cart/' . $type . '.php'
-					),
-					'template_args' => array(
-						'available_variations' => array( 1, 2, 3, 4, 5 ),
-						'attributes'           => array(),
-					),
-					'url'           => $product->get_permalink(),
-				) );
-				if ( ! empty( $result ) ) {
-					$result = array_keys( $result );
-					foreach ( $result as $key => $tag ) {
-						if ( array_key_exists( $tag, $tags ) ) {
-							$tags[ $tag ];
-							if ( ! array_key_exists( $tag, $tags ) ) {
-								unset( $result[ $key ] );
-							}
-						} else {
-							unset( $result[ $key ] );
-						}
-					}
-					if ( ! empty( $result ) ) {
-						WC_Admin_Notices::add_custom_notice( 'missing_hook_' . $type, sprintf( _n( 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hook "%2$s" is missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', 'The "Add to Wishlist" button may work improperly in a product type "%1$s" because the hooks "%2$s" are missing.<br />Please, ask your theme developers to check the theme templates or <a href="https://templateinvaders.com/help/" target="_blank">contact us</a> for assistance.', count( $result ), 'ti-woocommerce-wishlist' ), $type_name, '<strong>' . join( '</strong>, <strong>', $result ) . '</strong>' ) );
-						$check = false;
-					} else {
-						WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );
-					}
-				} else {
-					WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );
-				}
-			}
-		} // End foreach().
-
-		tinv_update_option( 'template_checker', 'checked', $check );
-		wp_die();
-	}
-
-	/**
-	 * Clear notice validation template when theme switched
-	 */
-	function clear_notice_validation_template() {
-		WC_Admin_Notices::remove_notice( 'missing_hook_listing' );
-		$types = wc_get_product_types();
-		foreach ( $types as $type => $type_name ) {
-			WC_Admin_Notices::remove_notice( 'missing_hook_' . $type );
-		}
-		tinv_update_option( 'template_checker', '', array() );
 	}
 
 	/**

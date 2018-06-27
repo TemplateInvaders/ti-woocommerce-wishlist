@@ -1,14 +1,10 @@
 /* Misc */
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 *:before,
 *:after {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -389,7 +385,6 @@ h6 {
     margin: 0;
     color: #4f4639;
     border: 1px solid rgba(0, 0, 0, .14);
-    -webkit-box-shadow: inset 1px 1px 6px 0 rgba(170, 157, 137, .14);
     box-shadow: inset 1px 1px 6px 0 rgba(170, 157, 137, .14);
 }
 
@@ -413,8 +408,6 @@ h6 {
 .tinvwl-content input[type=search],
 .tinvwl-content select {
     height: 42px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -422,7 +415,6 @@ h6 {
     height: 35px;
     width: 210px;
     padding: 9px 13px;
-    -webkit-box-shadow: none;
     box-shadow: none;
     border: none;
     background: #f4f3ef;
@@ -514,8 +506,6 @@ h6 {
 .tinvwl-content select.tinvwl-select.grey {
     padding-right: 47px;
     margin: 0;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -529,8 +519,6 @@ h6 {
     height: 36px;
     line-height: 36px;
     text-align: center;
-    -webkit-border-radius: 0 4px 4px 0;
-    -moz-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
 }
 
@@ -584,7 +572,6 @@ h6 {
 }
 
 .tinvwl-panel.only-button.w-shadow {
-    -webkit-box-shadow: none;
     box-shadow: none;
     overflow: visible;
 }
@@ -661,8 +648,6 @@ a.tinvwl-btn {
     text-transform: uppercase;
     letter-spacing: -.025em;
     border: none;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
     border-radius: 2px;
     color: #fff;
     background-color: #96b100;
@@ -848,8 +833,6 @@ a.tinvwl-btn {
 }
 
 .tinvwl-btn.round {
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
     border-radius: 25px;
     padding: 15px 28px 16px;
 }
@@ -869,8 +852,6 @@ a.tinvwl-btn {
     width: 46px;
     padding: 14px 0;
     margin-right: 14px;
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px;
     background: #8aa300;
 }
@@ -915,8 +896,6 @@ a.tinvwl-btn:not(:disabled):focus {
     text-align: center;
     background: #fff;
     border: 2px solid #f1f1f1;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
     color: #3e3e3e;
 }
@@ -961,8 +940,6 @@ a.tinvwl-btn:not(:disabled):focus {
     background: #ff5739;
     border: 3px solid #ffffff;
     color: #ffffff;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
 }
 
@@ -1139,8 +1116,6 @@ a.tinvwl-btn:not(:disabled):focus {
     font-weight: 600;
     line-height: 1;
     padding: 10px 16px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     color: #404040;
     background: #ede8df;
@@ -1171,14 +1146,11 @@ a.tinvwl-btn:not(:disabled):focus {
 }
 
 .tinvwl-panel.w-shadow {
-    -webkit-box-shadow: 1px 1px 8px 0 rgba(170, 157, 137, 0.14);
     box-shadow: 1px 1px 8px 0 rgba(170, 157, 137, 0.14);
 }
 
 .tinvwl-panel.w-bg {
     background: #ffffff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -1240,8 +1212,6 @@ a.tinvwl-btn:not(:disabled):focus {
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
     border-radius: 2px;
     color: #595857;
     background: #f6f3ed;
@@ -1260,9 +1230,7 @@ a.tinvwl-btn:not(:disabled):focus {
     right: 0;
 
     -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 
@@ -1281,8 +1249,6 @@ a.tinvwl-btn:not(:disabled):focus {
 }
 
 .tinvwl-content table.widefat {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
     box-shadow: none;
 }
 
@@ -1620,8 +1586,6 @@ a.tinvwl-btn:not(:disabled):focus {
     min-width: 38px;
     height: 38px;
     line-height: 38px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
     border: none;
     background: none;
@@ -1874,12 +1838,9 @@ a.tinvwl-btn:not(:disabled):focus {
 .tinvwl-table.w-bg {
     background: #fff;
     overflow: hidden;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
 }
 .tinvwl-table.w-shadow {
-    -webkit-box-shadow: 1px 1px 8px 0 rgba(170, 157, 137, 0.14);
     box-shadow: 1px 1px 8px 0 rgba(170, 157, 137, 0.14);
 }
 .tinvwl-table.auto-width {
@@ -2177,8 +2138,6 @@ textarea[name="style_plain-css"] {
     width: 22px;
     height: 22px;
     line-height: 22px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
     background: #e1dbce;
 }
@@ -2374,10 +2333,8 @@ textarea[name="style_plain-css"] {
     text-align: center;
     white-space: normal;
     background-color: #fff;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border-radius: 6px;
-    -webkit-box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.22);
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.22);
 }
 .popover.top {
@@ -2427,7 +2384,6 @@ textarea[name="style_plain-css"] {
     content: none;
     z-index: 9999;
     background: none;
-    -webkit-box-shadow: none;
     box-shadow: none;
     position: absolute;
     left: auto;
@@ -2699,10 +2655,6 @@ textarea[name="style_plain-css"] {
     height: 100%;
     visibility: hidden;
     opacity: 0;
-
-    -webkit-transition: opacity .3s ease, visibility .3s ease;
-    -moz-transition: opacity .3s ease, visibility .3s ease;
-    -o-transition: opacity .3s ease, visibility .3s ease;
     transition: opacity .3s ease, visibility .3s ease;
 
     background: #191919;
@@ -2721,8 +2673,6 @@ textarea[name="style_plain-css"] {
     position: relative;
     margin: 0 auto;
     background: #fff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -2740,10 +2690,6 @@ textarea[name="style_plain-css"] {
     visibility: hidden;
     opacity: 0;
     text-align: left;
-
-    -webkit-transition: opacity .3s ease, visibility .3s ease;
-    -moz-transition: opacity .3s ease, visibility .3s ease;
-    -o-transition: opacity .3s ease, visibility .3s ease;
     transition: opacity .3s ease, visibility .3s ease;
 }
 
@@ -2808,8 +2754,6 @@ textarea[name="style_plain-css"] {
     font-family: "Open Sans", Arial, sans-serif;
     font-weight: 600;
     padding: 0 35px 0 0;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
     border-radius: 2px;
     border: none;
     text-decoration: none;
@@ -2817,13 +2761,9 @@ textarea[name="style_plain-css"] {
     color: #ffffff;
 
     -webkit-transform: translateX(-50px);
-    -moz-transform: translateX(-50px);
-    -o-transform: translateX(-50px);
-    transform: translateX(-50px);
-
-    -webkit-transition: transform .3s ease;
-    -moz-transition: transform .3s ease;
-    -o-transition: transform .3s ease;
+    -ms-transform: translateX(-50px);
+        transform: translateX(-50px);
+    transition: -webkit-transform .3s ease;
     transition: transform .3s ease;
 }
 
@@ -2834,9 +2774,8 @@ textarea[name="style_plain-css"] {
 
 .tinvwl-quick-btns button:hover {
     -webkit-transform: translateX(-100%);
-    -moz-transform: translateX(-100%);
-    -o-transform: translateX(-100%);
-    transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+        transform: translateX(-100%);
 }
 
 .tinvwl-quick-btns button + button {
@@ -2935,8 +2874,6 @@ textarea[name="style_plain-css"] {
 
 .fade {
     opacity: 0;
-    -webkit-transition: opacity .15s linear;
-    -o-transition: opacity .15s linear;
     transition: opacity .15s linear;
 }
 .fade.in {

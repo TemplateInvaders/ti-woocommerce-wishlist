@@ -173,20 +173,20 @@ class TInvWL_Wizard {
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
-		wp_enqueue_style( $this->_n, TINVWL_URL . 'asset/css/admin.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'asset/css/admin-form.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-setup', TINVWL_URL . 'asset/css/admin-setup.css', array(
+		wp_enqueue_style( $this->_n, TINVWL_URL . 'assets/css/admin.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n . '-setup', TINVWL_URL . 'assets/css/admin-setup.css', array(
 			'dashicons',
 			'install'
 		), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'asset/css/font-awesome.min.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_n . '-font-awesome', TINVWL_URL . 'assets/css/font-awesome.min.css', array(), $this->_v, 'all' );
 	}
 
 	/**
 	 * Load javascript
 	 */
 	function enqueue_scripts() {
-		wp_enqueue_script( $this->_n, TINVWL_URL . 'asset/js/admin.js', array( 'jquery' ), $this->_v, 'all' );
+		wp_enqueue_script( $this->_n, TINVWL_URL . 'assets/js/admin.js', array( 'jquery' ), $this->_v, 'all' );
 	}
 
 	/**

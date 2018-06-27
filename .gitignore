@@ -13,3 +13,10 @@ project.properties
 # Windows junk
 Thumbs.db
 desktop.ini
+
+# Grunt
+/node_modules/
+/deploy/
+
+# Package Json file
+/package-lock.json

@@ -96,7 +96,8 @@ module.exports = function (grunt) {
 					exclude: [ // Exlude folder.
 						'.idea/.*',
 						'assets/.*',
-						'node_modules/.*'
+						'node_modules/.*',
+						'build/.*'
 					],
 					potFilename: '<%= pkg.name %>.pot', // Name of the POT file.
 					type: 'wp-plugin', // Type of project (wp-plugin or wp-theme).

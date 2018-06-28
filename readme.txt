@@ -134,7 +134,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.8.0 =
 *Release Date - 28 June 2018*
 
-* Icons images replaced with custom webfont
+* Icon images replaced with custom webfont
 * Code cleanup 
 
 = 1.7.4 =

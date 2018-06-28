@@ -1,24 +1,36 @@
 .tinv-wishlist {
-	font-family: Georgia, serif;
+	font-family: Georgia,serif;
 	font-size: 14px;
-	font-weight: normal;
+	font-weight: 400;
 	text-transform: none;
 	line-height: 1.75;
-	button, input, select, textarea, button {
-		font-family: Georgia, serif;
+	button {
+		font-family: Georgia,serif;
 		font-size: 14px;
-		font-weight: normal;
+		font-weight: 400;
 		text-transform: none;
 		line-height: 1.75;
 	}
 	input {
-		&[type="button"], &[type="reset"], &[type="submit"] {
-			font-family: Georgia, serif;
+		font-family: Georgia,serif;
+		font-size: 14px;
+		font-weight: 400;
+		text-transform: none;
+		line-height: 1.75;
+		&[type=button], &[type=reset], &[type=submit] {
+			font-family: Georgia,serif;
 			font-size: 14px;
-			font-weight: normal;
+			font-weight: 400;
 			text-transform: none;
 			line-height: 1.75;
 		}
+	}
+	select, textarea {
+		font-family: Georgia,serif;
+		font-size: 14px;
+		font-weight: 400;
+		text-transform: none;
+		line-height: 1.75;
 	}
 	.woocommerce form .form-row input.input-text {
 		line-height: 1;
@@ -26,20 +38,20 @@
 		padding-bottom: 9.5px;
 	}
 	label {
-		font-weight: normal;
+		font-weight: 400;
 	}
-	::-webkit-input-placeholder, :-moz-placeholder {
+	:-moz-placeholder, ::-webkit-input-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia, serif;
+		font-family: Georgia,serif;
 	}
 	::-moz-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia, serif;
+		font-family: Georgia,serif;
 		opacity: 1;
 	}
 	:-ms-input-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia, serif;
+		font-family: Georgia,serif;
 	}
 	select {
 		-webkit-appearance: none;
@@ -53,16 +65,16 @@
 	}
 	button {
 		text-align: center;
-		font-weight: normal;
+		font-weight: 400;
 		letter-spacing: 0;
 		line-height: 1;
 		text-transform: none;
 		padding: 11.5px 19px;
 	}
 	input {
-		&[type="button"], &[type="reset"], &[type="submit"] {
+		&[type=button], &[type=reset], &[type=submit] {
 			text-align: center;
-			font-weight: normal;
+			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 1;
 			text-transform: none;
@@ -82,11 +94,16 @@
 			border: none;
 			transition: none;
 		}
-		&[type="text"], &[type="email"], &[type="url"], &[type="password"], &[type="search"], &[type="tel"], &[type="number"] {
+	}
+	.product-quantity input[type=text].qty {
+		padding: 6px 15px;
+	}
+	input {
+		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
 			padding: 6px 15px;
 		}
 	}
-	textarea, .product-quantity input[type="text"].qty {
+	textarea {
 		padding: 6px 15px;
 	}
 }
@@ -94,7 +111,7 @@
 .woocommerce.tinv-wishlist {
 	#respond input#submit, a.button, button.button, input.button {
 		text-align: center;
-		font-weight: normal;
+		font-weight: 400;
 		letter-spacing: 0;
 		line-height: 1;
 		text-transform: none;
@@ -104,7 +121,7 @@
 	#respond input#submit.alt, a.button.alt, button.button.alt, input.button.alt {
 		padding: 11.5px 20px;
 	}
-	.tinvwl-my-wishlists, .tinvwl-continue-shop {
+	.tinvwl-continue-shop {
 		padding-left: 17px;
 		padding-right: 17px;
 	}
@@ -112,59 +129,41 @@
 
 .tinv-wishlist {
 	a i {
-		&.fati-chevron-left, &.fati-chevron-right {
+		&.ftinvwl-chevron-left, &.ftinvwl-chevron-right {
 			font-size: 10px;
 		}
-	}
-	.tinvwl-estimate-wrap a i.fati-envelope-o {
-		font-size: 14px;
 	}
 	table {
 		th {
 			padding: 22px 12px;
 		}
-		&.tinvwl-table-manage-lists.tinvwl-public th {
-			padding: 22px 15px;
-		}
-		&.tinvwl-table-manage-list th {
-			padding: 19px 12px;
-		}
 		td {
 			padding: 27px 12px;
 		}
 		.entry-date {
-			background: none;
+			background: 0 0;
 			padding: 0;
 			margin: 0;
 			color: inherit;
-		}
-		&.tinvwl-table-manage-list td {
-			padding: 26px 12px;
-		}
-	}
-	.tinvwl-table-manage-list {
-		.product-cb, .product-remove {
-			padding-left: 10px;
-			padding-right: 10px;
 		}
 	}
 	td {
 		&.product-name {
 			line-height: 20px;
 			a {
-				line-height: 1.14285714;
+				line-height: 1.14;
 			}
 		}
 		&.product-price {
 			line-height: 24px;
 		}
 	}
-	.tinvwl-table-manage-list td.product-stock {
-		padding-left: 9px;
-		padding-right: 9px;
-	}
 	.product-stock i {
 		font-size: 12px;
+		&.ftinvwl-times {
+			font-size: 20px;
+			margin-right: 8px;
+		}
 	}
 	.tinvwl-table-manage-list td.product-quantity {
 		padding-left: 9px;
@@ -178,7 +177,7 @@
 		padding-right: 11px;
 	}
 	.tinvwl-table-manage-list .product-action {
-		button[name="tinvwl-remove"] i, .tinvwl_move_product_button i {
+		.tinvwl_move_product_button i, button[name=tinvwl-remove] i {
 			font-size: 12px;
 		}
 	}
@@ -192,36 +191,27 @@
 	.wishlist-privacy {
 		padding-left: 15px;
 		padding-right: 15px;
+		min-width: 130px;
 	}
-	table:not(.tinvwl-public) .wishlist-date, .wishlist-privacy {
+	table:not(.tinvwl-public) .wishlist-date {
 		min-width: 130px;
 	}
 	.wishlist-action {
 		padding-left: 10px;
 		padding-right: 10px;
-		button[value="manage_remove"] {
-			background-image: url(../img/icon_delete.png);
-			background-repeat: no-repeat;
-			background-position: 14px center;
-			padding-left: 39px;
-			padding-right: 17px;
-			i {
-				font-size: 12px;
-			}
-		}
 	}
 	.tinv-login {
 		&.tinv-wrapped-block {
 			padding: 30px;
 		}
-		form input[name="login"] {
+		form input[name=login] {
 			min-width: 219px;
 		}
 		input {
-			&[name="username"] {
+			&[name=username] {
 				padding-left: 40px;
 			}
-			&[name="password"] {
+			&[name=password] {
 				padding-left: 36px;
 			}
 		}
@@ -233,19 +223,19 @@
 		}
 	}
 	.tinv-modal {
-		.already-in ul li + li {
-			/*margin-top: 10px;*/
-		}
 		.button {
-			font-weight: normal;
+			font-weight: 400;
 			padding: 11px 19px;
+			i {
+				font-size: 14px;
+			}
 		}
-		button i, .button i {
+		button i {
 			font-size: 14px;
 		}
 	}
 	.tinvwl_added_to_wishlist .tinvwl_button_view, .tinvwl_created_wishlist .tinvwl_button_view {
-		padding: 11px 11px;
+		padding: 11px;
 	}
 	.tinv-modal .tinvwl-buttons-group {
 		button {
@@ -260,17 +250,78 @@
 			}
 		}
 		button + {
-			button, a button {
+			a button, button {
 				margin: 0 0 0 10px;
 			}
 		}
 	}
-	.tinvwl-subscribe .tinvwl-buttons-group button i {
+	color: #1a1a1a;
+	.tinv-header h2 {
+		font-family: Georgia,serif;
+		text-transform: none;
+		text-shadow: none;
+		letter-spacing: 0;
+		font-size: 40px;
+		font-weight: 700;
+		margin-bottom: 40px;
+		color: #000;
+	}
+	a:not(.button) {
+		font-family: inherit;
+		font-weight: 400;
+		color: #007acc;
+		text-decoration: underline;
+		border-bottom: 0;
+		box-shadow: none;
+		&:active, &:focus, &:hover {
+			color: #686868;
+		}
+	}
+	.product-quantity input[type=text].qty {
+		font-family: inherit;
+		color: #686868;
+		background-color: #f7f7f7;
+		border: 1px solid #d1d1d1;
+		border-color: #d1d1d1;
+		border-radius: 2px;
+		box-shadow: none;
+	}
+	input {
+		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
+			font-family: inherit;
+			color: #686868;
+			background-color: #f7f7f7;
+			border: 1px solid #d1d1d1;
+			border-color: #d1d1d1;
+			border-radius: 2px;
+			box-shadow: none;
+		}
+	}
+	select, textarea {
+		font-family: inherit;
+		color: #686868;
+		background-color: #f7f7f7;
+		border: 1px solid #d1d1d1;
+		border-color: #d1d1d1;
+		border-radius: 2px;
+		box-shadow: none;
+	}
+	.product-quantity input[type=text].qty {
 		font-size: 14px;
 	}
+	input {
+		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
+			font-size: 14px;
+		}
+	}
+	textarea {
+		font-size: 14px;
+	}
+	select {
+		font-size: 12px;
+		background-size: 8px 6px;
+	}
 }
-
-/* Manage List */
 
 @media only screen and (max-width: 1024px) and (min-width: 641px) {
 	.tinv-wishlist {
@@ -354,10 +405,12 @@
 				padding: 0 12px 10px;
 			}
 		}
+		.wishlist-action button[value=manage_remove] {
+			text-indent: -9999px;
+			background-position: center;
+		}
 	}
 }
-
-/* Manage Lists */
 
 @media only screen and (max-width: 1200px) {
 	.tinv-wishlist .wishlist-name {
@@ -366,7 +419,7 @@
 }
 
 @media only screen and (max-width: 1024px) {
-	.tinv-wishlist .wishlist-action button[value="manage_remove"] {
+	.tinv-wishlist .wishlist-action button[value=manage_remove] {
 		padding-left: 17px;
 	}
 }
@@ -376,118 +429,12 @@
 		tfoot .tinvwl-to-left select {
 			width: 140px;
 		}
-		.wishlist-action button[value="manage_remove"] {
+		.wishlist-action button[value=manage_remove] {
 			background-image: none;
 			padding: 11.5px 12px !important;
 		}
 	}
 }
-
-@media only screen and (max-width: 640px) {
-	.tinv-wishlist .wishlist-action button[value="manage_remove"] {
-		text-indent: -9999px;
-		background-position: center;
-	}
-}
-
-/* Login */
-
-/* Move */
-
-/* Added to Wishlist */
-
-/* Follow Wishlist */
-
-/* Estimate */
-
-.woocommerce.tinv-wishlist {
-	.tinvwl-estimate-wrap .button.tinv-modal-btn {
-		padding: 11.5px 15px;
-	}
-	.estimate-dialogbox button {
-		padding: 15px 47px;
-	}
-}
-
-/* text */
-
-.tinv-wishlist {
-	color: #1a1a1a;
-	.tinv-header h2 {
-		font-family: Georgia, serif;
-		text-transform: none;
-		text-shadow: none;
-		letter-spacing: 0;
-		font-size: 40px;
-		font-weight: 700;
-		text-transform: none;
-		margin-bottom: 40px;
-		color: #000000;
-	}
-	a:not(.button) {
-		font-family: inherit;
-		font-weight: normal;
-		color: #007acc;
-		&:hover, &:active, &:focus {
-			color: #686868;
-		}
-		text-decoration: underline;
-		border-bottom: 0;
-		box-shadow: none;
-	}
-	input {
-		&[type="text"], &[type="email"], &[type="url"], &[type="password"], &[type="search"], &[type="tel"], &[type="number"] {
-			font-family: inherit;
-			color: #686868;
-			background-color: #f7f7f7;
-			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
-			border-radius: 2px;
-			box-shadow: none;
-		}
-	}
-	textarea, select, .product-quantity input[type="text"].qty {
-		font-family: inherit;
-		color: #686868;
-		background-color: #f7f7f7;
-		border: 1px solid #d1d1d1;
-		border-color: #d1d1d1;
-		border-radius: 2px;
-		box-shadow: none;
-	}
-	input {
-		&[type="text"], &[type="email"], &[type="url"], &[type="password"], &[type="search"], &[type="tel"], &[type="number"] {
-			font-size: 14px;
-		}
-	}
-	textarea, .product-quantity input[type="text"].qty {
-		font-size: 14px;
-	}
-	select {
-		font-size: 12px;
-	}
-}
-
-/* links */
-
-/* Content Text Font Size */
-/* fields */
-
-/*.tinv-wishlist input[type="text"]:focus,
-.tinv-wishlist input[type="email"]:focus,
-.tinv-wishlist input[type="url"]:focus,
-.tinv-wishlist input[type="password"]:focus,
-.tinv-wishlist input[type="search"]:focus,
-.tinv-wishlist input[type="tel"]:focus,
-.tinv-wishlist input[type="number"]:focus,
-.tinv-wishlist textarea:focus {
-    background-color: #fff;
-    border-color: #007acc;
-    color: #1a1a1a;
-    outline: 0;
-}*/
-
-/* add to wishlist catalog button */
 
 .woocommerce {
 	&.tinv-wishlist a.button.tinvwl_add_to_wishlist_button {
@@ -502,11 +449,11 @@
 			background-color: #ebe9eb;
 			border-radius: 3px;
 		}
-		&:hover, &:active, &:focus {
+		&:active, &:focus, &:hover {
 			color: #686868;
 		}
 		&.button {
-			&:hover, &:active, &:focus {
+			&:active, &:focus, &:hover {
 				color: #515151;
 				background-color: #dad8da;
 			}
@@ -521,11 +468,11 @@
 			background-color: #ebe9eb;
 			border-radius: 3px;
 		}
-		&:hover, &:active, &:focus {
+		&:active, &:focus, &:hover {
 			color: #686868;
 		}
 		&.button {
-			&:hover, &:active, &:focus {
+			&:active, &:focus, &:hover {
 				color: #515151;
 				background-color: #dad8da;
 			}
@@ -533,45 +480,39 @@
 	}
 }
 
-/* add to wishlist product page button */
-
-/* accent buttons style */
-
 .tinv-wishlist {
 	button {
 		font-family: inherit;
 		font-size: 14px;
-		color: #ffffff;
+		color: #fff;
 		background-color: #1a1a1a;
 		border-radius: 2px;
-		&:hover, &:focus {
-			color: #ffffff;
+		&:focus, &:hover {
+			color: #fff;
 			background-color: #007acc;
 		}
 	}
 	input {
-		&[type="button"] {
-			&:hover, &:focus {
-				color: #ffffff;
+		&[type=button] {
+			&:focus, &:hover {
+				color: #fff;
 				background-color: #007acc;
 			}
 		}
-		&[type="reset"] {
-			&:hover, &:focus {
-				color: #ffffff;
+		&[type=reset] {
+			&:focus, &:hover {
+				color: #fff;
 				background-color: #007acc;
 			}
 		}
-		&[type="submit"] {
-			&:hover, &:focus {
-				color: #ffffff;
+		&[type=submit] {
+			&:focus, &:hover {
+				color: #fff;
 				background-color: #007acc;
 			}
 		}
 	}
 }
-
-/* normal buttons style */
 
 .woocommerce.tinv-wishlist {
 	#respond input#submit, a.button, button.button, input.button {
@@ -591,19 +532,15 @@
 	#respond input#submit.alt, a.button.alt, button.button.alt, input.button.alt {
 		font-family: inherit;
 		font-size: 14px;
-		color: #ffffff;
+		color: #fff;
 		background-color: #a46497;
 		border-radius: 3px;
 	}
 	#respond input#submit.alt:hover, a.button.alt:hover, button.button.alt:hover, input.button.alt:hover {
-		color: #ffffff;
+		color: #fff;
 		background-color: #935386;
 	}
 }
-
-/* add to cart button */
-
-/* wrapped blocks (create wishlist, search, login) */
 
 .tinv-wishlist {
 	.tinv-wrapped-block {
@@ -615,11 +552,11 @@
 		padding: 20px 24px;
 	}
 	.tinv-wrapped-block input {
-		&[type="text"], &[type="password"], &[type="search"] {
+		&[type=text], &[type=password], &[type=search] {
 			font-family: inherit;
 			font-size: 14px;
 			color: #1a1a1a;
-			background-color: #ffffff;
+			background-color: #fff;
 			border-color: #d1d1d1;
 			border-radius: 2px;
 		}
@@ -630,31 +567,31 @@
 	table {
 		border: 1px solid #d1d1d1;
 		border-color: #d1d1d1;
-		th {
-			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
-		}
-		td {
-			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
-			background-color: #ffffff;
-		}
 		border-width: 1px 0 0 1px;
 		line-height: 16px;
-		background-color: #ffffff;
+		background-color: #fff;
 		th {
-			font-family: inherit;
-			font-size: 14px;
-			font-weight: 700;
-			text-transform: none;
-			border-width: 0 1px 1px 0;
-			color: #1a1a1a;
-			background-color: #ffffff;
+			border: 1px solid #d1d1d1;
+			border-color: #d1d1d1;
 		}
 		td {
+			border: 1px solid #d1d1d1;
+			border-color: #d1d1d1;
+			background-color: #fff;
 			border-width: 0 1px 1px 0;
-			font-family: inherit;
 			font-size: 14px;
+			font-family: inherit;
+		}
+		th {
+			border-width: 0 1px 1px 0;
+			font-size: 14px;
+			font-family: inherit;
+			font-weight: 700;
+			text-transform: none;
+			color: #1a1a1a;
+			background-color: #fff;
+		}
+		td {
 			color: #686868;
 		}
 	}
@@ -663,7 +600,7 @@
 		font-size: 16px;
 		color: #202020;
 		ins span.amount {
-			font-weight: normal;
+			font-weight: 400;
 			color: #fff;
 			background-color: #007acc;
 		}
@@ -673,14 +610,14 @@
 	}
 	.product-remove button {
 		background-color: #f7f7f7;
-		&:hover, &:active, &:focus {
+		&:active, &:focus, &:hover {
 			background-color: #dad8da;
 		}
 	}
 	.social-buttons li a {
 		box-shadow: none !important;
-		background-image: url(../img/social.png);
 		background-color: #ebe9eb;
+		text-decoration: none;
 		&:hover {
 			background-color: #dad8da;
 		}
@@ -689,22 +626,25 @@
 		.tinv-modal-inner {
 			line-height: 26px;
 			color: #1a1a1a;
-			background-color: #ffffff;
+			background-color: #fff;
 			font-family: inherit;
 			font-size: 16px;
 			select {
 				font-family: inherit;
 				font-size: 16px;
+				padding: 6.5px 10px;
+				line-height: 22px;
+				border-radius: 2px;
 			}
 		}
 		h2 {
-			font-family: Georgia, serif;
+			font-family: Georgia,serif;
 			text-transform: none;
 			text-shadow: none;
 			letter-spacing: 0;
 			font-size: 28px;
 			font-weight: 700;
-			color: #000000;
+			color: #000;
 		}
 		.tinv-modal-inner {
 			input, select, textarea {
@@ -712,23 +652,16 @@
 				background-color: #f6f6f6;
 				border-color: #d1d1d1;
 			}
-			select {
-				padding: 6.5px 10px;
-				line-height: 22px;
-			}
 			input {
+				border-radius: 2px;
 				&::-webkit-input-placeholder {
 					color: #1a1a1a;
 				}
-				border-radius: 2px;
-			}
-			select {
-				border-radius: 2px;
 			}
 		}
 	}
 	input {
-		&[type="text"], &[type="email"], &[type="url"], &[type="password"], &[type="search"], &[type="tel"], &[type="number"] {
+		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
 			min-height: 38px;
 		}
 	}
@@ -736,58 +669,33 @@
 		min-height: 38px;
 	}
 	.tinv-modal {
-		button.button, .tinv-close-modal {
+		.tinv-close-modal, button.button {
 			color: #515151;
 			background-color: #ebe9eb;
 		}
-		button.button:hover, .tinv-close-modal:hover {
+		.tinv-close-modal:hover {
 			color: #515151;
 			background-color: #dad8da;
 		}
-		button:not(.button) {
-			color: #ffffff;
-			background-color: #1a1a1a;
-			&:hover, &:active, &:focus {
-				color: #ffffff;
-				background-color: #007acc;
+		button {
+			&.button:hover {
+				color: #515151;
+				background-color: #dad8da;
+			}
+			&:not(.button) {
+				color: #fff;
+				background-color: #1a1a1a;
+				&:active, &:focus, &:hover {
+					color: #fff;
+					background-color: #007acc;
+				}
 			}
 		}
 	}
-	select {
-		background-size: 8px 6px;
-	}
-	.wishlist-action button[value="manage_remove"] {
-		background-size: 11px 11px;
-	}
-	.social-buttons li a {
-		background-size: 195px 18px;
-	}
 }
-
-/* table */
-
-@media only screen and (max-width: 640px) {
-	.tinv-wishlist .tinvwl-table-manage-list .product-action button[name="tinvwl-remove"] {
-		background-color: #f7f7f7;
-	}
-}
-
-/* Social Icons White */
-
-/* popups */
-
-/*********************** RETINA ************************/
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), not all, not all, not all {
-	.tinv-wishlist {
-		select {
-			background-image: url(../img/select_caret_t@2x.png);
-		}
-		.wishlist-action button[value="manage_remove"] {
-			background-image: url(../img/icon_delete@2x.png);
-		}
-		.social-buttons li a {
-			background-image: url(../img/social@2x.png);
-		}
+	.tinv-wishlist select {
+		background-image: url(../img/select_caret_t@2x.png);
 	}
 }

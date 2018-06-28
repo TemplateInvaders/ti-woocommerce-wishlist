@@ -20,3 +20,6 @@ desktop.ini
 
 # Package Json file
 /package-lock.json
+
+# Build
+/build/

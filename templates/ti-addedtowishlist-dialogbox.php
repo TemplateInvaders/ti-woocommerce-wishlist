@@ -2,7 +2,7 @@
 /**
  * The Template for displaying dialog for message added to wishlist product.
  *
- * @version             1.6.0
+ * @version             1.8.0
  * @package           TInvWishlist\Template
  */
 

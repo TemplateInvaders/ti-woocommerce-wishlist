@@ -100,7 +100,7 @@ module.exports = function (grunt) {
 					],
 					potFilename: '<%= pkg.name %>.pot', // Name of the POT file.
 					type: 'wp-plugin', // Type of project (wp-plugin or wp-theme).
-					updateTimestamp: true, // Whether the POT-Creation-Date should be updated without other changes.
+					updateTimestamp: false, // Whether the POT-Creation-Date should be updated without other changes.
 					processPot: function (pot, options) {
 						pot.headers['plural-forms'] = 'nplurals=2; plural=n != 1;';
 						pot.headers['last-translator'] = 'TemplateInvaders\n';
@@ -139,7 +139,65 @@ module.exports = function (grunt) {
 					}
 
 			}
-		}
+		},
+
+		// Copy the theme into the build directory
+		copy: {
+			build: {
+				expand: true,
+				src: [
+					'**',
+					'!node_modules/**',
+					'!bower_components/**',
+					'!build/**',
+					'!sass/**',
+					'!.git/**',
+					'!Gruntfile.js',
+					'!package.json',
+					'!desktop.ini',
+					'!prepros.cfg',
+					'!CONTRIBUTING.md',
+					'!README.md',
+					'!.csscomb.json',
+					'!.tern-project',
+					'!.gitignore',
+					'!.jshintrc',
+					'!.DS_Store',
+					'!*.map',
+					'!**/*.map',
+					'!**/Gruntfile.js',
+					'!**/package.json',
+					'!**/package-lock.json',
+					'!**/*~',
+					'!assets/js/button.js',
+					'!assets/js/table.js',
+					'!assets/js/misc.js'
+				],
+				dest: 'build/<%= pkg.name %>/'
+			}
+		},
+
+		// Compress build directory into <name>.zip
+		compress: {
+			build: {
+				options: {
+					mode: 'zip',
+					archive: './build/<%= pkg.name %>.zip'
+				},
+				expand: true,
+				cwd: 'build/<%= pkg.name %>/',
+				src: ['**/*'],
+				dest: '<%= pkg.name %>/'
+			}
+		},
+
+		// Clean up build directory
+		clean: {
+			build: [
+				'build/<%= pkg.name %>',
+				'build/<%= pkg.name %>.zip'
+			]
+		},
 
 	});
 
@@ -151,7 +209,13 @@ module.exports = function (grunt) {
 		'autoprefixer',
 		'cssmin',
 		'header',
-		// 'makepot',
+		'makepot',
+	]);
+
+	grunt.registerTask('package', [
+		'clean',
+		'copy',
+		'compress',
 	]);
 
 

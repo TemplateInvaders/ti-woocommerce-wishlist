@@ -2,7 +2,7 @@
 /**
  * The Template for displaying user wishlist.
  *
- * @version             1.6.1
+ * @version             1.8.0
  * @package           TInvWishlist\Template
  */
 

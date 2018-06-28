@@ -12,8 +12,16 @@ module.exports = function (grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 
+		// Concat js.
+		concat: {
+			dist: {
+				files: {
+					'assets/js/public.js': ['assets/js/button.js', 'assets/js/table.js', 'assets/js/misc.js']
+				}
+			}
+		},
 
-		// Concat and Minify our js.
+		// Uglify js.
 		uglify: {
 			dist: {
 				files: {
@@ -137,6 +145,7 @@ module.exports = function (grunt) {
 
 
 	grunt.registerTask('default', [
+		'concat',
 		'uglify',
 		'sass',
 		'autoprefixer',

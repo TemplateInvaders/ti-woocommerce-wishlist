@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist.
  *
- * @version             1.6.1
+ * @version             1.8.0
  * @package           TInvWishlist\Template
  */
 
@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<?php } ?>
 						<td class="product-remove">
 							<button type="submit" name="tinvwl-remove"
-							        value="<?php echo esc_attr( $wl_product['ID'] ); ?>">X
+							        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i class="ftinvwl ftinvwl-times"></i>
 							</button>
 						</td>
 						<td class="product-thumbnail">

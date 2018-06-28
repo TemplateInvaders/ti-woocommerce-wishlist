@@ -38,15 +38,15 @@ WooCommerce Wishlist Plugin custom webfont
   content: "\f09a";
 }
 
-.ftinvwl-google-plus:before {
+.ftinvwl-google:before {
   content: "\f0d5";
 }
 
-.ftinvwl-envelope:before {
+.ftinvwl-email:before {
   content: "\f0e0";
 }
 
-.ftinvwl-pinterest-p:before {
+.ftinvwl-pinterest:before {
   content: "\f231";
 }
 

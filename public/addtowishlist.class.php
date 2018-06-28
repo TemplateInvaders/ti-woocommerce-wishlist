@@ -173,7 +173,7 @@ class TInvWL_Public_AddToWishlist {
 			} else {
 				$data['msg'][]              = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
 				$data['dialog_custom_url']  = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
-				$data['dialog_custom_html'] = esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
+				$data['dialog_custom_html'] = '<i class="ftinvwl ftinvwl-key"></i>'.esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg'] = array_unique( $data['msg'] );
 			$data['msg'] = implode( '<br>', $data['msg'] );

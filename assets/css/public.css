@@ -228,7 +228,7 @@ a.wishlist_products_counter {
 
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart:before, .woocommerce ul.products li.product a.button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart:before, .woocommerce-page ul.products li.product a.button.tinvwl-icon-heart.tinvwl_add_to_wishlist_button:before, a.wishlist_products_counter.top_wishlist-heart:before {
   content: '\e909';
-  display: block;
+  display: inline-block;
   font-family: tinvwl-webfont !important;
   speak: none;
   font-style: normal;
@@ -239,7 +239,7 @@ a.wishlist_products_counter {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 20px;
-  float: left;
+  vertical-align: sub;
   margin-right: 5px;
 }
 
@@ -256,7 +256,7 @@ a.wishlist_products_counter {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 20px;
-  float: left;
+  vertical-align: sub;
   margin-right: 5px;
 }
 
@@ -264,14 +264,14 @@ a.wishlist_products_counter {
   position: relative;
   width: 36px;
   height: 36px;
-  vertical-align: middle;
+  vertical-align: sub;
 }
 
 a.wishlist_products_counter.top_wishlist-heart-plus.no-txt {
   position: relative;
   width: 36px;
   height: 36px;
-  vertical-align: bottom;
+  vertical-align: sub;
 }
 
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt:before, .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt:before {

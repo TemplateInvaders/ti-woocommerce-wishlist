@@ -258,7 +258,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'    => 'select',
 						'name'    => 'type',
 						'text'    => __( 'Button type', 'ti-woocommerce-wishlist' ),
-						'std'     => 'link',
+						'std'     => 'button',
 						'options' => array(
 							'link'   => __( 'Link', 'ti-woocommerce-wishlist' ),
 							'button' => __( 'Button', 'ti-woocommerce-wishlist' ),
@@ -269,7 +269,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'    => 'icon',
 						'text'    => __( '"Add to Wishlist" Icon', 'ti-woocommerce-wishlist' ),
 						'desc'    => __( 'You can choose from our predefined icons or upload your custom icon. Custom icon size is limited to 16x16 px.', 'ti-woocommerce-wishlist' ),
-						'std'     => '',
+						'std'     => 'heart',
 						'options' => array(
 							''           => __( 'None', 'ti-woocommerce-wishlist' ),
 							'heart'      => __( 'Heart', 'ti-woocommerce-wishlist' ),
@@ -385,7 +385,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'    => 'select',
 						'name'    => 'icon',
 						'text'    => __( '"Add to Wishlist" Icon', 'ti-woocommerce-wishlist' ),
-						'std'     => '',
+						'std'     => 'heart',
 						'options' => array(
 							''           => __( 'None', 'ti-woocommerce-wishlist' ),
 							'heart'      => __( 'Heart', 'ti-woocommerce-wishlist' ),
@@ -625,7 +625,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'    => 'select',
 						'name'    => 'icon',
 						'text'    => __( '"Wishlist" Icon', 'ti-woocommerce-wishlist' ),
-						'std'     => '',
+						'std'     => 'heart',
 						'options' => array(
 							''           => __( 'None', 'ti-woocommerce-wishlist' ),
 							'heart'      => __( 'Heart', 'ti-woocommerce-wishlist' ),

@@ -1,4 +1,4 @@
-/*! WooCommerce Wishlist Plugin - version 1.8.0
+/*! WooCommerce Wishlist Plugin - version 1.8.1
  * https://wordpress.org/plugins/ti-woocommerce-wishlist/
  * Copyright (c) 2018;
  * Licensed GPLv2+ */

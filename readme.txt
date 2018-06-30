@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.8.1=
+*Release Date - 30 June 2018*
+
+* Fixed "add to wishlist" icons position
+* Code cleanup 
 
 = 1.8.0 =
 *Release Date - 28 June 2018*

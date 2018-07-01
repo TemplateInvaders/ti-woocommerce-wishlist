@@ -1,6 +1,6 @@
 {
   "name": "ti-woocommerce-wishlist",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "title": "WooCommerce Wishlist Plugin",
   "description": "Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.",
   "main": "Gruntfile.js",

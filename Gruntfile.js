@@ -197,6 +197,9 @@ module.exports = function (grunt) {
 			build: [
 				'build/<%= pkg.name %>',
 				'build/<%= pkg.name %>.zip'
+			],
+			after: [
+				'build/<%= pkg.name %>',
 			]
 		},
 
@@ -214,9 +217,10 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('package', [
-		'clean',
+		'clean:build',
 		'copy',
 		'compress',
+		'clean:after',
 	]);
 
 

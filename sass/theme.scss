@@ -1,37 +1,12 @@
-.tinv-wishlist {
-	font-family: Georgia,serif;
+.tinv-wishlist, .tinv-wishlist input, .tinv-wishlist select, .tinv-wishlist textarea, .tinv-wishlist button, .tinv-wishlist input[type="button"], .tinv-wishlist input[type="reset"], .tinv-wishlist input[type="submit"] {
+	font-family: Georgia, serif;
 	font-size: 14px;
 	font-weight: 400;
 	text-transform: none;
 	line-height: 1.75;
-	button {
-		font-family: Georgia,serif;
-		font-size: 14px;
-		font-weight: 400;
-		text-transform: none;
-		line-height: 1.75;
-	}
-	input {
-		font-family: Georgia,serif;
-		font-size: 14px;
-		font-weight: 400;
-		text-transform: none;
-		line-height: 1.75;
-		&[type=button], &[type=reset], &[type=submit] {
-			font-family: Georgia,serif;
-			font-size: 14px;
-			font-weight: 400;
-			text-transform: none;
-			line-height: 1.75;
-		}
-	}
-	select, textarea {
-		font-family: Georgia,serif;
-		font-size: 14px;
-		font-weight: 400;
-		text-transform: none;
-		line-height: 1.75;
-	}
+}
+
+.tinv-wishlist {
 	.woocommerce form .form-row input.input-text {
 		line-height: 1;
 		padding-top: 9.5px;
@@ -42,16 +17,16 @@
 	}
 	:-moz-placeholder, ::-webkit-input-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia,serif;
+		font-family: Georgia, serif;
 	}
 	::-moz-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia,serif;
+		font-family: Georgia, serif;
 		opacity: 1;
 	}
 	:-ms-input-placeholder {
 		color: #1a1a1a;
-		font-family: Georgia,serif;
+		font-family: Georgia, serif;
 	}
 	select {
 		-webkit-appearance: none;
@@ -125,6 +100,18 @@
 		padding-left: 17px;
 		padding-right: 17px;
 	}
+}
+
+.tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty {
+	font-family: inherit;
+	color: #686868;
+	background-color: #f7f7f7;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #d1d1d1;
+	border-radius: 2px;
+	box-shadow: none;
+	font-size: 14px;
 }
 
 .tinv-wishlist {
@@ -257,7 +244,7 @@
 	}
 	color: #1a1a1a;
 	.tinv-header h2 {
-		font-family: Georgia,serif;
+		font-family: Georgia, serif;
 		text-transform: none;
 		text-shadow: none;
 		letter-spacing: 0;
@@ -276,46 +263,6 @@
 		&:active, &:focus, &:hover {
 			color: #686868;
 		}
-	}
-	.product-quantity input[type=text].qty {
-		font-family: inherit;
-		color: #686868;
-		background-color: #f7f7f7;
-		border: 1px solid #d1d1d1;
-		border-color: #d1d1d1;
-		border-radius: 2px;
-		box-shadow: none;
-	}
-	input {
-		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
-			font-family: inherit;
-			color: #686868;
-			background-color: #f7f7f7;
-			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
-			border-radius: 2px;
-			box-shadow: none;
-		}
-	}
-	select, textarea {
-		font-family: inherit;
-		color: #686868;
-		background-color: #f7f7f7;
-		border: 1px solid #d1d1d1;
-		border-color: #d1d1d1;
-		border-radius: 2px;
-		box-shadow: none;
-	}
-	.product-quantity input[type=text].qty {
-		font-size: 14px;
-	}
-	input {
-		&[type=text], &[type=email], &[type=url], &[type=password], &[type=search], &[type=tel], &[type=number] {
-			font-size: 14px;
-		}
-	}
-	textarea {
-		font-size: 14px;
 	}
 	select {
 		font-size: 12px;
@@ -440,43 +387,61 @@
 	&.tinv-wishlist a.button.tinvwl_add_to_wishlist_button {
 		font-weight: 700;
 	}
-	ul.products li.product .tinvwl_add_to_wishlist_button {
+	ul.products li.product .tinvwl_add_to_wishlist_button, ul.products li.product .tinvwl_add_to_wishlist_button.icon-white:before, ul.products li.product .tinvwl_add_to_wishlist_button.icon-black:before {
 		color: #007acc;
 		font-family: inherit;
 		font-size: 16px;
-		&.button {
+	}
+
+	ul.products li.product .tinvwl_add_to_wishlist_button {
+
+		&.button, &.button.icon-white:before, &.button.icon-black:before {
 			color: #515151;
 			background-color: #ebe9eb;
-			border-radius: 3px;
 		}
-		&:active, &:focus, &:hover {
-			color: #686868;
+		&.button:hover, &.button.icon-white:hover:before, &.button.icon-black:hover:before {
+			color: #515151;
+			background-color: #dad8da;
 		}
 		&.button {
-			&:active, &:focus, &:hover {
-				color: #515151;
-				background-color: #dad8da;
-			}
+			border-radius: 3px;
+		}
+
+		&.icon-white:before, &.icon-black:before {
+			font-size: 16px;
 		}
 	}
+	ul.products li.product .tinvwl_add_to_wishlist_button:hover, ul.products li.product .tinvwl_add_to_wishlist_button.icon-white:hover:before, ul.products li.product .tinvwl_add_to_wishlist_button.icon-black:hover:before {
+		color: #686868;
+	}
+
 	div.product form.cart .tinvwl_add_to_wishlist_button {
-		color: #007acc;
 		font-family: inherit;
 		font-size: 16px;
 		&.button {
-			color: #515151;
 			background-color: #ebe9eb;
 			border-radius: 3px;
 		}
-		&:active, &:focus, &:hover {
-			color: #686868;
-		}
-		&.button {
-			&:active, &:focus, &:hover {
-				color: #515151;
-				background-color: #dad8da;
-			}
-		}
+	}
+
+	div.product form.cart .tinvwl_add_to_wishlist_button.icon-black:before, div.product form.cart .tinvwl_add_to_wishlist_button.icon-white:before {
+		font-size: 16px;
+	}
+
+	div.product form.cart .tinvwl_add_to_wishlist_button.button, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:before, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:before {
+		color: #515151;
+	}
+
+	div.product form.cart .tinvwl_add_to_wishlist_button.button:hover, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:hover:before {
+		color: #686868;
+		background-color: #dad8da;
+	}
+
+	div.product form.cart .tinvwl_add_to_wishlist_button, div.product form.cart .tinvwl_add_to_wishlist_button.icon-white:before, div.product form.cart .tinvwl_add_to_wishlist_button.icon-black:before {
+		color: #007acc;
+	}
+	div.product form.cart .tinvwl_add_to_wishlist_button:hover, div.product form.cart .tinvwl_add_to_wishlist_button.icon-white:hover:before, div.product form.cart .tinvwl_add_to_wishlist_button.icon-black:hover:before {
+		color: #686868;
 	}
 }
 
@@ -487,31 +452,14 @@
 		color: #fff;
 		background-color: #1a1a1a;
 		border-radius: 2px;
-		&:focus, &:hover {
+	}
+	button, input[type=button], input[type=reset], input[type=submit] {
+		&:hover, &:focus, &:active {
 			color: #fff;
 			background-color: #007acc;
 		}
 	}
-	input {
-		&[type=button] {
-			&:focus, &:hover {
-				color: #fff;
-				background-color: #007acc;
-			}
-		}
-		&[type=reset] {
-			&:focus, &:hover {
-				color: #fff;
-				background-color: #007acc;
-			}
-		}
-		&[type=submit] {
-			&:focus, &:hover {
-				color: #fff;
-				background-color: #007acc;
-			}
-		}
-	}
+
 }
 
 .woocommerce.tinv-wishlist {
@@ -564,20 +512,21 @@
 			color: #1a1a1a;
 		}
 	}
-	table {
-		border: 1px solid #d1d1d1;
+	table, table td {
+		background-color: #fff;
+	}
+	table, table td, table th {
 		border-color: #d1d1d1;
+	}
+	table {
+		border-style: solid;
 		border-width: 1px 0 0 1px;
 		line-height: 16px;
-		background-color: #fff;
 		th {
 			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
 		}
 		td {
-			border: 1px solid #d1d1d1;
-			border-color: #d1d1d1;
-			background-color: #fff;
+			border-style: solid;
 			border-width: 0 1px 1px 0;
 			font-size: 14px;
 			font-family: inherit;
@@ -638,7 +587,7 @@
 			}
 		}
 		h2 {
-			font-family: Georgia,serif;
+			font-family: Georgia, serif;
 			text-transform: none;
 			text-shadow: none;
 			letter-spacing: 0;
@@ -673,15 +622,11 @@
 			color: #515151;
 			background-color: #ebe9eb;
 		}
-		.tinv-close-modal:hover {
+		.tinv-close-modal:hover, button.button:hover {
 			color: #515151;
 			background-color: #dad8da;
 		}
 		button {
-			&.button:hover {
-				color: #515151;
-				background-color: #dad8da;
-			}
 			&:not(.button) {
 				color: #fff;
 				background-color: #1a1a1a;

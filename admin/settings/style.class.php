@@ -94,24 +94,24 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 
 			array(
 				'type'       => 'group',
-				'title'      => __( 'links', 'ti-woocommerce-wishlist' ),
+				'title'      => __( 'Product Title link', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.tinv-wishlist a:not(.button)',
+				'selector' => '.tinv-wishlist a:not(.button):not(.social)',
 				'element'  => 'color',
 				'text'     => __( 'Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.tinv-wishlist a:not(.button):active, .tinv-wishlist a:not(.button):focus, .tinv-wishlist a:not(.button):hover',
+				'selector' => '.tinv-wishlist a:not(.button):not(.social):active, .tinv-wishlist a:not(.button):not(.social):focus, .tinv-wishlist a:not(.button):not(.social):hover',
 				'element'  => 'color',
 				'text'     => __( 'Hover Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'select',
-				'selector' => '.tinv-wishlist a:not(.button)',
+				'selector' => '.tinv-wishlist a:not(.button):not(.social)',
 				'element'  => 'text-decoration',
 				'text'     => __( 'Underline', 'ti-woocommerce-wishlist' ),
 				'options'  => array(
@@ -121,7 +121,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'select',
-				'selector' => '.tinv-wishlist a:not(.button)',
+				'selector' => '.tinv-wishlist a:not(.button):not(.social)',
 				'element'  => 'font-family',
 				'text'     => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'  => $font_family,
@@ -164,12 +164,6 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'text'     => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'  => $font_family,
 				'validate' => array( 'filter' => FILTER_DEFAULT ),
-			),
-			array(
-				'type'     => 'text',
-				'selector' => '.tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty',
-				'element'  => 'font-size',
-				'text'     => __( 'Font Size', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'text',
@@ -299,7 +293,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'text',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.icon-black:before',
 				'element'  => 'font-size',
 				'text'     => __( 'Font Size', 'ti-woocommerce-wishlist' ),
 			),
@@ -318,57 +312,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 
 			array(
 				'type'       => 'group',
-				'title'      => __( 'accent buttons style', 'ti-woocommerce-wishlist' ),
-				'show_names' => true,
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist button',
-				'element'  => 'background-color',
-				'text'     => __( 'Background Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist button:hover, .tinv-wishlist button:focus, .tinv-wishlist button:active, .tinv-wishlist input[type=button]:hover, .tinv-wishlist input[type=button]:focus, .tinv-wishlist input[type=button]:active, .tinv-wishlist input[type=reset]:hover, .tinv-wishlist input[type=reset]:focus, .tinv-wishlist input[type=reset]:active, .tinv-wishlist input[type=submit]:hover, .tinv-wishlist input[type=submit]:focus, .tinv-wishlist input[type=submit]:active',
-				'element'  => 'background-color',
-				'text'     => __( 'Background Hover Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist button',
-				'element'  => 'color',
-				'text'     => __( 'Text Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist button:hover, .tinv-wishlist button:focus, .tinv-wishlist button:active, .tinv-wishlist input[type=button]:hover, .tinv-wishlist input[type=button]:focus, .tinv-wishlist input[type=button]:active, .tinv-wishlist input[type=reset]:hover, .tinv-wishlist input[type=reset]:focus, .tinv-wishlist input[type=reset]:active, .tinv-wishlist input[type=submit]:hover, .tinv-wishlist input[type=submit]:focus, .tinv-wishlist input[type=submit]:active',
-				'element'  => 'color',
-				'text'     => __( 'Text Hover Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'select',
-				'selector' => '.tinv-wishlist button',
-				'element'  => 'font-family',
-				'text'     => __( 'Font', 'ti-woocommerce-wishlist' ),
-				'options'  => $font_family,
-				'validate' => array( 'filter' => FILTER_DEFAULT ),
-			),
-			array(
-				'type'     => 'text',
-				'selector' => '.tinv-wishlist button',
-				'element'  => 'font-size',
-				'text'     => __( 'Font Size', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'text',
-				'selector' => '.tinv-wishlist button',
-				'element'  => 'border-radius',
-				'text'     => __( 'Border Radius', 'ti-woocommerce-wishlist' ),
-			),
-
-			array(
-				'type'       => 'group',
-				'title'      => __( 'normal buttons style', 'ti-woocommerce-wishlist' ),
+				'title'      => __( '"Apply Action" button ', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 			),
 			array(
@@ -562,17 +506,41 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'text'     => __( 'Special Price Background Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
+				'type'       => 'group',
+				'title'      => __( 'Share buttons', 'ti-woocommerce-wishlist' ),
+				'show_names' => true,
+			),
+			array(
 				'type'     => 'color',
 				'selector' => '.tinv-wishlist .social-buttons li a',
 				'element'  => 'background-color',
-				'text'     => __( 'Social Icons Background Color', 'ti-woocommerce-wishlist' ),
+				'text'     => __( 'Background Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
 				'selector' => '.tinv-wishlist .social-buttons li a:hover',
 				'element'  => 'background-color',
-				'text'     => __( 'Social Icons Background Hover Color', 'ti-woocommerce-wishlist' ),
+				'text'     => __( 'Background Hover Color', 'ti-woocommerce-wishlist' ),
 			),
+			array(
+				'type'     => 'color',
+				'selector' => '.tinv-wishlist .social-buttons li a.white, .tinv-wishlist .social-buttons li a.dark',
+				'element'  => 'color',
+				'text'     => __( 'Icon Color', 'ti-woocommerce-wishlist' ),
+			),
+			array(
+				'type'     => 'color',
+				'selector' => '.tinv-wishlist .social-buttons li a.white:hover, .tinv-wishlist .social-buttons li a.dark:hover',
+				'element'  => 'color',
+				'text'     => __( 'Icon Hover Color', 'ti-woocommerce-wishlist' ),
+			),
+			array(
+				'type'     => 'text',
+				'selector' => '.tinv-wishlist .social-buttons li a',
+				'element'  => 'font-size',
+				'text'     => __( 'Icon Size', 'ti-woocommerce-wishlist' ),
+			),
+
 			array(
 				'type'       => 'group',
 				'title'      => __( 'popups', 'ti-woocommerce-wishlist' ),
@@ -583,26 +551,6 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner',
 				'element'  => 'background-color',
 				'text'     => __( 'Background Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal h2',
-				'element'  => 'color',
-				'text'     => __( 'Title Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'select',
-				'selector' => '.tinv-wishlist .tinv-modal h2',
-				'element'  => 'font-family',
-				'text'     => __( 'Title Font', 'ti-woocommerce-wishlist' ),
-				'options'  => $font_family,
-				'validate' => array( 'filter' => FILTER_DEFAULT ),
-			),
-			array(
-				'type'     => 'text',
-				'selector' => '.tinv-wishlist .tinv-modal h2',
-				'element'  => 'font-size',
-				'text'     => __( 'Title Font Size', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
@@ -623,36 +571,6 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner',
 				'element'  => 'font-size',
 				'text'     => __( 'Content Text Font Size', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner input, .tinv-wishlist .tinv-modal .tinv-modal-inner select, .tinv-wishlist .tinv-modal .tinv-modal-inner textarea',
-				'element'  => 'background-color',
-				'text'     => __( 'Fields Background Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner input, .tinv-wishlist .tinv-modal .tinv-modal-inner select, .tinv-wishlist .tinv-modal .tinv-modal-inner textarea',
-				'element'  => 'border-color',
-				'text'     => __( 'Fields Border Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'text',
-				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner input',
-				'element'  => 'border-radius',
-				'text'     => __( 'Fields Border Radius', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner input, .tinv-wishlist .tinv-modal .tinv-modal-inner select, .tinv-wishlist .tinv-modal .tinv-modal-inner textarea',
-				'element'  => 'color',
-				'text'     => __( 'Fields Text Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal .tinv-modal-inner input::-webkit-input-placeholder',
-				'element'  => 'color',
-				'text'     => __( 'Fields Placeholder Text Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
@@ -677,30 +595,6 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 				'selector' => '.tinv-wishlist .tinv-modal .tinv-close-modal:hover, .tinv-wishlist .tinv-modal button.button:hover',
 				'element'  => 'color',
 				'text'     => __( 'Normal Buttons Text Hover Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal button:not(.button)',
-				'element'  => 'background-color',
-				'text'     => __( 'Accent Buttons Background Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal button:not(.button):active, .tinv-wishlist .tinv-modal button:not(.button):focus, .tinv-wishlist .tinv-modal button:not(.button):hover',
-				'element'  => 'background-color',
-				'text'     => __( 'Accent Buttons Background Hover Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal button:not(.button)',
-				'element'  => 'color',
-				'text'     => __( 'Accent Buttons Text Color', 'ti-woocommerce-wishlist' ),
-			),
-			array(
-				'type'     => 'color',
-				'selector' => '.tinv-wishlist .tinv-modal button:not(.button):active, .tinv-wishlist .tinv-modal button:not(.button):focus, .tinv-wishlist .tinv-modal button:not(.button):hover',
-				'element'  => 'color',
-				'text'     => __( 'Accent Buttons Text Hover Color', 'ti-woocommerce-wishlist' ),
 			),
 		);
 	}

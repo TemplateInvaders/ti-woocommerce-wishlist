@@ -102,18 +102,6 @@
 	}
 }
 
-.tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty {
-	font-family: inherit;
-	color: #686868;
-	background-color: #f7f7f7;
-	border-width: 1px;
-	border-style: solid;
-	border-color: #d1d1d1;
-	border-radius: 2px;
-	box-shadow: none;
-	font-size: 14px;
-}
-
 .tinv-wishlist {
 	a i {
 		&.ftinvwl-chevron-left, &.ftinvwl-chevron-right {
@@ -212,7 +200,7 @@
 	.tinv-modal {
 		.button {
 			font-weight: 400;
-			padding: 11px 19px;
+			padding: 11px 11px 14px 11px;
 			i {
 				font-size: 14px;
 			}
@@ -222,38 +210,37 @@
 		}
 	}
 	.tinvwl_added_to_wishlist .tinvwl_button_view, .tinvwl_created_wishlist .tinvwl_button_view {
-		padding: 11px;
+		padding: 11px 11px 14px 11px;
 	}
 	.tinv-modal .tinvwl-buttons-group {
 		button {
-			float: left !important;
-			width: calc(50% - 5px);
-			white-space: normal;
-		}
-		.tinvwl_button_close {
-			width: calc(45% - 5px);
-			+ .tinvwl_button_view {
-				width: calc(55% - 5px);
+			&.tinvwl_button_close, &.tinvwl_button_view {
+				float: left !important;
+				width: calc(50% - 5px);
+				white-space: normal;
 			}
 		}
+
 		button + {
 			a button, button {
 				margin: 0 0 0 10px;
 			}
 		}
 	}
+
 	color: #1a1a1a;
 	.tinv-header h2 {
-		font-family: Georgia, serif;
+		font-family: inherit;
 		text-transform: none;
 		text-shadow: none;
 		letter-spacing: 0;
 		font-size: 40px;
 		font-weight: 700;
 		margin-bottom: 40px;
-		color: #000;
+		color: #000000;
 	}
-	a:not(.button) {
+
+	a:not(.button):not(.social) {
 		font-family: inherit;
 		font-weight: 400;
 		color: #007acc;
@@ -264,10 +251,12 @@
 			color: #686868;
 		}
 	}
+
 	select {
 		font-size: 12px;
 		background-size: 8px 6px;
 	}
+
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 641px) {
@@ -445,23 +434,6 @@
 	}
 }
 
-.tinv-wishlist {
-	button {
-		font-family: inherit;
-		font-size: 14px;
-		color: #fff;
-		background-color: #1a1a1a;
-		border-radius: 2px;
-	}
-	button, input[type=button], input[type=reset], input[type=submit] {
-		&:hover, &:focus, &:active {
-			color: #fff;
-			background-color: #007acc;
-		}
-	}
-
-}
-
 .woocommerce.tinv-wishlist {
 	#respond input#submit, a.button, button.button, input.button {
 		font-family: inherit;
@@ -480,12 +452,12 @@
 	#respond input#submit.alt, a.button.alt, button.button.alt, input.button.alt {
 		font-family: inherit;
 		font-size: 14px;
-		color: #fff;
+		color: #ffffff;
 		background-color: #a46497;
 		border-radius: 3px;
 	}
 	#respond input#submit.alt:hover, a.button.alt:hover, button.button.alt:hover, input.button.alt:hover {
-		color: #fff;
+		color: #ffffff;
 		background-color: #935386;
 	}
 }
@@ -504,7 +476,7 @@
 			font-family: inherit;
 			font-size: 14px;
 			color: #1a1a1a;
-			background-color: #fff;
+			background-color: #ffffff;
 			border-color: #d1d1d1;
 			border-radius: 2px;
 		}
@@ -513,7 +485,7 @@
 		}
 	}
 	table, table td {
-		background-color: #fff;
+		background-color: #ffffff;
 	}
 	table, table td, table th {
 		border-color: #d1d1d1;
@@ -538,7 +510,7 @@
 			font-weight: 700;
 			text-transform: none;
 			color: #1a1a1a;
-			background-color: #fff;
+			background-color: #ffffff;
 		}
 		td {
 			color: #686868;
@@ -550,7 +522,7 @@
 		color: #202020;
 		ins span.amount {
 			font-weight: 400;
-			color: #fff;
+			color: #ffffff;
 			background-color: #007acc;
 		}
 	}
@@ -567,15 +539,22 @@
 		box-shadow: none !important;
 		background-color: #ebe9eb;
 		text-decoration: none;
+		font-size: 20px;
 		&:hover {
 			background-color: #dad8da;
+		}
+		&.white, &.dark {
+			color: #000000;
+			&:hover {
+				color: #686868;
+			}
 		}
 	}
 	.tinv-modal {
 		.tinv-modal-inner {
 			line-height: 26px;
 			color: #1a1a1a;
-			background-color: #fff;
+			background-color: #ffffff;
 			font-family: inherit;
 			font-size: 16px;
 			select {
@@ -584,28 +563,6 @@
 				padding: 6.5px 10px;
 				line-height: 22px;
 				border-radius: 2px;
-			}
-		}
-		h2 {
-			font-family: Georgia, serif;
-			text-transform: none;
-			text-shadow: none;
-			letter-spacing: 0;
-			font-size: 28px;
-			font-weight: 700;
-			color: #000;
-		}
-		.tinv-modal-inner {
-			input, select, textarea {
-				color: #1a1a1a;
-				background-color: #f6f6f6;
-				border-color: #d1d1d1;
-			}
-			input {
-				border-radius: 2px;
-				&::-webkit-input-placeholder {
-					color: #1a1a1a;
-				}
 			}
 		}
 	}
@@ -625,16 +582,6 @@
 		.tinv-close-modal:hover, button.button:hover {
 			color: #515151;
 			background-color: #dad8da;
-		}
-		button {
-			&:not(.button) {
-				color: #fff;
-				background-color: #1a1a1a;
-				&:active, &:focus, &:hover {
-					color: #fff;
-					background-color: #007acc;
-				}
-			}
 		}
 	}
 }

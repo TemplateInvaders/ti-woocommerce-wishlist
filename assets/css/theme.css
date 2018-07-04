@@ -106,18 +106,6 @@
   padding-right: 17px;
 }
 
-.tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty {
-  font-family: inherit;
-  color: #686868;
-  background-color: #f7f7f7;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #d1d1d1;
-  border-radius: 2px;
-  box-shadow: none;
-  font-size: 14px;
-}
-
 .tinv-wishlist {
   color: #1a1a1a;
 }
@@ -230,7 +218,7 @@
 
 .tinv-wishlist .tinv-modal .button {
   font-weight: 400;
-  padding: 11px 19px;
+  padding: 11px 11px 14px 11px;
 }
 
 .tinv-wishlist .tinv-modal .button i {
@@ -242,21 +230,13 @@
 }
 
 .tinv-wishlist .tinvwl_added_to_wishlist .tinvwl_button_view, .tinv-wishlist .tinvwl_created_wishlist .tinvwl_button_view {
-  padding: 11px;
+  padding: 11px 11px 14px 11px;
 }
 
-.tinv-wishlist .tinv-modal .tinvwl-buttons-group button {
+.tinv-wishlist .tinv-modal .tinvwl-buttons-group button.tinvwl_button_close, .tinv-wishlist .tinv-modal .tinvwl-buttons-group button.tinvwl_button_view {
   float: left !important;
   width: calc(50% - 5px);
   white-space: normal;
-}
-
-.tinv-wishlist .tinv-modal .tinvwl-buttons-group .tinvwl_button_close {
-  width: calc(45% - 5px);
-}
-
-.tinv-wishlist .tinv-modal .tinvwl-buttons-group .tinvwl_button_close + .tinvwl_button_view {
-  width: calc(55% - 5px);
 }
 
 .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + a button, .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + button {
@@ -264,17 +244,17 @@
 }
 
 .tinv-wishlist .tinv-header h2 {
-  font-family: Georgia, serif;
+  font-family: inherit;
   text-transform: none;
   text-shadow: none;
   letter-spacing: 0;
   font-size: 40px;
   font-weight: 700;
   margin-bottom: 40px;
-  color: #000;
+  color: #000000;
 }
 
-.tinv-wishlist a:not(.button) {
+.tinv-wishlist a:not(.button):not(.social) {
   font-family: inherit;
   font-weight: 400;
   color: #007acc;
@@ -283,7 +263,7 @@
   box-shadow: none;
 }
 
-.tinv-wishlist a:not(.button):active, .tinv-wishlist a:not(.button):focus, .tinv-wishlist a:not(.button):hover {
+.tinv-wishlist a:not(.button):not(.social):active, .tinv-wishlist a:not(.button):not(.social):focus, .tinv-wishlist a:not(.button):not(.social):hover {
   color: #686868;
 }
 
@@ -450,19 +430,6 @@
   color: #686868;
 }
 
-.tinv-wishlist button {
-  font-family: inherit;
-  font-size: 14px;
-  color: #fff;
-  background-color: #1a1a1a;
-  border-radius: 2px;
-}
-
-.tinv-wishlist button:hover, .tinv-wishlist button:focus, .tinv-wishlist button:active, .tinv-wishlist input[type=button]:hover, .tinv-wishlist input[type=button]:focus, .tinv-wishlist input[type=button]:active, .tinv-wishlist input[type=reset]:hover, .tinv-wishlist input[type=reset]:focus, .tinv-wishlist input[type=reset]:active, .tinv-wishlist input[type=submit]:hover, .tinv-wishlist input[type=submit]:focus, .tinv-wishlist input[type=submit]:active {
-  color: #fff;
-  background-color: #007acc;
-}
-
 .woocommerce.tinv-wishlist #respond input#submit, .woocommerce.tinv-wishlist a.button, .woocommerce.tinv-wishlist button.button, .woocommerce.tinv-wishlist input.button {
   font-family: inherit;
   font-size: 14px;
@@ -482,13 +449,13 @@
 .woocommerce.tinv-wishlist #respond input#submit.alt, .woocommerce.tinv-wishlist a.button.alt, .woocommerce.tinv-wishlist button.button.alt, .woocommerce.tinv-wishlist input.button.alt {
   font-family: inherit;
   font-size: 14px;
-  color: #fff;
+  color: #ffffff;
   background-color: #a46497;
   border-radius: 3px;
 }
 
 .woocommerce.tinv-wishlist #respond input#submit.alt:hover, .woocommerce.tinv-wishlist a.button.alt:hover, .woocommerce.tinv-wishlist button.button.alt:hover, .woocommerce.tinv-wishlist input.button.alt:hover {
-  color: #fff;
+  color: #ffffff;
   background-color: #935386;
 }
 
@@ -506,7 +473,7 @@
   font-family: inherit;
   font-size: 14px;
   color: #1a1a1a;
-  background-color: #fff;
+  background-color: #ffffff;
   border-color: #d1d1d1;
   border-radius: 2px;
 }
@@ -516,7 +483,7 @@
 }
 
 .tinv-wishlist table, .tinv-wishlist table td {
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .tinv-wishlist table, .tinv-wishlist table td, .tinv-wishlist table th {
@@ -547,7 +514,7 @@
   font-weight: 700;
   text-transform: none;
   color: #1a1a1a;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .tinv-wishlist table td {
@@ -562,7 +529,7 @@
 
 .tinv-wishlist td.product-price ins span.amount {
   font-weight: 400;
-  color: #fff;
+  color: #ffffff;
   background-color: #007acc;
 }
 
@@ -582,16 +549,25 @@
   box-shadow: none !important;
   background-color: #ebe9eb;
   text-decoration: none;
+  font-size: 20px;
 }
 
 .tinv-wishlist .social-buttons li a:hover {
   background-color: #dad8da;
 }
 
+.tinv-wishlist .social-buttons li a.white, .tinv-wishlist .social-buttons li a.dark {
+  color: #000000;
+}
+
+.tinv-wishlist .social-buttons li a.white:hover, .tinv-wishlist .social-buttons li a.dark:hover {
+  color: #686868;
+}
+
 .tinv-wishlist .tinv-modal .tinv-modal-inner {
   line-height: 26px;
   color: #1a1a1a;
-  background-color: #fff;
+  background-color: #ffffff;
   font-family: inherit;
   font-size: 16px;
 }
@@ -602,30 +578,6 @@
   padding: 6.5px 10px;
   line-height: 22px;
   border-radius: 2px;
-}
-
-.tinv-wishlist .tinv-modal h2 {
-  font-family: Georgia, serif;
-  text-transform: none;
-  text-shadow: none;
-  letter-spacing: 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #000;
-}
-
-.tinv-wishlist .tinv-modal .tinv-modal-inner input, .tinv-wishlist .tinv-modal .tinv-modal-inner select, .tinv-wishlist .tinv-modal .tinv-modal-inner textarea {
-  color: #1a1a1a;
-  background-color: #f6f6f6;
-  border-color: #d1d1d1;
-}
-
-.tinv-wishlist .tinv-modal .tinv-modal-inner input {
-  border-radius: 2px;
-}
-
-.tinv-wishlist .tinv-modal .tinv-modal-inner input::-webkit-input-placeholder {
-  color: #1a1a1a;
 }
 
 .tinv-wishlist input[type=text], .tinv-wishlist input[type=email], .tinv-wishlist input[type=url], .tinv-wishlist input[type=password], .tinv-wishlist input[type=search], .tinv-wishlist input[type=tel], .tinv-wishlist input[type=number] {
@@ -644,16 +596,6 @@
 .tinv-wishlist .tinv-modal .tinv-close-modal:hover, .tinv-wishlist .tinv-modal button.button:hover {
   color: #515151;
   background-color: #dad8da;
-}
-
-.tinv-wishlist .tinv-modal button:not(.button) {
-  color: #fff;
-  background-color: #1a1a1a;
-}
-
-.tinv-wishlist .tinv-modal button:not(.button):active, .tinv-wishlist .tinv-modal button:not(.button):focus, .tinv-wishlist .tinv-modal button:not(.button):hover {
-  color: #fff;
-  background-color: #007acc;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), not all, not all, not all {

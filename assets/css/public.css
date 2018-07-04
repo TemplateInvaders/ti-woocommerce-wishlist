@@ -96,87 +96,70 @@ WooCommerce Wishlist Plugin custom webfont
 
 .ftinvwl-chevron-down:before {
   content: "\e900";
-  color: #515252;
 }
 
 .ftinvwl-chevron-right:before {
   content: "\e901";
-  color: #515252;
 }
 
 .ftinvwl-chevron-left:before {
   content: "\e902";
-  color: #515252;
 }
 
 .ftinvwl-chevron-up:before {
   content: "\e903";
-  color: #515252;
 }
 
 .ftinvwl-cancel:before {
   content: "\e904";
-  color: #515252;
 }
 
 .ftinvwl-times:before {
   content: "\e905";
-  color: #515252;
 }
 
 .ftinvwl-heart-plus:before {
   content: "\e906";
-  color: #515252;
 }
 
 .ftinvwl-heart-mark-right:before {
   content: "\e907";
-  color: #515252;
 }
 
 .ftinvwl-heart2:before {
   content: "\e908";
-  color: #515252;
 }
 
 .ftinvwl-heart-o:before {
   content: "\e909";
-  color: #515252;
 }
 
 .ftinvwl-heart-mark-left:before {
   content: "\e90a";
-  color: #515252;
 }
 
 .ftinvwl-heart-mail:before {
   content: "\e90b";
-  color: #515252;
 }
 
 .ftinvwl-heart-tinv:before {
   content: "\e90c";
-  color: #515252;
 }
 
 .ftinvwl-key:before {
   content: "\e90d";
-  color: #515252;
 }
 
 .ftinvwl-lock:before {
   content: "\e90e";
-  color: #515252;
 }
 
 .ftinvwl-hearts:before {
   content: "\e90f";
-  color: #515252;
 }
 
 .ftinvwl-user:before {
   content: "\e910";
-  color: #515252;
 }
 
 .tinv-wishlist form, .tinv-wishlist p:last-child, .tinv-wishlist table {
@@ -211,11 +194,11 @@ WooCommerce Wishlist Plugin custom webfont
 }
 
 .tinv-wishlist .button i, .tinv-wishlist .navigation-button a i {
-  margin-right: 14px;
+  margin-right: 6px;
 }
 
 .tinv-wishlist input[type=button] i, .tinv-wishlist input[type=reset] i, .tinv-wishlist input[type=submit] i {
-  margin-right: 14px;
+  margin-right: 6px;
 }
 
 .tinv-wishlist a.tinv-close-modal i {
@@ -425,16 +408,26 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 .tinv-wishlist .product-remove button {
-  display: block;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
   margin: 0 auto;
   width: 27px;
   height: 27px;
-  border-radius: 100%;
+  border-radius: 50%;
   padding: 0;
   box-shadow: none;
   border: none;
   background-color: #f7f7f7;
+  color: #000000;
   font-size: 20px;
+  padding-left: 3px;
 }
 
 .tinv-wishlist .product-thumbnail {
@@ -622,43 +615,34 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 .tinv-wishlist .social-buttons li a {
-  display: block;
-  width: 41px;
-  height: 41px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 2em;
+  height: 2em;
   border-radius: 50%;
   text-align: center;
   box-shadow: none;
-  border-bottom: 0;
+  border: 0;
   font-size: 20px;
-  padding-top: 7px;
 }
 
 .tinv-wishlist .social-buttons li a.white {
-  color: #FFF;
+  color: #ffffff;
 }
 
 .tinv-wishlist .social-buttons li a.dark {
-  color: #000;
+  color: #000000;
 }
 
-.tinv-wishlist .social-buttons li .social-facebook {
-  background-position: 16px center;
-}
-
-.tinv-wishlist .social-buttons li .social-twitter {
-  background-position: -28px center;
-}
-
-.tinv-wishlist .social-buttons li .social-pinterest {
-  background-position: -73px center;
-}
-
-.tinv-wishlist .social-buttons li .social-google {
-  background-position: -119px center;
-}
-
-.tinv-wishlist .social-buttons li .social-email {
-  background-position: -164px center;
+.tinv-wishlist .social-buttons li a i {
+  line-height: 2em;
 }
 
 .tinv-wishlist .navigation-button .tinv-create-list > a.tinvwl-no-icon > i, .tinv-wishlist .navigation-button li > a.tinvwl-no-icon > i {
@@ -1088,11 +1072,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   }
 }
 
-.woocommerce .tinv-wishlist .tinv-modal button + button.button {
-  margin-top: 12px;
-  width: 100%;
-}
-
 .tinv-wishlist .tinv-modal .already-in + label {
   display: block;
   margin-top: 6px;
@@ -1144,20 +1123,11 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   position: relative;
 }
 
-.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times {
-  font-size: 24px;
-}
-
-.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times::before {
-  position: relative;
-  top: 4px;
-}
-
-.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key {
+.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times {
   font-size: 20px;
 }
 
-.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o::before, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key::before {
+.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o::before, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key::before, .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times::before {
   position: relative;
   top: 3px;
 }

@@ -44,11 +44,11 @@
 
 .tinv-wishlist {
 	.button i, .navigation-button a i {
-		margin-right: 14px;
+		margin-right: 6px;
 	}
 	input {
 		&[type=button] i, &[type=reset] i, &[type=submit] i {
-			margin-right: 14px;
+			margin-right: 6px;
 		}
 	}
 	a.tinv-close-modal i {
@@ -267,16 +267,20 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 		}
 	}
 	.product-remove button {
-		display: block;
+		display: flex;
+		justify-content: center;
+		align-content: center;
 		margin: 0 auto;
 		width: 27px;
 		height: 27px;
-		border-radius: 100%;
+		border-radius: 50%;
 		padding: 0;
 		box-shadow: none;
 		border: none;
 		background-color: #f7f7f7;
+		color: #000000;
 		font-size: 20px;
+		padding-left: 3px;
 	}
 	.product-thumbnail {
 		min-width: 100px;
@@ -436,36 +440,25 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 				margin-right: 0;
 			}
 			a {
-				display: block;
-				width: 41px;
-				height: 41px;
+				display: flex;
+				align-content: center;
+				justify-content: center;
+				width: 2em;
+				height: 2em;
 				border-radius: 50%;
 				text-align: center;
 				box-shadow: none;
-				border-bottom: 0;
+				border: 0;
 				font-size: 20px;
-				padding-top: 7px;
 				&.white {
-					color: #FFF;
+					color: #ffffff;
 				}
 				&.dark {
-					color: #000;
+					color: #000000;
 				}
-			}
-			.social-facebook {
-				background-position: 16px center;
-			}
-			.social-twitter {
-				background-position: -28px center;
-			}
-			.social-pinterest {
-				background-position: -73px center;
-			}
-			.social-google {
-				background-position: -119px center;
-			}
-			.social-email {
-				background-position: -164px center;
+				i {
+					line-height: 2em;
+				}
 			}
 		}
 	}
@@ -942,11 +935,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	}
 }
 
-.woocommerce .tinv-wishlist .tinv-modal button + button.button {
-	margin-top: 12px;
-	width: 100%;
-}
-
 .tinv-wishlist {
 	.tinv-modal {
 		.already-in + label {
@@ -996,19 +984,12 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 			}
 			i {
 				position: relative;
-				&.ftinvwl-times {
-					font-size: 24px;
+				&.ftinvwl-heart-o, &.ftinvwl-key, &.ftinvwl-times {
+					font-size: 20px;
 					&::before {
 						position: relative;
-						top: 4px;
+						top: 3px;
 					}
-				}
-				&.ftinvwl-heart-o, &.ftinvwl-key {
-					font-size: 20px;
-				}
-				&.ftinvwl-heart-o::before, &.ftinvwl-key::before {
-					position: relative;
-					top: 3px;
 				}
 			}
 		}

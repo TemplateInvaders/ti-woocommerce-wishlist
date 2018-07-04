@@ -190,7 +190,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 			if ( false === $data['style']['customstyle'] ) {
 				$data['style_options']['css'] = $this->convert_styles( $data['style_options'] );
 			} else {
-				$data['style_options'] = array();
+//				$data['style_options'] = array();
 			}
 			delete_transient( $this->_n . '_dynamic_' );
 		}

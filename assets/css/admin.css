@@ -96,87 +96,70 @@ WooCommerce Wishlist Plugin custom webfont
 
 .ftinvwl-chevron-down:before {
   content: "\e900";
-  color: #515252;
 }
 
 .ftinvwl-chevron-right:before {
   content: "\e901";
-  color: #515252;
 }
 
 .ftinvwl-chevron-left:before {
   content: "\e902";
-  color: #515252;
 }
 
 .ftinvwl-chevron-up:before {
   content: "\e903";
-  color: #515252;
 }
 
 .ftinvwl-cancel:before {
   content: "\e904";
-  color: #515252;
 }
 
 .ftinvwl-times:before {
   content: "\e905";
-  color: #515252;
 }
 
 .ftinvwl-heart-plus:before {
   content: "\e906";
-  color: #515252;
 }
 
 .ftinvwl-heart-mark-right:before {
   content: "\e907";
-  color: #515252;
 }
 
 .ftinvwl-heart2:before {
   content: "\e908";
-  color: #515252;
 }
 
 .ftinvwl-heart-o:before {
   content: "\e909";
-  color: #515252;
 }
 
 .ftinvwl-heart-mark-left:before {
   content: "\e90a";
-  color: #515252;
 }
 
 .ftinvwl-heart-mail:before {
   content: "\e90b";
-  color: #515252;
 }
 
 .ftinvwl-heart-tinv:before {
   content: "\e90c";
-  color: #515252;
 }
 
 .ftinvwl-key:before {
   content: "\e90d";
-  color: #515252;
 }
 
 .ftinvwl-lock:before {
   content: "\e90e";
-  color: #515252;
 }
 
 .ftinvwl-hearts:before {
   content: "\e90f";
-  color: #515252;
 }
 
 .ftinvwl-user:before {
   content: "\e910";
-  color: #515252;
 }
 
 /* Misc */

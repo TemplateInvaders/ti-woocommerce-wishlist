@@ -601,7 +601,7 @@ class TInvWL_Public_AddToWishlist {
 			'loop'         => 'no',
 		);
 		if ( $product && is_a( $product, 'WC_Product' ) ) {
-			$default['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
+			$default['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->get_id() : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
 			$default['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 ) );
 		}
 		$atts = shortcode_atts( $default, $atts );

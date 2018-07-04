@@ -653,21 +653,15 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   margin-bottom: 35px;
 }
 
-.tinv-wishlist table + .tinv-lists-nav {
-  margin-top: 35px;
-}
-
 .tinv-wishlist .tinv-next {
   display: inline-block;
+  float: left;
 }
 
 .tinv-wishlist .tinv-prev {
   display: inline-block;
   float: left;
-}
-
-.tinv-wishlist .tinv-next {
-  float: right;
+  margin-right: 35px !important;
 }
 
 .tinv-wishlist .tinv-prev i {

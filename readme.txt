@@ -1,10 +1,10 @@
 ﻿=== WooCommerce Wishlist Plugin ===
 Contributors: templateinvaders
 Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=donate
-Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, shop, ecommerce wishlist, shop wishlist, wishlist for Woocommerce
+Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -131,14 +131,24 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 == Changelog ==
 
-= 1.8.2=
+= 1.8.3 =
+*Release Date - 04 July 2018*
+
+* Improved "Style Options":
+ * Removed some options related to Premium version
+ * Fixed some options
+ * Added styles for Share buttons
+ * Added options to change the "Add to Wishlist" Button Icon size and color
+* Overall code cleanup
+
+= 1.8.2 =
 *Release Date - 01 July 2018*
 
 * Fixed an issue with "add to wishlist" button on product listing in OceanWP theme
 * Fixed issues with predefined skin
 * Added "add to wishlist" icon size option to predefined skin
 
-= 1.8.1=
+= 1.8.1 =
 *Release Date - 30 June 2018*
 
 * Fixed "add to wishlist" icons position

@@ -106,6 +106,18 @@
   padding-right: 17px;
 }
 
+.tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty {
+  font-family: inherit;
+  color: #686868;
+  background-color: #f7f7f7;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d1d1d1;
+  border-radius: 2px;
+  box-shadow: none;
+  font-size: 14px;
+}
+
 .tinv-wishlist {
   color: #1a1a1a;
 }

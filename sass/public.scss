@@ -470,18 +470,14 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	.tinv-lists-nav {
 		margin-bottom: 35px;
 	}
-	table + .tinv-lists-nav {
-		margin-top: 35px;
-	}
 	.tinv-next {
 		display: inline-block;
+		float: left;
 	}
 	.tinv-prev {
 		display: inline-block;
 		float: left;
-	}
-	.tinv-next {
-		float: right;
+		margin-right: 35px !important;
 	}
 	.tinv-prev i {
 		margin-left: 0;

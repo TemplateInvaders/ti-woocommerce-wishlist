@@ -21,14 +21,14 @@ class TInvWL_Update {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 
 	/**
 	 * Version
 	 *
 	 * @var string
 	 */
-	public $_v;
+	public $_version;
 
 	/**
 	 * Previous Version
@@ -54,8 +54,8 @@ class TInvWL_Update {
 	 */
 	function __construct( $version, $previous_version = 0 ) {
 		$lists       = get_class_methods( $this );
-		$this->_n    = TINVWL_PREFIX;
-		$this->_v    = $version;
+		$this->_name    = TINVWL_PREFIX;
+		$this->_version    = $version;
 		$this->_prev = $previous_version;
 		$lists       = array_filter( $lists, array( $this, 'filter' ) );
 		if ( empty( $lists ) ) {
@@ -84,7 +84,7 @@ class TInvWL_Update {
 			return false;
 		}
 
-		return version_compare( $this->_v, $this->prepare( $method ), 'ge' );
+		return version_compare( $this->_version, $this->prepare( $method ), 'ge' );
 	}
 
 	/**
@@ -160,8 +160,8 @@ class TInvWL_Update {
 	 */
 	function up_p_1_6_1() {
 		global $wpdb;
-		$wishlists_table       = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'lists' );
-		$wishlists_items_table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'items' );
+		$wishlists_table       = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
+		$wishlists_items_table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
 		$sql                   = "DELETE FROM wl USING `{$wishlists_table}` AS wl WHERE NOT EXISTS( SELECT * FROM `{$wishlists_items_table}` WHERE {$wishlists_items_table}.wishlist_id = wl.ID ) AND wl.type='default'";
 		$cleanup               = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}

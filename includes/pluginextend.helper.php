@@ -21,7 +21,7 @@ class TInvWL_PluginExtend {
 	 *
 	 * @var string
 	 */
-	public $_n;
+	public $_name;
 
 	/**
 	 * Plugin transient name
@@ -80,7 +80,7 @@ class TInvWL_PluginExtend {
 	 * @param string $plugin_name Plugin name.
 	 */
 	public function __construct( $plugin, $root_file = null, $plugin_name = TINVWL_PREFIX ) {
-		$this->_n = $plugin_name;
+		$this->_name = $plugin_name;
 		if ( empty( $plugin ) ) {
 			$this->transient	 = plugin_basename( $root_file );
 			$this->plugin_path	 = trailingslashit( plugin_dir_path( dirname( $root_file ) ) );

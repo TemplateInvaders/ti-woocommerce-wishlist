@@ -21,14 +21,14 @@ class TInvWL_Wizard {
 	 *
 	 * @var string
 	 */
-	public $_n;
+	public $_name;
 
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	public $_v;
+	public $_version;
 
 	/**
 	 * Constructor
@@ -37,12 +37,12 @@ class TInvWL_Wizard {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n = $plugin_name;
-		$this->_v = $version;
-		if ( apply_filters( $this->_n . '_enable_wizard', true ) ) {
+		$this->_name = $plugin_name;
+		$this->_version = $version;
+		if ( apply_filters( $this->_name . '_enable_wizard', true ) ) {
 			$this->define_hooks();
 		}
-		update_option( $this->_n . '_wizard', true );
+		update_option( $this->_name . '_wizard', true );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class TInvWL_Wizard {
 			}
 			if ( method_exists( $this, $method ) ) {
 				$nonce = filter_input( 0, '_wpnonce' );
-				if ( $nonce && wp_verify_nonce( $nonce, sprintf( '%s-setup-%s', $this->_n, $url_attr['step'] ) ) ) {
+				if ( $nonce && wp_verify_nonce( $nonce, sprintf( '%s-setup-%s', $this->_name, $url_attr['step'] ) ) ) {
 					$this->$method();
 				}
 			}
@@ -173,19 +173,19 @@ class TInvWL_Wizard {
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
-		wp_enqueue_style( $this->_n, TINVWL_URL . 'assets/css/admin.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-setup', TINVWL_URL . 'assets/css/admin-setup.css', array(
+		wp_enqueue_style( $this->_name, TINVWL_URL . 'assets/css/admin.css', array(), $this->_version, 'all' );
+		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_version, 'all' );
+		wp_enqueue_style( $this->_name . '-setup', TINVWL_URL . 'assets/css/admin-setup.css', array(
 			'dashicons',
 			'install'
-		), $this->_v, 'all' );
+		), $this->_version, 'all' );
 	}
 
 	/**
 	 * Load javascript
 	 */
 	function enqueue_scripts() {
-		wp_enqueue_script( $this->_n, TINVWL_URL . 'assets/js/admin.js', array( 'jquery' ), $this->_v, 'all' );
+		wp_enqueue_script( $this->_name, TINVWL_URL . 'assets/js/admin.js', array( 'jquery' ), $this->_version, 'all' );
 	}
 
 	/**
@@ -193,14 +193,14 @@ class TInvWL_Wizard {
 	 */
 	function load_content() {
 		?>
-		<div class="<?php echo esc_attr( sprintf( '%s-content', $this->_n ) ); ?>">
+		<div class="<?php echo esc_attr( sprintf( '%s-content', $this->_name ) ); ?>">
 			<form method="POST" action="<?php echo esc_url( admin_url( $this->next_page() ) ) ?>">
 				<?php
 				$method = $this->method;
 				if ( method_exists( $this, $method ) ) {
 					$this->$method();
 				}
-				wp_nonce_field( sprintf( '%s-setup-%s', $this->_n, $this->page ) );
+				wp_nonce_field( sprintf( '%s-setup-%s', $this->_name, $this->page ) );
 				?>
 			</form>
 		</div>

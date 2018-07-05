@@ -21,14 +21,14 @@ class TInvWL_WizardSetup {
 	 *
 	 * @var string
 	 */
-	public $_n;
+	public $_name;
 
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	public $_v;
+	public $_version;
 
 	/**
 	 * Constructor
@@ -37,8 +37,8 @@ class TInvWL_WizardSetup {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n	 = $plugin_name;
-		$this->_v	 = $version;
+		$this->_name	 = $plugin_name;
+		$this->_version	 = $version;
 		add_action( 'init', array( $this, 'load' ) );
 		add_action( 'admin_init', array( $this, 'redirect' ) );
 	}
@@ -58,7 +58,7 @@ class TInvWL_WizardSetup {
 		if ( ! empty( $page ) ) {
 			switch ( $page ) {
 				case 'tinvwl-wizard' :
-					new TInvWL_Wizard( $this->_n, $this->_v );
+					new TInvWL_Wizard( $this->_name, $this->_version );
 			}
 		}
 	}

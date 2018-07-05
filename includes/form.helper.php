@@ -21,7 +21,7 @@ class TInvWL_Form {
 	 *
 	 * @var string
 	 */
-	static $_n;
+	static $_name;
 
 	/**
 	 * Form value for elements
@@ -43,7 +43,7 @@ class TInvWL_Form {
 	 * @param string $plugin_name Plugin name.
 	 */
 	public static function _init( $plugin_name = TINVWL_PREFIX ) {
-		self::$_n = $plugin_name;
+		self::$_name = $plugin_name;
 	}
 
 	/**
@@ -87,8 +87,8 @@ class TInvWL_Form {
 	 * @return mixed
 	 */
 	public static function __callStatic( $name, $arg ) {
-		if ( empty( self::$_n ) ) {
-			self::$_n = TINVWL_PREFIX;
+		if ( empty( self::$_name ) ) {
+			self::$_name = TINVWL_PREFIX;
 		}
 		$_arg = array(
 			0	 => null,
@@ -151,7 +151,7 @@ class TInvWL_Form {
 	 * @return string
 	 */
 	public static function _number( $data, $value = 0, $extra = '' ) {
-		$class = sprintf( ' %s-form-number', self::$_n );
+		$class = sprintf( ' %s-form-number', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -174,7 +174,7 @@ class TInvWL_Form {
 	 * @return string
 	 */
 	public static function _color( $data = '', $value = '', $extra = '' ) {
-		$class = sprintf( ' %s-form-color', self::$_n );
+		$class = sprintf( ' %s-form-color', self::$_name );
 		$load = true;
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
@@ -215,7 +215,7 @@ class TInvWL_Form {
 		}
 		$extra_js	 = '';
 		$value		 = self::getvalue( $data['name'], $value );
-		$class		 = sprintf( ' %s-date', self::$_n );
+		$class		 = sprintf( ' %s-date', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -245,7 +245,7 @@ class TInvWL_Form {
 	 * @return string
 	 */
 	public static function _time( $data = '', $value = '', $extra = '' ) {
-		$class = sprintf( ' %s-time', self::$_n );
+		$class = sprintf( ' %s-time', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -434,7 +434,7 @@ class TInvWL_Form {
 		if ( ! is_array( $data ) ) {
 			$data = array( 'name' => $data );
 		}
-		$class			 = sprintf( ' %s-form-preview-select', self::$_n );
+		$class			 = sprintf( ' %s-form-preview-select', self::$_name );
 		$extra_select	 = array( 'class' => 'form-control' );
 		$extra_button	 = array();
 		$extra_url		 = '';
@@ -579,7 +579,7 @@ class TInvWL_Form {
 	 * @return string
 	 */
 	public static function _multicheckbox( $data = '', $value = array(), $extra = '', $options = array() ) {
-		$class = sprintf( ' %s-multicheckbox', self::$_n );
+		$class = sprintf( ' %s-multicheckbox', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -606,11 +606,11 @@ class TInvWL_Form {
 		$after	 = '';
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['before'] ) ) {
-				$before = sprintf( '<div class="%s-before">%s</div>', self::$_n, $extra['before'] );
+				$before = sprintf( '<div class="%s-before">%s</div>', self::$_name, $extra['before'] );
 				unset( $extra['before'] );
 			}
 			if ( isset( $extra['after'] ) ) {
-				$after = sprintf( '<div class="%s-after">%s</div>', self::$_n, $extra['after'] );
+				$after = sprintf( '<div class="%s-after">%s</div>', self::$_name, $extra['after'] );
 				unset( $extra['after'] );
 			}
 		}
@@ -715,7 +715,7 @@ class TInvWL_Form {
 			$label_extra[ $i ]['after']	 = self::_time( $_data, (isset( $value[ $i ] ) ? $value[ $i ] : '' ), $extra );
 			$form[]							 = self::_label( $_data['name'], $label[ $i ], $label_extra[ $i ] );
 		}
-		$form = sprintf( '<div class="%s-timeperiod">%s</div>', self::$_n, implode( $separator, $form ) );
+		$form = sprintf( '<div class="%s-timeperiod">%s</div>', self::$_name, implode( $separator, $form ) );
 		return $form;
 	}
 
@@ -763,7 +763,7 @@ class TInvWL_Form {
 			$label_extra[ $i ]['after']	 = self::_date( $_data, (isset( $value[ $i ] ) ? $value[ $i ] : '' ), $extra );
 			$form[]							 = self::_label( $_data['name'], $label[ $i ], $label_extra[ $i ] );
 		}
-		$form = sprintf( '<div class="%s-dateperiod">%s</div>', self::$_n, implode( $separator, $form ) );
+		$form = sprintf( '<div class="%s-dateperiod">%s</div>', self::$_name, implode( $separator, $form ) );
 		return $form;
 	}
 
@@ -810,7 +810,7 @@ class TInvWL_Form {
 	 * @return type
 	 */
 	public static function _button_submit_quick( $data = '', $value = '', $extra = '' ) {
-		return sprintf( '<div class="%s-quick-btns">%s</div>', self::$_n, self::_button_submit( $data, $value, $extra ) );
+		return sprintf( '<div class="%s-quick-btns">%s</div>', self::$_name, self::_button_submit( $data, $value, $extra ) );
 	}
 
 	/**
@@ -872,8 +872,8 @@ class TInvWL_Form {
 	 */
 	private static function __createid( $name = '', $separator = '_' ) { // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidFunctionName.MethodDoubleUnderscore
 		$name = preg_replace( '/[^A-Za-z0-9_-]{1}/i', $separator, $name );
-		if ( false === strpos( $name, self::$_n ) ) {
-			$name = self::$_n . $separator . $name;
+		if ( false === strpos( $name, self::$_name ) ) {
+			$name = self::$_name . $separator . $name;
 		}
 		return $name;
 	}
@@ -1125,7 +1125,7 @@ class TInvWL_Form {
 	 * @return string
 	 */
 	public static function _checkboxonoff( $data = '', $checked = false, $extra = '', $value = 'on' ) {
-		$class = sprintf( ' %s-form-onoff', self::$_n );
+		$class = sprintf( ' %s-form-onoff', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -1152,7 +1152,7 @@ class TInvWL_Form {
 			$data = array( 'name' => $data );
 		}
 		$extra_input = '';
-		$class		 = sprintf( ' %s-form-multirbox', self::$_n );
+		$class		 = sprintf( ' %s-form-multirbox', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] .= $class;
@@ -1182,7 +1182,7 @@ class TInvWL_Form {
 			$data = array( 'name' => $data );
 		}
 		$data['type']	 = 'range';
-		$class			 = sprintf( ' %s-form-range', self::$_n );
+		$class			 = sprintf( ' %s-form-range', self::$_name );
 		if ( is_array( $extra ) ) {
 			if ( isset( $extra['class'] ) ) {
 				$extra['class'] = $class;

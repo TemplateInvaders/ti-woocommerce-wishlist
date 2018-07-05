@@ -21,13 +21,13 @@ abstract class TInvWL_Admin_Base {
 	 *
 	 * @var string
 	 */
-	public $_n;
+	public $_name;
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	public $_v;
+	public $_version;
 
 	/**
 	 * Constructor
@@ -36,8 +36,8 @@ abstract class TInvWL_Admin_Base {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n = $plugin_name;
-		$this->_v = $version;
+		$this->_name = $plugin_name;
+		$this->_version = $version;
 		$this->load_function();
 	}
 
@@ -61,7 +61,7 @@ abstract class TInvWL_Admin_Base {
 		$protocol = is_ssl() ? 'https' : 'http';
 		$glue     = '-';
 		$params   = array(
-			'page' => implode( $glue, array_filter( array( $this->_n, $page ) ) ),
+			'page' => implode( $glue, array_filter( array( $this->_name, $page ) ) ),
 			'cat'  => $cat,
 		);
 		if ( is_array( $arg ) ) {
@@ -94,7 +94,7 @@ abstract class TInvWL_Admin_Base {
 		$glue      = '-';
 		$page      = explode( $glue, $page );
 		$page_last = array_shift( $page );
-		if ( $this->_n != $page_last ) { // WPCS: loose comparison ok.
+		if ( $this->_name != $page_last ) { // WPCS: loose comparison ok.
 			return false;
 		}
 

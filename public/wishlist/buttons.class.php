@@ -21,7 +21,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 *
 	 * @var string
 	 */
-	static $_n;
+	static $_name;
 	/**
 	 * Basic event
 	 *
@@ -35,7 +35,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @param string $plugin_name Plugin name.
 	 */
 	public static function init( $plugin_name = TINVWL_PREFIX ) {
-		self::$_n    = $plugin_name;
+		self::$_name = $plugin_name;
 		self::$event = 'tinvwl_after_wishlist_table';
 		self::htmloutput();
 	}
@@ -63,11 +63,11 @@ class TInvWL_Public_Wishlist_Buttons {
 				'priority'  => 10,
 				'condition' => '$a["is_owner"]',
 			);
-			add_filter( self::$_n . '_prepare_attr__button_product_apply', array(
+			add_filter( self::$_name . '_prepare_attr__button_product_apply', array(
 				__CLASS__,
 				'add_break_class_input'
 			) );
-			add_filter( self::$_n . '_prepare_attr__button_product_apply', array(
+			add_filter( self::$_name . '_prepare_attr__button_product_apply', array(
 				__CLASS__,
 				'add_break_class_checkbox'
 			) );
@@ -79,7 +79,7 @@ class TInvWL_Public_Wishlist_Buttons {
 				'method'   => array( __CLASS__, 'apply_action_add_selected' ),
 				'priority' => 25,
 			);
-			add_filter( self::$_n . '_prepare_attr__button_product_selected', array(
+			add_filter( self::$_name . '_prepare_attr__button_product_selected', array(
 				__CLASS__,
 				'add_break_class_checkbox'
 			) );
@@ -91,8 +91,8 @@ class TInvWL_Public_Wishlist_Buttons {
 				'method'   => array( __CLASS__, 'add_all' ),
 				'priority' => 30,
 			);
-			add_filter( self::$_n . '_prepare_attr__button_product_selected', array( __CLASS__, 'class_action' ) );
-			add_filter( self::$_n . '_prepare_attr__button_product_all', array( __CLASS__, 'class_action' ) );
+			add_filter( self::$_name . '_prepare_attr__button_product_selected', array( __CLASS__, 'class_action' ) );
+			add_filter( self::$_name . '_prepare_attr__button_product_all', array( __CLASS__, 'class_action' ) );
 		}
 		$buttons = apply_filters( 'tinvwl_manage_buttons_create', $buttons );
 
@@ -173,10 +173,10 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 
 		if ( array_key_exists( 'before', $button ) ) {
-			add_filter( self::$_n . '_before__button_' . $button['name'], $button['before'] );
+			add_filter( self::$_name . '_before__button_' . $button['name'], $button['before'] );
 		}
 		if ( array_key_exists( 'after', $button ) ) {
-			add_filter( self::$_n . '_after__button_' . $button['name'], $button['after'] );
+			add_filter( self::$_name . '_after__button_' . $button['name'], $button['after'] );
 		}
 
 		add_action( $button['event'], function () use ( $button ) {
@@ -198,21 +198,21 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return string
 	 */
 	public static function button( $value, $title, $submit, $echo = true ) {
-		$html = apply_filters( self::$_n . '_before__button_' . $value, '' );
+		$html = apply_filters( self::$_name . '_before__button_' . $value, '' );
 		$attr = array(
 			'type'  => $submit,
 			'class' => 'button',
 			'name'  => 'tinvwl-action',
 			'value' => $value,
 		);
-		$attr = apply_filters( self::$_n . '_prepare_attr__button_' . $value, $attr );
+		$attr = apply_filters( self::$_name . '_prepare_attr__button_' . $value, $attr );
 		foreach ( $attr as $key => &$value ) {
 			$value = sprintf( '%s="%s"', $key, esc_attr( $value ) );
 		}
 		$attr = implode( ' ', $attr );
 
-		$html .= apply_filters( self::$_n . '__button_' . $value, sprintf( '<button %s>%s</button>', $attr, $title ) );
-		$html .= apply_filters( self::$_n . '_after__button_' . $value, '' );
+		$html .= apply_filters( self::$_name . '__button_' . $value, sprintf( '<button %s>%s</button>', $attr, $title ) );
+		$html .= apply_filters( self::$_name . '_after__button_' . $value, '' );
 
 		if ( $echo ) {
 			echo $html; // WPCS: xss ok.
@@ -283,7 +283,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		if ( ! empty( $errors ) ) {
 			$titles = array();
 			foreach ( $errors as $product_id ) {
-				$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+				$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 			}
 			$titles = array_filter( $titles );
 			wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
@@ -387,7 +387,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			if ( ! empty( $errors ) ) {
 				$titles = array();
 				foreach ( $errors as $product_id ) {
-					$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) );
+					$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 				}
 				$titles = array_filter( $titles );
 				wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
@@ -418,9 +418,9 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 		$wlp = null;
 		if ( 0 === $wishlist['ID'] ) {
-			$wlp = TInvWL_Product_Local::instance( self::$_n );
+			$wlp = TInvWL_Product_Local::instance( self::$_name );
 		} else {
-			$wlp = new TInvWL_Product( $wishlist, self::$_n );
+			$wlp = new TInvWL_Product( $wishlist, self::$_name );
 		}
 		if ( empty( $wlp ) ) {
 			return false;

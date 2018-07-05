@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'tinvwl_view_header', $_header );
 ?>
 <div class="wrap" style="margin-left: 58px;margin-bottom: -40px;"></div>
-<div class="<?php echo esc_attr( sprintf( '%s-content', self::$_n ) ); ?>">
+<div class="<?php echo esc_attr( sprintf( '%s-content', self::$_name ) ); ?>">
 	<?php self::view( $_template_name, $_data ); ?>
 </div>
 <?php do_action( 'tinvwl_view_footer', $_footer ); ?>

@@ -192,7 +192,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 			} else {
 //				$data['style_options'] = array();
 			}
-			delete_transient( $this->_n . '_dynamic_' );
+			delete_transient( $this->_name . '_dynamic_' );
 		}
 		if ( array_key_exists( 'style_plain', (array) $data ) ) {
 			if ( ! $data['style_plain']['allow'] ) {

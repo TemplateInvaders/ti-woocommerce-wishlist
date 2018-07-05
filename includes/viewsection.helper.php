@@ -43,8 +43,8 @@ class TInvWL_ViewSection extends TInvWL_View {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		self::$_n		 = $plugin_name;
-		self::$_v		 = $version;
+		self::$_name		 = $plugin_name;
+		self::$_version		 = $version;
 		$this->data		 = array();
 		$this->value	 = array();
 		$this->helper	 = false;
@@ -130,10 +130,10 @@ class TInvWL_ViewSection extends TInvWL_View {
 
 		$data['extra'] = TInvWL_Form::__atrtostr( $data['extra'] );
 		ob_start();
-		do_action( self::$_n . "_section_{$this->section_id}_before", $data );
+		do_action( self::$_name . "_section_{$this->section_id}_before", $data );
 		self::view( $skin, $data, '' );
-		wp_nonce_field( self::$_n . "_check_{$this->section_id}_{$field_counts}", $this->section_id . '_nonce' );
-		do_action( self::$_n . "_section_{$this->section_id}_after", $data );
+		wp_nonce_field( self::$_name . "_check_{$this->section_id}_{$field_counts}", $this->section_id . '_nonce' );
+		do_action( self::$_name . "_section_{$this->section_id}_after", $data );
 		return ob_get_clean();
 	}
 
@@ -240,9 +240,9 @@ class TInvWL_ViewSection extends TInvWL_View {
 
 		$data['extra'] = TInvWL_Form::__atrtostr( $data['extra'] );
 		ob_start();
-		do_action( self::$_n . "_sectiongroup_{$this->group_id}_before", $data );
+		do_action( self::$_name . "_sectiongroup_{$this->group_id}_before", $data );
 		self::view( $skin, $data, '' );
-		do_action( self::$_n . "_sectiongroup_{$this->group_id}_after", $data );
+		do_action( self::$_name . "_sectiongroup_{$this->group_id}_after", $data );
 		return ob_get_clean();
 	}
 
@@ -319,7 +319,7 @@ class TInvWL_ViewSection extends TInvWL_View {
 					$data['extra_label']['class'] = 'tinvwl-empty';
 				}
 			}
-			$data['label'] = apply_filters( self::$_n . "_labelfor_{$name}", ($data['text']) ? TInvWL_Form::_label( $name, esc_html( $data['text'] ), $data['extra_label'] ) : '' );
+			$data['label'] = apply_filters( self::$_name . "_labelfor_{$name}", ($data['text']) ? TInvWL_Form::_label( $name, esc_html( $data['text'] ), $data['extra_label'] ) : '' );
 			unset( $data['extra_label'] );
 		} else {
 			$data['label'] = '';
@@ -333,21 +333,21 @@ class TInvWL_ViewSection extends TInvWL_View {
 		} else {
 			$data['extra'] .= 'class="form-control"';
 		}
-		$data['field']	 = apply_filters( self::$_n . "_field_{$name}_before", '' );
-		$data['std']	 = apply_filters( self::$_n . "_field_{$name}_defaultvalue", $data['std'] );
-		$data['extra']	 = apply_filters( self::$_n . "_field_{$name}_extra", $data['extra'] );
+		$data['field']	 = apply_filters( self::$_name . "_field_{$name}_before", '' );
+		$data['std']	 = apply_filters( self::$_name . "_field_{$name}_defaultvalue", $data['std'] );
+		$data['extra']	 = apply_filters( self::$_name . "_field_{$name}_extra", $data['extra'] );
 		if ( empty( $data['options'] ) ) {
 			$data['field'] .= TInvWL_Form::$type( $name, $data['std'], $data['extra'] );
 		} else {
-			$data['options'] = apply_filters( self::$_n . "_field_{$name}_options", $data['options'] );
+			$data['options'] = apply_filters( self::$_name . "_field_{$name}_options", $data['options'] );
 			$data['field'] .= TInvWL_Form::$type( $name, $data['std'], $data['extra'], $data['options'] );
 		}
-		$data['field'] .= apply_filters( self::$_n . "_field_{$name}_after", '' );
+		$data['field'] .= apply_filters( self::$_name . "_field_{$name}_after", '' );
 
 		ob_start();
-		do_action( self::$_n . "_sectionfield_{$name}_before", $data );
+		do_action( self::$_name . "_sectionfield_{$name}_before", $data );
 		self::view( $skin, $data, '' );
-		do_action( self::$_n . "_sectionfield_{$name}_after", $data );
+		do_action( self::$_name . "_sectionfield_{$name}_after", $data );
 		return ob_get_clean();
 	}
 
@@ -373,11 +373,11 @@ class TInvWL_ViewSection extends TInvWL_View {
 	 * @return string
 	 */
 	function Run( $echo = true ) {
-		$content = apply_filters( self::$_n . '_section_before', '' );
+		$content = apply_filters( self::$_name . '_section_before', '' );
 		foreach ( $this->data as $data ) {
 			$content .= $this->section( $data );
 		}
-		$content .= apply_filters( self::$_n . '_section_after', '' );
+		$content .= apply_filters( self::$_name . '_section_after', '' );
 		if ( $echo ) {
 			echo $content; // WPCS: xss ok.
 		} else {
@@ -512,7 +512,7 @@ class TInvWL_ViewSection extends TInvWL_View {
 			}
 			$field_counts	 = count( $fields );
 			$nonce			 = filter_input( INPUT_POST, $id . '_nonce' );
-			if ( $nonce && wp_verify_nonce( $nonce, self::$_n . "_check_{$id}_{$field_counts}" ) ) {
+			if ( $nonce && wp_verify_nonce( $nonce, self::$_name . "_check_{$id}_{$field_counts}" ) ) {
 				$result_field = array();
 				foreach ( $fields as $field ) {
 					$name		 = array_key_exists( 'name', $field ) ? $field['name'] : '';

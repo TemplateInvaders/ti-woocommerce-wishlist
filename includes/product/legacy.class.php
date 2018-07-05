@@ -21,7 +21,7 @@ class TInvWL_Product_Legacy {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 	/**
 	 * Array products
 	 *
@@ -61,7 +61,7 @@ class TInvWL_Product_Legacy {
 	 */
 	function __construct( $plugin_name = TINVWL_PREFIX ) {
 
-		$this->_n				 = $plugin_name;
+		$this->_name				 = $plugin_name;
 		$this->products			 = array();
 		$this->products_autoinc	 = 0;
 

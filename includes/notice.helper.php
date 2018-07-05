@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class TInvWL_Notice {
 
-	private static $shownotices	 = array();
-	private static $notices		 = array();
+	private static $shownotices = array();
+	private static $notices = array();
 	static $_instance;
 	protected $curent;
 
 	function __construct() {
-		self::$shownotices	 = get_option( 'ti_admin_shownotices', array() );
-		self::$notices		 = get_option( 'ti_admin_notices', array() );
+		self::$shownotices = get_option( 'ti_admin_shownotices', array() );
+		self::$notices     = get_option( 'ti_admin_notices', array() );
 		self::define_hooks();
 	}
 
@@ -37,6 +37,7 @@ class TInvWL_Notice {
 			self::$_instance = new self();
 		}
 		self::$_instance->curent = null;
+
 		return self::$_instance;
 	}
 
@@ -59,6 +60,7 @@ class TInvWL_Notice {
 			self::$shownotices[ $name ] = array();
 		}
 	}
+
 	public static function has( $name ) {
 		return in_array( $name, self::$notices );
 	}
@@ -69,7 +71,7 @@ class TInvWL_Notice {
 			if ( ! is_array( $data ) ) {
 				continue;
 			}
-			$data	 = array_reverse( $data, true );
+			$data  = array_reverse( $data, true );
 			$_data = array();
 			foreach ( $data as $key => $value ) {
 				$_data[ $key ] = $value;
@@ -78,8 +80,10 @@ class TInvWL_Notice {
 			$notice[ $name ] = array_filter( $_data );
 		}
 		$notice = array_filter( $notice );
+
 		return $notice;
 	}
+
 	public static function output() {
 		$notices = self::filter();
 
@@ -108,9 +112,9 @@ class TInvWL_Notice {
 		if ( empty( $message ) ) {
 			return;
 		}
-		$output = '<div id="message" class="updated woocommerce-message"><a class="woocommerce-message-close notice-dismiss" href="' . esc_url( wp_nonce_url( add_query_arg( 'ti-hide-notice', $name, add_query_arg( 'ti-hide-notice-trigger', $key ) ), 'ti_hide', '_ti_notice_nonce' ) ) . '">' . __( 'Dismiss', 'tinvwl' ) . '</a>' . wp_kses_post( wpautop( $message ) ) . '</div>';
+		$output = '<div id="message" class="updated woocommerce-message"><a class="woocommerce-message-close notice-dismiss" href="' . esc_url( wp_nonce_url( add_query_arg( 'ti-hide-notice', $name, add_query_arg( 'ti-hide-notice-trigger', $key ) ), 'ti_hide', '_ti_notice_nonce' ) ) . '">' . __( 'Dismiss', 'ti-woocommerce-wishlist' ) . '</a>' . wp_kses_post( wpautop( $message ) ) . '</div>';
 
-	echo apply_filters( 'tinv_notice_' . $name, $output, $key, $message );
+		echo apply_filters( 'tinv_notice_' . $name, $output, $key, $message );
 	}
 
 	public static function remove( $name ) {
@@ -122,17 +126,17 @@ class TInvWL_Notice {
 		if ( is_array( self::$shownotices[ $name ] ) ) {
 			$notice = get_option( 'ti_admin_notice_' . $name, array() );
 			if ( ! is_array( $notice ) ) {
-				$notice	 = array( $notice );
-				$notice	 = array_filter( $notice );
+				$notice = array( $notice );
+				$notice = array_filter( $notice );
 			}
 			if ( empty( $notice ) ) {
 				return;
 			}
 			$notice_key = $arg;
 			if ( ! is_integer( $arg ) || ! array_key_exists( $arg, $notice ) ) {
-					$notice_keys = array_keys( $notice );
+				$notice_keys = array_keys( $notice );
 				if ( 1 < count( $notice ) ) {
-					$notice_key	 = $notice_keys[ rand( 0, count( $notice_keys ) ) ];
+					$notice_key = $notice_keys[ rand( 0, count( $notice_keys ) ) ];
 				} else {
 					$notice_key = $notice_keys[0];
 				}
@@ -177,11 +181,13 @@ class TInvWL_Notice {
 		}
 		if ( self::has( $name ) ) {
 			$this->curent = null;
+
 			return $this;
 		}
 		self::add( $name );
 		update_option( 'ti_admin_notice_' . $name, $notice );
 		$this->curent = $name;
+
 		return $this;
 	}
 
@@ -196,15 +202,17 @@ class TInvWL_Notice {
 			if ( ! in_array( $_value, $_notice ) ) {
 				$_notice[ $index ] = $_value;
 			}
-			$index++;
+			$index ++;
 		}
 		update_option( 'ti_admin_notice_' . $name, $_notice );
 		$this->curent = $name;
+
 		return $this;
 	}
 
 	function set_notice( $name ) {
 		$this->curent = $name;
+
 		return $this;
 	}
 
@@ -220,11 +228,12 @@ class TInvWL_Notice {
 		}
 		$priority = absint( $priority );
 
-		$data = get_option( 'ti_admin_notice_trigger_' . $name, array() );
-		$idx = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
+		$data         = get_option( 'ti_admin_notice_trigger_' . $name, array() );
+		$idx          = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
 		$data[ $idx ] = array( $tag, $function_to_add, $priority, $accepted_args );
 		update_option( 'ti_admin_notice_trigger_' . $name, $data );
 		$this->curent = $name;
+
 		return $this;
 	}
 
@@ -236,22 +245,25 @@ class TInvWL_Notice {
 			return $this;
 		}
 		$priority = absint( $priority );
-		$data = get_option( 'ti_admin_notice_trigger_' . $name, array() );
-		$idx = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
+		$data     = get_option( 'ti_admin_notice_trigger_' . $name, array() );
+		$idx      = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
 		if ( array_key_exists( $idx, $data ) ) {
 			unset( $data[ $idx ] );
 			update_option( 'ti_admin_notice_trigger_' . $name, $data );
 		}
 		$this->curent = $name;
+
 		return $this;
 	}
+
 	public static function apply_triggers() {
 		foreach ( self::$notices as $notice ) {
 			self::apply_trigger( $notice );
 		}
 	}
+
 	public static function apply_trigger( $name ) {
-		$data	 = get_option( 'ti_admin_notice_trigger_' . $name, array() );
+		$data    = get_option( 'ti_admin_notice_trigger_' . $name, array() );
 		$trigger = new TInvWL_Notice_Trigger( 'ti_admin_notice_trigger_' );
 		if ( empty( $data ) ) {
 			self::show( $name );
@@ -259,6 +271,7 @@ class TInvWL_Notice {
 			foreach ( $data as $idx => $_data ) {
 				if ( ! array_key_exists( $idx, (array) @self::$shownotices[ $name ] ) ) {
 					add_filter( $_data[0], array( $trigger, $name . '__' . $idx ), $_data[2], $_data[3] );
+
 					return;
 				}
 			}
@@ -278,12 +291,13 @@ class TInvWL_Notice {
 		if ( empty( $function_to_add ) ) {
 			$function_to_add = '__return_true';
 		}
-		$priority = absint( $priority );
-		$data = get_option( 'ti_admin_notice_reset_' . $name, array() );
-		$idx = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
+		$priority     = absint( $priority );
+		$data         = get_option( 'ti_admin_notice_reset_' . $name, array() );
+		$idx          = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
 		$data[ $idx ] = array( $tag, $function_to_add, $priority, $accepted_args );
 		update_option( 'ti_admin_notice_reset_' . $name, $data );
 		$this->curent = $name;
+
 		return $this;
 	}
 
@@ -298,13 +312,14 @@ class TInvWL_Notice {
 			$function_to_add = '__return_true';
 		}
 		$priority = absint( $priority );
-		$data = get_option( 'ti_admin_notice_reset_' . $name, array() );
-		$idx = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
+		$data     = get_option( 'ti_admin_notice_reset_' . $name, array() );
+		$idx      = md5( serialize( array( $tag, $function_to_add, $priority ) ) );
 		if ( array_key_exists( $idx, $data ) ) {
 			unset( $data[ $idx ] );
 			update_option( 'ti_admin_notice_reset_' . $name, $data );
 		}
 		$this->curent = $name;
+
 		return $this;
 	}
 
@@ -313,8 +328,9 @@ class TInvWL_Notice {
 			self::apply_reset( $notice );
 		}
 	}
+
 	public static function apply_reset( $name ) {
-		$data	 = get_option( 'ti_admin_notice_reset_' . $name, array() );
+		$data    = get_option( 'ti_admin_notice_reset_' . $name, array() );
 		$trigger = new TInvWL_Notice_Trigger( 'ti_admin_notice_reset_' );
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $idx => $_data ) {
@@ -324,15 +340,15 @@ class TInvWL_Notice {
 	}
 
 	public static function hide_notices( $name = null ) {
-		if ( !empty( $name ) ) {
+		if ( ! empty( $name ) ) {
 			self::hide( $name );
 		} else {
-			$data	 = filter_input_array( INPUT_GET, array(
-				'_ti_notice_nonce'		 => FILTER_DEFAULT,
+			$data = filter_input_array( INPUT_GET, array(
+				'_ti_notice_nonce'       => FILTER_DEFAULT,
 				'ti-hide-notice-trigger' => FILTER_DEFAULT,
-				'ti-hide-notice'		 => FILTER_DEFAULT,
+				'ti-hide-notice'         => FILTER_DEFAULT,
 			) );
-			$name	 = $data['ti-hide-notice'];
+			$name = $data['ti-hide-notice'];
 			if ( ! empty( $name ) ) {
 				if ( isset( $data['_ti_notice_nonce'] ) && wp_verify_nonce( $data['_ti_notice_nonce'], 'ti_hide' ) ) {
 					self::hide( $name, $data['ti-hide-notice-trigger'] );
@@ -353,7 +369,7 @@ if ( ! class_exists( 'TInvWL_Notice_Trigger' ) ) {
 
 		private $prefix;
 
-		function __construct($prefix) {
+		function __construct( $prefix ) {
 			$this->prefix = $prefix;
 		}
 
@@ -369,6 +385,7 @@ if ( ! class_exists( 'TInvWL_Notice_Trigger' ) ) {
 					TInvWL_Notice::show( $name, $idx, $result );
 				}
 			}
+
 			return array_shift( $arguments );
 		}
 	}

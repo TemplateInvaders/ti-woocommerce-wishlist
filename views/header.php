@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="<?php echo esc_attr( sprintf( '%s-header', self::$_n ) ); ?> tinv-wishlist-clearfix">
+<div class="<?php echo esc_attr( sprintf( '%s-header', self::$_name ) ); ?> tinv-wishlist-clearfix">
 	<div class="row">
 		<div class="col-lg-7">
 			<div class="tinwl-logo-title">

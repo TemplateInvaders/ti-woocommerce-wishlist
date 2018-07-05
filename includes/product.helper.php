@@ -27,7 +27,7 @@ class TInvWL_Product {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 	/**
 	 * Wishlist object
 	 *
@@ -53,8 +53,8 @@ class TInvWL_Product {
 		global $wpdb;
 
 		$this->wishlist = (array) $wishlist;
-		$this->_n       = $plugin_name;
-		$this->table    = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'items' );
+		$this->_name       = $plugin_name;
+		$this->table    = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
 		$this->user     = $this->wishlist_author();
 		if ( empty( $this->user ) ) {
 			$user = wp_get_current_user();

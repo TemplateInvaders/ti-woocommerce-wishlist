@@ -21,13 +21,13 @@ class TInvWL_View {
 	 *
 	 * @var string
 	 */
-	static $_n;
+	static $_name;
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	static $_v;
+	static $_version;
 	/**
 	 * Redirect url
 	 *
@@ -48,8 +48,8 @@ class TInvWL_View {
 	 * @param string $version Plugin version.
 	 */
 	public static function _init( $plugin_name, $version ) {
-		self::$_n = $plugin_name;
-		self::$_v = $version;
+		self::$_name = $plugin_name;
+		self::$_version = $version;
 	}
 
 	/**
@@ -85,7 +85,7 @@ class TInvWL_View {
 	 * @return mixed
 	 */
 	public static function get_session_arr( $name, $default = array() ) {
-		$data = get_option( self::$_n . $name, $default );
+		$data = get_option( self::$_name . $name, $default );
 		if ( empty( $data ) ) {
 			return $default;
 		}
@@ -100,7 +100,7 @@ class TInvWL_View {
 	 * @param mixed $value Value.
 	 */
 	public static function set_session_arr( $name, $value = array() ) {
-		update_option( self::$_n . $name, $value );
+		update_option( self::$_name . $name, $value );
 	}
 
 	/**
@@ -374,7 +374,7 @@ class TInvWL_View {
 		$protocol = is_ssl() ? 'https' : 'http';
 		$glue     = '-';
 		$params   = array(
-			'page' => implode( $glue, array_filter( array( self::$_n, $page ) ) ),
+			'page' => implode( $glue, array_filter( array( self::$_name, $page ) ) ),
 			'cat'  => $cat,
 		);
 		if ( is_array( $arg ) ) {

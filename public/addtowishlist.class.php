@@ -21,7 +21,7 @@ class TInvWL_Public_AddToWishlist {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 
 	/**
 	 * Global product
@@ -78,7 +78,7 @@ class TInvWL_Public_AddToWishlist {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		$this->_n      = $plugin_name;
+		$this->_name      = $plugin_name;
 		$this->is_loop = false;
 		$this->define_hooks();
 	}
@@ -151,7 +151,7 @@ class TInvWL_Public_AddToWishlist {
 		$wishlist = null;
 		$data     = array( 'msg' => array() );
 		if ( is_user_logged_in() ) {
-			$wl       = new TInvWL_Wishlist( $this->_n );
+			$wl       = new TInvWL_Wishlist( $this->_name );
 			$wishlist = $wl->add_user_default();
 			$wishlist = apply_filters( 'tinvwl_addtowishlist_wishlist', $wishlist );
 			if ( empty( $wishlist ) ) {
@@ -160,7 +160,7 @@ class TInvWL_Public_AddToWishlist {
 				ob_clean();
 				wp_send_json( $data );
 			}
-			$wlp = new TInvWL_Product( $wishlist, $this->_n );
+			$wlp = new TInvWL_Product( $wishlist, $this->_name );
 		} elseif ( tinv_get_option( 'general', 'require_login' ) ) {
 			$data['status'] = false;
 			$data['icon']   = 'icon_big_times';
@@ -181,7 +181,7 @@ class TInvWL_Public_AddToWishlist {
 			ob_clean();
 			wp_send_json( $data );
 		} else {
-			$wl       = new TInvWL_Wishlist( $this->_n );
+			$wl       = new TInvWL_Wishlist( $this->_name );
 			$wishlist = $wl->add_sharekey_default();
 			$wlp      = new TInvWL_Product( $wishlist );
 		}
@@ -190,7 +190,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( empty( $post['product_id'] ) ) {
 			$status = false;
 		} else {
-			$post['product_type'] = apply_filters( $this->_n . '_addtowishlist_modify_type', $post['product_type'], $post );
+			$post['product_type'] = apply_filters( $this->_name . '_addtowishlist_modify_type', $post['product_type'], $post );
 			$post                 = apply_filters( 'tinvwl_addtowishlist_prepare', $post );
 			$form                 = apply_filters( 'tinvwl_addtowishlist_prepare_form', filter_input( INPUT_POST, 'form', FILTER_DEFAULT, FILTER_FORCE_ARRAY ) );
 			if ( empty( $form ) ) {
@@ -313,7 +313,7 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 		if ( ! empty( $data['msg'] ) ) {
-			$data['msg'] = apply_filters( $this->_n . '_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
+			$data['msg'] = apply_filters( $this->_name . '_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
 			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 		}
 		if ( ! tinv_get_option( 'general', 'show_notice' ) && array_key_exists( 'msg', $data ) ) {
@@ -337,7 +337,7 @@ class TInvWL_Public_AddToWishlist {
 			return $this->user_wishlist;
 		}
 		$wishlists = array();
-		$wl        = new TInvWL_Wishlist( $this->_n );
+		$wl        = new TInvWL_Wishlist( $this->_name );
 		if ( is_user_logged_in() ) {
 			$wishlists = $wl->get_by_user_default();
 		} else {

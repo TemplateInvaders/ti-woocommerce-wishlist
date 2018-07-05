@@ -21,7 +21,7 @@ class TInvWL_Public_Cart {
 	 *
 	 * @var string
 	 */
-	static $_n;
+	static $_name;
 
 	/**
 	 * Default post object.
@@ -64,7 +64,7 @@ class TInvWL_Public_Cart {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		self::$_n = $plugin_name;
+		self::$_name = $plugin_name;
 		$this->define_hooks();
 	}
 
@@ -350,7 +350,7 @@ class TInvWL_Public_Cart {
 		if ( 0 === $wishlist['ID'] ) {
 			$wlp = TInvWL_Product_Local::instance();
 		} else {
-			$wlp = new TInvWL_Product( $wishlist, self::$_n );
+			$wlp = new TInvWL_Product( $wishlist, self::$_name );
 		}
 		if ( empty( $wlp ) ) {
 			return 0;

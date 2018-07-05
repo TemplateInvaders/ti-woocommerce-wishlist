@@ -146,7 +146,7 @@ if ( ! function_exists( 'gf_productaddon_support' ) ) {
 			function gf_productaddon_text_button( $text_add_to_cart, $wl_product, $product ) {
 				$gravity_form_data = get_post_meta( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
 
-				return ( $gravity_form_data ) ? __( 'Select options', 'woocommerce' ) : $text_add_to_cart;
+				return ( $gravity_form_data ) ? __( 'Select options', 'ti-woocommerce-wishlist' ) : $text_add_to_cart;
 			}
 
 			add_filter( 'tinvwl_wishlist_item_add_to_cart', 'gf_productaddon_text_button', 10, 3 );
@@ -302,7 +302,7 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare_product' ) ) {
 			// Reload products class.
 			$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 
-			$product_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() );
+			$product_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->get_id() : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() );
 			$variation_id = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
 
 			if ( ! empty( $product_id ) ) {
@@ -459,19 +459,19 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_rpgiftcards' ) ) {
 		foreach ( $meta as $key => $data ) {
 			switch ( $data['key'] ) {
 				case 'rpgc_note':
-					$meta[ $key ]['key'] = __( 'Note', 'rpgiftcards' );
+					$meta[ $key ]['key'] = __( 'Note', 'ti-woocommerce-wishlist' );
 					break;
 				case 'rpgc_to':
-					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_to' ) <> null ? get_option( 'woocommerce_giftcard_to' ) : __( 'To', 'rpgiftcards' ) ); // WPCS: loose comparison ok.
+					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_to' ) <> null ? get_option( 'woocommerce_giftcard_to' ) : __( 'To', 'ti-woocommerce-wishlist' ) ); // WPCS: loose comparison ok.
 					break;
 				case 'rpgc_to_email':
-					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_toEmail' ) <> null ? get_option( 'woocommerce_giftcard_toEmail' ) : __( 'To Email', 'rpgiftcards' ) ); // WPCS: loose comparison ok.
+					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_toEmail' ) <> null ? get_option( 'woocommerce_giftcard_toEmail' ) : __( 'To Email', 'ti-woocommerce-wishlist' ) ); // WPCS: loose comparison ok.
 					break;
 				case 'rpgc_address':
-					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_address' ) <> null ? get_option( 'woocommerce_giftcard_address' ) : __( 'Address', 'rpgiftcards' ) ); // WPCS: loose comparison ok.
+					$meta[ $key ]['key'] = ( get_option( 'woocommerce_giftcard_address' ) <> null ? get_option( 'woocommerce_giftcard_address' ) : __( 'Address', 'ti-woocommerce-wishlist' ) ); // WPCS: loose comparison ok.
 					break;
 				case 'rpgc_reload_card':
-					$meta[ $key ]['key'] = __( 'Reload existing Gift Card', 'rpgiftcards' );
+					$meta[ $key ]['key'] = __( 'Reload existing Gift Card', 'ti-woocommerce-wishlist' );
 					break;
 				case 'rpgc_description':
 				case 'rpgc_reload_check':
@@ -1202,7 +1202,7 @@ if ( ! function_exists( 'tinvwl_item_status_yith_woocommerce_product_bundles' ) 
 			if ( ! $response ) {
 				$availability      = array(
 					'class'        => 'out-of-stock',
-					'availability' => __( 'Out of stock', 'woocommerce' ),
+					'availability' => __( 'Out of stock', 'ti-woocommerce-wishlist' ),
 				);
 				$availability_html = '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 			}
@@ -1608,7 +1608,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 				$price_html = wc_price( $price );
 
 				$item_data[] = array(
-					'key'     => __( 'Base price', 'yith-woocommerce-product-add-ons' ),
+					'key'     => __( 'Base price', 'ti-woocommerce-wishlist' ),
 					'display' => $price_html,
 				);
 

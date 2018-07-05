@@ -23,8 +23,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n = $plugin_name;
-		$this->_v = $version;
+		$this->_name    = $plugin_name;
+		$this->_version = $version;
 	}
 
 	/**
@@ -55,7 +55,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			if ( preg_match( '/\.class\.php$/i', $value ) ) {
 				$file     = preg_replace( '/\.class\.php$/i', '', $value );
 				$class    = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-				$settings = new $class( $this->_n, $this->_v );
+				$settings = new $class( $this->_name, $this->_version );
 			}
 		}
 
@@ -67,10 +67,10 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function define_hooks() {
 		add_action( 'admin_menu', array( $this, 'action_menu' ) );
-		if ( 'skip' === filter_input( INPUT_GET, $this->_n . '-wizard' ) ) {
-			update_option( $this->_n . '_wizard', true );
+		if ( 'skip' === filter_input( INPUT_GET, $this->_name . '-wizard' ) ) {
+			update_option( $this->_name . '_wizard', true );
 		}
-		if ( ! get_option( $this->_n . '_wizard' ) ) {
+		if ( ! get_option( $this->_name . '_wizard' ) ) {
 			add_action( 'admin_notices', array( $this, 'wizard_run_admin_notice' ) );
 		} elseif ( ! tinv_get_option( 'page', 'wishlist' ) ) {
 			add_action( 'admin_notices', array( $this, 'empty_page_admin_notice' ) );
@@ -93,7 +93,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			__( '<strong>Welcome to WooCommerce Wishlist Plugin<strong> – You‘re almost ready to start :)', 'ti-woocommerce-wishlist' ), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
 			esc_url( admin_url( 'index.php?page=tinvwl-wizard' ) ),
 			esc_html__( 'Run the Setup Wizard', 'ti-woocommerce-wishlist' ),
-			esc_url( admin_url( 'index.php?page=' . $this->_n . '&' . $this->_n . '-wizard=skip' ) ),
+			esc_url( admin_url( 'index.php?page=' . $this->_name . '&' . $this->_name . '-wizard=skip' ) ),
 			esc_html__( 'Skip Setup', 'ti-woocommerce-wishlist' )
 		);
 	}
@@ -102,7 +102,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Error notice if wishlist page not set.
 	 */
 	function empty_page_admin_notice() {
-		printf( '<div class="notice notice-error is-dismissible" style="position: relative;"><p>%1$s <a href="%2$s">%3$s</a>%4$s<a href="%5$s">%6$s</a></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss' ) . '</span></button></div>', // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
+		printf( '<div class="notice notice-error is-dismissible" style="position: relative;"><p>%1$s <a href="%2$s">%3$s</a>%4$s<a href="%5$s">%6$s</a></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss', 'ti-woocommerce-wishlist' ) . '</span></button></div>', // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
 			esc_html__( 'Link to Wishlists does not work!', 'ti-woocommerce-wishlist' ),
 			esc_url( $this->admin_url( '' ) . '#general' ),
 			esc_html__( 'Please apply the Wishlist page', 'ti-woocommerce-wishlist' ),
@@ -116,20 +116,20 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Creation mune and sub-menu
 	 */
 	function action_menu() {
-		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_n, null, TINVWL_URL . 'assets/img/icon_menu.png', 56 );
+		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', 56 );
 		add_action( "load-$page", array( $this, 'onload' ) );
-		$menu = apply_filters( $this->_n . '_admin_menu', array() );
+		$menu = apply_filters( $this->_name . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
 			if ( ! array_key_exists( 'page_title', $item ) ) {
 				$item['page_title'] = $item['title'];
 			}
 			if ( ! array_key_exists( 'parent', $item ) ) {
-				$item['parent'] = $this->_n;
+				$item['parent'] = $this->_name;
 			}
 			if ( ! array_key_exists( 'capability', $item ) ) {
 				$item['capability'] = 'manage_options';
 			}
-			$item['slug'] = implode( '-', array_filter( array( $this->_n, $item['slug'] ) ) );
+			$item['slug'] = implode( '-', array_filter( array( $this->_name, $item['slug'] ) ) );
 
 			$page = add_submenu_page( $item['parent'], $item['page_title'], $item['title'], $item['capability'], $item['slug'], $item['method'] );
 			add_action( "load-$page", array( $this, 'onload' ) );
@@ -145,7 +145,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_filter( 'admin_footer_text', array( $this, 'footer_admin' ) );
 		add_filter( 'screen_options_show_screen', array( $this, 'screen_options_hide_screen' ), 10, 2 );
 
-		add_filter( $this->_n . '_view_panelstatus', array( $this, 'status_panel' ), 9999 );
+		add_filter( $this->_name . '_view_panelstatus', array( $this, 'status_panel' ), 9999 );
 	}
 
 	/**
@@ -153,8 +153,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
-		wp_enqueue_style( $this->_n, TINVWL_URL . 'assets/css/admin.css', array(), $this->_v, 'all' );
-		wp_enqueue_style( $this->_n . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( $this->_name, TINVWL_URL . 'assets/css/admin.css', array(), $this->_version, 'all' );
+		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_version, 'all' );
 	}
 
 	/**
@@ -162,20 +162,20 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( $this->_n . '-bootstrap', TINVWL_URL . 'assets/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_v, 'all' );
-		wp_register_script( $this->_n, TINVWL_URL . 'assets/js/admin' . $suffix . '.js', array(
+		wp_enqueue_script( $this->_name . '-bootstrap', TINVWL_URL . 'assets/js/bootstrap' . $suffix . '.js', array( 'jquery' ), $this->_version, 'all' );
+		wp_register_script( $this->_name, TINVWL_URL . 'assets/js/admin' . $suffix . '.js', array(
 			'jquery',
 			'wp-color-picker'
-		), $this->_v, 'all' );
-		wp_localize_script( $this->_n, 'tinvwl_comfirm', array(
+		), $this->_version, 'all' );
+		wp_localize_script( $this->_name, 'tinvwl_comfirm', array(
 			'text_comfirm_reset' => __( 'Are you sure you want to reset the settings?', 'ti-woocommerce-wishlist' ),
 		) );
-		wp_enqueue_script( $this->_n );
+		wp_enqueue_script( $this->_name );
 
 		$user_id   = get_current_user_id();
 		$user_info = get_userdata( $user_id );
 
-		wp_add_inline_script( $this->_n, 'window.intercomSettings = {
+		wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 			app_id: "zyh6v0pc",				
 			"Website": "' . get_site_url() . '",
 			"Plugin name": "WooCommerce Wishlist Plugin",
@@ -288,7 +288,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * @return boolean
 	 */
 	function screen_options_hide_screen( $show_screen, $_this ) {
-		if ( $this->_n === $_this->parent_base || $this->_n === $_this->parent_file ) {
+		if ( $this->_name === $_this->parent_base || $this->_name === $_this->parent_file ) {
 			return false;
 		}
 

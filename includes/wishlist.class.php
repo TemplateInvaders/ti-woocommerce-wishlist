@@ -27,7 +27,7 @@ class TInvWL_Wishlist {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 	/**
 	 * User id
 	 *
@@ -69,8 +69,8 @@ class TInvWL_Wishlist {
 	function __construct( $plugin_name = TINVWL_PREFIX ) {
 		global $wpdb;
 
-		$this->_n              = $plugin_name;
-		$this->table           = sprintf( '%s%s_%s', $wpdb->prefix, $this->_n, 'lists' );
+		$this->_name              = $plugin_name;
+		$this->table           = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
 		$this->default_name    = apply_filters( 'tinvwl-general-default_title', tinv_get_option( 'general', 'default_title' ) );
 		$this->default_privacy = 'share';
 		$this->privacy         = array( 'public', 'share', 'private' );

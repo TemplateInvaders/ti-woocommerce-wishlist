@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <table class="wc_status_table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="<?php esc_html_e( 'TI WooCommerce Wishlist Templates', 'ti-woocommerce-wishlist' ); ?>"><h2><?php esc_html_e( 'TI WooCommerce Wishlist Templates', 'ti-woocommerce-wishlist' ); ?><?php echo wc_help_tip( __( 'This section shows the files that are overriding the default TI WooCommerce Wishlist templates.', 'woocommerce' ) ); // WPCS: xss ok. ?></h2></th>
+			<th colspan="3" data-export-label="<?php esc_html_e( 'TI WooCommerce Wishlist Templates', 'ti-woocommerce-wishlist' ); ?>"><h2><?php esc_html_e( 'TI WooCommerce Wishlist Templates', 'ti-woocommerce-wishlist' ); ?><?php echo wc_help_tip( __( 'This section shows the files that are overriding the default TI WooCommerce Wishlist templates.', 'ti-woocommerce-wishlist' ) ); // WPCS: xss ok. ?></h2></th>
 		</tr>
 	</thead>
 	<tbody>

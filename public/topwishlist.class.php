@@ -21,7 +21,7 @@ class TInvWL_Public_TopWishlist {
 	 *
 	 * @var string
 	 */
-	static $_n;
+	static $_name;
 	/**
 	 * This class
 	 *
@@ -50,7 +50,7 @@ class TInvWL_Public_TopWishlist {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		self::$_n = $plugin_name;
+		self::$_name = $plugin_name;
 		$this->define_hooks();
 	}
 

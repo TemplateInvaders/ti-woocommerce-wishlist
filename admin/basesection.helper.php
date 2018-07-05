@@ -30,11 +30,11 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n = $plugin_name;
-		$this->_v = $version;
+		$this->_name = $plugin_name;
+		$this->_version = $version;
 		$menu     = $this->menu();
 		if ( ! empty( $menu ) ) {
-			add_action( $this->_n . '_admin_menu', array( $this, 'adminmenu' ), $this->priority );
+			add_action( $this->_name . '_admin_menu', array( $this, 'adminmenu' ), $this->priority );
 		}
 		$this->load_function();
 	}
@@ -89,11 +89,11 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 			$method = 'constructor_data';
 		}
 
-		$data = apply_filters( "{$this->_n}_{$cat}_data", $data );
+		$data = apply_filters( "{$this->_name}_{$cat}_data", $data );
 		if ( method_exists( $this, $method ) ) {
 			$sections = apply_filters( 'tinwl_prepare_admsections_' . $method, $this->$method() );
 			$sections = apply_filters( 'tinwl_prepare_admsections', $sections );
-			$view     = new TInvWL_ViewSection( $this->_n, $this->_v );
+			$view     = new TInvWL_ViewSection( $this->_name, $this->_version );
 			$view->load_data( $sections );
 			$method = $cat . '_save';
 			if ( ! method_exists( $this, $method ) ) {
@@ -160,8 +160,8 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 * Form for section
 	 */
 	function form() {
-		add_filter( $this->_n . '_section_before', array( $this, 'start_form' ) );
-		add_filter( $this->_n . '_section_after', array( $this, 'end_form' ) );
+		add_filter( $this->_name . '_section_before', array( $this, 'start_form' ) );
+		add_filter( $this->_name . '_section_after', array( $this, 'end_form' ) );
 	}
 
 	/**

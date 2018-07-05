@@ -21,7 +21,7 @@ class TInvWL_Activator {
 	 *
 	 * @var string Using defined constant.
 	 */
-	static $_n = TINVWL_PREFIX;
+	static $_name = TINVWL_PREFIX;
 
 	/**
 	 * Prefix database
@@ -36,7 +36,7 @@ class TInvWL_Activator {
 	 *
 	 * @var string
 	 */
-	static $_v = TINVWL_FVERSION;
+	static $_version = TINVWL_FVERSION;
 
 	/**
 	 * Current installed database version
@@ -59,7 +59,7 @@ class TInvWL_Activator {
 		if ( self::update() ) {
 			return false;
 		}
-		if ( is_null( get_option( self::$_n . '_db_ver', null ) ) ) {
+		if ( is_null( get_option( self::$_name . '_db_ver', null ) ) ) {
 			TInvWL_WizardSetup::setup();
 		}
 		self::database();
@@ -79,8 +79,8 @@ class TInvWL_Activator {
 	 * Method update plugin.
 	 */
 	public static function update() {
-		$current_version = get_option( self::$_n . '_db_ver', self::$_v );
-		if ( version_compare( self::$_v, $current_version, 'gt' ) ) {
+		$current_version = get_option( self::$_name . '_db_ver', self::$_version );
+		if ( version_compare( self::$_version, $current_version, 'gt' ) ) {
 			self::database( 'upgrade', $current_version );
 			self::upgrade_data();
 			TInvWL_Public_TInvWL::update_rewrite_rules();
@@ -163,7 +163,7 @@ class TInvWL_Activator {
 		if ( version_compare( self::$_prev, self::pre_database( $method ), 'ge' ) ) {
 			return false;
 		}
-		return version_compare( self::$_v, self::pre_database( $method ), 'ge' );
+		return version_compare( self::$_version, self::pre_database( $method ), 'ge' );
 	}
 
 	/**
@@ -201,7 +201,7 @@ class TInvWL_Activator {
 	 * @return string
 	 */
 	public static function table( $name, $table ) {
-		$name	 = self::$wpdb_prefix . self::$_n . '_' . $name;
+		$name	 = self::$wpdb_prefix . self::$_name . '_' . $name;
 		$fields	 = $table['field'];
 		$table	 = filter_var_array( $table, array(
 			'charset'	 => FILTER_SANITIZE_STRING,
@@ -327,7 +327,7 @@ class TInvWL_Activator {
 			}
 		}
 
-		add_option( self::$_n . '_db_ver', self::$_v );
+		add_option( self::$_name . '_db_ver', self::$_version );
 
 		return true;
 	}
@@ -347,7 +347,7 @@ class TInvWL_Activator {
 			self::upgrade_action( $name, $table );
 		}
 
-		update_option( self::$_n . '_db_ver', self::$_v );
+		update_option( self::$_name . '_db_ver', self::$_version );
 
 		return true;
 	}
@@ -395,7 +395,7 @@ class TInvWL_Activator {
 				$table['field'][ $key ] = $flags;
 			}
 		}
-		$name		 = self::$wpdb_prefix . self::$_n . '_' . $name;
+		$name		 = self::$wpdb_prefix . self::$_name . '_' . $name;
 		$upgrades	 = (array) $table['upgrade'];
 		foreach ( $upgrades as $ver_upgrades ) {
 			foreach ( $ver_upgrades as $upgrade ) {
@@ -459,7 +459,7 @@ class TInvWL_Activator {
 		if ( ! array_key_exists( 'from', $upgrade ) ) {
 			return false;
 		}
-		$_name = self::$wpdb_prefix . self::$_n . '_' . $upgrade['from'];
+		$_name = self::$wpdb_prefix . self::$_name . '_' . $upgrade['from'];
 
 		$_t_name = $wpdb->get_var( "SHOW TABLES LIKE '{$_name}'" ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $_t_name == $_name ) { // WPCS: loose comparison ok.
@@ -606,7 +606,7 @@ class TInvWL_Activator {
 		if ( ! array_key_exists( 'sql', $upgrade ) ) {
 			return false;
 		}
-		$name = self::$wpdb_prefix . self::$_n . '_' . $name;
+		$name = self::$wpdb_prefix . self::$_name . '_' . $name;
 
 		$wpdb->query( str_replace( '{table_name}', $name, $upgrade['sql'] ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}
@@ -623,12 +623,12 @@ class TInvWL_Activator {
 		self::$wpdb_prefix = $wpdb->prefix;
 
 		foreach ( $tables as $name => $table ) {
-			$table	 = self::$wpdb_prefix . self::$_n . '_' . $name;
+			$table	 = self::$wpdb_prefix . self::$_name . '_' . $name;
 			$sql	 = sprintf( 'DROP TABLE IF EXISTS `%s`;', $table );
 			$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		}
 
-		delete_option( self::$_n . '_db_ver' );
+		delete_option( self::$_name . '_db_ver' );
 
 		return true;
 	}
@@ -757,7 +757,7 @@ class TInvWL_Activator {
 		self::set_locale();
 		$settings = tinv_get_option_defaults( 'all' );
 		foreach ( $settings as $setting => $array ) {
-			add_option( sprintf( '%s-%s', self::$_n, $setting ), $array );
+			add_option( sprintf( '%s-%s', self::$_name, $setting ), $array );
 		}
 	}
 
@@ -768,9 +768,9 @@ class TInvWL_Activator {
 		self::set_locale();
 		$settings = tinv_get_option_defaults( 'all' );
 		foreach ( $settings as $setting => $array ) {
-			$_array = get_option( sprintf( '%s-%s', self::$_n, $setting ) );
+			$_array = get_option( sprintf( '%s-%s', self::$_name, $setting ) );
 			if ( false === $_array ) {
-				add_option( sprintf( '%s-%s', self::$_n, $setting ), $array );
+				add_option( sprintf( '%s-%s', self::$_name, $setting ), $array );
 			} else {
 				$need_upgrade = false;
 				foreach ( (array) $array as $key => $value ) {
@@ -780,7 +780,7 @@ class TInvWL_Activator {
 					}
 				}
 				if ( $need_upgrade ) {
-					update_option( sprintf( '%s-%s', self::$_n, $setting ), $_array );
+					update_option( sprintf( '%s-%s', self::$_name, $setting ), $_array );
 				}
 			}
 		}
@@ -792,9 +792,9 @@ class TInvWL_Activator {
 	public static function unload_data() {
 		$settings = array_keys( tinv_get_option_defaults( 'all' ) );
 		foreach ( $settings as $setting ) {
-			delete_option( sprintf( '%s-%s', self::$_n, $setting ) );
+			delete_option( sprintf( '%s-%s', self::$_name, $setting ) );
 		}
-		delete_option( self::$_n . '_ver' );
-		delete_option( self::$_n . '_wizard' );
+		delete_option( self::$_name . '_ver' );
+		delete_option( self::$_name . '_wizard' );
 	}
 }

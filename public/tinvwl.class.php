@@ -21,14 +21,14 @@ class TInvWL_Public_TInvWL {
 	 *
 	 * @var string
 	 */
-	public $_n;
+	public $_name;
 
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	public $_v;
+	public $_version;
 	/**
 	 * This class
 	 *
@@ -59,8 +59,8 @@ class TInvWL_Public_TInvWL {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_n = $plugin_name;
-		$this->_v = $version;
+		$this->_name = $plugin_name;
+		$this->_version = $version;
 		$this->pre_load_function();
 	}
 
@@ -73,17 +73,17 @@ class TInvWL_Public_TInvWL {
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
 
-		add_action( 'wp_ajax_nopriv_' . $this->_n . '_css', array( $this, 'dynaminc_css' ) );
-		add_action( 'wp_ajax_' . $this->_n . '_css', array( $this, 'dynaminc_css' ) );
+		add_action( 'wp_ajax_nopriv_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );
+		add_action( 'wp_ajax_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 
 		add_filter( 'woocommerce_locate_core_template', array( $this, 'locate_template' ), 10, 3 );
 		add_filter( 'woocommerce_locate_template', array( $this, 'locate_template' ), 10, 3 );
 
-		$this->addto       = TInvWL_Public_AddToWishlist::instance( $this->_n );
-		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_n );
-		$this->cart        = TInvWL_Public_Cart::instance( $this->_n );
-		$this->topwishlist = TInvWL_Public_TopWishlist::instance( $this->_n );
+		$this->addto       = TInvWL_Public_AddToWishlist::instance( $this->_name );
+		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_name );
+		$this->cart        = TInvWL_Public_Cart::instance( $this->_name );
+		$this->topwishlist = TInvWL_Public_TopWishlist::instance( $this->_name );
 	}
 
 	/**
@@ -106,10 +106,10 @@ class TInvWL_Public_TInvWL {
 		add_action( 'init', array( $this, 'legacy_transfer' ), 90 );
 		add_action( 'clear_auth_cookie', array( $this, 'set_user_sharekey' ) );
 
-		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
-		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
-		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_updcart_before' ), 15 );
-		add_action( $this->_n . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 100 );
+		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
+		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
+		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_updcart_before' ), 15 );
+		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 100 );
 	}
 
 	/**
@@ -361,9 +361,9 @@ class TInvWL_Public_TInvWL {
 	 * Load style
 	 */
 	function enqueue_styles() {
-		wp_enqueue_style( 'tinvwl', TINVWL_URL . 'assets/css/public.min.css', array(), $this->_v, 'all' );
+		wp_enqueue_style( 'tinvwl', TINVWL_URL . 'assets/css/public.min.css', array(), $this->_version, 'all' );
 		if ( ! tinv_get_option( 'style', 'customstyle' ) ) {
-			wp_enqueue_style( 'tinvwl-theme', TINVWL_URL . 'assets/css/theme.min.css', array(), $this->_v, 'all' );
+			wp_enqueue_style( 'tinvwl-theme', TINVWL_URL . 'assets/css/theme.min.css', array(), $this->_version, 'all' );
 		}
 		if ( ! tinv_get_option( 'style', 'customstyle' ) || ( tinv_get_option( 'style_plain', 'allow' ) && tinv_get_option( 'style_plain', 'css' ) ) ) {
 			$newcss = $this->dynaminc_css();
@@ -434,19 +434,19 @@ class TInvWL_Public_TInvWL {
 	 */
 	function enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( $this->_n, TINVWL_URL . 'assets/js/public' . $suffix . '.js', array(
+		wp_register_script( $this->_name, TINVWL_URL . 'assets/js/public' . $suffix . '.js', array(
 			'jquery',
 			version_compare( WC_VERSION, '3.0.0', '<' ) ? 'jquery-cookie' : 'js-cookie',
 			'wc-cart-fragments'
-		), $this->_v, true );
-		wp_localize_script( $this->_n, 'tinvwl_add_to_wishlist', array(
+		), $this->_version, true );
+		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
 			'text_already_in'            => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 		) );
-		wp_enqueue_script( $this->_n );
+		wp_enqueue_script( $this->_name );
 	}
 
 	/**
@@ -474,7 +474,7 @@ class TInvWL_Public_TInvWL {
 	 * @param integer $user_id New user id.
 	 */
 	function transfert_local_to_user_register( $user_id ) {
-		$wl       = new TInvWL_Wishlist( $this->_n );
+		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_sharekey_default();
 		if ( ! empty( $wishlist ) ) {
 			$wishlist = array_shift( $wishlist );
@@ -486,7 +486,7 @@ class TInvWL_Public_TInvWL {
 					$wishlist['author'] = $user_id;
 					unset( $wishlist['title'] );
 					$wl->update( $wishlist['ID'], $wishlist );
-					$wlp      = new TInvWL_Product( $wishlist, $this->_n );
+					$wlp      = new TInvWL_Product( $wishlist, $this->_name );
 					$products = $wlp->get_wishlist( array( 'external' => false ) );
 					foreach ( $products as $product ) {
 						$product['author'] = $user_id;
@@ -495,7 +495,7 @@ class TInvWL_Public_TInvWL {
 				} else {
 					$_wishlist = array_shift( $_wishlist );
 					if ( $wishlist['ID'] != $_wishlist['ID'] ) {
-						$wlp      = new TInvWL_Product( $_wishlist, $this->_n );
+						$wlp      = new TInvWL_Product( $_wishlist, $this->_name );
 						$products = $wlpl->get_wishlist( array( 'external' => false ) );
 						$added    = true;
 						foreach ( $products as $product ) {
@@ -517,7 +517,7 @@ class TInvWL_Public_TInvWL {
 	 * Set the default wishlist key if the user loguot
 	 */
 	public function set_user_sharekey() {
-		$wl       = new TInvWL_Wishlist( $this->_n );
+		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_user_default();
 		if ( ! empty( $wishlist ) ) {
 			$wishlist = array_shift( $wishlist );
@@ -533,7 +533,7 @@ class TInvWL_Public_TInvWL {
 	 * @return array
 	 */
 	function account_menu_items( $items ) {
-		$index_position = apply_filters( $this->_n . '_myaccount_position_wishlist', - 1, $items );
+		$index_position = apply_filters( $this->_name . '_myaccount_position_wishlist', - 1, $items );
 		$items          = array_merge(
 			array_slice( $items, 0, $index_position, true ),
 			array(
@@ -569,7 +569,7 @@ class TInvWL_Public_TInvWL {
 	 * @param integer $id Removed userid.
 	 */
 	function delete_user_wishlist( $id ) {
-		$wl        = new TInvWL_Wishlist( $this->_n );
+		$wl        = new TInvWL_Wishlist( $this->_name );
 		$wishlists = $wl->get( array(
 			'author' => $id,
 			'count'  => 9999999,
@@ -585,13 +585,13 @@ class TInvWL_Public_TInvWL {
 	 * Export cookies wishlist to database
 	 */
 	function legacy_transfer() {
-		$wlpl     = TInvWL_Product_Legacy::instance( $this->_n );
+		$wlpl     = TInvWL_Product_Legacy::instance( $this->_name );
 		$products = $wlpl->get_wishlist( array( 'external' => false ) );
 		if ( ! empty( $products ) && is_array( $products ) ) {
-			$wl       = new TInvWL_Wishlist( $this->_n );
+			$wl       = new TInvWL_Wishlist( $this->_name );
 			$wishlist = $wl->add_user_default();
 
-			$wlp = new TInvWL_Product( $wishlist, $this->_n );
+			$wlp = new TInvWL_Product( $wishlist, $this->_name );
 
 			$added = true;
 			foreach ( $products as $product ) {

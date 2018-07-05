@@ -204,11 +204,11 @@ class TInvWL_Yoast_I18n_V2 {
 		$message = false;
 
 		if ( $this->translation_exists && $this->translation_loaded && $this->percent_translated < 90 ) {
-			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help complete the translation to %1$s!', $this->textdomain ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
+			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help complete the translation to %1$s!', 'ti-woocommerce-wishlist' ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
 		} elseif ( ! $this->translation_loaded && $this->translation_exists ) {
-			$message = __( 'You\'re using WordPress in <strong>%1$s</strong>. While %2$s has been translated to %1$s for <strong>%3$d%%</strong>, it\'s not been shipped with the plugin yet.<br> You can help! Register at %4$s to help complete the translation to %1$s!', $this->textdomain ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
+			$message = __( 'You\'re using WordPress in <strong>%1$s</strong>. While %2$s has been translated to %1$s for <strong>%3$d%%</strong>, it\'s not been shipped with the plugin yet.<br> You can help! Register at %4$s to help complete the translation to %1$s!', 'ti-woocommerce-wishlist' ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
 		} elseif ( ! $this->translation_exists ) {
-			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', $this->textdomain ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
+			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'ti-woocommerce-wishlist' ); // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
 		}
 
 		$registration_link = sprintf( '<a href="%1$s">%2$s</a>', esc_url( $this->register_url ), esc_html( $this->glotpress_name ) );
@@ -234,9 +234,9 @@ class TInvWL_Yoast_I18n_V2 {
 			if ( isset( $this->glotpress_logo ) && '' != $this->glotpress_logo ) {
 				echo '<a href="' . esc_url( $this->register_url ) . '"><img class="alignleft" style="margin:0 15px 10px 0;max-width:200px;" src="' . esc_url( $this->glotpress_logo ) . '" alt="' . esc_attr( $this->glotpress_name ) . '"/></a>';
 			}
-			echo '<h2>' . sprintf( __( 'Translation of %s', $this->textdomain ), $this->plugin_name ) . '</h2>'; // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
+			echo '<h2>' . sprintf( __( 'Translation of %s', 'ti-woocommerce-wishlist' ), $this->plugin_name ) . '</h2>'; // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
 			echo '<p>' . $message . '</p>'; // WPCS: xss ok.
-			echo '<p><a href="' . esc_url( $this->register_url ) . '">' . __( 'Register now &raquo;', $this->textdomain ) . '</a></p>'; // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
+			echo '<p><a href="' . esc_url( $this->register_url ) . '">' . __( 'Register now &raquo;', 'ti-woocommerce-wishlist' ) . '</a></p>'; // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain
 			echo '</div>';
 			echo '</div>';
 		}
@@ -269,7 +269,7 @@ class TInvWL_Yoast_I18n_V2 {
 		$set = $this->find_or_initialize_translation_details();
 
 		$this->translation_exists = ! is_null( $set );
-		$this->translation_loaded = is_textdomain_loaded( $this->textdomain );
+		$this->translation_loaded = is_textdomain_loaded( 'ti-woocommerce-wishlist' );
 
 		$this->parse_translation_set( $set );
 	}

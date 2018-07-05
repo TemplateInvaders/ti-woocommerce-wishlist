@@ -21,7 +21,7 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @var string
 	 */
-	private $_n;
+	private $_name;
 
 	/**
 	 * List per page
@@ -64,7 +64,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		$this->_n = $plugin_name;
+		$this->_name = $plugin_name;
 		$this->define_hooks();
 	}
 
@@ -82,7 +82,7 @@ class TInvWL_Public_Wishlist_View {
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'external_text' ), 10, 3 );
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
-		TInvWL_Public_Wishlist_Buttons::init( $this->_n );
+		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
 	}
 
 	/**

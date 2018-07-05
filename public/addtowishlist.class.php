@@ -78,7 +78,7 @@ class TInvWL_Public_AddToWishlist {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name ) {
-		$this->_name      = $plugin_name;
+		$this->_name   = $plugin_name;
 		$this->is_loop = false;
 		$this->define_hooks();
 	}
@@ -111,7 +111,7 @@ class TInvWL_Public_AddToWishlist {
 					break;
 				case 'above_thumb':
 					add_action( 'tinvwl_above_thumb_loop_item', 'tinvwl_view_addto_htmlloop' );
-					add_action( 'woocommerce_before_shop_loop_item', 'tinvwl_view_addto_htmlloop', 11 );
+					add_action( 'woocommerce_before_shop_loop_item', 'tinvwl_view_addto_htmlloop', 9 );
 				case 'shortcode':
 					break;
 				case 'after':
@@ -170,7 +170,7 @@ class TInvWL_Public_AddToWishlist {
 			} else {
 				$data['msg'][]              = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
 				$data['dialog_custom_url']  = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
-				$data['dialog_custom_html'] = '<i class="ftinvwl ftinvwl-key"></i>'.esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
+				$data['dialog_custom_html'] = '<i class="ftinvwl ftinvwl-key"></i>' . esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg'] = array_unique( $data['msg'] );
 			$data['msg'] = implode( '<br>', $data['msg'] );

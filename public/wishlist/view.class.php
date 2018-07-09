@@ -78,8 +78,9 @@ class TInvWL_Public_Wishlist_View {
 
 		add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
 
-		add_action( 'tinvwl_wishlist_item_action_add_to_cart', array( $this, 'product_allow_add_to_cart' ), 10, 3 );
+		add_filter( 'tinvwl_wishlist_item_action_add_to_cart', array( $this, 'product_allow_add_to_cart' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'external_text' ), 10, 3 );
+		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'variable_text' ), 10, 3 );
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
 		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
@@ -97,6 +98,24 @@ class TInvWL_Public_Wishlist_View {
 	function external_text( $text, $wl_product, $product ) {
 		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
 			return $product->single_add_to_cart_text();
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Change Text for variable product that requires to select some variations.
+	 *
+	 * @param string $text Text for button add to cart.
+	 * @param array $wl_product Wishlist Product.
+	 * @param object $product Product.
+	 *
+	 * @return string
+	 */
+	function variable_text( $text, $wl_product, $product ) {
+		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
+		     && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+			return $product->add_to_cart_text();
 		}
 
 		return $text;
@@ -274,7 +293,7 @@ class TInvWL_Public_Wishlist_View {
 				return false;
 			}
 			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product_data['data']->get_title() );
-			if ( $wlp->remove($product_data ) ) {
+			if ( $wlp->remove( $product_data ) ) {
 				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
 				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );

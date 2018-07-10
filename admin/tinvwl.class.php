@@ -102,8 +102,12 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Error notice if wishlist page not set.
 	 */
 	function empty_page_admin_notice() {
-		printf( '<div class="notice notice-error is-dismissible" style="position: relative;"><p>%1$s <a href="%2$s">%3$s</a>%4$s<a href="%5$s">%6$s</a></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss', 'ti-woocommerce-wishlist' ) . '</span></button></div>', // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
-			esc_html__( 'Link to Wishlists does not work!', 'ti-woocommerce-wishlist' ),
+		printf( '<div class="notice notice-error is-dismissible" style="position: relative;"><h4>%1$s</h4><p>%2$s</p><ol><li>%3$s</li><li>%4$s</li><li>%5$s</li></ol><p><a href="%6$s">%7$s</a>%8$s<a href="%9$s">%10$s</a></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss', 'ti-woocommerce-wishlist' ) . '</span></button></div>', // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
+			esc_html__( 'WooCommerce Wishlist Plugin is misconfigured!', 'ti-woocommerce-wishlist' ),
+			esc_html__( 'Since the Setup Wizard was skipped, the Wishlist may function improperly.', 'ti-woocommerce-wishlist' ),
+			esc_html__( 'Create a New Page or open to edit a page where the Wishlist should be displayed.', 'ti-woocommerce-wishlist' ),
+			__( 'Add <code>[ti_wishlistsview]</code> shortcode into a page content.', 'ti-woocommerce-wishlist' ),
+			esc_html__( 'In a plugin General Settings section apply this page as a "Wishlist" page.', 'ti-woocommerce-wishlist' ),
 			esc_url( $this->admin_url( '' ) . '#general' ),
 			esc_html__( 'Please apply the Wishlist page', 'ti-woocommerce-wishlist' ),
 			esc_html__( ' or ', 'ti-woocommerce-wishlist' ),

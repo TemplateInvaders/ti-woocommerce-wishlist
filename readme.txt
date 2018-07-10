@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+
+= 1.8.4 =
+*Release Date - 10 July 2018*
+
+* Fixed above thumbnail hook priority on a product listing page
+* Fixed an issue when "Add to Cart" button displayed for products without selected variations in a Wishlist table
+* Added a notice with instructions if Setup Wizard was skipped
 
 = 1.8.3 =
 *Release Date - 04 July 2018*

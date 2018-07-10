@@ -387,6 +387,10 @@
 .woocommerce {
 	&.tinv-wishlist a.button.tinvwl_add_to_wishlist_button {
 		font-weight: 700;
+		&:before {
+			font-weight: 700;
+			vertical-align: middle;
+		}
 	}
 	ul.products li.product .tinvwl_add_to_wishlist_button, ul.products li.product .tinvwl_add_to_wishlist_button.icon-white:before, ul.products li.product .tinvwl_add_to_wishlist_button.icon-black:before {
 		color: #007acc;

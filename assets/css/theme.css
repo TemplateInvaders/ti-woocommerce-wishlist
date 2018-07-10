@@ -383,6 +383,11 @@
   font-weight: 700;
 }
 
+.woocommerce.tinv-wishlist a.button.tinvwl_add_to_wishlist_button:before {
+  font-weight: 700;
+  vertical-align: middle;
+}
+
 .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.icon-black:before {
   color: #007acc;
   font-family: inherit;

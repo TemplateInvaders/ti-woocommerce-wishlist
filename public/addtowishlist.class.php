@@ -436,7 +436,18 @@ class TInvWL_Public_AddToWishlist {
 		global $product;
 
 		if ( $product ) {
-			if ( apply_filters( 'tinvwl_allow_addtowishlist_single_product_summary', ( ! $product->is_purchasable() && '' == $product->get_price() && 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) || ( $product->is_purchasable() && 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) && ! $product->is_in_stock() ), $product ) ) {
+			$allow = false;
+			if ( 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+				$allow = ( ( ! $product->is_purchasable() && '' == $product->get_price() ) || ( $product->is_purchasable() && ! $product->is_in_stock() ) );
+			}
+
+			if ( 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+				$get_variations       = count( $product->get_children() ) <= apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );
+				$available_variations = $get_variations ? $product->get_available_variations() : false;
+				$allow                = ( empty( $available_variations ) && false !== $available_variations );
+			}
+
+			if ( apply_filters( 'tinvwl_allow_addtowishlist_single_product_summary', $allow, $product ) ) {
 				$this->htmloutput();
 			}
 		}

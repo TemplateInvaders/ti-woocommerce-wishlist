@@ -176,14 +176,27 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		) );
 		wp_enqueue_script( $this->_name );
 
-		$user_id   = get_current_user_id();
-		$user_info = get_userdata( $user_id );
+		$user_id       = get_current_user_id();
+		$user_info     = get_userdata( $user_id );
+		$current_theme = wp_get_theme();
+
+		$parent_theme = $current_theme->parent();
 
 		wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 			app_id: "zyh6v0pc",				
 			"Website": "' . get_site_url() . '",
 			"Plugin name": "WooCommerce Wishlist Plugin",
 			"Plugin version":"' . TINVWL_FVERSION . '",
+			"Theme name":"' . $current_theme->get( 'Name' ) . '",
+			"Theme version":"' . $current_theme->get( 'Version' ) . '",
+			"Theme URI":"' . $current_theme->get( 'ThemeURI' ) . '",
+			"Theme author":"' . $current_theme->get( 'Author' ) . '",
+			"Theme author URI":"' . $current_theme->get( 'AuthorURI' ) . '",
+			"Parent theme name":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Name' ) : '' ) . '",
+			"Parent theme version":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Version' ) : '' ) . '",
+			"Parent theme URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : '' ) . '",
+			"Parent theme author":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : '' ) . '",
+			"Parent theme author URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : '' ) . '",
 		};
 		(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})()' );
 	}

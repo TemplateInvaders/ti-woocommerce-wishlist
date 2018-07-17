@@ -233,6 +233,13 @@ module.exports = function (grunt) {
 				expand: true
 			}
 		},
+		wp_readme_to_markdown: {
+			your_target: {
+				files: {
+					'readme.md': 'readme.txt'
+				},
+			},
+		},
 
 	});
 
@@ -245,10 +252,12 @@ module.exports = function (grunt) {
 		'cssmin',
 		'header',
 		'checktextdomain',
-		'makepot',
+
 	]);
 
 	grunt.registerTask('package', [
+		'wp_readme_to_markdown',
+		'makepot',
 		'clean:build',
 		'copy',
 		'compress',

@@ -7,7 +7,7 @@
   "homepage": "https://wordpress.org/plugins/ti-woocommerce-wishlist/",
   "dependencies": {
     "grunt-cli": "^1.2.0",
-    "npm": "^6.1.0"
+    "npm": "^6.2.0"
   },
   "devDependencies": {
     "grunt": "~1.0.3",
@@ -23,6 +23,7 @@
     "grunt-sass": "~2.0.0",
     "grunt-header": "~1.1.0",
     "grunt-checktextdomain": "~1.0.1",
-    "grunt-wp-i18n": "~1.0.2"
+    "grunt-wp-i18n": "~1.0.2",
+    "grunt-wp-readme-to-markdown": "~2.0.1"
   }
 }

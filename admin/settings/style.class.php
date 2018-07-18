@@ -35,6 +35,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			'page_title' => __( 'Wishlist Style Options', 'ti-woocommerce-wishlist' ),
 			'method'     => array( $this, '_print_' ),
 			'slug'       => 'style-settings',
+			'capability' => 'tinvwl_style_settings',
 		);
 	}
 

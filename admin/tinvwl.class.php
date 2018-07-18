@@ -120,7 +120,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Creation mune and sub-menu
 	 */
 	function action_menu() {
-		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'manage_options', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', 56 );
+		global $wp_roles;
+		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', 56 );
 		add_action( "load-$page", array( $this, 'onload' ) );
 		$menu = apply_filters( $this->_name . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
@@ -131,8 +132,17 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 				$item['parent'] = $this->_name;
 			}
 			if ( ! array_key_exists( 'capability', $item ) ) {
-				$item['capability'] = 'manage_options';
+				$item['capability'] = 'manage_woocommerce';
 			}
+
+			if ( ! array_key_exists( 'roles', $item ) ) {
+				$item['roles'] = array( 'administrator' );
+			}
+
+			foreach ( $item['roles'] as $role ) {
+				$wp_roles->add_cap( $role, $item['capability'] );
+			}
+
 			$item['slug'] = implode( '-', array_filter( array( $this->_name, $item['slug'] ) ) );
 
 			$page = add_submenu_page( $item['parent'], $item['page_title'], $item['title'], $item['capability'], $item['slug'], $item['method'] );

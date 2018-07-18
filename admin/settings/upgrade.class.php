@@ -35,6 +35,7 @@ class TInvWL_Admin_Settings_Upgrade extends TInvWL_Admin_BaseSection {
 						'page_title' => __( 'Premium Features', 'ti-woocommerce-wishlist' ),
 			'method' => array( $this, '_print_' ),
 			'slug'	 => 'upgrade',
+			'capability' => 'tinvwl_upgrade',
 		);
 	}
 }

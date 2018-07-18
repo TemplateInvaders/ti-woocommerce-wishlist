@@ -34,6 +34,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			'title'  => __( 'General Settings', 'ti-woocommerce-wishlist' ),
 			'method' => array( $this, '_print_' ),
 			'slug'   => '',
+			'capability' => 'tinvwl_general_settings',
 		);
 	}
 

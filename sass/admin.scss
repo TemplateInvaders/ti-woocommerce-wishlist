@@ -2398,65 +2398,169 @@ textarea[name="style_plain-css"] {
 /* Premium Features */
 
 .tinvwl-premium-feat {
+	.row {
+		margin: 0;
+		display: flex;
+	}
+	.col-lg-4 {
+		padding: 0;
+		flex: 1 1 0;
+		.half-containers {
+			flex: 1;
+			overflow: hidden;
+			position: relative;
+			&.hosting {
+				background: #4b56e9; /* Old browsers */
+				background: -moz-linear-gradient(left, #4b56e9 0%, #37a6de 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(left, #4b56e9 0%, #37a6de 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to right, #4b56e9 0%, #37a6de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4b56e9', endColorstr='#37a6de', GradientType=1); /* IE6-9 */
+				a {
+					display: block;
+					position: relative;
+					color: #ffffff;
+					outline: none;
+					text-decoration: none;
+					background: url('../img/kinsta.png') no-repeat 100% 0;
+					float: left;
+					width: 100%;
+					height: 100%;
+					span {
+						margin: 30px 10px 10px 35px;
+						padding-top: 55px;
+						display: block;
+						width: 230px;
+						font-size: 20px;
+						background: url('../img/kinsta_logo.png') no-repeat;
+					}
+				}
+			}
+			&.customization {
+				text-align: center;
+				background: #333333 url('../img/customization.png') no-repeat 100% 100%;
+				h2 {
+					margin: 30px auto 20px;
+				}
+				p {
+					font-size: 16px;
+					color: #ffffff;
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+				.tinvwl-btn.gray {
+					background-color: #958095;
+					margin: 10px auto;
+					&:hover {
+						background-color: #ffffff;
+						color: #333333;
+					}
+				}
+			}
+			&.rate {
+				text-align: center;
+				border-bottom: 1px solid #e7e7e7;
+				h2 {
+					background: url('../img/rate_us.png') no-repeat center;
+					display: block;
+					width: 186px;
+					height: 76px;
+					margin: 30px auto 20px;
+					font-size: 18px;
+					line-height: 100px;
+					a {
+						display: block;
+						width: 186px;
+						height: 76px;
+						color: #ffffff;
+						text-decoration: none;
+						outline: none;
+						font-weight: 600;
+					}
+				}
+				p {
+					font-size: 16px;
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+				a {
+					color: #ff5739;
+					text-decoration: underline;
+				}
+			}
+			&.subscribe {
+				text-align: center;
+				h2 {
+					color: #453a2a;
+					margin: 30px auto 20px;
+				}
+				p {
+					font-size: 16px;
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+				.mc-field-group {
+					width: 90%;
+					position: relative;
+					margin: 10px auto;
+					input[type="email"] {
+						width: 65%;
+						height: 45px;
+					}
+					input[type="submit"] {
+						width: 30%;
+
+					}
+				}
+				#mc_embed_signup {
+					margin-bottom: 30px;
+				}
+			}
+		}
+	}
 	h2 {
-		font-size: 48px;
+		font-size: 30px;
 		text-transform: uppercase;
 		letter-spacing: -.025em;
 		line-height: 1;
-		color: #3e3e3e;
+		color: #ffffff;
 	}
-	h3 {
-		font-size: 16px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: -.025em;
-		color: #50504f;
-	}
-	.tinvwl-feat-col-inner {
-		padding: 40px;
-	}
+
 	.tinvwl-pic-col {
-		.tinvwl-feat-col-inner {
-			text-align: center;
-			padding-left: 22px;
-			padding-right: 22px;
-		}
+		border: 5px solid #ffffff;
+		text-align: center;
+		background: #df4c57; /* Old browsers */
+		background: -moz-linear-gradient(-45deg, #df4c57 0%, #f78c62 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(-45deg, #df4c57 0%, #f78c62 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(135deg, #df4c57 0%, #f78c62 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#df4c57', endColorstr='#f78c62', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+		padding: 50px 10px;
+		color: #ffffff;
+
 		img {
 			display: block;
 			margin: 0 auto;
 		}
-		.tinvwl-btn {
-			margin-top: -35px;
-		}
-	}
-	.tinvwl-features {
-		margin-top: 28px;
-		li {
-			i {
-				color: #96b100;
-				margin-right: 15px;
-			}
-			span {
-				text-decoration: underline;
-			}
-			+ li {
-				margin-top: 14px;
+		.tinvwl-btn.white {
+			color: #ff5739;
+			&:hover {
+				color: #ffffff;
 			}
 		}
-	}
-	.tinvwl-img-w-desc + .tinvwl-img-w-desc {
-		margin-top: 15px;
-	}
-	.tinvwl-sup-col .tinvwl-feat-col-inner > .tinvwl-desc {
-		line-height: 1.71428571;
-		text-align: center;
-		margin-top: 23px;
-		a {
-			display: inline-block;
-			text-decoration: underline;
-			margin-top: 26px;
-			color: #000;
+		p {
+			font-size: 16px;
+			padding-bottom: 1em;
 		}
+	}
+	.tinvwl-feat-col {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid #ffffff;
+		border-bottom: 1px solid #ffffff;
+		background-color: #f9f8f5;
+	}
+	.tinvwl-sup-col {
+		display: flex;
+		flex-direction: column;
 	}
 }
 
@@ -2590,6 +2694,12 @@ textarea[name="style_plain-css"] {
 		opacity: 1;
 		width: 100%;
 		height: 100%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.tinvwl-premium-feat .row {
+		display: block;
 	}
 }
 
@@ -3686,12 +3796,12 @@ label.one-line {
 }
 
 .premium_adv {
-	background: url('../img/premium_adv.png') no-repeat center;
-	display: block;
-	margin: 0 auto;
-	background-size: 365px 216px;
-	width: 365px;
-	height: 216px;
+	background: url('../img/premium_logo.png') no-repeat center;
+	display: inline-block;
+	margin: 0 auto 35px;
+	background-size: 107px 106px;
+	width: 107px;
+	height: 106px;
 }
 
 /************************** RETINA *************************/

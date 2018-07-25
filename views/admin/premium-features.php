@@ -14,76 +14,85 @@ if ( ! defined( 'ABSPATH' ) ) {
 <section class="tinvwl-premium-feat tinvwl-panel w-shadow w-bg">
 	<div class="container-fluid">
 		<div class="row">
+			<!--			<div class="tinvwl-pic-col col-lg-4">-->
+			<!--				<div class="tinvwl-feat-col-inner">-->
+			<!--					<h3>-->
+			<?php //esc_html_e( 'benefit from all the', 'ti-woocommerce-wishlist' ) ?><!--</h3>-->
+			<!--					<h2>--><?php //esc_html_e( 'features', 'ti-woocommerce-wishlist' ) ?><!--</h2>-->
+			<!--					<i class="premium_adv"></i>-->
+			<!--					<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=-->
+			<?php //echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?><!--&utm_campaign=-->
+			<?php //echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?><!--&utm_medium=-->
+			<?php //echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?><!--&utm_content=premium_explore&partner=-->
+			<?php //echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?><!--"-->
+			<!--					   class="tinvwl-btn red round">-->
+			<?php //esc_html_e( 'explore premium features', 'ti-woocommerce-wishlist' ) ?><!--</a>-->
+			<!--				</div>-->
+			<!--			</div>-->
 			<div class="tinvwl-pic-col col-lg-4">
-				<div class="tinvwl-feat-col-inner">
-					<h3><?php esc_html_e( 'benefit from all the', 'ti-woocommerce-wishlist' ) ?></h3>
-					<h2><?php esc_html_e( 'features', 'ti-woocommerce-wishlist' ) ?></h2>
+				<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=premium_explore_logo&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>">
 					<i class="premium_adv"></i>
-					<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=premium_explore&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>"
-					   class="tinvwl-btn red round"><?php esc_html_e( 'explore premium features', 'ti-woocommerce-wishlist' ) ?></a>
-				</div>
+				</a>
+				<h2><?php esc_html_e( 'Premium version', 'ti-woocommerce-wishlist' ) ?></h2>
+				<p><?php esc_html_e( 'benefit from all the features', 'ti-woocommerce-wishlist' ) ?></p>
+				<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=premium_explore&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>"
+				   class="tinvwl-btn white round"><?php esc_html_e( 'check premium options', 'ti-woocommerce-wishlist' ) ?></a>
 			</div>
 			<div class="tinvwl-feat-col col-lg-4">
-				<div class="tinvwl-feat-col-inner w-bg-grey">
-					<h3><?php esc_html_e( 'some of the premium features', 'ti-woocommerce-wishlist' ) ?></h3>
-					<ul class="tinvwl-features">
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#manage"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Multi-Wishlist - allow customer to create wshlists.', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#follow"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Follow - customers can follow each others wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#other"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Advanced Processing Options', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#shortcodes"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Shortcodes & Widgets: Search, Recent Wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#manage"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Allow to change product quantity in wishlist table', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#login"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Allow guests to create wishlists', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#emails"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'Ask for an Estimate', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-						<li>
-							<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>#button"><i
-									class="ftinvwl ftinvwl-check"></i><span><?php esc_html_e( 'A lot of other features...', 'ti-woocommerce-wishlist' ) ?></span></a>
-						</li>
-					</ul>
+
+				<div class="half-containers rate">
+					<h2>
+						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'Rate us please', 'ti-woocommerce-wishlist' ) ?></a>
+					</h2>
+					<p><?php esc_html_e( 'We’d really appreciate if you could spend few minutes to', 'ti-woocommerce-wishlist' ) ?>
+						<br>
+						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'leave a review', 'ti-woocommerce-wishlist' ) ?></a>.
+					</p>
 				</div>
-			</div>
-			<div class="tinvwl-sup-col col-lg-4">
-				<div class="tinvwl-feat-col-inner">
-					<div class="tinvwl-img-w-desc tinvwl-table auto-width"><i class="admin-rescue"></i>
-						<div class="tinvwl-cell">
-							<h5><?php esc_html_e( 'Dedicated Support', 'ti-woocommerce-wishlist' ) ?></h5>
-							<div
-								class="tinvwl-desc"><?php esc_html_e( 'Direct help from our qualified support team', 'ti-woocommerce-wishlist' ) ?></div>
-						</div>
+				<div class="half-containers subscribe">
+					<h2><?php esc_html_e( 'We love making new friends', 'ti-woocommerce-wishlist' ) ?></h2>
+					<p><?php esc_html_e( 'sign up for emails to get updates and instant discount', 'ti-woocommerce-wishlist' ) ?></p>
+					<!-- Begin MailChimp Signup Form -->
+					<div id="mc_embed_signup">
+						<form
+							action="https://templateinvaders.us14.list-manage.com/subscribe/post?u=e41c4138bfe744af05e6e3e4c&amp;id=7ef8ec2b94"
+							method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
+							class="validate" target="_blank" novalidate>
+							<div id="mc_embed_signup_scroll">
+
+								<div class="mc-field-group">
+									<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+									<input type="submit" value="Subscribe" name="subscribe"
+									       id="mc-embedded-subscribe" class="tinvwl-btn">
+								</div>
+								<div id="mce-responses" class="clear">
+									<div class="response" id="mce-error-response" style="display:none"></div>
+									<div class="response" id="mce-success-response" style="display:none"></div>
+								</div>
+								<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+								<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text"
+								                                                                          name="b_e41c4138bfe744af05e6e3e4c_7ef8ec2b94"
+								                                                                          tabindex="-1"
+								                                                                          value="">
+								</div>
+
+							</div>
+						</form>
 					</div>
 
-					<div class="tinvwl-img-w-desc tinvwl-table auto-width"><i class="admin-update"></i>
-						<div class="tinvwl-cell">
-							<h5><?php esc_html_e( 'Live Updates', 'ti-woocommerce-wishlist' ) ?></h5>
-							<div
-								class="tinvwl-desc"><?php esc_html_e( 'Stay up to date with automatic updates', 'ti-woocommerce-wishlist' ) ?></div>
-						</div>
-					</div>
-					<div class="tinvwl-desc">
-						<?php esc_html_e( 'By purchasing the premium version of our plugin, you will not only take advantage of the premium features but also get dedicated support and free updates directly to your admin panel.', 'ti-woocommerce-wishlist' ) ?>
-						<div class="tinv-wishlist-clear"></div>
-						<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=premium_features&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>"><?php esc_html_e( 'Get Support & Premium Features', 'ti-woocommerce-wishlist' ) ?></a>
-					</div>
+					<!--End mc_embed_signup-->
+				</div>
+
+			</div>
+			<div class="tinvwl-sup-col col-lg-4">
+				<div class="half-containers hosting">
+					<a href="https://kinsta.com?kaid=ROJRBSUSKYJM"><span><?php esc_html_e( 'Your WooCommers store worth the best hosting solution', 'ti-woocommerce-wishlist' ) ?></span></a>
+				</div>
+				<div class="half-containers customization">
+					<h2><?php esc_html_e( 'Need a customization?', 'ti-woocommerce-wishlist' ) ?></h2>
+					<p><?php esc_html_e( 'Highly skilled WordPrees experts are ready satisfy your needs', 'ti-woocommerce-wishlist' ) ?></p>
+					<a href="https://templateinvaders.com/customization/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=customization&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>"
+					   class="tinvwl-btn gray round"><?php esc_html_e( 'get started now', 'ti-woocommerce-wishlist' ) ?></a>
 				</div>
 			</div>
 		</div>

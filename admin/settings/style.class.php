@@ -180,25 +180,25 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button',
+				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button',
 				'element'  => 'background-color',
 				'text'     => __( 'Background Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:hover:before',
+				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before',
 				'element'  => 'background-color',
 				'text'     => __( 'Background Hover Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:before',
+				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before',
 				'element'  => 'color',
 				'text'     => __( 'Button Text Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:hover:before',
+				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before',
 				'element'  => 'color',
 				'text'     => __( 'Button Text Hover Color', 'ti-woocommerce-wishlist' ),
 			),
@@ -237,7 +237,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'text',
-				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button',
+				'selector' => '.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button',
 				'element'  => 'border-radius',
 				'text'     => __( 'Border Radius', 'ti-woocommerce-wishlist' ),
 			),
@@ -249,25 +249,25 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:before',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before',
 				'element'  => 'background-color',
 				'text'     => __( 'Background Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:hover:before',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before',
 				'element'  => 'background-color',
 				'text'     => __( 'Background Hover Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:before',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before',
 				'element'  => 'color',
 				'text'     => __( 'Button Text Color', 'ti-woocommerce-wishlist' ),
 			),
 			array(
 				'type'     => 'color',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:hover:before',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before',
 				'element'  => 'color',
 				'text'     => __( 'Button Text Hover Color', 'ti-woocommerce-wishlist' ),
 			),
@@ -286,7 +286,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 
 			array(
 				'type'     => 'select',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button',
 				'element'  => 'font-family',
 				'text'     => __( 'Font', 'ti-woocommerce-wishlist' ),
 				'options'  => $font_family,
@@ -306,7 +306,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 			),
 			array(
 				'type'     => 'text',
-				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button',
+				'selector' => '.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button',
 				'element'  => 'border-radius',
 				'text'     => __( 'Border Radius', 'ti-woocommerce-wishlist' ),
 			),

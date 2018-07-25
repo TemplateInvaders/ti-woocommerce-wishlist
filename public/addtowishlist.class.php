@@ -579,7 +579,7 @@ class TInvWL_Public_AddToWishlist {
 			}
 		}
 		if ( 'button' == tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'type' ) ) { // WPCS: loose comparison ok.
-			$icon .= ' button';
+			$icon .= ' tinvwl-button';
 		}
 
 		$icon .= ' tinvwl-position-' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'position' );

@@ -394,17 +394,17 @@
   font-size: 16px;
 }
 
-.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:before {
+.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before {
   color: #515151;
   background-color: #ebe9eb;
 }
 
-.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button.icon-black:hover:before {
+.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before {
   color: #515151;
   background-color: #dad8da;
 }
 
-.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.button {
+.woocommerce ul.products li.product .tinvwl_add_to_wishlist_button.tinvwl-button {
   border-radius: 3px;
 }
 
@@ -421,7 +421,7 @@
   font-size: 16px;
 }
 
-.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button {
+.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button {
   background-color: #ebe9eb;
   border-radius: 3px;
 }
@@ -430,11 +430,11 @@
   font-size: 16px;
 }
 
-.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:before {
+.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before {
   color: #515151;
 }
 
-.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:hover:before {
+.woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button:hover, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, .woocommerce div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before {
   color: #686868;
   background-color: #dad8da;
 }

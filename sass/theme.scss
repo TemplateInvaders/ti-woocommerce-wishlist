@@ -400,15 +400,15 @@
 
 	ul.products li.product .tinvwl_add_to_wishlist_button {
 
-		&.button, &.button.icon-white:before, &.button.icon-black:before {
+		&.tinvwl-button, &.tinvwl-button.icon-white:before, &.tinvwl-button.icon-black:before {
 			color: #515151;
 			background-color: #ebe9eb;
 		}
-		&.button:hover, &.button.icon-white:hover:before, &.button.icon-black:hover:before {
+		&.tinvwl-button:hover, &.tinvwl-button.icon-white:hover:before, &.tinvwl-button.icon-black:hover:before {
 			color: #515151;
 			background-color: #dad8da;
 		}
-		&.button {
+		&.tinvwl-button {
 			border-radius: 3px;
 		}
 
@@ -423,7 +423,7 @@
 	div.product form.cart .tinvwl_add_to_wishlist_button {
 		font-family: inherit;
 		font-size: 16px;
-		&.button {
+		&.tinvwl-button {
 			background-color: #ebe9eb;
 			border-radius: 3px;
 		}
@@ -433,11 +433,11 @@
 		font-size: 16px;
 	}
 
-	div.product form.cart .tinvwl_add_to_wishlist_button.button, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:before, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:before {
+	div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button, div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:before, div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:before {
 		color: #515151;
 	}
 
-	div.product form.cart .tinvwl_add_to_wishlist_button.button:hover, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-white:hover:before, div.product form.cart .tinvwl_add_to_wishlist_button.button.icon-black:hover:before {
+	div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button:hover, div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-white:hover:before, div.product form.cart .tinvwl_add_to_wishlist_button.tinvwl-button.icon-black:hover:before {
 		color: #686868;
 		background-color: #dad8da;
 	}

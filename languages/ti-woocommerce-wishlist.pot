@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin 1.8.6\n"
+"Project-Id-Version: WooCommerce Wishlist Plugin 1.8.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2018-07-18 18:13:02+00:00\n"
+"POT-Creation-Date: 2018-07-25 23:46:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1103,79 +1103,52 @@ msgstr ""
 msgid "Meh, do not bother me"
 msgstr ""
 
-#: views/admin/premium-features.php:19
-msgid "benefit from all the"
-msgstr ""
-
-#: views/admin/premium-features.php:20
-msgid "features"
-msgstr ""
-
-#: views/admin/premium-features.php:23
-msgid "explore premium features"
-msgstr ""
-
-#: views/admin/premium-features.php:28
-msgid "some of the premium features"
-msgstr ""
-
-#: views/admin/premium-features.php:32
-msgid "Multi-Wishlist - allow customer to create wshlists."
-msgstr ""
-
 #: views/admin/premium-features.php:36
-msgid "Follow - customers can follow each others wishlists"
+msgid "Premium version"
 msgstr ""
 
-#: views/admin/premium-features.php:40
-msgid "Advanced Processing Options"
+#: views/admin/premium-features.php:37
+msgid "benefit from all the features"
 msgstr ""
 
-#: views/admin/premium-features.php:44
-msgid "Shortcodes & Widgets: Search, Recent Wishlists"
+#: views/admin/premium-features.php:39
+msgid "check premium options"
 msgstr ""
 
-#: views/admin/premium-features.php:48
-msgid "Allow to change product quantity in wishlist table"
+#: views/admin/premium-features.php:45
+msgid "Rate us please"
 msgstr ""
 
-#: views/admin/premium-features.php:52
-msgid "Allow guests to create wishlists"
+#: views/admin/premium-features.php:47
+msgid "We’d really appreciate if you could spend few minutes to"
 msgstr ""
 
-#: views/admin/premium-features.php:56
-msgid "Ask for an Estimate"
+#: views/admin/premium-features.php:49
+msgid "leave a review"
 msgstr ""
 
-#: views/admin/premium-features.php:60
-msgid "A lot of other features..."
+#: views/admin/premium-features.php:53
+msgid "We love making new friends"
 msgstr ""
 
-#: views/admin/premium-features.php:69
-msgid "Dedicated Support"
+#: views/admin/premium-features.php:54
+msgid "sign up for emails to get updates and instant discount"
 msgstr ""
 
-#: views/admin/premium-features.php:71
-msgid "Direct help from our qualified support team"
+#: views/admin/premium-features.php:89
+msgid "Your WooCommers store worth the best hosting solution"
 msgstr ""
 
-#: views/admin/premium-features.php:77
-msgid "Live Updates"
+#: views/admin/premium-features.php:92
+msgid "Need a customization?"
 msgstr ""
 
-#: views/admin/premium-features.php:79
-msgid "Stay up to date with automatic updates"
+#: views/admin/premium-features.php:93
+msgid "Highly skilled WordPrees experts are ready satisfy your needs"
 msgstr ""
 
-#: views/admin/premium-features.php:83
-msgid ""
-"By purchasing the premium version of our plugin, you will not only take "
-"advantage of the premium features but also get dedicated support and free "
-"updates directly to your admin panel."
-msgstr ""
-
-#: views/admin/premium-features.php:85
-msgid "Get Support & Premium Features"
+#: views/admin/premium-features.php:95
+msgid "get started now"
 msgstr ""
 
 #: views/admin/templates-status.php:16

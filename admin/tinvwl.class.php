@@ -34,7 +34,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function load_function() {
 		TII18n();
-		TInvWL_Notice::instance()->add_notice( 'rating', '<p>' . __( 'Woo-Ha! It has been a month since the first wishlist was created with <strong>WooCommerce WishList plugin</strong>!', 'ti-woocommerce-wishlist' ) . '</p><p>' . __( 'What do you think about our plugin?', 'ti-woocommerce-wishlist' ) . '</p><p>' . __( 'Share your love with us.', 'ti-woocommerce-wishlist' ) . '</p>' )->add_trigger( 'admin_init', 'tinvwl_rating_notice_trigger_30' );
+
 		$this->load_settings();
 
 		$this->define_hooks();

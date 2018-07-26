@@ -1889,3 +1889,27 @@ if ( ! function_exists( 'oceanwp_fix_archive_markup' ) ) {
 		}
 	}
 }
+
+// Google Tag Manager for Wordpress compatibility.
+if ( ! function_exists( 'tinv_wishlist_metaprepare_gtm4wp' ) ) {
+
+	/**
+	 * Prepare save meta for WooCommerce - Google Tag Manager for Wordpress
+	 *
+	 * @param array $meta Meta array.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_metaprepare_gtm4wp( $meta ) {
+
+		foreach ( $meta as $key => $value ) {
+			if ( strpos( $key, 'gtm4wp_' ) === 0 ) {
+				unset( $meta[ $key ] );
+			}
+		}
+
+		return $meta;
+	}
+
+	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_gtm4wp' );
+}

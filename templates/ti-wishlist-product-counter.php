@@ -2,14 +2,14 @@
 /**
  * The Template for displaying dropdown wishlist products.
  *
- * @version             1.4.0
+ * @version             1.8.8
  * @package           TInvWishlist\Template
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+wp_enqueue_script( 'tinvwl' );
 if ( $icon_class && 'custom' === $icon && ! empty( $icon_upload )  ) {
 	$text = sprintf( '<img src="%s" /> %s', esc_url( $icon_upload ), $text );
 }

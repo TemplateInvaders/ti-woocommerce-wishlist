@@ -2,14 +2,14 @@
 /**
  * The Template for displaying wishlist.
  *
- * @version             1.8.1
+ * @version             1.8.8
  * @package           TInvWishlist\Template
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+wp_enqueue_script( 'tinvwl' );
 ?>
 <div class="tinv-wishlist woocommerce tinv-wishlist-clear">
 	<?php do_action( 'tinvwl_before_wishlist', $wishlist ); ?>

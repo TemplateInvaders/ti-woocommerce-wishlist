@@ -537,6 +537,7 @@ class TInvWL_Public_AddToWishlist {
 		$content    = apply_filters( 'tinvwl_wishlist_button_before', '' );
 		$text       = ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_text' ) ) ? apply_filters( 'tinvwl-add_to_wishlist_catalog-text', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ) : '';
 		$icon       = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon' );
+		$icon_color = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_style' );
 		$icon_class = '';
 		$action     = 'addto';
 		if ( empty( $text ) ) {
@@ -555,8 +556,8 @@ class TInvWL_Public_AddToWishlist {
 				$text = sprintf( '<img src="%s" alt="%s" /> %s', esc_url( $icon_upload ), esc_attr( apply_filters( 'tinvwl-add_to_wishlist_catalog-text', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ) ), $text );
 			}
 			$icon = 'tinvwl-icon-' . $icon;
-			if ( 'custom' !== $icon ) {
-				$icon .= ' icon-' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_style' );
+			if ( 'custom' !== $icon && $icon_color ) {
+				$icon .= ' icon-' . $icon_color;
 			}
 		}
 		$icon         .= $icon_class;
@@ -578,9 +579,8 @@ class TInvWL_Public_AddToWishlist {
 				break;
 			}
 		}
-		if ( 'button' == tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'type' ) ) { // WPCS: loose comparison ok.
-			$icon .= ' tinvwl-button';
-		}
+
+		$icon .= ' ' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'class' );
 
 		$icon .= ' tinvwl-position-' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'position' );
 

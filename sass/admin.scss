@@ -3880,3 +3880,22 @@ label.one-line {
 	margin-bottom: 21px;
 	padding: 14px 0;
 }
+
+::-webkit-input-placeholder {
+	color: #e5e5e5;
+	opacity: 1 !important; /* for older chrome versions. may no longer apply. */
+}
+
+:-moz-placeholder { /* Firefox 18- */
+	color: #e5e5e5;
+	opacity: 1 !important;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+	color: #e5e5e5;
+	opacity: 1 !important;
+}
+
+:-ms-input-placeholder {
+	color: #e5e5e5;
+}

@@ -256,13 +256,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						),
 					),
 					array(
-						'type'    => 'select',
-						'name'    => 'type',
-						'text'    => __( 'Button type', 'ti-woocommerce-wishlist' ),
-						'std'     => 'button',
-						'options' => array(
-							'link'   => __( 'Link', 'ti-woocommerce-wishlist' ),
-							'button' => __( 'Button', 'ti-woocommerce-wishlist' ),
+						'type'  => 'text',
+						'name'  => 'class',
+						'text'  => __( 'Button custom CSS class', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'You can add custom CSS classes to button markup separated by spaces. Most of themes using <code>button</code> class for this type of buttons.', 'ti-woocommerce-wishlist' ),
+						'std'   => '',
+						'extra' => array(
+							'placeholder' => 'button btn-primary',
 						),
 					),
 					array(
@@ -374,13 +374,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'desc'    => __( 'Note: if "Custom position with code" option is applied, the "Add to Wishlist" button should be added into template using <code>do_shortcode()</code> function like this:<br /><code>do_shortcode("[ti_wishlists_addtowishlist loop=yes]")</code>', 'ti-woocommerce-wishlist' ),
 					),
 					array(
-						'type'    => 'select',
-						'name'    => 'type',
-						'text'    => __( 'Button type', 'ti-woocommerce-wishlist' ),
-						'std'     => 'button',
-						'options' => array(
-							'link'   => __( 'Link', 'ti-woocommerce-wishlist' ),
-							'button' => __( 'Button', 'ti-woocommerce-wishlist' ),
+						'type'  => 'text',
+						'name'  => 'class',
+						'text'  => __( 'Button custom CSS class', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'You can add custom CSS classes to button markup separated by spaces. Most of themes using <code>button</code> class for this type of buttons.', 'ti-woocommerce-wishlist' ),
+						'std'   => '',
+						'extra' => array(
+							'placeholder' => 'button btn-primary',
 						),
 					),
 					array(

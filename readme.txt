@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.7
+Stable tag: 1.8.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,17 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.8.8 =
+*Release Date - 29 July 2018*
+
+* Added wishlist button custom CSS class options
+* Added "Use font color" option for buttons icon color options
+* Added compatibility with [Google Tag Manager for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) plugin
+* Added filter `tinvwl_wishlist_products_counter` to allow change the value of wishlist products counter from a 3rd party code
+* Added `tinvwl-load_frontend` filter to conditionally load wishlist frontend from 3rd party plugins.
+* Improved loading of front-end assets
+* Removed button type options
+
 = 1.8.7 =
 *Release Date - 25 July 2018*
 

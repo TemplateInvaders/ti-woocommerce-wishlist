@@ -31,9 +31,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 */
 	function menu() {
 		return array(
-			'title'  => __( 'General Settings', 'ti-woocommerce-wishlist' ),
-			'method' => array( $this, '_print_' ),
-			'slug'   => '',
+			'title'      => __( 'General Settings', 'ti-woocommerce-wishlist' ),
+			'method'     => array( $this, '_print_' ),
+			'slug'       => '',
 			'capability' => 'tinvwl_general_settings',
 		);
 	}
@@ -300,9 +300,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'    => 'select',
 						'name'    => 'icon_style',
-						'std'     => 'black',
+						'std'     => '',
 						'text'    => __( '"Add to Wishlist" Icon Color', 'ti-woocommerce-wishlist' ),
 						'options' => array(
+							''      => __( 'Use font color', 'ti-woocommerce-wishlist' ),
 							'black' => __( 'Black', 'ti-woocommerce-wishlist' ),
 							'white' => __( 'White', 'ti-woocommerce-wishlist' ),
 						),
@@ -415,9 +416,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'    => 'select',
 						'name'    => 'icon_style',
-						'std'     => 'black',
+						'std'     => '',
 						'text'    => __( '"Add to Wishlist" Icon Color', 'ti-woocommerce-wishlist' ),
 						'options' => array(
+							''      => __( 'Use font color', 'ti-woocommerce-wishlist' ),
 							'black' => __( 'Black', 'ti-woocommerce-wishlist' ),
 							'white' => __( 'White', 'ti-woocommerce-wishlist' ),
 						),
@@ -608,7 +610,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'     => 'select',
 						'name'     => 'icon_style',
 						'text'     => __( 'Social Icons Color', 'ti-woocommerce-wishlist' ),
+						'std'      => '',
 						'options'  => array(
+							''      => __( 'Use font color', 'ti-woocommerce-wishlist' ),
 							'dark'  => __( 'Dark', 'ti-woocommerce-wishlist' ),
 							'white' => __( 'White', 'ti-woocommerce-wishlist' ),
 						),
@@ -656,9 +660,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'    => 'select',
 						'name'    => 'icon_style',
-						'std'     => 'black',
+						'std'     => '',
 						'text'    => __( '"Wishlist" Icon Color', 'ti-woocommerce-wishlist' ),
 						'options' => array(
+							''      => __( 'Use font color', 'ti-woocommerce-wishlist' ),
 							'black' => __( 'Black', 'ti-woocommerce-wishlist' ),
 							'white' => __( 'White', 'ti-woocommerce-wishlist' ),
 						),

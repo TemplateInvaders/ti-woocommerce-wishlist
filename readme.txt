@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.8
+Stable tag: 1.8.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.8.9 =
+*Release Date - 30 July 2018*
+
+* Added  "add to wishlist" button type settings backward compatibility
+
 = 1.8.8 =
 *Release Date - 29 July 2018*
 

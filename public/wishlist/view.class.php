@@ -331,18 +331,27 @@ class TInvWL_Public_Wishlist_View {
 			return false;
 		}
 
-		$product = $wlp->get_wishlist( array( 'ID' => $id ) );
-		$product = array_shift( $product );
-		if ( empty( $product ) || empty( $product['data'] ) ) {
+		$_product = $wlp->get_wishlist( array( 'ID' => $id ) );
+		$_product = array_shift( $_product );
+		if ( empty( $_product ) || empty( $_product['data'] ) ) {
 			return false;
 		}
 
+		global $product;
+		// store global product data.
+		$_product_tmp = $product;
+		// override global product data.
+		$product = $_product['data'];
+
 		add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
-		$redirect_url = $product['data']->add_to_cart_url();
+		$redirect_url = $_product['data']->add_to_cart_url();
 		remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
-		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product['data'], $redirect_url, $product ) ) {
-			wp_redirect( apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $redirect_url, $product['data'], $product ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
+		// restore global product data.
+		$product = $_product_tmp;
+
+		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
+			wp_redirect( apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $redirect_url, $_product['data'], $_product ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
 			die();
 		} elseif ( apply_filters( 'tinvwl_allow_addtocart_in_wishlist', true, $wishlist, $owner ) ) {
 			$add = TInvWL_Public_Cart::add( $wishlist, $id, $quantity );

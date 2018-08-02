@@ -260,24 +260,33 @@ class TInvWL_Public_Wishlist_Buttons {
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		$products = self::get_current_products( $wishlist );
 		$result   = $errors = array();
-		foreach ( $products as $product ) {
-			$product_data = wc_get_product( $product['variation_id'] ? $product['variation_id'] : $product['product_id'] );
+		foreach ( $products as $_product ) {
+			$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );
+
+			global $product;
+			// store global product data.
+			$_product_tmp = $product;
+			// override global product data.
+			$product = $product_data;
 
 			add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
 			$redirect_url = $product_data->add_to_cart_url();
 			remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
-			if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $product ) ) {
-				$errors[] = $product['product_id'];
+			// restore global product data.
+			$product = $_product_tmp;
+
+			if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $_product ) ) {
+				$errors[] = $_product['product_id'];
 				continue;
 			}
-			$product  = $product['ID'];
-			$quantity = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
-			$add      = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
+			$_product = $_product['ID'];
+			$quantity = array_key_exists( $_product, (array) $_quantity ) ? $_quantity[ $_product ] : 1;
+			$add      = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
 			} else {
-				$errors[] = $product['product_id'];
+				$errors[] = $_product['product_id'];
 			}
 		}
 		if ( ! empty( $errors ) ) {
@@ -357,31 +366,42 @@ class TInvWL_Public_Wishlist_Buttons {
 	public static function apply_action_add_selected( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		if ( ! empty( $selected ) ) {
 			$result = $errors = array();
-			foreach ( $selected as $product ) {
+			foreach ( $selected as $id ) {
 				$wlp = null;
 				if ( 0 === $wishlist['ID'] ) {
 					$wlp = TInvWL_Product_Local::instance();
 				} else {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
-				$_product = $wlp->get_wishlist( array( 'ID' => $product ) );
+				$_product = $wlp->get_wishlist( array( 'ID' => $id ) );
 				$_product = array_shift( $_product );
 				if ( ! empty( $_product ) && ! empty( $_product['data'] ) ) {
+
+					global $product;
+					// store global product data.
+					$_product_tmp = $product;
+					// override global product data.
+					$product = $_product['data'];
+
 					add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
 					$redirect_url = $_product['data']->add_to_cart_url();
 					remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
+
+
+					// restore global product data.
+					$product = $_product_tmp;
 
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
 						$errors[] = $_product['product_id'];
 						continue;
 					}
 				}
-				$quantity = array_key_exists( $product, (array) $_quantity ) ? $_quantity[ $product ] : 1;
-				$add      = TInvWL_Public_Cart::add( $wishlist, $product, $quantity );
+				$quantity = array_key_exists( $id, (array) $_quantity ) ? $_quantity[ $id ] : 1;
+				$add      = TInvWL_Public_Cart::add( $wishlist, $id, $quantity );
 				if ( $add ) {
 					$result = tinv_array_merge( $result, $add );
 				} else {
-					$errors[] = $product['product_id'];
+					$errors[] = $id['product_id'];
 				}
 			}
 			if ( ! empty( $errors ) ) {

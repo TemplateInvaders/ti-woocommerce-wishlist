@@ -709,28 +709,41 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 	 * Check if the product is third-party, or has another link added to the cart then redirect to the product page.
 	 *
 	 * @param boolean $redirect Default value to redirect.
-	 * @param \WC_Product $product Product data.
+	 * @param \WC_Product $_product Product data.
 	 * @param string $redirect_url Current url for redirect.
 	 *
 	 * @return boolean
 	 */
-	function tinvwl_add_to_cart_need_redirect( $redirect, $product, $redirect_url ) {
+	function tinvwl_add_to_cart_need_redirect( $redirect, $_product, $redirect_url ) {
 		if ( $redirect ) {
 			return true;
 		}
-		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+
+		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->product_type : $_product->get_type() ) ) {
 			return true;
 		}
 
 		$need_url_data = array_filter( array_merge( array(
-			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 ) ),
-			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->get_id() : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ),
-		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $product->variation_data ) ? $product->variation_data : array() ) : array() ) ) ) );
-		$need_url      = apply_filters( 'woocommerce_product_add_to_cart_url', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $product );
-		$need_url_full = apply_filters( 'woocommerce_product_add_to_cart_url', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $product->get_permalink() ) ), $product );
+			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->variation_id : ( $_product->is_type( 'variation' ) ? $_product->get_id() : 0 ) ),
+			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->get_id() : ( $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id() ) ),
+		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $_product->variation_data ) ? $_product->variation_data : array() ) : array() ) ) ) );
+
+		$need_url      = apply_filters( 'woocommerce_product_add_to_cart_url1', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $_product );
+		$need_url_full = apply_filters( 'woocommerce_product_add_to_cart_url1', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $_product->get_permalink() ) ), $_product );
+
+		global $product;
+		// store global product data.
+		$_product_tmp = $product;
+		// override global product data.
+		$product = $_product;
+
 		add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
-		$_redirect_url = apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $product->add_to_cart_url(), $product );
+		$_redirect_url = apply_filters( 'tinvwl_product_add_to_cart_redirect_url1', $_product->add_to_cart_url(), $_product );
 		remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
+
+		// restore global product data.
+		$product = $_product_tmp;
+
 		if ( $_redirect_url !== $need_url && $_redirect_url !== $need_url_full ) {
 			return true;
 		}

@@ -1,3 +1,7 @@
+'use strict';
+
+const sass = require('node-sass');
+
 module.exports = function (grunt) {
 
 	// require it at the top and pass in the grunt instance
@@ -77,6 +81,7 @@ module.exports = function (grunt) {
 			dist: {
 				options: {
 					outputStyle: 'expanded',
+					implementation: sass,
 					sourceMap: false,
 				},
 				files: {

@@ -6,8 +6,8 @@
   "main": "Gruntfile.js",
   "homepage": "https://wordpress.org/plugins/ti-woocommerce-wishlist/",
   "dependencies": {
-    "grunt-cli": "^1.2.0",
-    "npm": "^6.2.0"
+    "grunt-cli": "~1.2.0",
+    "npm": "~6.3.0"
   },
   "devDependencies": {
     "grunt": "~1.0.3",
@@ -16,14 +16,15 @@
     "grunt-contrib-compress": "~1.4.3",
     "grunt-contrib-copy": "~1.0.0",
     "grunt-contrib-cssmin": "~2.2.1",
-    "grunt-contrib-uglify": "~3.3.0",
+    "grunt-contrib-uglify": "~3.4.0",
     "grunt-contrib-concat": "~1.0.1",
     "jit-grunt": "~0.10.0",
     "time-grunt": "~1.4.0",
-    "grunt-sass": "~2.0.0",
+    "grunt-sass": "~3.0.1",
     "grunt-header": "~1.1.0",
     "grunt-checktextdomain": "~1.0.1",
     "grunt-wp-i18n": "~1.0.2",
-    "grunt-wp-readme-to-markdown": "~2.0.1"
+    "grunt-wp-readme-to-markdown": "~2.0.1",
+    "node-sass": "~4.9.3"
   }
 }

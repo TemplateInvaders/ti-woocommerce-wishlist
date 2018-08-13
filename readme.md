@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 4.9  
-**Stable tag:** 1.8.9  
+**Stable tag:** 1.8.10  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,15 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.8.10 ###
+*Release Date - 13 August 2018*
+
+* Fixed "wishlist not found" issue when a guest browsing empty wishlist page
+* Fixed "product in wishlist" button state for a variable product type
+* Fixed issue with products counter update on product(s) removed from a wishlist
+* Fixed fatal errors when 3rd party code using global product object outside a loop
+* Fixed fatal error in upgrading method for PHP prior 5.5 versions 
+
 ### 1.8.9 ###
 *Release Date - 30 July 2018*
 

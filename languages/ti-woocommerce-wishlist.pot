@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin 1.8.9\n"
+"Project-Id-Version: WooCommerce Wishlist Plugin 1.8.10\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2018-08-02 17:45:42+00:00\n"
+"POT-Creation-Date: 2018-08-13 21:48:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -973,33 +973,33 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:457 public/wishlist/view.class.php:295
+#: public/wishlist/buttons.class.php:457 public/wishlist/view.class.php:308
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:462
+#: public/wishlist/buttons.class.php:470
 msgid "%s has been successfully removed from wishlist."
 msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/view.class.php:297
-msgid "%s has been removed from wishlist."
+#: public/wishlist/view.class.php:318
+msgid "%s has been removed from wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:299
+#: public/wishlist/view.class.php:320
 msgid "%s has not been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:399
+#: public/wishlist/view.class.php:451
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:494
+#: public/wishlist/view.class.php:546
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:503
+#: public/wishlist/view.class.php:555
 msgid "Next Page"
 msgstr ""
 

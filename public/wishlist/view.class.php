@@ -89,6 +89,9 @@ class TInvWL_Public_Wishlist_View {
 	}
 
 
+	/**
+	 * Redirect guests to login page.
+	 */
 	public function login_redirect() {
 		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ! is_user_logged_in() && tinv_get_option( 'general', 'require_login' ) ) {
 			wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );

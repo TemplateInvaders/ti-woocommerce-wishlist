@@ -294,7 +294,15 @@ class TInvWL_Public_Wishlist_View {
 			}
 			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product_data['data']->get_title() );
 			if ( $wlp->remove( $product_data ) ) {
-				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
+				add_action( 'tinvwl_before_wishlist', array(
+					'TInvWL_Public_Wishlist_View',
+					'check_cart_hash'
+				), 99, 1 );
+				add_action( 'woocommerce_set_cart_cookies', array(
+					'TInvWL_Public_Wishlist_View',
+					'reset_cart_hash'
+				), 99, 1 );
+				wc_add_notice( sprintf( __( '%s has been removed from wishlist', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
 				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );
 			}
@@ -302,6 +310,37 @@ class TInvWL_Public_Wishlist_View {
 			return true;
 		}
 		do_action( 'tinvwl_action_' . $post['tinvwl-action'], $wishlist, $post['wishlist_pr'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
+	}
+
+	/**
+	 * Check cart hash to trigger WC fragments refresh on wishlist update.
+	 *
+	 * @param  $wishlist
+	 */
+	public static function check_cart_hash( $wishlist ) {
+		wp_add_inline_script( 'woocommerce', "
+		jQuery(document).ready(function($){		
+		    if ( typeof wc_cart_fragments_params === 'undefined' ) {
+		        return false;
+		    }
+
+            var cart_hash_key           = wc_cart_fragments_params.cart_hash_key,
+                cart_hash    = sessionStorage.getItem( cart_hash_key );
+                
+            if ( cart_hash === null || cart_hash === undefined || cart_hash === '' ) {
+                sessionStorage.setItem( cart_hash_key, 'empty' );
+            }
+        });
+        " );
+	}
+
+	/**
+	 * Reset cart hash to trigger WC fragments refresh on wishlist update.
+	 *
+	 * @param bool $set
+	 */
+	public static function reset_cart_hash( $set ) {
+		wc_setcookie( 'woocommerce_cart_hash', 'reset', time() - HOUR_IN_SECONDS );
 	}
 
 	/**

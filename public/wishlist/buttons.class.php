@@ -459,11 +459,15 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 
 		if ( ! empty( $titles ) ) {
+			add_action( 'tinvwl_before_wishlist', array(
+				'TInvWL_Public_Wishlist_View',
+				'check_cart_hash'
+			), 99, 1 );
+			add_action( 'woocommerce_set_cart_cookies', array(
+				'TInvWL_Public_Wishlist_View',
+				'reset_cart_hash'
+			), 199, 1 );
 			wc_add_notice( sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ) );
-		}
-
-		if ( ! is_user_logged_in() && ! empty( $titles2 ) ) {
-			wp_safe_redirect( tinv_url_wishlist() );
 		}
 
 		return true;

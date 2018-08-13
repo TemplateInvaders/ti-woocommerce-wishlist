@@ -55,19 +55,4 @@
 	$(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function () {
 		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
 	});
-
-	$(window).on('load', function () {
-		if ($('.tinv-wishlist.woocommerce').length && $('.woocommerce-message').length) {
-			$(document.body).on('wc_fragments_refreshed.wishlist', function () {
-				if (typeof wc_cart_fragments_params === 'undefined') {
-					return false;
-				}
-				cart_hash_key = wc_cart_fragments_params.ajax_url.toString() + '-wc_cart_hash';
-				localStorage.setItem(cart_hash_key, localStorage.getItem(cart_hash_key) + (new Date()).getTime());
-				sessionStorage.setItem(cart_hash_key, sessionStorage.getItem(cart_hash_key) + (new Date()).getTime());
-				$(document.body).off('wc_fragments_refreshed.wishlist');
-			});
-			$(document.body).trigger('updated_wc_div');
-		}
-	});
 })(jQuery);

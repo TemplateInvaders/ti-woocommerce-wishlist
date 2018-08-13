@@ -170,10 +170,14 @@ class TInvWL_Update {
 	 * Clean up empty wishlists.
 	 */
 	function up_p_1_8_9() {
-		if ( 'button' == tinv_get_option( 'add_to_wishlist_catalog', 'type' ) && empty( tinv_get_option( 'add_to_wishlist_catalog', 'class' ) ) ) {
+
+		$class = tinv_get_option( 'add_to_wishlist_catalog', 'class' );
+		if ( 'button' == tinv_get_option( 'add_to_wishlist_catalog', 'type' ) && empty( $class ) ) {
 			tinv_update_option( 'add_to_wishlist_catalog', 'class', 'button tinvwl-button' );
 		}
-		if ( 'button' == tinv_get_option( 'add_to_wishlist', 'type' ) && empty( tinv_get_option( 'add_to_wishlist', 'class' ) ) ) {
+
+		$class = tinv_get_option( 'add_to_wishlist', 'class' );
+		if ( 'button' == tinv_get_option( 'add_to_wishlist', 'type' ) && empty( $class ) ) {
 			tinv_update_option( 'add_to_wishlist', 'class', 'button tinvwl-button' );
 		}
 	}

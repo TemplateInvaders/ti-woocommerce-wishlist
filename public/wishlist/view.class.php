@@ -72,6 +72,8 @@ class TInvWL_Public_Wishlist_View {
 	 * Defined shortcode and hooks
 	 */
 	function define_hooks() {
+		add_action( 'template_redirect', array( $this, 'login_redirect' ) );
+
 		add_action( 'wp', array( $this, 'wishlist_action' ), 0 );
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
@@ -84,6 +86,14 @@ class TInvWL_Public_Wishlist_View {
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
 		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
+	}
+
+
+	public function login_redirect() {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ! is_user_logged_in() && tinv_get_option( 'general', 'require_login' ) ) {
+			wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+			exit;
+		}
 	}
 
 	/**
@@ -409,14 +419,14 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @param array $atts Array parameter for shortcode.
 	 *
-	 * @return boolean
+	 * @return mixed
 	 */
 	function htmloutput( $atts ) {
 		$wishlist = $this->get_current_wishlist();
 
 		if ( empty( $wishlist ) ) {
 			$id = get_query_var( 'tinvwlID', null );
-			if ( empty( $id ) && ( is_user_logged_in() || tinv_get_option( 'general', 'guests' ) ) ) {
+			if ( empty( $id ) && ( is_user_logged_in() || ! tinv_get_option( 'general', 'require_login' ) ) ) {
 				return $this->wishlist_empty( array(), array(
 					'ID'        => '',
 					'author'    => get_current_user_id(),

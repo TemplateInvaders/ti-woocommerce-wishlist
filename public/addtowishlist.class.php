@@ -563,7 +563,7 @@ class TInvWL_Public_AddToWishlist {
 		$icon         .= $icon_class;
 		$variation_id = ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) );
 		foreach ( $this->wishlist as $value ) {
-			if ( $value['in'] ) {
+			if ( $value['in'] && in_array( $variation_id, $value['in'] ) ) {
 				$icon .= ' tinvwl-product-in-list';
 				if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 					if ( $this->is_loop ) {

@@ -29,11 +29,13 @@
 			},
 			onSelectWishList: function () {
 			},
-			onDialogShow: function () {
-				$(this).addClass('tinv-modal-open');
+			onDialogShow: function (modal) {
+				$(modal).addClass('tinv-modal-open');
+				$(modal).removeClass('ftinvwl-pulse ftinvwl-animated');
 			},
-			onDialogHide: function () {
-				$(this).removeClass('tinv-modal-open');
+			onDialogHide: function (modal) {
+				$(modal).removeClass('tinv-modal-open');
+				$(modal).removeClass('ftinvwl-pulse ftinvwl-animated');
 			},
 			onInited: function () {
 			},
@@ -41,6 +43,7 @@
 				if ($(this).is('.disabled-add-wishlist')) {
 					return false;
 				}
+				$(this).addClass('ftinvwl-pulse ftinvwl-animated');
 				if (this.tinvwl_dialog) {
 					this.tinvwl_dialog.show_list.call(this);
 				} else {
@@ -259,7 +262,7 @@
 			});
 			data = s.onPrepareDataAction.call(a, data) || data;
 			$.post(s.api_url, data, function (body) {
-				s.onDialogHide.call(a.tinvwl_dialog);
+				s.onDialogHide.call(a.tinvwl_dialog, a);
 				if ('object' === typeof body) {
 					for (var k in body) {
 						if ('function' === typeof s.onAction[k]) {
@@ -320,7 +323,7 @@
 						if (WList.length) {
 							WList = s.onPrepareList.call(WList) || WList;
 							this.tinvwl_dialog.update_list(WList);
-							s.onDialogShow.call(this.tinvwl_dialog);
+							s.onDialogShow.call(this.tinvwl_dialog, this);
 						} else {
 							s.onActionProduct.call(this);
 						}

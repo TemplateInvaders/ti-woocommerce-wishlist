@@ -180,3 +180,46 @@ WooCommerce Wishlist Plugin custom webfont
 
 }
 
+/* PULSE */
+
+@-webkit-keyframes ftinvwl-pulse {
+	0% {
+		-webkit-transform: scale(1.1);
+		transform: scale(1.1);
+	}
+
+	50% {
+		-webkit-transform: scale(0.8);
+		transform: scale(0.8);
+	}
+
+	100% {
+		-webkit-transform: scale(1.1);
+		transform: scale(1.1);
+	}
+}
+
+@keyframes ftinvwl-pulse {
+	0% {
+		-webkit-transform: scale(1.1);
+		-ms-transform: scale(1.1);
+		transform: scale(1.1);
+	}
+
+	50% {
+		-webkit-transform: scale(0.8);
+		-ms-transform: scale(0.8);
+		transform: scale(0.8);
+	}
+
+	100% {
+		-webkit-transform: scale(1.1);
+		-ms-transform: scale(1.1);
+		transform: scale(1.1);
+	}
+}
+
+.ftinvwl-pulse.ftinvwl-animated::before {
+	-webkit-animation: ftinvwl-pulse 2s linear infinite;
+	animation: ftinvwl-pulse 2s linear infinite;
+}

@@ -48,8 +48,7 @@ if ( ! defined( 'TINVWL_LOAD_FREE' ) ) {
 	define( 'TINVWL_LOAD_FREE', plugin_basename( __FILE__ ) );
 }
 
-require_once TINVWL_PATH . 'tinv-wishlists-function.php';
-require_once TINVWL_PATH . 'tinv-wishlists-function-integration.php';
+
 
 if ( ! function_exists( 'activation_tinv_wishlist' ) ) {
 
@@ -114,6 +113,9 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 	 * Run plugin
 	 */
 	function run_tinv_wishlist() {
+		require_once TINVWL_PATH . 'tinv-wishlists-function.php';
+		require_once TINVWL_PATH . 'tinv-wishlists-function-integration.php';
+
 		if ( ! function_exists( 'is_plugin_active' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}

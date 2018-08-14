@@ -315,7 +315,7 @@ class TInvWL_Public_Wishlist_View {
 					'TInvWL_Public_Wishlist_View',
 					'reset_cart_hash'
 				), 99, 1 );
-				wc_add_notice( sprintf( __( '%s has been removed from wishlist', 'ti-woocommerce-wishlist' ), $title ) );
+				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
 				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );
 			}

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin 1.8.10\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2018-08-13 21:48:22+00:00\n"
+"POT-Creation-Date: 2018-08-14 07:15:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -984,7 +984,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: public/wishlist/view.class.php:318
-msgid "%s has been removed from wishlist"
+msgid "%s has been removed from wishlist."
 msgstr ""
 
 #: public/wishlist/view.class.php:320

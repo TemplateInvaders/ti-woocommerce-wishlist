@@ -486,27 +486,30 @@ if ( ! function_exists( 'tinv_url_wishlist_by_key' ) ) {
 		$paged = absint( $paged );
 		$paged = 1 < $paged ? $paged : 1;
 		$link  = tinv_url_wishlist_default();
-		if ( empty( $link ) || empty( $share_key ) ) {
+		if ( empty( $link ) ) {
 			return $link;
-		}
-
-		if ( get_option( 'permalink_structure' ) ) {
-			$suffix = '';
-			if ( preg_match( '/([^\?]+)\?*?(.*)/i', $link, $_link ) ) {
-				$link   = $_link[1];
-				$suffix = $_link[2];
-			}
-			if ( ! preg_match( '/\/$/', $link ) ) {
-				$link .= '/';
-			}
-			$link .= $share_key . '/' . $suffix;
-		} else {
-			$link = add_query_arg( 'tinvwlID', $share_key, $link );
 		}
 
 		if ( 1 < $paged ) {
 			$link = add_query_arg( 'paged', $paged, $link );
 		}
+
+		if ( $share_key ) {
+			if ( get_option( 'permalink_structure' ) ) {
+				$suffix = '';
+				if ( preg_match( '/([^\?]+)\?*?(.*)/i', $link, $_link ) ) {
+					$link   = $_link[1];
+					$suffix = $_link[2];
+				}
+				if ( ! preg_match( '/\/$/', $link ) ) {
+					$link .= '/';
+				}
+				$link .= $share_key . '/' . $suffix;
+			} else {
+				$link = add_query_arg( 'tinvwlID', $share_key, $link );
+			}
+		}
+
 
 		return $link;
 	}

@@ -46,6 +46,7 @@
 				} else {
 					s.onActionProduct.call(this);
 				}
+				update_cart_hash();
 			},
 			onPrepareDataAction: function () {
 			},

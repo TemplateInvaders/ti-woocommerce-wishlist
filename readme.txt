@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.10
+Stable tag: 1.8.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.8.11 =
+*Release Date - 15 August 2018*
+
+* Fixed pluggable function load order
+* Added icon animation on wishlist events loading
+* Improved product counter synchonization between browser windows
+
 = 1.8.10 =
 *Release Date - 13 August 2018*
 

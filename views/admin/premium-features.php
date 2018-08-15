@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<h2>
 						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'Rate us please', 'ti-woocommerce-wishlist' ) ?></a>
 					</h2>
-					<p><?php esc_html_e( 'We’d really appreciate if you could spend few minutes to', 'ti-woocommerce-wishlist' ) ?>
+					<p><?php esc_html_e( 'We’d really appreciate if you could spend a few minutes to', 'ti-woocommerce-wishlist' ) ?>
 						<br>
 						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'leave a review', 'ti-woocommerce-wishlist' ) ?></a>.
 					</p>
@@ -89,8 +89,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<a href="https://kinsta.com?kaid=ROJRBSUSKYJM"><span><?php esc_html_e( 'Your WooCommers store worth the best hosting solution', 'ti-woocommerce-wishlist' ) ?></span></a>
 				</div>
 				<div class="half-containers customization">
-					<h2><?php esc_html_e( 'Need a customization?', 'ti-woocommerce-wishlist' ) ?></h2>
-					<p><?php esc_html_e( 'Highly skilled WordPrees experts are ready satisfy your needs', 'ti-woocommerce-wishlist' ) ?></p>
+					<h2><?php esc_html_e( 'Need customization?', 'ti-woocommerce-wishlist' ) ?></h2>
+					<p><?php esc_html_e( 'Highly skilled WordPress experts are ready to satisfy your needs', 'ti-woocommerce-wishlist' ) ?></p>
 					<a href="https://templateinvaders.com/customization/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=customization&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>"
 					   class="tinvwl-btn gray round"><?php esc_html_e( 'get started now', 'ti-woocommerce-wishlist' ) ?></a>
 				</div>

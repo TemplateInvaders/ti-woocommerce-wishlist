@@ -55,7 +55,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			array(
 				'id'         => 'general',
 				'title'      => __( 'General Settings', 'ti-woocommerce-wishlist' ),
-				'desc'       => __( 'Wishlist page need to be selected so the plugin knows where it is. This page should have been created upon installation of the plugin, if not you will need to create it manually.', 'ti-woocommerce-wishlist' ),
+				'desc'       => __( 'Wishlist page needs to be selected so the plugin knows where it is. This page should be created upon installation of the plugin, if not you will need to create it manually.', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 				'fields'     => array(
 					array(

@@ -31,11 +31,11 @@
 			},
 			onDialogShow: function (modal) {
 				$(modal).addClass('tinv-modal-open');
-				$(modal).removeClass('ftinvwl-pulse ftinvwl-animated');
+				$(modal).removeClass('ftinvwl-pulse');
 			},
 			onDialogHide: function (modal) {
 				$(modal).removeClass('tinv-modal-open');
-				$(modal).removeClass('ftinvwl-pulse ftinvwl-animated');
+				$(modal).removeClass('ftinvwl-pulse');
 			},
 			onInited: function () {
 			},
@@ -43,7 +43,9 @@
 				if ($(this).is('.disabled-add-wishlist')) {
 					return false;
 				}
-				$(this).addClass('ftinvwl-pulse ftinvwl-animated');
+				if ($(this).is('.ftinvwl-animated')) {
+					$(this).addClass('ftinvwl-pulse');
+				}
 				if (this.tinvwl_dialog) {
 					this.tinvwl_dialog.show_list.call(this);
 				} else {

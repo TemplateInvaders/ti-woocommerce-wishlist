@@ -337,6 +337,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'std'   => 'Remove from Wishlist',
 						'class' => 'tiwl-button-simple-flow',
 					),
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'show_preloader',
+						'text' => __( 'Show preloader', 'ti-woocommerce-wishlist' ),
+						'desc' => __( 'If enabled, applies animation for the button icon until product adding or removing processed. (Usable for servers with slow connection mostly.)', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
+					),
 				),
 			),
 			array(
@@ -452,6 +459,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( '"Remove from Wishlist" Button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Remove from Wishlist',
 						'class' => 'tiwl-button-simple-flow',
+					),
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'show_preloader',
+						'text' => __( 'Show preloader', 'ti-woocommerce-wishlist' ),
+						'desc' => __( 'If enabled, applies animation for the button icon until product adding or removing processed. (Usable for servers with slow connection mostly.)', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
 					),
 				),
 			),

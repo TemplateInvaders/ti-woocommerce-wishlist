@@ -84,8 +84,10 @@ class TInvWL_Activator {
 			self::database( 'upgrade', $current_version );
 			self::upgrade_data();
 			TInvWL_Public_TInvWL::update_rewrite_rules();
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -97,12 +99,12 @@ class TInvWL_Activator {
 	 */
 	private static function database( $action = 'create', $prev = 'f.0' ) {
 
-		$activator	 = new TInvWL_Activator();
-		$lists		 = get_class_methods( $activator );
+		$activator = new TInvWL_Activator();
+		$lists     = get_class_methods( $activator );
 		unset( $activator );
 
 		self::$_prev = $prev;
-		$lists = array_filter( $lists, array( __CLASS__, 'filter_database' ) );
+		$lists       = array_filter( $lists, array( __CLASS__, 'filter_database' ) );
 		uasort( $lists, array( __CLASS__, 'sort_database' ) );
 
 		$tables = array();
@@ -117,8 +119,9 @@ class TInvWL_Activator {
 	/**
 	 * Merge table wit upgrade attributes
 	 *
-	 * @param array  $tables1 Collecting tables.
+	 * @param array $tables1 Collecting tables.
 	 * @param string $method Method for get new tables.
+	 *
 	 * @return array
 	 */
 	public static function merge_database( $tables1, $method ) {
@@ -128,8 +131,8 @@ class TInvWL_Activator {
 				continue;
 			}
 			if ( array_key_exists( 'upgrade', $table ) ) {
-				$_upgrade = $table['upgrade'];
-				$table['upgrade'] = array();
+				$_upgrade                                          = $table['upgrade'];
+				$table['upgrade']                                  = array();
 				$table['upgrade'][ self::pre_database( $method ) ] = $_upgrade;
 			}
 			if ( array_key_exists( $name, $tables1 ) ) {
@@ -147,6 +150,7 @@ class TInvWL_Activator {
 				$tables1[ $name ] = $table;
 			}
 		}
+
 		return $tables1;
 	}
 
@@ -154,6 +158,7 @@ class TInvWL_Activator {
 	 * Filter methods for creating database
 	 *
 	 * @param string $method Method name from this class.
+	 *
 	 * @return boolean
 	 */
 	public static function filter_database( $method ) {
@@ -163,6 +168,7 @@ class TInvWL_Activator {
 		if ( version_compare( self::$_prev, self::pre_database( $method ), 'ge' ) ) {
 			return false;
 		}
+
 		return version_compare( self::$_version, self::pre_database( $method ), 'ge' );
 	}
 
@@ -171,6 +177,7 @@ class TInvWL_Activator {
 	 *
 	 * @param string $method1 Method name first from this class.
 	 * @param string $method2 Method name second from this class.
+	 *
 	 * @return type
 	 */
 	public static function sort_database( $method1, $method2 ) {
@@ -181,11 +188,13 @@ class TInvWL_Activator {
 	 * Convert method name to version
 	 *
 	 * @param string $method Method name from this class.
+	 *
 	 * @return string
 	 */
 	public static function pre_database( $method ) {
-		$method	 = preg_replace( self::REGEXP, '', $method );
-		$method	 = str_replace( '_', '.', $method );
+		$method = preg_replace( self::REGEXP, '', $method );
+		$method = str_replace( '_', '.', $method );
+
 		return $method;
 	}
 
@@ -193,24 +202,25 @@ class TInvWL_Activator {
 	 * Creation SQL request for creation table
 	 *
 	 * @param string $name Name Table.
-	 * @param array  $table Structured array table.
-	 *			array	'field'		Array fields.
-	 *			string	'charset'	Charset table.
-	 *			string	'key'		Primary key.
-	 *			string	'post'		Custom elements in format SQL.
+	 * @param array $table Structured array table.
+	 *            array    'field'        Array fields.
+	 *            string    'charset'    Charset table.
+	 *            string    'key'        Primary key.
+	 *            string    'post'        Custom elements in format SQL.
+	 *
 	 * @return string
 	 */
 	public static function table( $name, $table ) {
-		$name	 = self::$wpdb_prefix . self::$_name . '_' . $name;
-		$fields	 = $table['field'];
-		$table	 = filter_var_array( $table, array(
-			'charset'	 => FILTER_SANITIZE_STRING,
-			'key'		 => FILTER_SANITIZE_STRING,
-			'post'		 => FILTER_DEFAULT,
+		$name   = self::$wpdb_prefix . self::$_name . '_' . $name;
+		$fields = $table['field'];
+		$table  = filter_var_array( $table, array(
+			'charset' => FILTER_SANITIZE_STRING,
+			'key'     => FILTER_SANITIZE_STRING,
+			'post'    => FILTER_DEFAULT,
 		) );
 
-		$table['charset']	 = ( empty( $table['charset'] ) ) ? 'utf8' : $table['charset'];
-		$table['charset']	 = sprintf( 'DEFAULT CHARSET=%s', $table['charset'] );
+		$table['charset'] = ( empty( $table['charset'] ) ) ? 'utf8' : $table['charset'];
+		$table['charset'] = sprintf( 'DEFAULT CHARSET=%s', $table['charset'] );
 
 		$keys = array_keys( $fields );
 		if ( ! in_array( $table['key'], $keys ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
@@ -264,6 +274,7 @@ class TInvWL_Activator {
 		$fields = implode( ', ', $fields );
 
 		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` ( %s%s%s) %s; ', $name, $fields, $table['key'], $table['post'], $table['charset'] );
+
 		return $sql;
 	}
 
@@ -271,12 +282,13 @@ class TInvWL_Activator {
 	 * Created SQL field
 	 *
 	 * @param string $name Name field.
-	 * @param array  $newformat Structure field.
-	 *			string			0	Data Types column.
-	 *			integer|string	1	Length or Size column.
-	 *			boolean			2	is NULL?
-	 *			integer|string	3	Specifies a default value for a column.
-	 *			boolean			4	is AUTO_INCREMENT?.
+	 * @param array $newformat Structure field.
+	 *            string            0    Data Types column.
+	 *            integer|string    1    Length or Size column.
+	 *            boolean            2    is NULL?
+	 *            integer|string    3    Specifies a default value for a column.
+	 *            boolean            4    is AUTO_INCREMENT?.
+	 *
 	 * @return string
 	 */
 	public static function field( $name, $newformat ) {
@@ -305,6 +317,7 @@ class TInvWL_Activator {
 
 		array_unshift( $format, '`' . $name . '`' );
 		$format = array_filter( $format );
+
 		return implode( ' ', $format );
 	}
 
@@ -312,7 +325,9 @@ class TInvWL_Activator {
 	 * Created tables from array
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param array $tables Array tables.
+	 *
 	 * @return boolean
 	 */
 	public static function create( $tables ) {
@@ -322,7 +337,7 @@ class TInvWL_Activator {
 
 		foreach ( $tables as $name => $table ) {
 			if ( array_key_exists( 'field', $table ) && ! empty( $table['field'] ) ) {
-				$table			 = self::table( $name, $table );
+				$table           = self::table( $name, $table );
 				$tables[ $name ] = dbDelta( $table );
 			}
 		}
@@ -336,7 +351,9 @@ class TInvWL_Activator {
 	 * Upgrade tables from array
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param array $tables Array tables.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade( $tables ) {
@@ -356,17 +373,20 @@ class TInvWL_Activator {
 	 * Get columns for exist table.
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
+	 *
 	 * @return array
 	 */
 	public static function upgrade_get_columns( $name ) {
 		global $wpdb;
 
 		$_fields = array();
-		$fields	 = $wpdb->get_results( "DESCRIBE `{$name}`", ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+		$fields  = $wpdb->get_results( "DESCRIBE `{$name}`", ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		foreach ( $fields as $field ) {
 			$_fields[ $field['Field'] ] = $field;
 		}
+
 		return $_fields;
 	}
 
@@ -374,13 +394,15 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Name Table.
-	 * @param array  $table Structured array table.
+	 * @param array $table Structured array table.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade_action( $name, $table ) {
 
-		if ( ! array_key_exists( 'upgrade' , $table ) ) {
+		if ( ! array_key_exists( 'upgrade', $table ) ) {
 			return false;
 		}
 
@@ -395,8 +417,8 @@ class TInvWL_Activator {
 				$table['field'][ $key ] = $flags;
 			}
 		}
-		$name		 = self::$wpdb_prefix . self::$_name . '_' . $name;
-		$upgrades	 = (array) $table['upgrade'];
+		$name     = self::$wpdb_prefix . self::$_name . '_' . $name;
+		$upgrades = (array) $table['upgrade'];
 		foreach ( $upgrades as $ver_upgrades ) {
 			foreach ( $ver_upgrades as $upgrade ) {
 				$action = $upgrade;
@@ -424,6 +446,7 @@ class TInvWL_Activator {
 	 * Truncate table
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
 	 */
 	public static function upgrade_action_truncate( $name ) {
@@ -436,6 +459,7 @@ class TInvWL_Activator {
 	 * Drop table
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
 	 */
 	public static function upgrade_action_drop( $name ) {
@@ -449,9 +473,11 @@ class TInvWL_Activator {
 	 * Rename table
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
-	 * @param array  $table Not used.
-	 * @param array  $upgrade Upgrade fields.
+	 * @param array $table Not used.
+	 * @param array $upgrade Upgrade fields.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade_action_rename_table( $name, $table, $upgrade ) {
@@ -473,14 +499,15 @@ class TInvWL_Activator {
 	 * Update fields table
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
-	 * @param array  $table Table array.
+	 * @param array $table Table array.
 	 */
 	public static function upgrade_action_update_fields( $name, $table ) {
 		global $wpdb;
 
 		$_fields = self::upgrade_get_columns( $name );
-		$fields = $table['field'];
+		$fields  = $table['field'];
 
 		// Search excess fields.
 		foreach ( $_fields as $field => $attr ) {
@@ -498,7 +525,7 @@ class TInvWL_Activator {
 			$sql = sprintf( 'ALTER TABLE `%s` MODIFY %s;', $name, $attr );
 			if ( ! array_key_exists( $field, $_fields ) ) {
 				$_prev_field = empty( $prev_field ) ? '' : " AFTER `{$prev_field}`";
-				$sql = sprintf( 'ALTER TABLE `%s` ADD %s;', $name, $attr . $_prev_field );
+				$sql         = sprintf( 'ALTER TABLE `%s` ADD %s;', $name, $attr . $_prev_field );
 			}
 			$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
@@ -511,9 +538,11 @@ class TInvWL_Activator {
 	 * Update field table
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
-	 * @param array  $table Table array.
-	 * @param array  $upgrade Upgrade fields.
+	 * @param array $table Table array.
+	 * @param array $upgrade Upgrade fields.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade_action_update_field( $name, $table, $upgrade ) {
@@ -524,7 +553,7 @@ class TInvWL_Activator {
 		$name_field = $upgrade['field'];
 
 		$_fields = self::upgrade_get_columns( $name );
-		$fields = $table['field'];
+		$fields  = $table['field'];
 
 		$sql = '';
 
@@ -542,7 +571,7 @@ class TInvWL_Activator {
 			$sql = sprintf( 'ALTER TABLE `%s` MODIFY %s;', $name, $attr );
 			if ( ! array_key_exists( $name_field, $_fields ) ) {
 				$_prev_field = empty( $prev_field ) ? '' : " AFTER `{$prev_field}`";
-				$sql = sprintf( 'ALTER TABLE `%s` ADD %s;', $name, $attr . $_prev_field );
+				$sql         = sprintf( 'ALTER TABLE `%s` ADD %s;', $name, $attr . $_prev_field );
 			}
 		} else {
 			if ( ! array_key_exists( $name_field, $fields ) ) {
@@ -559,9 +588,11 @@ class TInvWL_Activator {
 	 * Rename field.
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
-	 * @param array  $table Table array.
-	 * @param array  $upgrade Upgrade fields.
+	 * @param array $table Table array.
+	 * @param array $upgrade Upgrade fields.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade_action_rename_field( $name, $table, $upgrade ) {
@@ -573,7 +604,7 @@ class TInvWL_Activator {
 		$new_field = $upgrade['to'];
 
 		$_fields = self::upgrade_get_columns( $name );
-		$fields = $table['field'];
+		$fields  = $table['field'];
 
 		if ( ! array_key_exists( $old_field, $_fields ) || ! array_key_exists( $new_field, $fields ) ) {
 			return false;
@@ -588,6 +619,7 @@ class TInvWL_Activator {
 
 		$sql = sprintf( 'ALTER TABLE `%s` CHANGE `%s` %s;', $name, $old_field, $attr );
 		$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+
 		return true;
 	}
 
@@ -596,9 +628,11 @@ class TInvWL_Activator {
 	 * Use sql.
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param string $name Table name.
-	 * @param array  $table Not used.
-	 * @param array  $upgrade Upgrade fields.
+	 * @param array $table Not used.
+	 * @param array $upgrade Upgrade fields.
+	 *
 	 * @return boolean
 	 */
 	public static function upgrade_action_sql( $name, $table, $upgrade ) {
@@ -615,7 +649,9 @@ class TInvWL_Activator {
 	 * Destroy tables from array
 	 *
 	 * @global wpdb $wpdb
+	 *
 	 * @param type $tables Array tables.
+	 *
 	 * @return boolean
 	 */
 	public static function destroy( $tables ) {
@@ -623,8 +659,8 @@ class TInvWL_Activator {
 		self::$wpdb_prefix = $wpdb->prefix;
 
 		foreach ( $tables as $name => $table ) {
-			$table	 = self::$wpdb_prefix . self::$_name . '_' . $name;
-			$sql	 = sprintf( 'DROP TABLE IF EXISTS `%s`;', $table );
+			$table = self::$wpdb_prefix . self::$_name . '_' . $name;
+			$sql   = sprintf( 'DROP TABLE IF EXISTS `%s`;', $table );
 			$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		}
 
@@ -642,20 +678,20 @@ class TInvWL_Activator {
 		/**
 		 * Array format for fields
 		 *
-		 * @param string			TYPE
-		 * @param integer|string	SIZE
-		 * @param boolean			NULL
-		 * @param integer|string	DEFAULT
-		 * @param boolean			AUTO_INCREMENT
+		 * @param string            TYPE
+		 * @param integer|string    SIZE
+		 * @param boolean            NULL
+		 * @param integer|string    DEFAULT
+		 * @param boolean            AUTO_INCREMENT
 		 */
 		return array(
-			'first++'	 => array( 'INT', null, false, null, true ),
-			'int_0'		 => array( 'INT', null, false, 0 ),
-			'int_1'		 => array( 'INT', null, false, 1 ),
-			'text'		 => array( 'TEXT' ),
-			'longtext'	 => array( 'LONGTEXT' ),
-			'date'		 => array( 'DATETIME', null, false, '0000-00-00 00:00:00' ),
-			'bool'		 => array( 'TINYINT', 1, false, 1 ),
+			'first++'  => array( 'BIGINT', null, false, null, true ),
+			'int_0'    => array( 'BIGINT', null, false, 0 ),
+			'int_1'    => array( 'BIGINT', null, false, 1 ),
+			'text'     => array( 'TEXT' ),
+			'longtext' => array( 'LONGTEXT' ),
+			'date'     => array( 'DATETIME', null, false, '0000-00-00 00:00:00' ),
+			'bool'     => array( 'TINYINT', 1, false, 1 ),
 		);
 	}
 
@@ -667,34 +703,35 @@ class TInvWL_Activator {
 	 */
 	private static function database_1_0_0() {
 		$t = array(
-			'status'	 => array( 'VARCHAR', 20, false, 'public' ),
-			'type'		 => array( 'VARCHAR', 20, false, 'list' ),
-			'key_elem'	 => array( 'VARCHAR', 45 ),
-			'key_user'	 => array( 'TINYINT', 1, false, 7 ),
+			'status'   => array( 'VARCHAR', 20, false, 'public' ),
+			'type'     => array( 'VARCHAR', 20, false, 'list' ),
+			'key_elem' => array( 'VARCHAR', 45 ),
+			'key_user' => array( 'TINYINT', 1, false, 7 ),
 		);
+
 		return array(
-			'lists'		 => array(
+			'lists' => array(
 				'field' => array(
-					'ID'		 => 'first++',
-					'author'	 => 'int_0',
-					'date'		 => 'date',
-					'title'		 => 'text',
-					'status'	 => $t['status'],
-					'type'		 => $t['type'],
-					'share_key'	 => $t['key_elem'],
+					'ID'        => 'first++',
+					'author'    => 'int_0',
+					'date'      => 'date',
+					'title'     => 'text',
+					'status'    => $t['status'],
+					'type'      => $t['type'],
+					'share_key' => $t['key_elem'],
 				),
 			),
-			'items'	 => array(
+			'items' => array(
 				'field' => array(
-					'ID'			 => 'first++',
-					'wishlist_id'	 => 'int_0',
-					'product_id'	 => 'int_0',
-					'variation_id'	 => 'int_0',
-					'author'		 => 'int_0',
-					'date'			 => 'date',
-					'quantity'		 => 'int_1',
-					'price'			 => $t['key_elem'],
-					'in_stock'		 => 'bool',
+					'ID'           => 'first++',
+					'wishlist_id'  => 'int_0',
+					'product_id'   => 'int_0',
+					'variation_id' => 'int_0',
+					'author'       => 'int_0',
+					'date'         => 'date',
+					'quantity'     => 'int_1',
+					'price'        => $t['key_elem'],
+					'in_stock'     => 'bool',
 				),
 			),
 		);
@@ -708,20 +745,73 @@ class TInvWL_Activator {
 	 */
 	private static function database_1_5_0() {
 		return array(
-			'items'	 => array(
-				'field' => array(
-					'ID'			 => 'first++',
-					'wishlist_id'	 => 'int_0',
-					'product_id'	 => 'int_0',
-					'variation_id'	 => 'int_0',
-					'formdata'		 => 'text',
-					'author'		 => 'int_0',
-					'date'			 => 'date',
-					'quantity'		 => 'int_1',
-					'price'			 => array( 'VARCHAR', 255 ),
-					'in_stock'		 => 'bool',
+			'items' => array(
+				'field'   => array(
+					'ID'           => 'first++',
+					'wishlist_id'  => 'int_0',
+					'product_id'   => 'int_0',
+					'variation_id' => 'int_0',
+					'formdata'     => 'text',
+					'author'       => 'int_0',
+					'date'         => 'date',
+					'quantity'     => 'int_1',
+					'price'        => array( 'VARCHAR', 255 ),
+					'in_stock'     => 'bool',
 				),
-				'upgrade'	 => array(
+				'upgrade' => array(
+					array(
+						'action' => 'update_fields',
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Database
+	 *
+	 * @since             1.8.13
+	 * @return array
+	 */
+	private static function database_1_8_13() {
+		$t = array(
+			'status'   => array( 'VARCHAR', 20, false, 'public' ),
+			'type'     => array( 'VARCHAR', 20, false, 'list' ),
+			'key_elem' => array( 'VARCHAR', 45 ),
+			'key_user' => array( 'TINYINT', 1, false, 7 ),
+		);
+
+		return array(
+			'lists' => array(
+				'field'   => array(
+					'ID'        => 'first++',
+					'author'    => 'int_0',
+					'date'      => 'date',
+					'title'     => 'text',
+					'status'    => $t['status'],
+					'type'      => $t['type'],
+					'share_key' => $t['key_elem'],
+				),
+				'upgrade' => array(
+					array(
+						'action' => 'update_fields',
+					),
+				),
+			),
+			'items' => array(
+				'field'   => array(
+					'ID'           => 'first++',
+					'wishlist_id'  => 'int_0',
+					'product_id'   => 'int_0',
+					'variation_id' => 'int_0',
+					'formdata'     => 'text',
+					'author'       => 'int_0',
+					'date'         => 'date',
+					'quantity'     => 'int_1',
+					'price'        => array( 'VARCHAR', 255 ),
+					'in_stock'     => 'bool',
+				),
+				'upgrade' => array(
 					array(
 						'action' => 'update_fields',
 					),
@@ -734,13 +824,13 @@ class TInvWL_Activator {
 	 * Set localisation
 	 */
 	private static function set_locale() {
-		$locale	 = apply_filters( 'plugin_locale', get_locale(), TINVWL_DOMAIN );
-		$mofile	 = sprintf( '%1$s-%2$s.mo', TINVWL_DOMAIN, $locale );
+		$locale  = apply_filters( 'plugin_locale', get_locale(), TINVWL_DOMAIN );
+		$mofile  = sprintf( '%1$s-%2$s.mo', TINVWL_DOMAIN, $locale );
 		$mofiles = array();
 
-		$mofiles[]	 = WP_LANG_DIR . DIRECTORY_SEPARATOR . basename( TINVWL_PATH ) . DIRECTORY_SEPARATOR . $mofile;
-		$mofiles[]	 = WP_LANG_DIR . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $mofile;
-		$mofiles[]	 = TINVWL_PATH . 'languages' . DIRECTORY_SEPARATOR . $mofile;
+		$mofiles[] = WP_LANG_DIR . DIRECTORY_SEPARATOR . basename( TINVWL_PATH ) . DIRECTORY_SEPARATOR . $mofile;
+		$mofiles[] = WP_LANG_DIR . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $mofile;
+		$mofiles[] = TINVWL_PATH . 'languages' . DIRECTORY_SEPARATOR . $mofile;
 		foreach ( $mofiles as $mofile ) {
 			if ( file_exists( $mofile ) && load_textdomain( TINVWL_DOMAIN, $mofile ) ) {
 				return;
@@ -776,7 +866,7 @@ class TInvWL_Activator {
 				foreach ( (array) $array as $key => $value ) {
 					if ( ! array_key_exists( $key, (array) $_array ) ) {
 						$_array[ $key ] = $value;
-						$need_upgrade = true;
+						$need_upgrade   = true;
 					}
 				}
 				if ( $need_upgrade ) {

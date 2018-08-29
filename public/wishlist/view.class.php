@@ -35,7 +35,7 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @var array
 	 */
-	private $curent_wishlist;
+	private $current_wishlist;
 	/**
 	 * This class
 	 *
@@ -104,13 +104,23 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @param string $text Text for button add to cart.
 	 * @param array $wl_product Wishlist Product.
-	 * @param object $product Product.
+	 * @param WC_Product $_product Product.
 	 *
 	 * @return string
 	 */
-	function external_text( $text, $wl_product, $product ) {
+	function external_text( $text, $wl_product, $_product ) {
+		global $product;
+		// store global product data.
+		$_product_tmp = $product;
+		// override global product data.
+		$product = $_product;
+
 		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
-			return $product->single_add_to_cart_text();
+
+			$text = $product->single_add_to_cart_text();
+
+			// restore global product data.
+			$product = $_product_tmp;
 		}
 
 		return $text;
@@ -121,14 +131,23 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @param string $text Text for button add to cart.
 	 * @param array $wl_product Wishlist Product.
-	 * @param object $product Product.
+	 * @param WC_Product $_product Product.
 	 *
 	 * @return string
 	 */
-	function variable_text( $text, $wl_product, $product ) {
+	function variable_text( $text, $wl_product, $_product ) {
+		global $product;
+		// store global product data.
+		$_product_tmp = $product;
+		// override global product data.
+		$product = $_product;
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
 		     && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
-			return $product->add_to_cart_text();
+
+			$text = $product->add_to_cart_text();
+
+			// restore global product data.
+			$product = $_product_tmp;
 		}
 
 		return $text;
@@ -140,11 +159,11 @@ class TInvWL_Public_Wishlist_View {
 	 * @return array
 	 */
 	function get_current_wishlist() {
-		if ( empty( $this->curent_wishlist ) ) {
-			$this->curent_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get() );
+		if ( empty( $this->current_wishlist ) ) {
+			$this->current_wishlist = apply_filters( 'tinvwl_get_current_wishlist', tinv_wishlist_get() );
 		}
 
-		return $this->curent_wishlist;
+		return $this->current_wishlist;
 	}
 
 	/**
@@ -204,7 +223,7 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @param boolean $allow Settings flag.
 	 * @param array $wlproduct Wishlist Product.
-	 * @param object $product Product.
+	 * @param WC_Product $product Product.
 	 *
 	 * @return boolean
 	 */

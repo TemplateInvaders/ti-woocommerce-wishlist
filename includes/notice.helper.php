@@ -114,7 +114,7 @@ class TInvWL_Notice {
 		}
 		$output = '<div id="message" class="updated woocommerce-message"><a class="woocommerce-message-close notice-dismiss" href="' . esc_url( wp_nonce_url( add_query_arg( 'ti-hide-notice', $name, add_query_arg( 'ti-hide-notice-trigger', $key ) ), 'ti_hide', '_ti_notice_nonce' ) ) . '">' . __( 'Dismiss', 'ti-woocommerce-wishlist' ) . '</a>' . wp_kses_post( wpautop( $message ) ) . '</div>';
 
-		echo apply_filters( 'tinv_notice_' . $name, $output, $key, $message );
+		echo apply_filters( 'tinv_notice_' . $name, $output, $key, $message ); // WPCS: XSS ok.
 	}
 
 	public static function remove( $name ) {

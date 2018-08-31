@@ -37,7 +37,7 @@ class TInvWL_Wizard {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_name = $plugin_name;
+		$this->_name    = $plugin_name;
 		$this->_version = $version;
 		if ( apply_filters( $this->_name . '_enable_wizard', true ) ) {
 			$this->define_hooks();
@@ -119,7 +119,6 @@ class TInvWL_Wizard {
 		$this->load_header();
 		$this->load_content();
 		$this->load_footer();
-		exit;
 	}
 
 	/**
@@ -380,7 +379,8 @@ class TInvWL_Wizard {
 			}
 		} // End foreach().
 		if ( ! empty( $required_notsets ) ) {
-			wp_redirect( wp_get_referer() ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
+			wp_safe_redirect( wp_get_referer() );
+			exit;
 		} else {
 			TInvWL_Public_TInvWL::update_rewrite_rules();
 		}

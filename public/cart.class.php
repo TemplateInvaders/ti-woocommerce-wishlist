@@ -151,10 +151,12 @@ class TInvWL_Public_Cart {
 
 				if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
 					wp_safe_redirect( wc_get_checkout_url() );
+					exit;
 				}
 
 				if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
 					wp_safe_redirect( wc_get_cart_url() );
+					exit;
 				}
 
 				return array( $product_id => $quantity );

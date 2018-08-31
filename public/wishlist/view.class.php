@@ -423,7 +423,7 @@ class TInvWL_Public_Wishlist_View {
 
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
 			wp_redirect( apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $redirect_url, $_product['data'], $_product ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
-			die();
+			exit;
 		} elseif ( apply_filters( 'tinvwl_allow_addtocart_in_wishlist', true, $wishlist, $owner ) ) {
 			$add = TInvWL_Public_Cart::add( $wishlist, $id, $quantity );
 			if ( $add ) {

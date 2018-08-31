@@ -22,12 +22,13 @@ wp_enqueue_script( 'tinvwl' );
 		$attributes = $_variation->get_variation_attributes();
 
 		foreach ( $attributes as $name => $value ) {
-			echo '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+			echo '<input type="hidden" name="' . $name . '" value="' . $value . '" />';// WPCS: XSS ok.
 		}
 
 		?>
 	<?php } ?>
 	<?php do_action( 'tinv_wishlist_addtowishlist_button' ); ?>
 	<?php do_action( 'tinv_wishlist_addtowishlist_dialogbox' ); ?>
-	<div class="tinvwl-tooltip"><?php echo esc_html( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
+	<div
+		class="tinvwl-tooltip"><?php echo esc_html( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
 </div>

@@ -48,7 +48,7 @@ class TInvWL_View {
 	 * @param string $version Plugin version.
 	 */
 	public static function _init( $plugin_name, $version ) {
-		self::$_name = $plugin_name;
+		self::$_name    = $plugin_name;
 		self::$_version = $version;
 	}
 
@@ -282,11 +282,7 @@ class TInvWL_View {
 			header( sprintf( 'Content-Type: %s', $_type ) );
 			self::view( $_template_name, $_data );
 		}
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			wp_die();
-		} else {
-			die;
-		}
+		wp_die();
 	}
 
 	/**

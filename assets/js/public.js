@@ -450,7 +450,7 @@
 
 		// Wishlist table bulk action checkbox
 		$('.global-cb').on('click', function () {
-			$(this).closest('table').eq(0).find('.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]').prop('checked', $(this).is(':checked'))
+			$(this).closest('table').eq(0).find('.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]').prop('checked', $(this).is(':checked'));
 		});
 	});
 })(jQuery);
@@ -513,7 +513,7 @@
 		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
 	});
 
-	update_cart_hash()
+	update_cart_hash();
 
 
 })(jQuery);

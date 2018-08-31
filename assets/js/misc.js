@@ -56,7 +56,7 @@
 		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
 	});
 
-	update_cart_hash()
+	update_cart_hash();
 
 
 })(jQuery);

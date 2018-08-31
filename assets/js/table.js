@@ -49,7 +49,7 @@
 
 		// Wishlist table bulk action checkbox
 		$('.global-cb').on('click', function () {
-			$(this).closest('table').eq(0).find('.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]').prop('checked', $(this).is(':checked'))
+			$(this).closest('table').eq(0).find('.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]').prop('checked', $(this).is(':checked'));
 		});
 	});
 })(jQuery);

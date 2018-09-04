@@ -99,7 +99,8 @@ class TInvWL_Public_TopWishlist {
 	 * @param array $data Woocommerce Fragments for updateing data.
 	 */
 	public static function update_fragments( $data = array() ) {
-		$data['span.wishlist_products_counter_number'] = sprintf( '<span class="wishlist_products_counter_number">%s</span>', apply_filters( 'tinvwl_wishlist_products_counter', self::counter() ) );
+		$data['span.wishlist_products_counter_number']            = sprintf( '<span class="wishlist_products_counter_number">%s</span>', apply_filters( 'tinvwl_wishlist_products_counter', self::counter() ) );
+		$data['span.sidr-class-wishlist_products_counter_number'] = sprintf( '<span class="sidr-class-wishlist_products_counter_number">%s</span>', apply_filters( 'tinvwl_wishlist_products_counter', self::counter() ) );
 
 		return $data;
 	}

@@ -263,7 +263,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		foreach ( $products as $_product ) {
 			$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );
 
-			if ( ! $product_data ) {
+			if ( ! $product_data || 'trash' === $product_data->get_status() ) {
 				continue;
 			}
 
@@ -285,14 +285,17 @@ class TInvWL_Public_Wishlist_Buttons {
 				continue;
 			}
 			$_product = $_product['ID'];
+
 			$quantity = array_key_exists( $_product, (array) $_quantity ) ? $_quantity[ $_product ] : 1;
 			$add      = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
+
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
 			} else {
 				$errors[] = $_product['product_id'];
 			}
 		}
+
 		if ( ! empty( $errors ) ) {
 			$titles = array();
 			foreach ( $errors as $product_id ) {

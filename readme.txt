@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.14
+Stable tag: 1.8.15
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.8.15 =
+*Release Date - 04 September 2018*
+* Fixed an issue with trashed and deleted products count
+* Fixed mobile menu wishlist products counter issue for OceanWP theme
+* Minor CSS fixes
+
 = 1.8.14 =
 *Release Date - 29 August 2018*
 * Fixed fatal errors when 3rd party code using global product object outside a loop

@@ -107,7 +107,7 @@ module.exports = function (grunt) {
 					potFilename: "<%= pkg.name %>.pot", // Name of the POT file.
 					type: "wp-plugin", // Type of project (wp-plugin or wp-theme).
 					updateTimestamp: false, // Whether the POT-Creation-Date should be updated without other changes.
-					processPot: function (pot, options) {
+					processPot(pot, options) {
 						pot.headers["plural-forms"] = "nplurals=2; plural=n != 1;";
 						pot.headers["last-translator"] = "TemplateInvaders\n";
 						pot.headers["language-team"] = "TemplateInvaders\n";

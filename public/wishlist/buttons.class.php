@@ -263,6 +263,10 @@ class TInvWL_Public_Wishlist_Buttons {
 		foreach ( $products as $_product ) {
 			$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );
 
+			if ( ! $product_data ) {
+				continue;
+			}
+
 			global $product;
 			// store global product data.
 			$_product_tmp = $product;

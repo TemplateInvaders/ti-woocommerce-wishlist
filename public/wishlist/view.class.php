@@ -480,7 +480,7 @@ class TInvWL_Public_Wishlist_View {
 		$this->lists_per_page = $atts['lists_per_page'];
 
 		foreach ( $products as $key => $product ) {
-			if ( ! $product['data'] ) {
+			if ( ! isset( $product['data'] ) ) {
 				unset( $products[ $key ] );
 			}
 		}

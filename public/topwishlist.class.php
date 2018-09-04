@@ -110,6 +110,7 @@ class TInvWL_Public_TopWishlist {
 	 * @return integer
 	 */
 	public static function counter() {
+		global $wpdb;
 		$count = 0;
 		$wl    = new TInvWL_Wishlist();
 		if ( is_user_logged_in() ) {
@@ -118,7 +119,7 @@ class TInvWL_Public_TopWishlist {
 			$counts   = $wlp->get( array(
 				'external'    => false,
 				'wishlist_id' => $wishlist['ID'],
-				'sql'         => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} WHERE {where}',
+				'sql'         => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status = "publish" WHERE {where} ',
 			) );
 			$counts   = array_shift( $counts );
 			$count    = absint( $counts['quantity'] );
@@ -129,7 +130,7 @@ class TInvWL_Public_TopWishlist {
 				$wlp      = new TInvWL_Product( $wishlist );
 				$counts   = $wlp->get_wishlist( array(
 					'external' => false,
-					'sql'      => sprintf( 'SELECT %s(`quantity`) AS `quantity` FROM {table} WHERE {where}', ( tinv_get_option( 'general', 'quantity_func' ) ? 'SUM' : 'COUNT' ) ),
+					'sql'      => sprintf( 'SELECT %s(`quantity`) AS `quantity` FROM {table}  t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status = "publish" WHERE {where}', 'COUNT' ),
 				) );
 				$counts   = array_shift( $counts );
 				$count    = absint( $counts['quantity'] );

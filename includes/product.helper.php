@@ -53,7 +53,7 @@ class TInvWL_Product {
 		global $wpdb;
 
 		$this->wishlist = (array) $wishlist;
-		$this->_name       = $plugin_name;
+		$this->_name    = $plugin_name;
 		$this->table    = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
 		$this->user     = $this->wishlist_author();
 		if ( empty( $this->user ) ) {
@@ -352,7 +352,7 @@ class TInvWL_Product {
 
 		foreach ( $products as $k => $product ) {
 			if ( empty( $default['sql'] ) ) {
-				$product = filter_var_array( $product, array(
+				$product             = filter_var_array( $product, array(
 					'ID'           => FILTER_VALIDATE_INT,
 					'wishlist_id'  => FILTER_VALIDATE_INT,
 					'product_id'   => FILTER_VALIDATE_INT,
@@ -364,9 +364,7 @@ class TInvWL_Product {
 					'price'        => FILTER_SANITIZE_NUMBER_FLOAT,
 					'in_stock'     => FILTER_VALIDATE_BOOLEAN,
 				) );
-				if ( ! tinv_get_option( 'general', 'quantity_func' ) ) {
-					$product['quantity'] = 1;
-				}
+				$product['quantity'] = 1;
 			}
 			if ( $default['external'] ) {
 				$product_data = $this->product_data( $product['variation_id'], $product['product_id'] );

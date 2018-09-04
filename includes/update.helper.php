@@ -167,7 +167,7 @@ class TInvWL_Update {
 	}
 
 	/**
-	 * Clean up empty wishlists.
+	 * Buttons class fallback.
 	 */
 	function up_p_1_8_9() {
 

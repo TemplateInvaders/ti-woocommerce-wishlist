@@ -429,6 +429,16 @@ class TInvWL_Public_Wishlist_View {
 			if ( $add ) {
 				wc_add_to_cart_message( $add, true );
 
+				if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
+					wp_safe_redirect( wc_get_checkout_url() );
+					exit;
+				}
+
+				if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
+					wp_safe_redirect( wc_get_cart_url() );
+					exit;
+				}
+
 				return true;
 			}
 		}

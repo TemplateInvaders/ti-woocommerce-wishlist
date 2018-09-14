@@ -307,6 +307,16 @@ class TInvWL_Public_Wishlist_Buttons {
 		if ( ! empty( $result ) ) {
 			wc_add_to_cart_message( $result, true );
 
+			if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
+				wp_safe_redirect( wc_get_checkout_url() );
+				exit;
+			}
+
+			if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
+				wp_safe_redirect( wc_get_cart_url() );
+				exit;
+			}
+
 			return true;
 		}
 
@@ -421,6 +431,16 @@ class TInvWL_Public_Wishlist_Buttons {
 			}
 			if ( ! empty( $result ) ) {
 				wc_add_to_cart_message( $result, true );
+
+				if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
+					wp_safe_redirect( wc_get_checkout_url() );
+					exit;
+				}
+
+				if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
+					wp_safe_redirect( wc_get_cart_url() );
+					exit;
+				}
 
 				return true;
 			}

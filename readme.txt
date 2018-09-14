@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=d
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.15
+Stable tag: 1.8.16
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -130,22 +130,33 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.8.16 =
+*Release Date - 015 September 2018*
+
+* Fixed an issue with cart and checkout redirect during bulk add to cart process from a wishlist
+* Fixed an issue with loading main frontend javascript file when button loaded with AJAX
+* Improved compatibility with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+
 = 1.8.15 =
 *Release Date - 04 September 2018*
+
 * Fixed an issue with trashed and deleted products count
 * Fixed mobile menu wishlist products counter issue for OceanWP theme
 * Minor CSS fixes
 
 = 1.8.14 =
 *Release Date - 29 August 2018*
+
 * Fixed fatal errors when 3rd party code using global product object outside a loop
 
 = 1.8.13 =
 *Release Date - 25 August 2018*
+
 * Fixed database fields type issue
 
 = 1.8.12 =
 *Release Date - 16 August 2018*
+
 * Fixed PHP fatal error on plugin activation
 
 = 1.8.11 =

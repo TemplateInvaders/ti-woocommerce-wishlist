@@ -1621,9 +1621,10 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 				$original_data = 'ywapo_' . $single_type->type . '_' . $single_type->id;
 
 				$value = isset( $item_data[ $original_data ] ) ? $item_data[ $original_data ] : '';
-				error_log( print_r( $value, true ) );
 
-				if ( ! is_array( $value ) || ! ctype_digit( strval( $value['display'][0] ) ) ) {
+				if ( ! $value || ! is_array( $value ) || ! isset( $value['display'] ) ) {
+					$value = '';
+				} elseif ( is_array( $value ) && isset( $value['display'] ) && ! ctype_digit( strval( $value['display'][0] ) ) ) {
 					$value = $value['display'][0];
 				} else {
 					$value = YITH_WAPO_Option::getOptionDataByValueKey( $single_type, $value['display'][0], 'label' );
@@ -1667,6 +1668,7 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 
 			if ( $type_list ) {
 
+				$addons_total = 0;
 
 				foreach ( $type_list as $single_type ) {
 
@@ -1682,12 +1684,12 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 					$addon_price = YITH_WAPO_Option::getOptionDataByValueKey( $single_type, $value[0], 'price' );
 
 					if ( is_numeric( $addon_price ) ) {
-						$price += $addon_price;
+						$addons_total += $addon_price;
 					}
 
 				}
 
-				$price = wc_price( $product->get_price() + $price );
+				$price = wc_price( $product->get_price() + $addons_total );
 			}
 		}
 

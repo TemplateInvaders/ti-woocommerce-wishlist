@@ -250,6 +250,7 @@ module.exports = function (grunt) {
 				files: {
 					"build/<%= pkg.name %>/readme.txt": "build/<%= pkg.name %>/readme.txt",
 					"build/<%= pkg.name %>/ti-woocommerce-wishlist.php": "build/<%= pkg.name %>/ti-woocommerce-wishlist.php",
+					"languages/ti-woocommerce-wishlist.pot": "languages/ti-woocommerce-wishlist.pot",
 				},
 				options: {
 					replacements: [{

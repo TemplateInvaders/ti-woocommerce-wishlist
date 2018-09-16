@@ -241,9 +241,23 @@ module.exports = function (grunt) {
 		wp_readme_to_markdown: {
 			your_target: {
 				files: {
-					"readme.md": "readme.txt"
+					"readme.md": "build/<%= pkg.name %>/readme.txt"
 				},
 			},
+		},
+		'string-replace': {
+			version: {
+				files: {
+					"build/<%= pkg.name %>/readme.txt": "build/<%= pkg.name %>/readme.txt",
+					"build/<%= pkg.name %>/ti-woocommerce-wishlist.php": "build/<%= pkg.name %>/ti-woocommerce-wishlist.php",
+				},
+				options: {
+					replacements: [{
+						pattern: /{{ VERSION }}/g,
+						replacement: '<%= pkg.version %>'
+					}]
+				}
+			}
 		},
 
 	});
@@ -255,16 +269,17 @@ module.exports = function (grunt) {
 		"sass",
 		"autoprefixer",
 		"cssmin",
-		"header",
 		"checktextdomain",
-
+		"header",
 	]);
 
 	grunt.registerTask("package", [
-		"wp_readme_to_markdown",
+		"header",
 		"makepot",
 		"clean:build",
 		"copy",
+		"string-replace:version",
+		"wp_readme_to_markdown",
 		"compress",
 		"clean:after",
 	]);

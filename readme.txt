@@ -1,10 +1,10 @@
-﻿=== WooCommerce Wishlist Plugin ===
+=== WooCommerce Wishlist Plugin ===
 Contributors: templateinvaders
 Donate link: https://templateinvaders.com/?utm_source=wordpressorg&utm_content=donate
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.8.16
+Stable tag: {{ VERSION }}
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

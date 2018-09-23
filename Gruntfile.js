@@ -275,7 +275,6 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask("package", [
-		"header",
 		"makepot",
 		"clean:build",
 		"copy",

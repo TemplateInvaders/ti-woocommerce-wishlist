@@ -258,7 +258,8 @@ class TInvWL_Public_Wishlist_View {
 					define( 'DONOTCACHEDB', true );
 				}
 			} else {
-				WC_Cache_Helper::set_nocache_constants();
+				WC_Cache_Helper::set_nocache_constants( true );
+				nocache_headers();
 			}
 
 			$is_owner = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];

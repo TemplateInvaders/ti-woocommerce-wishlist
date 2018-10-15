@@ -145,6 +145,7 @@ class TInvWL_Public_AddToWishlist {
 			'product_variation'  => FILTER_VALIDATE_INT,
 			'product_type'       => FILTER_SANITIZE_STRING,
 			'product_action'     => FILTER_SANITIZE_STRING,
+			'redirect'           => FILTER_SANITIZE_URL,
 		) );
 
 		$wlp      = null;
@@ -166,10 +167,10 @@ class TInvWL_Public_AddToWishlist {
 			$data['icon']   = 'icon_big_times';
 			if ( tinv_get_option( 'general', 'redirect_require_login' ) ) {
 				$data['msg']            = array();
-				$data['force_redirect'] = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
+				$data['force_redirect'] = apply_filters( 'tinvwl_addtowishlist_login_page', add_query_arg( 'tinvwl_redirect', $post['redirect'], wc_get_page_permalink( 'myaccount' ) ), $post );
 			} else {
 				$data['msg'][]              = __( 'Please, login to add products to Wishlist', 'ti-woocommerce-wishlist' );
-				$data['dialog_custom_url']  = apply_filters( 'tinvwl_addtowishlist_login_page', wc_get_page_permalink( 'myaccount' ), $post );
+				$data['dialog_custom_url']  = apply_filters( 'tinvwl_addtowishlist_login_page', add_query_arg( 'tinvwl_redirect', $post['redirect'], wc_get_page_permalink( 'myaccount' ) ), $post );
 				$data['dialog_custom_html'] = '<i class="ftinvwl ftinvwl-key"></i>' . esc_html( __( 'Login', 'ti-woocommerce-wishlist' ) );
 			}
 			$data['msg'] = array_unique( $data['msg'] );

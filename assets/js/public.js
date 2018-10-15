@@ -208,7 +208,8 @@
 					product_type: $(this).attr('data-tinv-wl-producttype'),
 					product_id: $(this).attr('data-tinv-wl-product') || 0,
 					product_variation: $(this).attr('data-tinv-wl-productvariation') || 0,
-					product_action: $(this).attr('data-tinv-wl-action') || 'addto'
+					product_action: $(this).attr('data-tinv-wl-action') || 'addto',
+					redirect: window.location.href
 				},
 				a = this;
 			$(a).closest('form.cart[method=post], .tinvwl-loop-button-wrapper').find('input, select, textarea').each(function () {

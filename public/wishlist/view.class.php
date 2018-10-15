@@ -74,6 +74,8 @@ class TInvWL_Public_Wishlist_View {
 	function define_hooks() {
 		add_action( 'template_redirect', array( $this, 'login_redirect' ) );
 
+		add_action( 'wp_loaded', array( $this, 'login_post_redirect' ), 19 );
+
 		add_action( 'wp', array( $this, 'wishlist_action' ), 0 );
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
@@ -88,13 +90,22 @@ class TInvWL_Public_Wishlist_View {
 		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
 	}
 
+	/**
+	 * Redirect back after successful login.
+	 */
+	public function login_post_redirect() {
+		$nonce_value = wc_get_var( $_REQUEST['woocommerce-login-nonce'], wc_get_var( $_REQUEST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
+		if ( ! empty( $_POST['login'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login' ) && ! empty( $_GET['tinvwl_redirect'] ) ) {
+			$_POST['redirect'] = $_GET['tinvwl_redirect']; // Force WC Login form handler to do redirect.
+		}
+	}
 
 	/**
 	 * Redirect guests to login page.
 	 */
 	public function login_redirect() {
 		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ! is_user_logged_in() && tinv_get_option( 'general', 'require_login' ) ) {
-			wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', get_permalink(), wc_get_page_permalink( 'myaccount' ) ) );
 			exit;
 		}
 	}

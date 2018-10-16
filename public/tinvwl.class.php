@@ -83,7 +83,7 @@ class TInvWL_Public_TInvWL {
 		$this->addto       = TInvWL_Public_AddToWishlist::instance( $this->_name );
 		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_name );
 		$this->cart        = TInvWL_Public_Cart::instance( $this->_name );
-		$this->topwishlist = TInvWL_Public_TopWishlist::instance( $this->_name );
+		$this->topwishlist = TInvWL_Public_WishlistCounter::instance( $this->_name );
 	}
 
 	/**

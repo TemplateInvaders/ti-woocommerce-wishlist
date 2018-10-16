@@ -1,6 +1,6 @@
 <?php
 /**
- * Drop down widget
+ * Wishlist counter
  *
  * @since             1.4.0
  * @package           TInvWishlist\Public
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Drop down widget
  */
-class TInvWL_Public_TopWishlist {
+class TInvWL_Public_WishlistCounter {
 
 	/**
 	 * Plugin name
@@ -25,7 +25,7 @@ class TInvWL_Public_TopWishlist {
 	/**
 	 * This class
 	 *
-	 * @var \TInvWL_Public_TopWishlist
+	 * @var \TInvWL_Public_WishlistCounter
 	 */
 	protected static $_instance = null;
 
@@ -34,7 +34,7 @@ class TInvWL_Public_TopWishlist {
 	 *
 	 * @param string $plugin_name Plugin name.
 	 *
-	 * @return \TInvWL_Public_TopWishlist
+	 * @return \TInvWL_Public_WishlistCounter
 	 */
 	public static function instance( $plugin_name = TINVWL_PREFIX ) {
 		if ( is_null( self::$_instance ) ) {

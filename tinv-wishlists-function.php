@@ -537,7 +537,7 @@ if ( ! function_exists( 'tinvwl_shortcode_products_counter' ) ) {
 	 * @return string
 	 */
 	function tinvwl_shortcode_products_counter( $atts = array() ) {
-		$class = TInvWL_Public_TopWishlist::instance();
+		$class = TInvWL_Public_WishlistCounter::instance();
 
 		return $class->shortcode( $atts );
 	}

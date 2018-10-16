@@ -204,6 +204,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			'class' => 'button',
 			'name'  => 'tinvwl-action',
 			'value' => $value,
+			'title' => esc_attr( wp_strip_all_tags( $title ) ),
 		);
 		$attr = apply_filters( self::$_name . '_prepare_attr__button_' . $value, $attr );
 		foreach ( $attr as $key => &$value ) {

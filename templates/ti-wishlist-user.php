@@ -1,8 +1,8 @@
 <?php
 /**
- * The Template for displaying wishlist for owner.
+ * The Template for displaying wishlist for another user.
  *
- * @version             1.8.8
+ * @version             1.9.0
  * @package           TInvWishlist\Template
  */
 
@@ -22,7 +22,9 @@ wp_enqueue_script( 'tinvwl' );
 			<thead>
 			<tr>
 				<?php if ( isset( $wishlist_table['colm_checkbox'] ) && $wishlist_table['colm_checkbox'] ) { ?>
-					<th class="product-cb"><input type="checkbox" class="global-cb"></th>
+					<th class="product-cb"><input type="checkbox" class="global-cb"
+					                              title="<?php _e( 'Select all for bulk action', 'ti-woocommerce-wishlist' ) ?>">
+					</th>
 				<?php } ?>
 				<th class="product-thumbnail">&nbsp;</th>
 				<th class="product-name"><span
@@ -58,7 +60,7 @@ wp_enqueue_script( 'tinvwl' );
 							<td class="product-cb">
 								<?php
 								echo apply_filters( 'tinvwl_wishlist_item_cb', sprintf( // WPCS: xss ok.
-									'<input type="checkbox" name="wishlist_pr[]" value="%d">', esc_attr( $wl_product['ID'] )
+									'<input type="checkbox" name="wishlist_pr[]" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
 								), $wl_product, $product );
 								?>
 							</td>
@@ -123,7 +125,9 @@ wp_enqueue_script( 'tinvwl' );
 								if ( apply_filters( 'tinvwl_wishlist_item_action_add_to_cart', $wishlist_table_row['add_to_cart'], $wl_product, $product ) ) {
 									?>
 									<button class="button alt" name="tinvwl-add-to-cart"
-									        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i
+									        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"
+									        title="<?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?>">
+										<i
 											class="ftinvwl ftinvwl-shopping-cart"></i><span
 											class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?></span>
 									</button>

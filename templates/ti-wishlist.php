@@ -1,8 +1,8 @@
 <?php
 /**
- * The Template for displaying wishlist.
+ * The Template for displaying wishlist for owner.
  *
- * @version             1.8.8
+ * @version             1.9.0
  * @package           TInvWishlist\Template
  */
 
@@ -22,7 +22,9 @@ wp_enqueue_script( 'tinvwl' );
 			<thead>
 			<tr>
 				<?php if ( isset( $wishlist_table['colm_checkbox'] ) && $wishlist_table['colm_checkbox'] ) { ?>
-					<th class="product-cb"><input type="checkbox" class="global-cb"></th>
+					<th class="product-cb"><input type="checkbox" class="global-cb"
+					                              title="<?php _e( 'Select all for bulk action', 'ti-woocommerce-wishlist' ) ?>">
+					</th>
 				<?php } ?>
 				<th class="product-remove"></th>
 				<th class="product-thumbnail">&nbsp;</th>
@@ -59,14 +61,16 @@ wp_enqueue_script( 'tinvwl' );
 							<td class="product-cb">
 								<?php
 								echo apply_filters( 'tinvwl_wishlist_item_cb', sprintf( // WPCS: xss ok.
-									'<input type="checkbox" name="wishlist_pr[]" value="%d">', esc_attr( $wl_product['ID'] )
+									'<input type="checkbox" name="wishlist_pr[]" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
 								), $wl_product, $product );
 								?>
 							</td>
 						<?php } ?>
 						<td class="product-remove">
 							<button type="submit" name="tinvwl-remove"
-							        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i class="ftinvwl ftinvwl-times"></i>
+							        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"
+							        title="<?php _e( 'Remove', 'ti-woocommerce-wishlist' ) ?>"><i
+									class="ftinvwl ftinvwl-times"></i>
 							</button>
 						</td>
 						<td class="product-thumbnail">
@@ -117,7 +121,7 @@ wp_enqueue_script( 'tinvwl' );
 								if ( ! array_key_exists( 'class', $availability ) ) {
 									$availability['class'] = '';
 								}
-								$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-'.(('out-of-stock' === esc_attr( $availability['class'] )? 'times':'check')).'"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
+								$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-' . ( ( 'out-of-stock' === esc_attr( $availability['class'] ) ? 'times' : 'check' ) ) . '"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 
 								echo apply_filters( 'tinvwl_wishlist_item_status', $availability_html, $availability['availability'], $wl_product, $product ); // WPCS: xss ok.
 								?>
@@ -129,7 +133,9 @@ wp_enqueue_script( 'tinvwl' );
 								if ( apply_filters( 'tinvwl_wishlist_item_action_add_to_cart', $wishlist_table_row['add_to_cart'], $wl_product, $product ) ) {
 									?>
 									<button class="button alt" name="tinvwl-add-to-cart"
-									        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"><i
+									        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"
+									        title="<?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?>">
+										<i
 											class="ftinvwl ftinvwl-shopping-cart"></i><span
 											class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?></span>
 									</button>

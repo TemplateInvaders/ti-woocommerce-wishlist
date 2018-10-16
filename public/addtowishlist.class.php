@@ -237,6 +237,7 @@ class TInvWL_Public_AddToWishlist {
 					break;
 				case 'variable' :
 				case 'variation' :
+				case 'variable-subscription' :
 
 					if ( $post['product_variation'] ) {
 						$variation_id = $post['product_variation'];
@@ -373,7 +374,11 @@ class TInvWL_Public_AddToWishlist {
 	 */
 	function user_wishlist( $product, $wlp = null ) {
 		$wishlists = $this->wishlist = array();
-		$vproduct  = $product->is_type( 'variation' ) || $product->is_type( 'variable' );
+		$vproduct  = in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+			'variable',
+			'variation',
+			'variable-subscription'
+		) );
 		$wlp       = new TInvWL_Product();
 		$wishlists = $this->user_wishlists();
 		$ids       = array();
@@ -442,7 +447,10 @@ class TInvWL_Public_AddToWishlist {
 				$allow = ( ( ! $product->is_purchasable() && '' == $product->get_price() ) || ( $product->is_purchasable() && ! $product->is_in_stock() ) );
 			}
 
-			if ( 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+			if ( in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+				'variable',
+				'variable-subscription'
+			) ) ) {
 				$get_variations       = count( $product->get_children() ) <= apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );
 				$available_variations = $get_variations ? $product->get_available_variations() : false;
 				$allow                = ( empty( $available_variations ) && false !== $available_variations );
@@ -496,7 +504,10 @@ class TInvWL_Public_AddToWishlist {
 
 		add_action( 'tinv_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
-		if ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) {
+		if ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+				'variable',
+				'variable-subscription'
+			) ) ) {
 			$this->variation_id = null;
 			$match_attributes   = array();
 
@@ -517,7 +528,10 @@ class TInvWL_Public_AddToWishlist {
 		$data = array(
 			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ),
 			'product'             => $this->product,
-			'variation_id'        => ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ),
+			'variation_id'        => ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+					'variable',
+					'variable-subscription'
+				) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ),
 			'TInvWishlist'        => $wishlists,
 			'button_icon'         => tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon' ),
 			'add_to_wishlist'     => tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ),
@@ -562,7 +576,10 @@ class TInvWL_Public_AddToWishlist {
 			}
 		}
 		$icon         .= $icon_class;
-		$variation_id = ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) );
+		$variation_id = ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+				'variable',
+				'variable-subscription'
+			) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) );
 		foreach ( $this->wishlist as $value ) {
 			if ( $value['in'] && in_array( $variation_id, $value['in'] ) ) {
 				$icon .= ' tinvwl-product-in-list';
@@ -587,7 +604,10 @@ class TInvWL_Public_AddToWishlist {
 
 		$icon .= ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_preloader' ) ) ? ' ftinvwl-animated' : '';
 
-		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="%s" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="%s" rel="nofollow">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );
+		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="%s" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="%s" rel="nofollow">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+				'variable',
+				'variable-subscription'
+			) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );
 		$content .= apply_filters( 'tinvwl_wishlist_button_after', '' );
 
 		if ( ! empty( $text ) ) {

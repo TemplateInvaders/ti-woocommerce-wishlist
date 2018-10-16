@@ -118,7 +118,7 @@ class TInvWL_Public_Wishlist_View {
 				}
 			}
 
-			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', esc_url($full_link) , wc_get_page_permalink( 'myaccount' ) ) );
+			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', esc_url( $full_link ), wc_get_page_permalink( 'myaccount' ) ) );
 			exit;
 		}
 	}
@@ -166,7 +166,10 @@ class TInvWL_Public_Wishlist_View {
 		// override global product data.
 		$product = $_product;
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
-		     && 'variable' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+		     && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+				'variable',
+				'variable-subscription'
+			) ) ) {
 
 			$text = $product->add_to_cart_text();
 

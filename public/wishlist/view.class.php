@@ -105,7 +105,20 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	public function login_redirect() {
 		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ! is_user_logged_in() && tinv_get_option( 'general', 'require_login' ) ) {
-			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', get_permalink(), wc_get_page_permalink( 'myaccount' ) ) );
+			$full_link = get_permalink();
+			$share_key = get_query_var( 'tinvwlID', null );
+			if ( ! empty( $share_key ) ) {
+				if ( get_option( 'permalink_structure' ) ) {
+					if ( ! preg_match( '/\/$/', $full_link ) ) {
+						$full_link .= '/';
+					}
+					$full_link .= $share_key . '/';
+				} else {
+					$full_link = add_query_arg( 'tinvwlID', $share_key, $full_link );
+				}
+			}
+
+			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', esc_url($full_link) , wc_get_page_permalink( 'myaccount' ) ) );
 			exit;
 		}
 	}

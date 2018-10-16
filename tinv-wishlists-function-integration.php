@@ -358,7 +358,7 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare_form' ) ) {
 if ( ! function_exists( 'tinvwl_wpml_filter_link' ) ) {
 
 	/**
-	 * Corect add wishlist key for WPML plugin.
+	 * Correct add wishlist key for WPML plugin.
 	 *
 	 * @param string $full_link Link for page.
 	 * @param array $l Language.

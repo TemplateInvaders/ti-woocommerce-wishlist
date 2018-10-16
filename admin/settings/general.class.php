@@ -51,7 +51,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			$page_list[ $list->ID ] = $list->post_title;
 		}
 
-		return array(
+		$settings = array(
 			array(
 				'id'         => 'general',
 				'title'      => __( 'General Settings', 'ti-woocommerce-wishlist' ),
@@ -701,31 +701,52 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 				),
 			),
-			array(
-				'id'     => 'save_buttons',
-				'class'  => 'only-button',
-				'noform' => true,
-				'fields' => array(
+		);
+
+		if ( ! empty( $_GET['chat'] ) ) {
+			$settings[] = array(
+				'id'         => 'chat',
+				'title'      => __( 'Support chat settings', 'ti-woocommerce-wishlist' ),
+				'desc'       => '',
+				'show_names' => true,
+				'fields'     => array(
 					array(
-						'type'  => 'button_submit',
-						'name'  => 'setting_save',
-						'std'   => '<span><i class="ftinvwl ftinvwl-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
-						'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
+						'type' => 'checkboxonoff',
+						'name' => 'disabled',
+						'text' => __( 'Disable support chat', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
 					),
-					array(
-						'type'  => 'button_submit',
-						'name'  => 'setting_reset',
-						'std'   => '<span><i class="ftinvwl ftinvwl-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
-						'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
-					),
-					array(
-						'type' => 'button_submit_quick',
-						'name' => 'setting_save_quick',
-						'std'  => '<span><i class="ftinvwl ftinvwl-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
-					),
+				),
+			);
+		}
+
+		// Buttons.
+		$settings[] = array(
+			'id'     => 'save_buttons',
+			'class'  => 'only-button',
+			'noform' => true,
+			'fields' => array(
+				array(
+					'type'  => 'button_submit',
+					'name'  => 'setting_save',
+					'std'   => '<span><i class="ftinvwl ftinvwl-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
+					'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
+				),
+				array(
+					'type'  => 'button_submit',
+					'name'  => 'setting_reset',
+					'std'   => '<span><i class="ftinvwl ftinvwl-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
+					'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
+				),
+				array(
+					'type' => 'button_submit_quick',
+					'name' => 'setting_save_quick',
+					'std'  => '<span><i class="ftinvwl ftinvwl-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
 				),
 			),
 		);
+
+		return $settings;
 	}
 
 	/**

@@ -186,13 +186,15 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		) );
 		wp_enqueue_script( $this->_name );
 
-		$user_id       = get_current_user_id();
-		$user_info     = get_userdata( $user_id );
-		$current_theme = wp_get_theme();
+		if ( ! tinv_get_option( 'chat', 'disabled' ) ) {
 
-		$parent_theme = $current_theme->parent();
+			$user_id       = get_current_user_id();
+			$user_info     = get_userdata( $user_id );
+			$current_theme = wp_get_theme();
 
-		wp_add_inline_script( $this->_name, 'window.intercomSettings = {
+			$parent_theme = $current_theme->parent();
+
+			wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 			app_id: "zyh6v0pc",				
 			"Website": "' . get_site_url() . '",
 			"Plugin name": "WooCommerce Wishlist Plugin",
@@ -207,22 +209,23 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			"Parent theme URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : '' ) . '",
 			"Parent theme author":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : '' ) . '",
 			"Parent theme author URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : '' ) . '",
-		};
-		(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();
-		Intercom("trackEvent", "wishlist-free-install", {
-			theme_name:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Name' ) : $current_theme->get( 'Name' ) ) . '",
-			theme_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : $current_theme->get( 'ThemeURI' ) ) . '",
-			theme_author:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : $current_theme->get( 'Author' ) ) . '",
-			theme_author_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : $current_theme->get( 'AuthorURI' ) ) . '",
-			theme_version:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Version' ) : $current_theme->get( 'Version' ) ) . '",
-			website:"' . get_site_url() . '",
-			user:"' . $user_info->user_email . '",
-			user_name:"' . $user_info->user_nicename . '",
-			plugin_name:"WooCommerce Wishlist Plugin",
-			plugin_version:"' . TINVWL_FVERSION . '",
-			partner:"' . TINVWL_UTM_SOURCE . '"
-		});
-		' );
+			};
+			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();
+			Intercom("trackEvent", "wishlist-free-install", {
+				theme_name:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Name' ) : $current_theme->get( 'Name' ) ) . '",
+				theme_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : $current_theme->get( 'ThemeURI' ) ) . '",
+				theme_author:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : $current_theme->get( 'Author' ) ) . '",
+				theme_author_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : $current_theme->get( 'AuthorURI' ) ) . '",
+				theme_version:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Version' ) : $current_theme->get( 'Version' ) ) . '",
+				website:"' . get_site_url() . '",
+				user:"' . $user_info->user_email . '",
+				user_name:"' . $user_info->user_nicename . '",
+				plugin_name:"WooCommerce Wishlist Plugin",
+				plugin_version:"' . TINVWL_FVERSION . '",
+				partner:"' . TINVWL_UTM_SOURCE . '"
+			});
+			' );
+		}
 	}
 
 	/**

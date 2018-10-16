@@ -39,6 +39,21 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	}
 
 	/**
+	 * Get WP menus
+	 *
+	 * @return array
+	 */
+	public function get_wp_menus() {
+		$menus     = array( esc_html__( 'Select Your Menu', 'ti-woocommerce-wishlist' ) );
+		$get_menus = get_terms( 'nav_menu', array( 'hide_empty' => true ) );
+		foreach ( $get_menus as $menu ) {
+			$menus[ $menu->term_id ] = $menu->name;
+		}
+
+		return $menus;
+	}
+
+	/**
 	 * Create sections for this settings
 	 *
 	 * @return array
@@ -47,6 +62,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		add_action( $this->_name . '_section_before', array( $this, 'premium_features' ), 9 );
 		$lists     = get_pages( array( 'number' => 999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
 		$page_list = array( '' => '' );
+		$menus     = $this->get_wp_menus();
 		foreach ( $lists as $list ) {
 			$page_list[ $list->ID ] = $list->post_title;
 		}
@@ -698,6 +714,37 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( 'Counter Text', 'ti-woocommerce-wishlist' ),
 						'std'   => __( 'Wishlist - ', 'ti-woocommerce-wishlist' ),
 						'class' => 'tiwl-dropdown-text',
+					),
+					array(
+						'type'    => 'select',
+						'name'    => 'menu',
+						'text'    => __( 'Add to menu', 'ti-woocommerce-wishlist' ),
+						'options' => $menus,
+						'desc'    => __( 'You can add a wishlist products counter as item to the selected menu.', 'ti-woocommerce-wishlist' ),
+						'extra'   => array(
+							'tiwl-value' => '0',
+							'tiwl-hide'  => '.tiwl-menu-position, .tiwl-menu-hide-counter',
+						),
+					),
+					array(
+						'type'  => 'number',
+						'name'  => 'menu_order',
+						'text'  => __( 'Menu item order', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'You can set a number as menu order. By default it has order 100 that will place wishlist products counter in the end of a menu.', 'ti-woocommerce-wishlist' ),
+						'std'   => 100,
+						'class' => 'tiwl-menu-position',
+						'extra' => array(
+							'step' => '1',
+							'min'  => '1',
+						),
+					),
+					array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'hide_menu_counter',
+						'text'  => __( 'Hide counter numbers for menu item', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+						'class' => 'tiwl-menu-hide-counter',
+
 					),
 				),
 			),

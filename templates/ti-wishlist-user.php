@@ -1,6 +1,6 @@
 <?php
 /**
- * The Template for displaying user wishlist.
+ * The Template for displaying wishlist for owner.
  *
  * @version             1.8.8
  * @package           TInvWishlist\Template

@@ -860,14 +860,14 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 			$bundled_items = $product->get_bundled_items();
 			if ( ! empty( $bundled_items ) ) {
 				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
-					$bundled_product_id                    = $bundled_item->product_id;
+
 					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
 					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
 					if ( ! empty( $bundled_variation_id ) ) {
 						$bundled_item->product = wc_get_product( $bundled_variation_id );
 					}
-					$bundled_product_type = $bundled_item->product->get_type();
-					$is_optional          = $bundled_item->is_optional();
+
+					$is_optional = $bundled_item->is_optional();
 
 					$bundled_item_quantity_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_quantity_' . $bundled_item_id;
 					$bundled_product_qty               = isset( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) ? absint( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) : $bundled_item->get_quantity();
@@ -888,7 +888,12 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					$product_url   = $bundled_item->product->get_permalink();
 					$product_image = $bundled_item->product->get_image();
 					$product_title = $bundled_item->product->get_title();
-					$product_price = $bundled_item->product->get_price_html();
+
+					$product_price     = $bundled_item->product->get_price_html();
+					$product_price_raw = $bundled_item->product->get_regular_price();
+					$discount          = $bundled_item->get_discount();
+					$product_price     = empty( $discount ) ? $product_price : wc_price( WC_PB_Product_Prices::get_discounted_price( $product_price_raw, $discount ) );
+
 					if ( $bundled_item->product->is_visible() ) {
 						$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );
 						$product_title = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_title );
@@ -905,8 +910,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					$availability_html = empty( $availability['availability'] ) ? '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-check"></i></span><span class="tinvwl-txt">' . esc_html__( 'In stock', 'ti-woocommerce-wishlist' ) . '</span></p>' : '<p class="stock ' . esc_attr( $availability['class'] ) . '"><span><i class="ftinvwl ftinvwl-times"></i></span><span>' . esc_html( $availability['availability'] ) . '</span></p>';
 					$row_string        = '<tr>';
 					$row_string        .= '<td colspan="2">&nbsp;</td><td class="product-thumbnail">%1$s</td><td class="product-name">%2$s</td>';
-					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
+					if ( tinv_get_option( 'product_table', 'colm_price' ) && $bundled_item->is_priced_individually() ) {
 						$row_string .= '<td class="product-price">%3$s &times; %5$s</td>';
+					} elseif ( ! $bundled_item->is_priced_individually() ) {
+						$row_string .= '<td class="product-price"></td>';
 					}
 					if ( tinv_get_option( 'product_table', 'colm_date' ) ) {
 						$row_string .= '<td class="product-date">&nbsp;</td>';
@@ -952,6 +959,15 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 				$bundled_items_price = 0.0;
 
 				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
+
+					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
+					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
+					if ( ! empty( $bundled_variation_id ) ) {
+						$_bundled_product = wc_get_product( $bundled_variation_id );
+					} else {
+						$_bundled_product = $bundled_item->product;
+					}
+
 					$is_optional = $bundled_item->is_optional();
 
 					$bundled_item_quantity_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_quantity_' . $bundled_item_id;
@@ -966,13 +982,17 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 							$bundled_product_qty = 0;
 						}
 					}
-					if ( 0 === $bundled_product_qty ) {
-						continue;
+
+					if ( $bundled_item->is_priced_individually() ) {
+						$product_price = $_bundled_product->get_regular_price();
+
+						$discount      = $bundled_item->get_discount();
+						$product_price = empty( $discount ) ? $product_price : WC_PB_Product_Prices::get_discounted_price( $product_price, $discount );
+
+						$bundled_item_price = $product_price * $bundled_product_qty;
+
+						$bundled_items_price += (double) $bundled_item_price;
 					}
-
-					$bundled_item_price = $bundled_item->product->get_price() * $bundled_product_qty;
-
-					$bundled_items_price += (double) $bundled_item_price;
 
 				} // End foreach().
 				$price = wc_price( (double) $bundle_price + $bundled_items_price );

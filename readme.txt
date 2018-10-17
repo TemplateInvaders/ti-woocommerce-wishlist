@@ -130,6 +130,16 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.0 =
+*Release Date - 17 October 2018*
+
+* Fixed no cache issue for WooCommerce versions below 3.2.4
+* Added redirect to a previous page after login when "Require Login" option is enabled
+* Added an option to add the wishlist counter into a menu
+* Improved compatibility with [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955) plugin
+* Improved compatibility with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin
+* Improved compatibility with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+
 = 1.8.17 =
 *Release Date - 16 September 2018*
 

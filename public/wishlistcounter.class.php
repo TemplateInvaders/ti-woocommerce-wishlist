@@ -93,7 +93,7 @@ class TInvWL_Public_WishlistCounter {
 			$icon_style  = ( $show_icon && tinv_get_option( 'topline', 'icon' ) ) ? esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ) : '';
 			$icon_upload = tinv_get_option( 'topline', 'icon_upload' );
 
-			$counter = tinv_get_option( 'topline', 'hide_menu_counter' ) ? '' : '<span class="wishlist_products_counter_number"></span>';
+			$counter = tinv_get_option( 'topline', 'show_counter' ) ? '<span class="wishlist_products_counter_number"></span>' : '';
 
 			$text = tinv_get_option( 'topline', 'show_text' ) ? apply_filters( 'tinvwl-topline-text', tinv_get_option( 'topline', 'text' ) ) : '';
 
@@ -270,7 +270,7 @@ class TInvWL_Public_WishlistCounter {
 			'show_icon'    => (bool) tinv_get_option( 'topline', 'icon' ),
 			'show_text'    => tinv_get_option( 'topline', 'show_text' ),
 			'text'         => apply_filters( 'tinvwl-topline-text', tinv_get_option( 'topline', 'text' ) ),
-			'show_counter' => 'on',
+			'show_counter' => tinv_get_option( 'topline', 'show_counter' ),
 		);
 		$atts    = filter_var_array( shortcode_atts( $default, $atts ), array(
 			'show_icon'    => FILTER_VALIDATE_BOOLEAN,

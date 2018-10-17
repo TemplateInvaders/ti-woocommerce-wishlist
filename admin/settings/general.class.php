@@ -652,14 +652,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			),
 			array(
 				'id'         => 'topline',
-				'title'      => __( 'Wishlist Products Counter', 'ti-woocommerce-wishlist' ),
+				'title'      => __( 'Wishlist Product Counter', 'ti-woocommerce-wishlist' ),
 				'desc'       => sprintf( __( 'Add this shortcode <code>[ti_wishlist_products_counter]</code> anywhere into a page content to show Wishlist Counter.<br/><br/>It can be also added as a widget <code>Wishlist Products Counter</code> under the <a href="%s">Appearance -> Widgets</a> section.', 'ti-woocommerce-wishlist' ), esc_url( admin_url( 'widgets.php' ) ) ),
 				'show_names' => true,
 				'fields'     => array(
 					array(
 						'type'    => 'select',
 						'name'    => 'icon',
-						'text'    => __( '"Wishlist" Icon', 'ti-woocommerce-wishlist' ),
+						'text'    => __( '"Wishlist" Counter Icon', 'ti-woocommerce-wishlist' ),
 						'std'     => 'heart',
 						'options' => array(
 							''           => __( 'None', 'ti-woocommerce-wishlist' ),
@@ -691,7 +691,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'    => 'select',
 						'name'    => 'icon_style',
 						'std'     => '',
-						'text'    => __( '"Wishlist" Icon Color', 'ti-woocommerce-wishlist' ),
+						'text'    => __( '"Wishlist" Counter Icon Color', 'ti-woocommerce-wishlist' ),
 						'options' => array(
 							''      => __( 'Use font color', 'ti-woocommerce-wishlist' ),
 							'black' => __( 'Black', 'ti-woocommerce-wishlist' ),
@@ -702,7 +702,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'checkboxonoff',
 						'name'  => 'show_text',
-						'text'  => __( 'Show counter text', 'ti-woocommerce-wishlist' ),
+						'text'  => __( 'Show "Wishlist" Counter Text', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-dropdown-text',
@@ -711,26 +711,26 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'text',
 						'name'  => 'text',
-						'text'  => __( 'Counter Text', 'ti-woocommerce-wishlist' ),
+						'text'  => __( '"Wishlist" Counter Text', 'ti-woocommerce-wishlist' ),
 						'std'   => __( 'Wishlist - ', 'ti-woocommerce-wishlist' ),
 						'class' => 'tiwl-dropdown-text',
 					),
 					array(
 						'type'    => 'select',
 						'name'    => 'menu',
-						'text'    => __( 'Add to menu', 'ti-woocommerce-wishlist' ),
+						'text'    => __( 'Add counter to menu', 'ti-woocommerce-wishlist' ),
 						'options' => $menus,
 						'desc'    => __( 'You can add a wishlist products counter as item to the selected menu.', 'ti-woocommerce-wishlist' ),
 						'extra'   => array(
 							'tiwl-value' => '0',
-							'tiwl-hide'  => '.tiwl-menu-position, .tiwl-menu-hide-counter',
+							'tiwl-hide'  => '.tiwl-menu-position',
 						),
 					),
 					array(
 						'type'  => 'number',
 						'name'  => 'menu_order',
-						'text'  => __( 'Menu item order', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'You can set a number as menu order. By default it has order 100 that will place wishlist products counter in the end of a menu.', 'ti-woocommerce-wishlist' ),
+						'text'  => __( 'Counter position (Menu item order)', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Allows you to add the wishlist counter as a menu item and apply its position.', 'ti-woocommerce-wishlist' ),
 						'std'   => 100,
 						'class' => 'tiwl-menu-position',
 						'extra' => array(
@@ -739,12 +739,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						),
 					),
 					array(
-						'type'  => 'checkboxonoff',
-						'name'  => 'hide_menu_counter',
-						'text'  => __( 'Hide counter numbers for menu item', 'ti-woocommerce-wishlist' ),
-						'std'   => false,
-						'class' => 'tiwl-menu-hide-counter',
-
+						'type' => 'checkboxonoff',
+						'name' => 'show_counter',
+						'text' => __( 'Show number of products in counter', 'ti-woocommerce-wishlist' ),
+						'std'  => true,
 					),
 				),
 			),

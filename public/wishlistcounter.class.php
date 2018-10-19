@@ -255,7 +255,7 @@ class TInvWL_Public_WishlistCounter {
 			}
 		}
 
-		return $count ? $count : false;
+		return $count ? $count : ( tinv_get_option( 'topline', 'hide_zero_counter' ) ? false : 0 );
 	}
 
 	/**

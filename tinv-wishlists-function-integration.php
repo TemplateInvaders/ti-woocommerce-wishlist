@@ -1740,17 +1740,21 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 
 			$id = ( $variation_id ) ? $variation_id : $product_id;
 
-			$product_addons = get_product_addons( $id );
+			if ( function_exists( 'get_product_addons' ) ) {
+				$product_addons = get_product_addons( $id );
+			} else {
+				$product_addons = WC_Product_Addons_Helper::get_product_addons( $id );
+			}
 
 			if ( $product_addons ) {
 
 
 				foreach ( $product_addons as $addon ) {
 					foreach ( $addon['options'] as $option ) {
-						$original_data = 'addon-' . $addon['field-name'];
+						$original_data = 'addon-' . $addon['field_name'];
 
 						if ( 'file_upload' === $addon['type'] ) {
-							$original_data = 'addon-' . $addon['field-name'] . '-' . sanitize_title( $option['label'] );
+							$original_data = 'addon-' . $addon['field_name'] . '-' . sanitize_title( $option['label'] );
 						}
 
 						$value = isset( $item_data[ $original_data ] ) ? $item_data[ $original_data ]['display'] : '';
@@ -1765,31 +1769,39 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 						} else {
 							$value = stripslashes( $value );
 						}
-						include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-class-product-addon-field.php' );
+						include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
 						switch ( $addon['type'] ) {
-							case 'checkbox' :
-							case 'radiobutton' :
-								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-list.php' );
-								$field = new Product_Addon_Field_List( $addon, $value );
+							case 'checkbox':
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
+								$field = new WC_Product_Addons_Field_List( $addon, $value );
 								break;
-							case 'custom' :
-							case 'custom_textarea' :
-							case 'custom_price' :
-							case 'custom_letters_only' :
-							case 'custom_digits_only' :
-							case 'custom_letters_or_digits' :
-							case 'custom_email' :
-							case 'input_multiplier' :
-								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-custom.php' );
-								$field = new Product_Addon_Field_Custom( $addon, $value );
+							case 'multiple_choice':
+								switch ( $addon['display'] ) {
+									case 'radiobutton':
+										include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
+										$field = new WC_Product_Addons_Field_List( $addon, $value );
+										break;
+									case 'images':
+									case 'select':
+										include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-select.php' );
+										$field = new WC_Product_Addons_Field_Select( $addon, $value );
+										break;
+								}
 								break;
-							case 'select' :
-								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-select.php' );
-								$field = new Product_Addon_Field_Select( $addon, $value );
+							case 'custom_text':
+							case 'custom_textarea':
+							case 'custom_price':
+							case 'input_multiplier':
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-custom.php' );
+								$field = new WC_Product_Addons_Field_Custom( $addon, $value );
 								break;
-							case 'file_upload' :
-								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-file-upload.php' );
-								$field = new Product_Addon_Field_File_Upload( $addon, $value, false );
+							case 'file_upload':
+								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php' );
+								$field = new WC_Product_Addons_Field_File_Upload( $addon, $value );
+								break;
+							default:
+								// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
+								continue;
 								break;
 						}
 
@@ -1835,7 +1847,12 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 
 		if ( class_exists( 'WC_Product_Addons' ) ) {
 
-			$product_addons = get_product_addons( $product->get_id() );
+
+			if ( function_exists( 'get_product_addons' ) ) {
+				$product_addons = get_product_addons( $product->get_id() );
+			} else {
+				$product_addons = WC_Product_Addons_Helper::get_product_addons( $product->get_id() );
+			}
 
 			if ( $product_addons ) {
 
@@ -1843,7 +1860,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 
 				foreach ( $product_addons as $addon ) {
 
-					$original_data = 'addon-' . $addon['field-name'];
+					$original_data = 'addon-' . $addon['field_name'];
 
 					$value = isset( $wl_product['meta'][ $original_data ] ) ? $wl_product['meta'][ $original_data ] : '';
 					if ( $value == '' ) {
@@ -1856,31 +1873,39 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 					} else {
 						$value = stripslashes( $value );
 					}
-					include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-class-product-addon-field.php' );
+					include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
 					switch ( $addon['type'] ) {
-						case 'checkbox' :
-						case 'radiobutton' :
-							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-list.php' );
-							$field = new Product_Addon_Field_List( $addon, $value );
+						case 'checkbox':
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
+							$field = new WC_Product_Addons_Field_List( $addon, $value );
 							break;
-						case 'custom' :
-						case 'custom_textarea' :
-						case 'custom_price' :
-						case 'custom_letters_only' :
-						case 'custom_digits_only' :
-						case 'custom_letters_or_digits' :
-						case 'custom_email' :
-						case 'input_multiplier' :
-							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-custom.php' );
-							$field = new Product_Addon_Field_Custom( $addon, $value );
+						case 'multiple_choice':
+							switch ( $addon['display'] ) {
+								case 'radiobutton':
+									include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
+									$field = new WC_Product_Addons_Field_List( $addon, $value );
+									break;
+								case 'images':
+								case 'select':
+									include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-select.php' );
+									$field = new WC_Product_Addons_Field_Select( $addon, $value );
+									break;
+							}
 							break;
-						case 'select' :
-							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-select.php' );
-							$field = new Product_Addon_Field_Select( $addon, $value );
+						case 'custom_text':
+						case 'custom_textarea':
+						case 'custom_price':
+						case 'input_multiplier':
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-custom.php' );
+							$field = new WC_Product_Addons_Field_Custom( $addon, $value );
 							break;
-						case 'file_upload' :
-							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-product-addon-field-file-upload.php' );
-							$field = new Product_Addon_Field_File_Upload( $addon, $value, false );
+						case 'file_upload':
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php' );
+							$field = new WC_Product_Addons_Field_File_Upload( $addon, $value );
+							break;
+						default:
+							// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
+							continue;
 							break;
 					}
 

@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.3 =
+*Release Date - 1 November 2018*
+
+* Fixed an issue with product name in WooCommerce notice if add to cart validation failed
+* Improved compatibility with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+
 = 1.9.2 =
 *Release Date - 24 October 2018*
 

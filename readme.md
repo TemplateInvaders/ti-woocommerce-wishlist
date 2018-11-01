@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 4.9  
-**Stable tag:** 1.9.1  
+**Stable tag:** 1.9.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -19,10 +19,7 @@ The WooCommerce Wishlist plugin does not collect any personal data from website 
 ### Increase Sales and Conversions ###
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
 
-[Live Preview 1](https://wishlist2.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
-[Live Preview 2](https://wishlist3.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
-[Live Preview 3](https://wishlist1.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
-
+[Live Preview](https://woocommercewishlist.com/preview/?utm_source=wordpressorg&utm_content=preview)
 
 [View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
 
@@ -133,6 +130,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.3 ###
+*Release Date - 1 November 2018*
+
+* Fixed an issue with product name in WooCommerce notice if add to cart validation failed
+* Improved compatibility with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+
+### 1.9.2 ###
+*Release Date - 24 October 2018*
+
+* WooCommerce 3.5.x support
+* Improved compatibility with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin
+
 ### 1.9.1 ###
 *Release Date - 23 October 2018*
 

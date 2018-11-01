@@ -293,7 +293,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			if ( $add ) {
 				$result = tinv_array_merge( $result, $add );
 			} else {
-				$errors[] = $_product['product_id'];
+				$errors[] = $product_data->get_id();
 			}
 		}
 
@@ -419,7 +419,7 @@ class TInvWL_Public_Wishlist_Buttons {
 				if ( $add ) {
 					$result = tinv_array_merge( $result, $add );
 				} else {
-					$errors[] = $id['product_id'];
+					$errors[] = $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'];
 				}
 			}
 			if ( ! empty( $errors ) ) {

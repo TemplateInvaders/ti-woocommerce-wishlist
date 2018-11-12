@@ -614,7 +614,7 @@ class TInvWL_Public_AddToWishlist {
 			$content .= '<div class="tinv-wishlist-clear"></div>';
 		}
 
-		echo apply_filters( 'tinvwl_wishlist_button', $content ); // WPCS: xss ok.
+		echo apply_filters( 'tinvwl_wishlist_button', $content, $this->wishlist, $this->product, $this->is_loop, $icon, $action, $text ); // WPCS: xss ok.
 	}
 
 	/**

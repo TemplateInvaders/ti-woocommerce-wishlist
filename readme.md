@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 4.9  
-**Stable tag:** 1.9.3  
+**Stable tag:** 1.9.4  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.4 ###
+*Release Date - 12 November 2018*
+
+* Added parameters for "add to wishlist" button markup filter
+
 ### 1.9.3 ###
 *Release Date - 1 November 2018*
 

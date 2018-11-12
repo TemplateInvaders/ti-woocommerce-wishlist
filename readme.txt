@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.4 =
+*Release Date - 12 November 2018*
+
+* Added parameters for "add to wishlist" button markup filter
+
 = 1.9.3 =
 *Release Date - 1 November 2018*
 

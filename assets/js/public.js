@@ -511,7 +511,8 @@
 	});
 
 	$(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function () {
-		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', '0' != $('.wishlist_products_counter_number').html());
+		var has_products = !('0' == $('.wishlist_products_counter_number').html() || '' == $('.wishlist_products_counter_number').html());
+		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', has_products);
 	});
 
 	update_cart_hash();

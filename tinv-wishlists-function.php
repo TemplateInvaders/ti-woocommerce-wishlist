@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-
-
 if ( ! function_exists( 'tinv_get_option' ) ) {
 
 	/**
@@ -156,9 +154,15 @@ if ( ! function_exists( 'tinv_wishlist_locate_template' ) ) {
 	 * @param string $template_path Template path.
 	 * @param string $default_path Template default path.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	function tinv_wishlist_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+		$prefix = 'ti-';
+
+		if ( substr( $template_name, 0, strlen( $prefix ) ) !== $prefix ) {
+			return;
+		}
+
 		if ( ! $template_path ) {
 			$template_path = WC()->template_path();
 		}

@@ -207,7 +207,7 @@ class TInvWL_Public_Wishlist_View {
 			$wishlist = $this->get_current_wishlist();
 		}
 		$wlp = null;
-		if ( 0 === $wishlist['ID'] ) {
+		if ( isset( $wishlist['ID'] ) && 0 === $wishlist['ID'] ) {
 			$wlp = TInvWL_Product_Local::instance();
 		} else {
 			$wlp = new TInvWL_Product( $wishlist );

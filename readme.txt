@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.6 =
+*Release Date - 30 November 2018*
+
+* Restrict WooCommerce templates filter to plugin templates only 
+
 = 1.9.5 =
 *Release Date - 20 November 2018*
 

@@ -116,9 +116,11 @@ class TInvWL_Wizard {
 			}
 		}
 
+		ob_start();
 		$this->load_header();
 		$this->load_content();
 		$this->load_footer();
+		exit;
 	}
 
 	/**

@@ -80,6 +80,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_action( 'switch_theme', array( $this, 'admin_notice_outdated_templates' ) );
 		add_action( 'tinvwl_updated', array( $this, 'admin_notice_outdated_templates' ) );
 
+		// Add a post display state for special WC pages.
+		add_filter( 'display_post_states', array( $this, 'add_display_post_states' ), 10, 2 );
+
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
 		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
 		$this->scheduled_remove_wishlist();
@@ -365,4 +368,19 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		}
 	}
 
+	/**
+	 * Add a post display state for special WC pages in the page list table.
+	 *
+	 * @param array $post_states An array of post display states.
+	 * @param WP_Post $post The current post object.
+	 *
+	 * @return array
+	 */
+	public function add_display_post_states( $post_states, $post ) {
+		if ( tinv_get_option( 'page', 'wishlist' ) === $post->ID ) {
+			$post_states['tinvwl_page_for_wishlist'] = __( 'Wishlist Page', 'ti-woocommerce-wishlist' );
+		}
+
+		return $post_states;
+	}
 }

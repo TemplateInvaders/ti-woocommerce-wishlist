@@ -3,8 +3,8 @@
 **Donate link:** https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=donate  
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
-**Tested up to:** 4.9  
-**Stable tag:** 1.9.5  
+**Tested up to:** 5.0  
+**Stable tag:** 1.9.7  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,16 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.7 ###
+*Release Date - 7 December 2018*
+
+* WordPress 5.0 compatibility
+
+### 1.9.6 ###
+*Release Date - 30 November 2018*
+
+* Restrict WooCommerce templates filter to plugin templates only 
+
 ### 1.9.5 ###
 *Release Date - 20 November 2018*
 

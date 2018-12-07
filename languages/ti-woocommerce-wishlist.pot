@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin {{ VERSION }}\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2018-11-30 14:12:37+00:00\n"
+"POT-Creation-Date: 2018-12-07 10:18:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Default Wishlist Name"
 msgstr ""
 
-#: admin/settings/general.class.php:86
+#: admin/settings/general.class.php:86 admin/tinvwl.class.php:381
 msgid "Wishlist Page"
 msgstr ""
 
@@ -215,17 +215,17 @@ msgid ""
 msgstr ""
 
 #: admin/settings/general.class.php:269 admin/settings/general.class.php:392
-#: includes/wizard.class.php:406
+#: includes/wizard.class.php:408
 msgid "After \"Add to Cart\" button"
 msgstr ""
 
 #: admin/settings/general.class.php:270 admin/settings/general.class.php:393
-#: includes/wizard.class.php:407
+#: includes/wizard.class.php:409
 msgid "Before \"Add to Cart\" button"
 msgstr ""
 
 #: admin/settings/general.class.php:271 admin/settings/general.class.php:395
-#: includes/wizard.class.php:408
+#: includes/wizard.class.php:410
 msgid "Custom position with code"
 msgstr ""
 
@@ -744,7 +744,7 @@ msgstr ""
 msgid "Normal Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:253
+#: admin/settings/upgrade.class.php:34 admin/tinvwl.class.php:256
 #: views/wizard/finish.php:31
 msgid "Upgrade to Premium"
 msgstr ""
@@ -753,65 +753,65 @@ msgstr ""
 msgid "Premium Features"
 msgstr ""
 
-#: admin/tinvwl.class.php:93
+#: admin/tinvwl.class.php:96
 msgid ""
 "<strong>Welcome to WooCommerce Wishlist Plugin<strong> – You‘re almost "
 "ready to start :)"
 msgstr ""
 
-#: admin/tinvwl.class.php:95 admin/tinvwl.class.php:115
+#: admin/tinvwl.class.php:98 admin/tinvwl.class.php:118
 msgid "Run the Setup Wizard"
 msgstr ""
 
-#: admin/tinvwl.class.php:97
+#: admin/tinvwl.class.php:100
 msgid "Skip Setup"
 msgstr ""
 
-#: admin/tinvwl.class.php:105 includes/notice.helper.php:115
+#: admin/tinvwl.class.php:108 includes/notice.helper.php:115
 msgid "Dismiss"
 msgstr ""
 
-#: admin/tinvwl.class.php:106
+#: admin/tinvwl.class.php:109
 msgid "WooCommerce Wishlist Plugin is misconfigured!"
 msgstr ""
 
-#: admin/tinvwl.class.php:107
+#: admin/tinvwl.class.php:110
 msgid "Since the Setup Wizard was skipped, the Wishlist may function improperly."
 msgstr ""
 
-#: admin/tinvwl.class.php:108
+#: admin/tinvwl.class.php:111
 msgid ""
 "Create a New Page or open to edit a page where the Wishlist should be "
 "displayed."
 msgstr ""
 
-#: admin/tinvwl.class.php:109
+#: admin/tinvwl.class.php:112
 msgid "Add <code>[ti_wishlistsview]</code> shortcode into a page content."
 msgstr ""
 
-#: admin/tinvwl.class.php:110
+#: admin/tinvwl.class.php:113
 msgid "In a plugin General Settings section apply this page as a \"Wishlist\" page."
 msgstr ""
 
-#: admin/tinvwl.class.php:112
+#: admin/tinvwl.class.php:115
 msgid "Please apply the Wishlist page"
 msgstr ""
 
-#: admin/tinvwl.class.php:113
+#: admin/tinvwl.class.php:116
 msgid " or "
 msgstr ""
 
-#: admin/tinvwl.class.php:185
+#: admin/tinvwl.class.php:188
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:292
+#: admin/tinvwl.class.php:295
 msgid ""
 "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out "
 "of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:318
+#: admin/tinvwl.class.php:321
 msgid ""
 "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce "
 "Wishlist Plugin template files.</strong><br> These files may need updating "
@@ -914,48 +914,48 @@ msgstr ""
 msgid "read documentation"
 msgstr ""
 
-#: includes/wizard.class.php:262
+#: includes/wizard.class.php:264
 msgid "Introduction"
 msgstr ""
 
-#: includes/wizard.class.php:278 views/wizard/step-page.php:16
+#: includes/wizard.class.php:280 views/wizard/step-page.php:16
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:286 includes/wizard.class.php:317
+#: includes/wizard.class.php:288 includes/wizard.class.php:319
 #: public/tinvwl.class.php:544
 msgid "Wishlist"
 msgstr ""
 
-#: includes/wizard.class.php:290
+#: includes/wizard.class.php:292
 msgid "Create Automatically"
 msgstr ""
 
-#: includes/wizard.class.php:291
+#: includes/wizard.class.php:293
 msgid "Create new Page"
 msgstr ""
 
-#: includes/wizard.class.php:395
+#: includes/wizard.class.php:397
 msgid "Button"
 msgstr ""
 
-#: includes/wizard.class.php:439
+#: includes/wizard.class.php:441
 msgid "Processing"
 msgstr ""
 
-#: includes/wizard.class.php:449
+#: includes/wizard.class.php:451
 msgid "Automatically"
 msgstr ""
 
-#: includes/wizard.class.php:450
+#: includes/wizard.class.php:452
 msgid "Manual"
 msgstr ""
 
-#: includes/wizard.class.php:474 views/wizard/step-social.php:18
+#: includes/wizard.class.php:476 views/wizard/step-social.php:18
 msgid "Share"
 msgstr ""
 
-#: includes/wizard.class.php:515
+#: includes/wizard.class.php:517
 msgid "Ready!"
 msgstr ""
 

@@ -1801,7 +1801,6 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 								break;
 							default:
 								// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
-								continue;
 								break;
 						}
 
@@ -1905,7 +1904,6 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 							break;
 						default:
 							// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
-							continue;
 							break;
 					}
 

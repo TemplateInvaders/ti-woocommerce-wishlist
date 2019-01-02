@@ -303,7 +303,7 @@ class TInvWL_Public_Wishlist_Buttons {
 				$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 			}
 			$titles = array_filter( $titles );
-			wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
+			wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some requirements are not met.', 'Products: %s could not be added to cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
 		}
 		if ( ! empty( $result ) ) {
 			wc_add_to_cart_message( $result, true );
@@ -428,7 +428,7 @@ class TInvWL_Public_Wishlist_Buttons {
 					$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 				}
 				$titles = array_filter( $titles );
-				wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', 'Products: %s could not be added to cart because some options are not specified. Please, select some product options before adding the products to your cart.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
+				wc_add_notice( sprintf( _n( 'Product %s could not be added to cart because some requirements are not met.', 'Products: %s could not be added to cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ), 'error' );
 			}
 			if ( ! empty( $result ) ) {
 				wc_add_to_cart_message( $result, true );

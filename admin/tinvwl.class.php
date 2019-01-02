@@ -198,7 +198,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			$parent_theme = $current_theme->parent();
 
 			wp_add_inline_script( $this->_name, 'window.intercomSettings = {
-			app_id: "nc21pl9h",				
+			app_id: "wj7rirzi",				
 			"Website": "' . get_site_url() . '",
 			"Plugin name": "WooCommerce Wishlist Plugin",
 			"Plugin version":"' . TINVWL_FVERSION . '",

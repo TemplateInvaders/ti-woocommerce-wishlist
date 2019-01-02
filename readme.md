@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.0  
-**Stable tag:** 1.9.7  
+**Stable tag:** 1.9.8  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.8 ###
+*Release Date - 2 January 2019*
+
+* Updated add to cart error description
+* Fixed PHP 7.3 notices
+
 ### 1.9.7 ###
 *Release Date - 7 December 2018*
 

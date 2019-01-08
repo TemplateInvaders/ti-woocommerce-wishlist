@@ -268,7 +268,12 @@ class TInvWL_Public_Wishlist_View {
 	 * @return boolean
 	 */
 	function wishlist_action() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
+
+		$wishlist_page_id = apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true );
+
+		if ( is_page( $wishlist_page_id )
+		     || ( is_home() && 'page' === get_option( 'show_on_front' ) && absint( get_option( 'page_on_front' ) ) === $wishlist_page_id )
+		     || ( is_shop() && wc_get_page_id( 'shop' ) === $wishlist_page_id ) ) {
 			$wishlist = $this->get_current_wishlist();
 			if ( empty( $wishlist ) ) {
 				return false;

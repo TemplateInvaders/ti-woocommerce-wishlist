@@ -217,8 +217,25 @@ class TInvWL_Public_TInvWL {
 					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&paged=$matches[5]&lang=$matches[1]', 'top' );
 				}
 
+				// Wishlist on frontpage.
+				$page_on_front = absint( get_option( 'page_on_front' ) );
+				if ( $page_on_front && 'page' === get_option( 'show_on_front' ) && $page->ID === $page_on_front ) {
+					// Match the front page and pass item value as a query var.
+					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );
+				}
+
 				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&paged=$matches[4]', 'top' );
 				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]', 'top' );
+
+
+				// Wishlist on shop page.
+				$shop_page_id = wc_get_page_id( 'shop' );
+				if ( $shop_page_id && $page->ID === $shop_page_id ) {
+					$shop      = get_post( $shop_page_id );
+					$shop_slug = $shop->post_name;
+					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]', 'top' );
+					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]', 'top' );
+				}
 			}
 		}
 	}

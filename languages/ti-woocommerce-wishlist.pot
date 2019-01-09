@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin {{ VERSION }}\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2019-01-09 18:44:39+00:00\n"
+"POT-Creation-Date: 2019-01-09 19:17:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -443,11 +443,11 @@ msgid "Show \"Google+\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:630
-msgid "Show \"Share via WhatsApp\" Button"
+msgid "Show \"WhatsApp\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:636
-msgid "Show \"Copy URL to clipboard\" Button"
+msgid "Show \"Copy to clipboard\" Button"
 msgstr ""
 
 #: admin/settings/general.class.php:642 views/wizard/step-social.php:62

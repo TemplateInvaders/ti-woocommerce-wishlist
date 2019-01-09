@@ -130,6 +130,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.9 =
+*Release Date - 9 January 2019*
+
+* Added the ability to apply Wishlist on a front page and a shop page
+* Added share Wishlist via WhatsApp option
+* Added "Copy Wishlist URL to clipboard" option
+
 = 1.9.8 =
 *Release Date - 2 January 2019*
 

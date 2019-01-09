@@ -627,13 +627,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'whatsapp',
-						'text' => __( 'Show "Share via WhatsApp" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "WhatsApp" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'clipboard',
-						'text' => __( 'Show "Copy URL to clipboard" Button', 'ti-woocommerce-wishlist' ),
+						'text' => __( 'Show "Copy to clipboard" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(

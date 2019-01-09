@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.0  
-**Stable tag:** 1.9.8  
+**Stable tag:** 1.9.9  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.9 ###
+*Release Date - 9 January 2019*
+
+* Added the ability to apply Wishlist on a front page and a shop page
+* Added share Wishlist via WhatsApp option
+* Added "Copy Wishlist URL to clipboard" option
+
 ### 1.9.8 ###
 *Release Date - 2 January 2019*
 

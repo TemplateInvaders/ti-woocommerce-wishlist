@@ -522,7 +522,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			return array();
 		}
 
-		$paged    = get_query_var( 'paged', 1 );
+		$paged    = get_query_var( 'wl_paged', 1 );
 		$paged    = 1 < $paged ? $paged : 1;
 		$per_page = apply_filters( 'tinvwl_wishlist_buttons_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
 			'options' => array(

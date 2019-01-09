@@ -382,7 +382,7 @@ if ( ! function_exists( 'tinv_url_wishlist_by_key' ) ) {
 		}
 
 		if ( 1 < $paged ) {
-			$link = add_query_arg( 'paged', $paged, $link );
+			$link = add_query_arg( 'wl_paged', $paged, $link );
 		}
 
 		if ( $share_key ) {

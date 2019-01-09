@@ -1376,3 +1376,495 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 		display: block;
 	}
 }
+
+
+// Tooltips
+// Aliases for easy use
+$spacer: 8px !default;
+$spacers: (
+	0,
+	round($spacer / 2),
+	$spacer,
+	$spacer * 2,
+	$spacer * 3,
+	$spacer * 4,
+	$spacer * 5
+) !default;
+$spacer-0: nth($spacers, 1) !default; // 0
+$spacer-1: nth($spacers, 2) !default; // 4px
+$spacer-2: nth($spacers, 3) !default; // 8px
+$spacer-3: nth($spacers, 4) !default; // 16px
+$spacer-4: nth($spacers, 5) !default; // 24px
+$spacer-5: nth($spacers, 6) !default; // 32px
+$spacer-6: nth($spacers, 7) !default; // 40px
+// Em spacer variables
+$em-spacer-1: 0.0625em !default; // 1/16
+$em-spacer-2: 0.125em !default;  // 1/8
+$em-spacer-3: 0.25em !default;   // 1/4
+$em-spacer-4: 0.375em !default;  // 3/8
+$em-spacer-5: 0.5em !default;    // 1/2
+$em-spacer-6: 0.75em !default;   // 3/4
+// Font stacks
+$body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+//
+//
+// -------- Grays --------
+$gray-000:        #fafbfc !default;
+$gray-100:        #f6f8fa !default;
+$gray-200:        #e1e4e8 !default;
+$gray-300:        #d1d5da !default;
+$gray-400:        #959da5 !default;
+$gray-500:        #6a737d !default;
+$gray-600:        #586069 !default;
+$gray-700:        #444d56 !default;
+$gray-800:        #2f363d !default;
+$gray-900:        #24292e !default; // body font color
+
+// -------- Blue --------
+$blue-000:        #f1f8ff !default;
+$blue-100:        #dbedff !default;
+$blue-200:        #c8e1ff !default;
+$blue-300:        #79b8ff !default;
+$blue-400:        #2188ff !default;
+$blue-500:        #0366d6 !default; // Default: Passes AA with #fff
+$blue-600:        #005cc5 !default;
+$blue-700:        #044289 !default;
+$blue-800:        #032f62 !default;
+$blue-900:        #05264c !default; // Passes with 1/2/300 blues
+
+// -------- Green --------
+$green-000:       #f0fff4 !default;
+$green-100:       #dcffe4 !default;
+$green-200:       #bef5cb !default;
+$green-300:       #85e89d !default;
+$green-400:       #34d058 !default;
+$green-500:       #28a745 !default; // Default. passes AA Large
+$green-600:       #22863a !default; // Text green, passes AA on #fff
+$green-700:       #176f2c !default;
+$green-800:       #165c26 !default;
+$green-900:       #144620 !default;
+
+// -------- Yellow --------
+$yellow-000:      #fffdef !default;
+$yellow-100:      #fffbdd !default;
+$yellow-200:      #fff5b1 !default;
+$yellow-300:      #ffea7f !default;
+$yellow-400:      #ffdf5d !default;
+$yellow-500:      #ffd33d !default;
+$yellow-600:      #f9c513 !default;
+$yellow-700:      #dbab09 !default;
+$yellow-800:      #b08800 !default;
+$yellow-900:      #735c0f !default;
+
+// -------- Orange --------
+$orange-000:      #fff8f2 !default;
+$orange-100:      #ffebda !default;
+$orange-200:      #ffd1ac !default;
+$orange-300:      #ffab70 !default;
+$orange-400:      #fb8532 !default;
+$orange-500:      #f66a0a !default; // Default. passes AA Large with #fff
+$orange-600:      #e36209 !default;
+$orange-700:      #d15704 !default;
+$orange-800:      #c24e00 !default;
+$orange-900:      #a04100 !default;
+
+// -------- Red --------
+$red-000:         #ffeef0 !default;
+$red-100:         #ffdce0 !default;
+$red-200:         #fdaeb7 !default;
+$red-300:         #f97583 !default;
+$red-400:         #ea4a5a !default;
+$red-500:         #d73a49 !default; // Default. passes AA
+$red-600:         #cb2431 !default;
+$red-700:         #b31d28 !default;
+$red-800:         #9e1c23 !default;
+$red-900:         #86181d !default;
+
+// -------- Purple --------
+$purple-000:      #f5f0ff !default;
+$purple-100:      #e6dcfd !default;
+$purple-200:      #d1bcf9 !default;
+$purple-300:      #b392f0 !default;
+$purple-400:      #8a63d2 !default;
+$purple-500:      #6f42c1 !default; // passes AA with #fff
+$purple-600:      #5a32a3 !default;
+$purple-700:      #4c2889 !default;
+$purple-800:      #3a1d6e !default;
+$purple-900:      #29134e !default;
+
+// -------- Fades --------
+// Black based on same hue as $gray-900
+$black: #1b1f23 !default;
+$white: #fff !default;
+
+$black-fade-15:      rgba($black, 0.15) !default;
+$black-fade-30:      rgba($black, 0.3) !default;
+$black-fade-50:      rgba($black, 0.5) !default;
+$black-fade-70:      rgba($black, 0.7) !default;
+$black-fade-85:      rgba($black, 0.85) !default;
+
+$white-fade-15:      rgba($white, 0.15) !default;
+$white-fade-30:      rgba($white, 0.3) !default;
+$white-fade-50:      rgba($white, 0.5) !default;
+$white-fade-70:      rgba($white, 0.7) !default;
+$white-fade-85:      rgba($white, 0.85) !default;
+
+// -------- Color defaults --------
+$red:         $red-500 !default;
+$purple:      $purple-500 !default;
+$blue:        $blue-500 !default;
+$green:       $green-500 !default;
+$yellow:      $yellow-500 !default;
+$orange:      $orange-500 !default;
+
+$gray-dark:   $gray-900 !default;
+$gray-light:  $gray-400 !default;
+$gray:        $gray-500 !default;
+// Border colors
+$border-black-fade:  $black-fade-15 !default;
+
+$border-blue:        $blue-500 !default;
+$border-blue-light:  $blue-200 !default;
+
+$border-green:       $green-400 !default;
+$border-green-light: desaturate($green-300, 40%) !default;
+
+$border-purple:      $purple !default;
+
+$border-red:         $red !default;
+$border-red-light:   desaturate($red-300, 60%) !default;
+
+$border-purple:      $purple !default;
+
+$border-yellow:      desaturate($yellow-300, 60%) !default;
+
+$border-gray-dark:   $gray-300 !default;
+$border-gray-darker: $gray-700 !default;
+$border-gray-light:  lighten($gray-200, 3%) !default;
+$border-gray:        $gray-200 !default;
+
+$tooltip-max-width: 250px !default;
+$tooltip-background-color: $black;
+$tooltip-text-color: $white !default;
+$tooltip-delay: 0.4s !default;
+$tooltip-duration: 0.1s !default;
+// Border size
+$border-width: 1px !default;
+$border-color: $border-gray !default;
+$border-style: solid !default;
+$border: $border-width $border-color $border-style !default;
+$border-radius: 3px !default;
+
+.tooltipped {
+	position: relative;
+}
+
+// This is the tooltip bubble
+.tooltipped::after {
+	position: absolute;
+	z-index: 1000000;
+	display: none;
+	padding: $em-spacer-5 $em-spacer-6;
+	font: normal normal 11px/1.5 $body-font;
+	-webkit-font-smoothing: subpixel-antialiased;
+	color: $tooltip-text-color;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: none;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: break-word;
+	white-space: pre;
+	pointer-events: none;
+	content: attr(aria-label);
+	background: $tooltip-background-color;
+	border-radius: $border-radius;
+	opacity: 0;
+}
+
+// This is the tooltip arrow
+.tooltipped::before {
+	position: absolute;
+	z-index: 1000001;
+	display: none;
+	width: 0;
+	height: 0;
+	color: $tooltip-background-color;
+	pointer-events: none;
+	content: "";
+	border: 6px $border-style transparent;
+	opacity: 0;
+}
+
+// delay animation for tooltip
+@keyframes tooltip-appear {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+// This will indicate when we'll activate the tooltip
+.tooltipped:hover,
+.tooltipped:active,
+.tooltipped:focus {
+	&::before,
+	&::after {
+		display: inline-block;
+		text-decoration: none;
+		animation-name: tooltip-appear;
+		animation-duration: $tooltip-duration;
+		animation-fill-mode: forwards;
+		animation-timing-function: ease-in;
+		animation-delay: $tooltip-delay;
+	}
+}
+
+.tooltipped-no-delay:hover,
+.tooltipped-no-delay:active,
+.tooltipped-no-delay:focus {
+	&::before,
+	&::after {
+		animation-delay: 0s;
+	}
+}
+
+.tooltipped-multiline:hover,
+.tooltipped-multiline:active,
+.tooltipped-multiline:focus {
+	&::after {
+		display: table-cell;
+	}
+}
+
+// Tooltipped south
+.tooltipped-s,
+.tooltipped-se,
+.tooltipped-sw {
+	&::after {
+		top: 100%;
+		right: 50%;
+		margin-top: 6px;
+	}
+
+	&::before {
+		top: auto;
+		right: 50%;
+		bottom: -7px;
+		margin-right: -6px;
+		border-bottom-color: $tooltip-background-color;
+	}
+}
+
+.tooltipped-se {
+	&::after {
+		right: auto;
+		left: 50%;
+		margin-left: -$spacer-3;
+	}
+}
+
+.tooltipped-sw::after {
+	margin-right: -$spacer-3;
+}
+
+// Tooltips above the object
+.tooltipped-n,
+.tooltipped-ne,
+.tooltipped-nw {
+	&::after {
+		right: 50%;
+		bottom: 100%;
+		margin-bottom: 6px;
+	}
+
+	&::before {
+		top: -7px;
+		right: 50%;
+		bottom: auto;
+		margin-right: -6px;
+		border-top-color: $tooltip-background-color;
+	}
+}
+
+.tooltipped-ne {
+	&::after {
+		right: auto;
+		left: 50%;
+		margin-left: -$spacer-3;
+	}
+}
+
+.tooltipped-nw::after {
+	margin-right: -$spacer-3;
+}
+
+// Move the tooltip body to the center of the object.
+.tooltipped-s::after,
+.tooltipped-n::after {
+	transform: translateX(50%);
+}
+
+// Tooltipped to the left
+.tooltipped-w {
+	&::after {
+		right: 100%;
+		bottom: 50%;
+		margin-right: 6px;
+		transform: translateY(50%);
+	}
+
+	&::before {
+		top: 50%;
+		bottom: 50%;
+		left: -7px;
+		margin-top: -6px;
+		border-left-color: $tooltip-background-color;
+	}
+}
+
+// tooltipped to the right
+.tooltipped-e {
+	&::after {
+		bottom: 50%;
+		left: 100%;
+		margin-left: 6px;
+		transform: translateY(50%);
+	}
+
+	&::before {
+		top: 50%;
+		right: -7px;
+		bottom: 50%;
+		margin-top: -6px;
+		border-right-color: $tooltip-background-color;
+	}
+}
+
+// Tooltip align right and left
+.tooltipped-align-right-1,
+.tooltipped-align-right-2 {
+	&::after {
+		right: 0;
+		margin-right: 0;
+	}
+}
+
+.tooltipped-align-right-1 {
+	&::before {
+		right: 10px;
+	}
+}
+
+.tooltipped-align-right-2 {
+	&::before {
+		right: 15px;
+	}
+}
+
+.tooltipped-align-left-1,
+.tooltipped-align-left-2 {
+	&::after {
+		left: 0;
+		margin-left: 0;
+	}
+}
+
+.tooltipped-align-left-1 {
+	&::before {
+		left: 5px;
+	}
+}
+
+.tooltipped-align-left-2 {
+	&::before {
+		left: 10px;
+	}
+}
+
+// Multiline tooltips
+//
+// `.tooltipped-multiline` Add this class when you have long content.
+// The downside is you cannot preformat the text with newlines and `[w,e]`
+// are always `$tooltip-max-width` wide.
+.tooltipped-multiline {
+	&::after {
+		width: max-content;
+		max-width: $tooltip-max-width;
+		word-wrap: break-word;
+		white-space: pre-line;
+		border-collapse: separate;
+	}
+
+	&.tooltipped-s::after,
+	&.tooltipped-n::after {
+		right: auto;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&.tooltipped-w::after,
+	&.tooltipped-e::after {
+		right: 100%;
+	}
+}
+
+@media screen and (min-width: 0\0) {
+	// IE11
+	.tooltipped-multiline::after {
+		width: $tooltip-max-width;
+	}
+}
+
+// Sticky tooltips
+//
+// Always show the tooltip.
+.tooltipped-sticky {
+	&::before,
+	&::after {
+		display: inline-block;
+	}
+
+	&.tooltipped-multiline {
+		&::after {
+			display: table-cell;
+		}
+	}
+}
+
+// Alert tooltips
+//
+// Colors for different alert states.
+@mixin colorizeTooltip($text-color, $background-color) {
+	&::after {
+		color: $text-color;
+		background: $background-color;
+	}
+
+	&.tooltipped-s,
+	&.tooltipped-se,
+	&.tooltipped-sw {
+		&::before {
+			border-bottom-color: $background-color;
+		}
+	}
+
+	&.tooltipped-n,
+	&.tooltipped-ne,
+	&.tooltipped-nw {
+		&::before {
+			border-top-color: $background-color;
+		}
+	}
+
+	&.tooltipped-e::before {
+		border-right-color: $background-color;
+	}
+
+	&.tooltipped-w::before {
+		border-left-color: $background-color;
+	}
+}

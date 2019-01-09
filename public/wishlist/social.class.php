@@ -26,7 +26,6 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Image url
 	 *
-	 * @deprecated 0.0.2
 	 * @var string
 	 */
 	static $image;
@@ -82,6 +81,9 @@ class TInvWL_Public_Wishlist_Social {
 		foreach ( $social as $name => $soc_network ) {
 			if ( $soc_network && method_exists( __CLASS__, $name ) ) {
 				$social[ $name ] = self::$name();
+				if ( 'clipboard' === $name ) {
+					wp_enqueue_script( 'tinvwl-clipboard' );
+				}
 			} else {
 				$social[ $name ] = '';
 			}
@@ -167,5 +169,27 @@ class TInvWL_Public_Wishlist_Social {
 		);
 
 		return 'mailto:?' . http_build_query( $data );
+	}
+
+	/**
+	 * Create copy to clipboard url
+	 *
+	 * @return string
+	 */
+	public static function clipboard() {
+		return self::$url;
+	}
+
+	/**
+	 * Create WhatsApp share url
+	 *
+	 * @return string
+	 */
+	public static function whatsapp() {
+		$data = array(
+			'text' => self::$url,
+		);
+
+		return 'https://api.whatsapp.com/send?' . http_build_query( $data );
 	}
 }

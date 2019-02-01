@@ -1,13 +1,13 @@
 {
   "name": "ti-woocommerce-wishlist",
-  "version": "1.9.9",
+  "version": "1.9.10",
   "title": "WooCommerce Wishlist Plugin",
   "description": "Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.",
   "main": "Gruntfile.js",
   "homepage": "https://wordpress.org/plugins/ti-woocommerce-wishlist/",
   "dependencies": {
     "grunt-cli": "~1.3.2",
-    "npm": "~6.4.1"
+    "npm": "~6.7.0"
   },
   "devDependencies": {
     "grunt": "~1.0.3",
@@ -20,12 +20,12 @@
     "grunt-contrib-concat": "~1.0.1",
     "grunt-string-replace": "~1.3.1",
     "jit-grunt": "~0.10.0",
-    "time-grunt": "~1.4.0",
+    "time-grunt": "~2.0.0",
     "grunt-sass": "~3.0.2",
     "grunt-header": "~1.1.0",
     "grunt-checktextdomain": "~1.0.1",
     "grunt-wp-i18n": "~1.0.3",
     "grunt-wp-readme-to-markdown": "~2.0.1",
-    "node-sass": "~4.10.0"
+    "node-sass": "~4.11.0"
   }
 }

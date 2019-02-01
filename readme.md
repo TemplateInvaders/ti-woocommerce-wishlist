@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.0  
-**Stable tag:** 1.9.9  
+**Stable tag:** 1.9.10  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.10 ###
+*Release Date - 1 February 2019*
+
+* Fixed compatibility issue for WooCommerce prior 3.2 version
+* Added compatibility with WooCommerce Custom Fields plugin
+
 ### 1.9.9 ###
 *Release Date - 9 January 2019*
 

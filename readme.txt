@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.10 =
+*Release Date - 1 February 2019*
+
+* Fixed compatibility issue for WooCommerce prior 3.2 version
+* Added compatibility with WooCommerce Custom Fields plugin
+
 = 1.9.9 =
 *Release Date - 9 January 2019*
 

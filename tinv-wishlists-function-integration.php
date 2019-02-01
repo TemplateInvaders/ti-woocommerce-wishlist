@@ -449,7 +449,7 @@ if ( ! function_exists( 'tinvwl_gift_card_add_url' ) ) {
 if ( ! function_exists( 'tinv_wishlist_meta_support_rpgiftcards' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce - Gift Cards
+	 * Set description for meta WooCommerce - Gift Cards
 	 *
 	 * @param array $meta Meta array.
 	 *
@@ -513,7 +513,7 @@ if ( ! function_exists( 'tinv_wishlist_metaprepare_rpgiftcards' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_bookings' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Bookings
+	 * Set description for meta WooCommerce Bookings
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Priduct ID.
@@ -635,7 +635,7 @@ if ( ! function_exists( 'tinvwl_item_status_woocommerce_bookings' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce - Gravity Forms Product Add-Ons
+	 * Set description for meta WooCommerce - Gravity Forms Product Add-Ons
 	 *
 	 * @param array $meta Meta array.
 	 *
@@ -666,7 +666,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_composite_products' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Composite Products
+	 * Set description for meta WooCommerce Composite Products
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -825,7 +825,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Product Bundles
+	 * Set description for meta WooCommerce Product Bundles
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -1171,7 +1171,7 @@ if ( ! function_exists( 'tinvwl_add_form_woocommerce_mix_and_match_products' ) )
 if ( ! function_exists( 'tinv_wishlist_metasupport_yith_woocommerce_product_bundles' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Mix and Match
+	 * Set description for meta WooCommerce Mix and Match
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -1312,7 +1312,7 @@ if ( ! function_exists( 'tinvwl_row_yith_woocommerce_product_bundles' ) ) {
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_add_on' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Product Add-on
+	 * Set description for meta WooCommerce Product Add-on
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -1334,7 +1334,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_add_on' )
 if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce Product Add-on
+	 * Set description for meta WooCommerce Product Add-on
 	 *
 	 * @param array $meta Meta array.
 	 * @param array $wl_product Wishlist Product.
@@ -1475,7 +1475,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_options' ) ) {
 
 	/**
-	 * Set descrition for meta WooCommerce TM Extra Product Options
+	 * Set description for meta WooCommerce TM Extra Product Options
 	 *
 	 * @param array $meta Meta array.
 	 * @param integer $product_id Product ID.
@@ -1602,7 +1602,7 @@ if ( function_exists( 'wpm_translate_string' ) ) {
 if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on' ) ) {
 
 	/**
-	 * Set descrition for meta YITH WooCommerce Product Add-on
+	 * Set description for meta YITH WooCommerce Product Add-on
 	 *
 	 * @param array $meta Meta array.
 	 * @param array $wl_product Wishlist Product.
@@ -1721,10 +1721,41 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 } // End if().
 
 
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_fields' ) ) {
+
+	/**
+	 * Modify price for WooCommerce Custom Fields.
+	 *
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_custom_fields( $price, $wl_product, $product ) {
+
+		if ( class_exists( 'WCCF' ) && isset( $wl_product['meta']['wccf']['product_field'] ) ) {
+
+			$posted = array();
+
+			foreach ( $wl_product['meta']['wccf']['product_field'] as $key => $value ) {
+				$posted[ $key ] = array( 'value' => $value );
+			}
+
+			$price = wc_price( WCCF_Pricing::get_adjusted_price( $product->get_price(), $wl_product['product_id'], $wl_product['variation_id'], $posted, 1, false, false, $product, false ) );
+		}
+
+		return $price;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_fields', 10, 3 );
+} // End if().
+
+
 if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) ) {
 
 	/**
-	 * Set descrition for meta  WooCommerce Product Addons
+	 * Set description for meta  WooCommerce Product Addons
 	 *
 	 * @param array $meta Meta array.
 	 * @param array $wl_product Wishlist Product.
@@ -1829,6 +1860,110 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 	}
 
 	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_product_addons', 10, 3 );
+} // End if().
+
+if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_fields' ) ) {
+
+	/**
+	 * Set description for meta  WooCommerce Custom Fields
+	 *
+	 * @param array $meta Meta array.
+	 * @param array $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_item_meta_woocommerce_custom_fields( $item_data, $product_id, $variation_id ) {
+
+
+		if ( class_exists( 'WCCF' ) && isset( $item_data['wccf'] ) ) {
+
+			$id      = ( $variation_id ) ? $variation_id : $product_id;
+			$product = wc_get_product( $id );
+			if ( $product ) {
+
+
+				// Get fields to save values for
+				$fields = WCCF_Product_Field_Controller::get_filtered( null, array(
+					'item_id'  => $product_id,
+					'child_id' => $variation_id
+				) );
+
+				// Set quantity
+				$quantity        = 1;
+				$quantity_index  = null;
+				$display_pricing = null;
+
+				// Check if pricing can be displayed for this product
+				if ( $display_pricing === null ) {
+					$display_pricing = ! WCCF_WC_Product::skip_pricing( $product );
+				}
+
+				foreach ( $fields as $field ) {
+
+					// Check how many times to iterate the same field (used for quantity-based product fields)
+					if ( $quantity_index !== null ) {
+						$iterations = ( $quantity_index + 1 );
+						$i          = $quantity_index;
+					} else {
+						$iterations = ( $field->is_quantity_based() && $quantity ) ? $quantity : 1;
+						$i          = 0;
+					}
+
+					// Start iteration of the same field
+					for ( $i = $i; $i < $iterations; $i ++ ) {
+
+						// Get field id
+						$field_id = $field->get_id() . ( $i ? ( '_' . $i ) : '' );
+
+						// Special handling for files
+						if ( $field->field_type_is( 'file' ) ) {
+							//just skip this field type because we can't save uploaded data.
+						} // Handle other field values
+						else {
+
+							// Check if any data for this field was posted or is available in request query vars for GET requests
+							if ( isset( $item_data['wccf']['display']['product_field'][ $field_id ] ) ) {
+
+								// Get field value
+								if ( isset( $item_data['wccf']['display']['product_field'][ $field_id ] ) ) {
+									$field_value = $item_data['wccf']['display']['product_field'][ $field_id ];
+								}
+
+								// Prepare multiselect field values
+								if ( $field->accepts_multiple_values() ) {
+
+									// Ensure that value is array
+									$value = ! RightPress_Help::is_empty( $field_value ) ? (array) $field_value : array();
+
+									// Filter out hidden placeholder input value
+									$value = array_filter( (array) $value, function ( $test_value ) {
+										return trim( $test_value ) !== '';
+									} );
+								} else {
+									$value = stripslashes( trim( $field_value ) );
+								}
+
+								$item_data[] = array(
+									'key'     => $field->get_label(),
+									'display' => $field->format_display_value( array( 'value' => $value ), $display_pricing ),
+								);
+
+
+							}
+						}
+					}
+				}
+
+				unset( $item_data['wccf'] );
+				unset( $item_data['wccf_ignore'] );
+			}
+		}
+
+		return $item_data;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_custom_fields', 10, 3 );
 } // End if().
 
 if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {

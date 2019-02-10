@@ -130,6 +130,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.11 =
+*Release Date - 10 February 2019*
+
+* Fixed compatibility with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin version greater 4.3.7
+* Added 'tinvwl-wc-cart-fragments' filter to disable wc-cart-fragments from 3rd party code
+* Added unique IDs for Wishlist menu options to avoid any incompatibility issues with another plugin options
+
 = 1.9.10 =
 *Release Date - 1 February 2019*
 

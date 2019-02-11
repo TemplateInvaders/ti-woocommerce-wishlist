@@ -237,7 +237,12 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare' ) ) {
 			global $woocommerce_wpml, $sitepress, $wpdb;
 
 			// Reload products class.
-			$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
+			if ( version_compare( WCML_VERSION, '4.4.0', '<' ) ) {
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
+			} else {
+				global $wpml_post_translations;
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
+			}
 
 			if ( array_key_exists( 'product_id', $post_data ) && ! empty( $post_data['product_id'] ) ) {
 				$post_data['product_id'] = $woocommerce_wpml->products->get_original_product_id( $post_data['product_id'] );
@@ -349,7 +354,12 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare_form' ) ) {
 			global $woocommerce_wpml, $sitepress, $wpdb;
 
 			// Reload products class.
-			$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
+			if ( version_compare( WCML_VERSION, '4.4.0', '<' ) ) {
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
+			} else {
+				global $wpml_post_translations;
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
+			}
 
 			if ( array_key_exists( 'product_id', $post_data ) && ! empty( $post_data['product_id'] ) ) {
 				$post_data['product_id'] = $woocommerce_wpml->products->get_original_product_id( $post_data['product_id'] );

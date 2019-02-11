@@ -130,6 +130,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.12 =
+*Release Date - 11 February 2019*
+
+* Fixed compatibility with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin version greater 4.3.7
+
 = 1.9.11 =
 *Release Date - 10 February 2019*
 

@@ -212,7 +212,7 @@
 					redirect: window.location.href
 				},
 				a = this;
-			$(a).closest('form.cart[method=post], .tinvwl-loop-button-wrapper').find('input, select, textarea').each(function () {
+			$(a).closest('form.cart[method=post], .tinvwl-loop-button-wrapper').find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
 				var name_elm = $(this).attr('name'),
 					type_elm = $(this).attr('type'),
 					value_elm = $(this).val(),

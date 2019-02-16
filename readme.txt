@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Donate link: https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=donate
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
-Tested up to: 5.0
+Tested up to: 5.1
 Stable tag: {{ VERSION }}
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.13 =
+*Release Date - 16 February 2019*
+
+* Improved "add to wishlist" button behavior for variable products
+* Improved compatibility with WooCommerce Custom Fields plugin
+
 = 1.9.12 =
 *Release Date - 11 February 2019*
 

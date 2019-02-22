@@ -130,6 +130,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.14 =
+*Release Date - 22 February 2019*
+
+* Added compatibility with WooCommerce Advanced Quantity plugin
+* Fixed an issue with dependencies in the wp_register_script function
+
 = 1.9.13 =
 *Release Date - 16 February 2019*
 

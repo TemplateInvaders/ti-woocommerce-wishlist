@@ -433,13 +433,13 @@ if ( ! function_exists( 'tinv_wishlist_status' ) ) {
 	/**
 	 * Check status free or premium plugin and disable free
 	 *
-	 * @global string $status
-	 * @global string $page
-	 * @global string $s
-	 *
 	 * @param string $transient Plugin transient name.
 	 *
 	 * @return string
+	 * @global string $s
+	 *
+	 * @global string $status
+	 * @global string $page
 	 */
 	function tinv_wishlist_status( $transient ) {
 		if ( TINVWL_LOAD_FREE === $transient ) {
@@ -622,8 +622,8 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->get_id() : ( $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id() ) ),
 		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $_product->variation_data ) ? $_product->variation_data : array() ) : array() ) ) ) );
 
-		$need_url      = apply_filters( 'woocommerce_product_add_to_cart_url1', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $_product );
-		$need_url_full = apply_filters( 'woocommerce_product_add_to_cart_url1', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $_product->get_permalink() ) ), $_product );
+		$need_url      = apply_filters( 'tinvwl_product_add_to_cart_redirect_slug_original', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $_product );
+		$need_url_full = apply_filters( 'tinvwl_product_add_to_cart_redirect_url_original', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $_product->get_permalink() ) ), $_product );
 
 		global $product;
 		// store global product data.
@@ -632,7 +632,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 		$product = $_product;
 
 		add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
-		$_redirect_url = apply_filters( 'tinvwl_product_add_to_cart_redirect_url1', $_product->add_to_cart_url(), $_product );
+		$_redirect_url = apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $_product->add_to_cart_url(), $_product );
 		remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
 		// restore global product data.
@@ -667,7 +667,7 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 
 			$wl_product        = apply_filters( 'tinvwl_addproduct_tocart', $wl_product );
 			$product_id        = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $wl_product['product_id'] ) );
-			$quantity          = empty( $wl_quantity ) ? 1 : wc_stock_amount( $wl_quantity );
+			$quantity          = empty( $wl_product['quantity'] ) ? 1 : wc_stock_amount( $wl_product['quantity'] );
 			$variation_id      = $wl_product['variation_id'];
 			$variations        = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_data : ( $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array() ) );
 			$passed_validation = $product->is_purchasable() && ( $product->is_in_stock() || $product->backorders_allowed() ) && 'external' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() );

@@ -159,7 +159,7 @@ if ( ! function_exists( 'tinv_wishlist_locate_template' ) ) {
 	function tinv_wishlist_locate_template( $template_name, $template_path = '', $default_path = '' ) {
 		$prefix = 'ti-';
 
-		if ( substr( $template_name, 0, strlen( $prefix ) ) !== $prefix ) {
+		if ( substr( basename( $template_name ), 0, strlen( $prefix ) ) !== $prefix ) {
 			return;
 		}
 

@@ -454,6 +454,8 @@ class TInvWL_Public_Wishlist_View {
 		// restore global product data.
 		$product = $_product_tmp;
 
+		$quantity = apply_filters( 'tinvwl_product_add_to_cart_quantity', $quantity, $_product['data'] );
+
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
 			wp_redirect( apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $redirect_url, $_product['data'], $_product ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
 			exit;

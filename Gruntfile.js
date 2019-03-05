@@ -247,10 +247,18 @@ module.exports = function (grunt) {
 		},
 		'string-replace': {
 			version: {
-				files: {
-					"build/<%= pkg.name %>/readme.txt": "build/<%= pkg.name %>/readme.txt",
-					"build/<%= pkg.name %>/ti-woocommerce-wishlist.php": "build/<%= pkg.name %>/ti-woocommerce-wishlist.php",
-				},
+				files: [
+					{
+						"build/<%= pkg.name %>/readme.txt": "build/<%= pkg.name %>/readme.txt",
+						"build/<%= pkg.name %>/ti-woocommerce-wishlist.php": "build/<%= pkg.name %>/ti-woocommerce-wishlist.php",
+					},
+					{
+						expand: true,
+						cwd: "build/<%= pkg.name %>/languages/",
+						src: "*",
+						dest: "build/<%= pkg.name %>/languages/"
+					}
+				],
 				options: {
 					replacements: [{
 						pattern: /{{ VERSION }}/g,

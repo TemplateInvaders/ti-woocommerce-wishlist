@@ -13,42 +13,50 @@ Add Wishlist functionality to your store for free.
 
 == Description ==
 
-= GDPR Ready =
-The WooCommerce Wishlist plugin does not collect any personal data from website visitors which makes it GDPR compliant.
-
 = Increase Sales and Conversions =
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
 
-[Live Preview](https://woocommercewishlist.com/preview/?utm_source=wordpressorg&utm_content=preview)
+🔗 [Live Preview](https://woocommercewishlist.com/preview/?utm_source=wordpressorg&utm_content=preview)
 
-[View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
+🔗 [View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
 
-= Features List =
+= Basic Features =
 
 + Select Wishlist page and Name
 + Remove product from wishlist automatically, after adding it to cart
 + Position of "Add to wishlist" button on product page and catalog
 + Shortcode for "Add to wishlist" button to place it anywhere on the page.
 + "Add to wishlist" Button or Link on product page
-+ Predefined icons for "Add to Wishlist" button in two colors
++ Predefined icons for "Add to Wishlist" button
 + Upload your custom "Add to Wishlist" button icon
 + Redirect to wishlist page after adding items to the wishlist
-+ Customize wishlist table columns:
- + Show "Add to Cart" button
- + Show "Add all to cart" button
- + Show "Add selected to cart" button
- + Show unit price
- + Show stock status
- + Show the date when the product has been added to the wishlist
- + Show bulk actions
- + Show checkboxes
-+ Share wishlist on social channels (Facebook, Twitter, Pinterest, Google+, email)
++ Customizable wishlist table columns
++ Share wishlist on social channels (Facebook, Twitter, Pinterest, Google+, WhatsApp, email)
 + Fully Customizable Appearance 
 + Custom CSS styles 
 + Responsive & Retina Ready
 + Translation ready 
 + [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) Support
 + Product variations Support
+
+= Premium Features =
+
+TI WooCommerce Wishlist Premium version is a powerful marketing tool on top of a wishlist functionality!
+
+➡ <strong>[GET PREMIUM VERSION NOW!](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=get_premium)</strong>
+
+🔹 Multi-wishlists per user
+🔹 Wishlist privacy settings
+🔹 Products quantity
+🔹 Product analytics for admin
+🔹 Promotional emails
+🔹 Ask for an estimate feature
+🔹 Following wishlist feature
+🔹 Advanced settings almost for all basic features
+🔹 Additional shortcodes and widgets
+🔹 Premium predefined styles skin
+
+🔗 [See the difference between free and premium versions](https://templateinvaders.com/free-vs-premium-woocommerce-wishlist-comparison/?utm_source=wordpressorg&utm_content=compare) of the most powerful Wishlist solution for WooCommerce.
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
 We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
@@ -71,6 +79,8 @@ You can easily translate WooCommerce Wishlist Plugin to any language. Simply cho
 We know how important responsive website for the online store in nowadays.
 That is why we made sure that Wishlist looks and works perfectly on any devices and the layouts are user-friendly. Simply check screenshots or preview.
 
+= GDPR Ready =
+The WooCommerce Wishlist plugin does not collect any personal data from website visitors which makes it GDPR compliant.
 
 == Installation ==
 
@@ -130,6 +140,14 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.15 =
+*Release Date - 5 March 2019*
+
+* Fixed templates path issue
+* Added compatibility with [Woocommerce Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin by acowebs
+* Improved compatibility with WooCommerce Advanced Quantity plugin
+* Minor CSS fixes
+
 = 1.9.14 =
 *Release Date - 22 February 2019*
 

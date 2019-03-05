@@ -244,7 +244,7 @@ WooCommerce Wishlist Plugin custom webfont
   margin-right: 6px;
 }
 
-.tinv-wishlist input[type=button] i, .tinv-wishlist input[type=reset] i, .tinv-wishlist input[type=submit] i {
+.tinv-wishlist input[type="button"] i, .tinv-wishlist input[type="reset"] i, .tinv-wishlist input[type="submit"] i {
   margin-right: 6px;
 }
 
@@ -846,10 +846,10 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 641px) {
-  .tinv-wishlist .wishlist-action button[value=manage_remove] span {
+  .tinv-wishlist .wishlist-action button[value="manage_remove"] span {
     display: none;
   }
-  .tinv-wishlist .wishlist-action button[value=manage_remove] > i {
+  .tinv-wishlist .wishlist-action button[value="manage_remove"] > i {
     display: inline-block;
   }
   .tinv-wishlist tfoot .tinvwl-to-left + .tinvwl-to-right {
@@ -858,7 +858,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 @media only screen and (max-width: 640px) {
-  .tinv-wishlist button[value=manage_apply] .tinvwl-mobile, .tinv-wishlist button[value=product_apply] .tinvwl-mobile {
+  .tinv-wishlist button[value="manage_apply"] .tinvwl-mobile, .tinv-wishlist button[value="product_apply"] .tinvwl-mobile {
     display: none;
   }
   .tinv-wishlist tfoot .tinvwl-to-right .tinv-create-list {
@@ -1189,12 +1189,16 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 .tinv-wishlist .tinvwl-has-error:not(.tinvwl-input-group), .tinv-wishlist .tinvwl-input-group.tinvwl-has-error .form-control {
-  border: 2px solid red;
+  border: 2px solid #FF0000;
+}
+
+.tinv-wishlist .tinvwl-has-error:not(.tinvwl-input-group) {
+  border: 2px solid #FF0000;
 }
 
 .tinv-wishlist .tinvwl-has-error + .tinvwl-error {
   padding: 5px 0 0 5px;
-  color: red;
+  color: #FF0000;
 }
 
 @media only screen and (max-width: 640px) {
@@ -1294,18 +1298,20 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   vertical-align: middle;
 }
 
-.tinv-wishlist-clear:after, .tinv-wishlist-clear:before {
-  content: " ";
-  display: table;
-}
-
 .tinv-wishlist .tinv-wishlist-clear {
   visibility: visible;
   width: auto;
   height: auto;
 }
 
+.tinv-wishlist-clear:before {
+  content: "";
+  display: table;
+}
+
 .tinv-wishlist-clear:after {
+  content: "";
+  display: table;
   clear: both;
 }
 
@@ -1361,7 +1367,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 .empty-name-wishlist {
-  border-color: red !important;
+  border-color: #FF0000 !important;
 }
 
 .tinvwl_remove_from_wishlist-text {
@@ -1626,7 +1632,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   right: 100%;
 }
 
-@media screen and (min-width: 0\0) {
+@media screen and (min-width: 0 \0 ) {
   .tooltipped-multiline::after {
     width: 250px;
   }

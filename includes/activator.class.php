@@ -324,11 +324,11 @@ class TInvWL_Activator {
 	/**
 	 * Created tables from array
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param array $tables Array tables.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function create( $tables ) {
 		global $wpdb;
@@ -350,11 +350,11 @@ class TInvWL_Activator {
 	/**
 	 * Upgrade tables from array
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param array $tables Array tables.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade( $tables ) {
 
@@ -372,11 +372,11 @@ class TInvWL_Activator {
 	/**
 	 * Get columns for exist table.
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 *
 	 * @return array
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_get_columns( $name ) {
 		global $wpdb;
@@ -393,12 +393,12 @@ class TInvWL_Activator {
 	/**
 	 * Apply upgrade action
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Name Table.
 	 * @param array $table Structured array table.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action( $name, $table ) {
 
@@ -445,9 +445,10 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Truncate table
 	 *
+	 * @param string $name Table name.
+	 *
 	 * @global wpdb $wpdb
 	 *
-	 * @param string $name Table name.
 	 */
 	public static function upgrade_action_truncate( $name ) {
 		global $wpdb;
@@ -458,9 +459,10 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Drop table
 	 *
+	 * @param string $name Table name.
+	 *
 	 * @global wpdb $wpdb
 	 *
-	 * @param string $name Table name.
 	 */
 	public static function upgrade_action_drop( $name ) {
 		global $wpdb;
@@ -472,13 +474,13 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Rename table
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Not used.
 	 * @param array $upgrade Upgrade fields.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_rename_table( $name, $table, $upgrade ) {
 		global $wpdb;
@@ -498,10 +500,11 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Update fields table
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Table array.
+	 *
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_update_fields( $name, $table ) {
 		global $wpdb;
@@ -537,13 +540,13 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Update field table
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Table array.
 	 * @param array $upgrade Upgrade fields.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_update_field( $name, $table, $upgrade ) {
 		global $wpdb;
@@ -587,13 +590,13 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Rename field.
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Table array.
 	 * @param array $upgrade Upgrade fields.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_rename_field( $name, $table, $upgrade ) {
 		global $wpdb;
@@ -627,13 +630,13 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Use sql.
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Not used.
 	 * @param array $upgrade Upgrade fields.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_sql( $name, $table, $upgrade ) {
 		global $wpdb;
@@ -648,11 +651,11 @@ class TInvWL_Activator {
 	/**
 	 * Destroy tables from array
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param type $tables Array tables.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function destroy( $tables ) {
 		global $wpdb;
@@ -688,7 +691,7 @@ class TInvWL_Activator {
 			'first++'  => array( 'BIGINT', null, false, null, true ),
 			'int_0'    => array( 'BIGINT', null, false, 0 ),
 			'int_1'    => array( 'BIGINT', null, false, 1 ),
-			'text'     => array( 'TEXT' ),
+			'text'     => array( 'TEXT', null, true, null ),
 			'longtext' => array( 'LONGTEXT' ),
 			'date'     => array( 'DATETIME', null, false, '0000-00-00 00:00:00' ),
 			'bool'     => array( 'TINYINT', 1, false, 1 ),
@@ -698,8 +701,8 @@ class TInvWL_Activator {
 	/**
 	 * Database
 	 *
-	 * @since             1.0.0
 	 * @return array
+	 * @since             1.0.0
 	 */
 	private static function database_1_0_0() {
 		$t = array(
@@ -740,8 +743,8 @@ class TInvWL_Activator {
 	/**
 	 * Database
 	 *
-	 * @since             1.5.0
 	 * @return array
+	 * @since             1.5.0
 	 */
 	private static function database_1_5_0() {
 		return array(
@@ -770,8 +773,8 @@ class TInvWL_Activator {
 	/**
 	 * Database
 	 *
-	 * @since             1.8.13
 	 * @return array
+	 * @since             1.8.13
 	 */
 	private static function database_1_8_13() {
 		$t = array(
@@ -809,6 +812,37 @@ class TInvWL_Activator {
 					'date'         => 'date',
 					'quantity'     => 'int_1',
 					'price'        => array( 'VARCHAR', 255 ),
+					'in_stock'     => 'bool',
+				),
+				'upgrade' => array(
+					array(
+						'action' => 'update_fields',
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Database
+	 *
+	 * @return array
+	 * @since             1.9.16
+	 */
+	private static function database_1_9_16() {
+
+		return array(
+			'items' => array(
+				'field'   => array(
+					'ID'           => 'first++',
+					'wishlist_id'  => 'int_0',
+					'product_id'   => 'int_0',
+					'variation_id' => 'int_0',
+					'formdata'     => 'text',
+					'author'       => 'int_0',
+					'date'         => 'date',
+					'quantity'     => 'int_1',
+					'price'        => array( 'VARCHAR', 255, false, 0 ),
 					'in_stock'     => 'bool',
 				),
 				'upgrade' => array(

@@ -485,6 +485,8 @@ class TInvWL_Wizard {
 			'social_twitter_value'   => tinv_get_option( 'social', 'twitter' ),
 			'social_pinterest_value' => tinv_get_option( 'social', 'pinterest' ),
 			'social_google_value'    => tinv_get_option( 'social', 'google' ),
+			'social_whatsapp_value'  => tinv_get_option( 'social', 'whatsapp' ),
+			'social_clipboard_value' => tinv_get_option( 'social', 'clipboard' ),
 			'social_email_value'     => tinv_get_option( 'social', 'email' ),
 		);
 		TInvWL_View::view( 'step-social', $data, 'wizard' );
@@ -499,12 +501,16 @@ class TInvWL_Wizard {
 			'social_twitter'   => FILTER_VALIDATE_BOOLEAN,
 			'social_pinterest' => FILTER_VALIDATE_BOOLEAN,
 			'social_google'    => FILTER_VALIDATE_BOOLEAN,
+			'social_whatsapp'  => FILTER_VALIDATE_BOOLEAN,
+			'social_clipboard' => FILTER_VALIDATE_BOOLEAN,
 			'social_email'     => FILTER_VALIDATE_BOOLEAN,
 		) );
 		tinv_update_option( 'social', 'facebook', (bool) $data['social_facebook'] );
 		tinv_update_option( 'social', 'twitter', (bool) $data['social_twitter'] );
 		tinv_update_option( 'social', 'pinterest', (bool) $data['social_pinterest'] );
 		tinv_update_option( 'social', 'google', (bool) $data['social_google'] );
+		tinv_update_option( 'social', 'whatsapp', (bool) $data['social_whatsapp'] );
+		tinv_update_option( 'social', 'clipboard', (bool) $data['social_clipboard'] );
 		tinv_update_option( 'social', 'email', (bool) $data['social_email'] );
 	}
 

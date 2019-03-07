@@ -59,6 +59,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
+					<?php echo TInvWL_Form::_label( 'social_whatsapp', __( 'Show "WhatsApp" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<div class="col-md-6">
+						<?php echo TInvWL_Form::_checkboxonoff( 'social_whatsapp', $social_whatsapp_value ); // WPCS: xss ok. ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-horizontal">
+				<div class="form-group">
+					<?php echo TInvWL_Form::_label( 'social_clipboard', __( 'Show "Clipboard" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
+					<div class="col-md-6">
+						<?php echo TInvWL_Form::_checkboxonoff( 'social_clipboard', $social_clipboard_value ); // WPCS: xss ok. ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-horizontal">
+				<div class="form-group">
 					<?php echo TInvWL_Form::_label( 'social_email', __( 'Show "Share by Email" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_email', $social_email_value ); // WPCS: xss ok. ?>

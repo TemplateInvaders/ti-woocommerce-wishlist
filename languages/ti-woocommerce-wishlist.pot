@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Wishlist Plugin {{ VERSION }}\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/ti-woocommerce-wishlist\n"
-"POT-Creation-Date: 2019-03-05 08:18:59+00:00\n"
+"POT-Creation-Date: 2019-03-07 17:44:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -442,7 +442,7 @@ msgstr ""
 msgid "Show \"Google+\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:630
+#: admin/settings/general.class.php:630 views/wizard/step-social.php:62
 msgid "Show \"WhatsApp\" Button"
 msgstr ""
 
@@ -450,7 +450,7 @@ msgstr ""
 msgid "Show \"Copy to clipboard\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:642 views/wizard/step-social.php:62
+#: admin/settings/general.class.php:642 views/wizard/step-social.php:80
 msgid "Show \"Share by Email\" Button"
 msgstr ""
 
@@ -963,7 +963,7 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: includes/wizard.class.php:517
+#: includes/wizard.class.php:523
 msgid "Ready!"
 msgstr ""
 
@@ -1336,12 +1336,12 @@ msgid "\"Add to Wishlist\" Text in Product listing"
 msgstr ""
 
 #: views/wizard/step-button.php:76 views/wizard/step-page.php:53
-#: views/wizard/step-processing.php:35 views/wizard/step-social.php:75
+#: views/wizard/step-processing.php:35 views/wizard/step-social.php:93
 msgid "Skip this step"
 msgstr ""
 
 #: views/wizard/step-button.php:77 views/wizard/step-page.php:54
-#: views/wizard/step-processing.php:36 views/wizard/step-social.php:76
+#: views/wizard/step-processing.php:36 views/wizard/step-social.php:94
 msgid "continue"
 msgstr ""
 
@@ -1383,6 +1383,10 @@ msgstr ""
 msgid ""
 "Allow people to share wishlists by adding social share buttons to Wishlist "
 "page."
+msgstr ""
+
+#: views/wizard/step-social.php:71
+msgid "Show \"Clipboard\" Button"
 msgstr ""
 
 #. Plugin Name of the plugin/theme

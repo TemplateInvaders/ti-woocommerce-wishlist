@@ -140,6 +140,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.9.16 =
+*Release Date - 7 March 2019*
+
+* Fixed an issue in case of NULL in a product price field
+* Updated Share settings in the install wizard
+
 = 1.9.15 =
 *Release Date - 5 March 2019*
 

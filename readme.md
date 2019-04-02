@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.1  
-**Stable tag:** 1.9.16  
+**Stable tag:** 1.9.17  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -162,6 +162,15 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.9.17 ###
+*Release Date - 2 April 2019*
+
+* Fixed HTML W3C validation for the Add to Wishlist button
+* Fixed a limit for Add all to cart function
+* Fixed public JS error
+* Added filter <i>tinvwl-allow_parent_variable</i> that allows to add parent variable product without selected variation from a 3rd party code.
+* Improved the Setup Wizard to prepend the Wishlist Page shortcode to existing page content.
+
 ### 1.9.16 ###
 *Release Date - 7 March 2019*
 

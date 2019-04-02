@@ -125,17 +125,39 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 ## Screenshots ##
 
-1. Wishlist Settings page
-2. Wishlist Appearance Options
-3. "Add to Wishlist" button options
-4. The look of "Add to Wishlist" button on frontend with different settings
-5. Wishlist page with all columns, desktop view
-6. Wishlist page with turned off date of addition, checkboxes and bulk actions.
-7. When you click Add to Wishlist button a popup with success or error message appears.
-8. Wishlist page, Tablet view
-9. Wishlist page, Mobile view
-10. Simplified Wishlist page, Mobile view
-11. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.
+### 1. Wishlist Settings page ###
+![Wishlist Settings page](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-1.png)
+
+### 2. Wishlist Appearance Options ###
+![Wishlist Appearance Options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-2.png)
+
+### 3. "Add to Wishlist" button options ###
+!["Add to Wishlist" button options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-3.png)
+
+### 4. The look of "Add to Wishlist" button on frontend with different settings ###
+![The look of "Add to Wishlist" button on frontend with different settings](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-4.png)
+
+### 5. Wishlist page with all columns, desktop view ###
+![Wishlist page with all columns, desktop view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-5.png)
+
+### 6. Wishlist page with turned off date of addition, checkboxes and bulk actions. ###
+![Wishlist page with turned off date of addition, checkboxes and bulk actions.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-6.png)
+
+### 7. When you click Add to Wishlist button a popup with success or error message appears. ###
+![When you click Add to Wishlist button a popup with success or error message appears.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-7.png)
+
+### 8. Wishlist page, Tablet view ###
+![Wishlist page, Tablet view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-8.png)
+
+### 9. Wishlist page, Mobile view ###
+![Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-9.png)
+
+### 10. Simplified Wishlist page, Mobile view ###
+![Simplified Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
+
+### 11. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings. ###
+![WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-11.png)
+
 
 
 

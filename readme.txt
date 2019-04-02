@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpr
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 5.1
-Stable tag: {{ VERSION }}
+Stable tag: 1.9.16
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

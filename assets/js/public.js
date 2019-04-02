@@ -534,7 +534,7 @@ function update_cart_hash() {
       return false;
     }
 
-    cart_hash_key = wc_cart_fragments_params.cart_hash_key;
+    var cart_hash_key = wc_cart_fragments_params.cart_hash_key;
     localStorage.setItem(cart_hash_key, localStorage.getItem(cart_hash_key) + new Date().getTime());
     sessionStorage.setItem(cart_hash_key, sessionStorage.getItem(cart_hash_key) + new Date().getTime());
     jQuery(document.body).off('wc_fragments_loaded.wishlist wc_fragments_refreshed.wishlist');

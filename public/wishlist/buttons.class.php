@@ -259,7 +259,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return boolean
 	 */
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
-		$products = self::get_current_products( $wishlist );
+		$products = self::get_current_products( $wishlist, 9999999 );
 
 		$result = $errors = array();
 		foreach ( $products as $_product ) {
@@ -518,7 +518,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 *
 	 * @return array
 	 */
-	public static function get_current_products( $wishlist = null ) {
+	public static function get_current_products( $wishlist = null, $per_page = null ) {
 		if ( empty( $wishlist ) ) {
 			return array();
 		}
@@ -532,14 +532,18 @@ class TInvWL_Public_Wishlist_Buttons {
 			return array();
 		}
 
-		$paged    = get_query_var( 'wl_paged', 1 );
-		$paged    = 1 < $paged ? $paged : 1;
-		$per_page = apply_filters( 'tinvwl_wishlist_buttons_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
-			'options' => array(
-				'default'   => 10,
-				'min_range' => 1,
-			),
-		) ) );
+		$paged = get_query_var( 'wl_paged', 1 );
+		$paged = 1 < $paged ? $paged : 1;
+
+		if ( ! $per_page ) {
+			$per_page = apply_filters( 'tinvwl_wishlist_products_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
+				'options' => array(
+					'default'   => 10,
+					'min_range' => 1,
+				),
+			) ) );
+
+		}
 
 		$product_data = array(
 			'count'    => $per_page,

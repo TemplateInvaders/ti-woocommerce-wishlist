@@ -423,7 +423,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     $(document).on('hide_variation', '.variations_form', function (a) {
       var e = $(this).find('.tinvwl_add_to_wishlist_button');
 
-      if (e.length) {
+      if (e.length && !tinvwl_add_to_wishlist.allow_parent_variable) {
         a.preventDefault();
         e.addClass('disabled-add-wishlist');
       }

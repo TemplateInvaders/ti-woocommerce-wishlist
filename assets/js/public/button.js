@@ -376,7 +376,7 @@
 		// Disable add to wishlist button if variations not selected
 		$(document).on('hide_variation', '.variations_form', function (a) {
 			var e = $(this).find('.tinvwl_add_to_wishlist_button');
-			if (e.length) {
+			if (e.length && !tinvwl_add_to_wishlist.allow_parent_variable) {
 				a.preventDefault();
 				e.addClass('disabled-add-wishlist');
 			}

@@ -486,6 +486,7 @@ class TInvWL_Public_TInvWL {
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
+			'allow_parent_variable'      => apply_filters( 'tinvwl-allow_parent_variable', false ),
 		) );
 
 		if ( wp_script_is( 'woocommerce', 'enqueued' ) ) {

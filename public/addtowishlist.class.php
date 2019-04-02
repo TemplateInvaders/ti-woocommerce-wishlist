@@ -468,12 +468,12 @@ class TInvWL_Public_AddToWishlist {
 	/**
 	 * Output page
 	 *
-	 * @global object $product
-	 *
 	 * @param array $attr Array parameter for shortcode.
 	 * @param boolean $is_shortcode Shortcode or action.
 	 *
 	 * @return boolean
+	 * @global object $product
+	 *
 	 */
 	function htmloutput( $attr = array(), $is_shortcode = false ) {
 		global $product;
@@ -607,7 +607,7 @@ class TInvWL_Public_AddToWishlist {
 
 		$icon .= ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_preloader' ) ) ? ' ftinvwl-animated' : '';
 
-		$content .= sprintf( '<a class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="%s" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="%s" rel="nofollow">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+		$content .= sprintf( '<a href="javascript:void(0)" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="%s" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="%s" rel="nofollow">%s</a>', $icon, htmlspecialchars( wp_json_encode( $this->wishlist ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
 				'variable',
 				'variable-subscription'
 			) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), $action, $text );
@@ -623,11 +623,11 @@ class TInvWL_Public_AddToWishlist {
 	/**
 	 * Shortcode basic function
 	 *
-	 * @global object $product
-	 *
 	 * @param array $atts Array parameter from shortcode.
 	 *
 	 * @return string
+	 * @global object $product
+	 *
 	 */
 	function shortcode( $atts = array() ) {
 		global $product;

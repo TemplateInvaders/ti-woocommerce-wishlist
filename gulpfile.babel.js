@@ -299,7 +299,7 @@ gulp.task('translate', () => {
 		.pipe(
 			wpPot({
 				domain: config.textDomain,
-				package: config.packageName,
+				package: config.packageName + ' - ' + pkg.version,
 				bugReport: config.bugReport,
 				lastTranslator: config.lastTranslator,
 				team: config.team

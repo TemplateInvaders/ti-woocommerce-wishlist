@@ -619,7 +619,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 
 		$need_url_data = array_filter( array_merge( array(
 			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->variation_id : ( $_product->is_type( 'variation' ) ? $_product->get_id() : 0 ) ),
-			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->get_id() : ( $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id() ) ),
+			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->id : ( $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id() ) ),
 		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $_product->variation_data ) ? $_product->variation_data : array() ) : array() ) ) ) );
 
 		$need_url      = apply_filters( 'tinvwl_product_add_to_cart_redirect_slug_original', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data ) ), $_product );

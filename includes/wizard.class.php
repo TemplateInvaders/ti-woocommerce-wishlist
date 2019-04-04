@@ -369,7 +369,7 @@ class TInvWL_Wizard {
 
 			if ( 0 < $the_page_id ) {
 				$the_page               = get_post( $the_page_id );
-				$the_page->post_content = $shortcode . $the_page->post_content;
+				$the_page->post_content = ( strpos( $the_page->post_content, $shortcode ) !== false ) ? $the_page->post_content : $shortcode . $the_page->post_content;
 				$the_page->post_status  = 'publish';
 				$the_page_id            = wp_update_post( $the_page );
 				tinv_update_option( 'page', $key, $the_page_id );

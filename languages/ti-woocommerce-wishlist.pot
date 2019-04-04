@@ -1,8 +1,8 @@
-# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.9.17
-# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.9.17 package.
+# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.9.18
+# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.9.18 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin - 1.9.17\n"
+"Project-Id-Version: WooCommerce Wishlist Plugin - 1.9.18\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Default Wishlist Name"
 msgstr ""
 
-#: admin/settings/general.class.php:86, admin/tinvwl.class.php:381
+#: admin/settings/general.class.php:86, admin/tinvwl.class.php:390
 msgid "Wishlist Page"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "Normal Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:34, admin/tinvwl.class.php:256, views/wizard/finish.php:31
+#: admin/settings/upgrade.class.php:34, admin/tinvwl.class.php:265, views/wizard/finish.php:31
 msgid "Upgrade to Premium"
 msgstr ""
 
@@ -724,11 +724,11 @@ msgstr ""
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:295
+#: admin/tinvwl.class.php:304
 msgid "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:321
+#: admin/tinvwl.class.php:330
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 

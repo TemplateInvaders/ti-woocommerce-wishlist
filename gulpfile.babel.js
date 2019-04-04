@@ -383,6 +383,7 @@ gulp.task('zip', function () {
 		'!./assets/js/admin/**',
 		'!./gulpfile.babel.js',
 		'!./wpgulp.config.js',
+		'!./readme.md',
 		'!./.eslintrc.js',
 		'!./.eslintignore',
 		'!./.editorconfig',

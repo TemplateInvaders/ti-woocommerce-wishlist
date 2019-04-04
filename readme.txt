@@ -144,7 +144,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 *Release Date - 4 April 2019*
 
 * Fixed an issue with removing products from wishlist when added to cart for WooCommerce prior 3.x versions.
-* Fixed an issue when the wizard add multiple shortcodes to an exist page
+* Fixed an issue when the wizard add multiple shortcodes to an exists page
 
 = 1.9.17 =
 *Release Date - 2 April 2019*

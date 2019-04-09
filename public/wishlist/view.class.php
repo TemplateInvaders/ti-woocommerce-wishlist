@@ -549,10 +549,10 @@ class TInvWL_Public_Wishlist_View {
 		} else {
 			if ( class_exists( 'WC_Catalog_Visibility_Options' ) ) {
 				global $wc_cvo;
-				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_atc' ) ) {
+				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_atc' && isset( $data['wishlist_table_row']['add_to_cart'] ) ) ) {
 					unset( $data['wishlist_table_row']['add_to_cart'] );
 				}
-				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_prices' ) ) {
+				if ( 'secured' === $wc_cvo->setting( 'wc_cvo_prices' && isset( $data['wishlist_table_row']['colm_price'] ) ) ) {
 					unset( $data['wishlist_table_row']['colm_price'] );
 				}
 			}

@@ -1512,13 +1512,16 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 				foreach ( $meta as $key => $value ) {
 					$post_data[ $key ] = $value['display'];
 				}
-				$cart_item = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $post_data );
+
+				$cart_class = version_compare( TM_EPO_VERSION, '4.8.0', '<' ) ? TM_EPO() : TM_EPO_CART();
+
+				$cart_item = $cart_class->add_cart_item_data_helper( array(), $product_id, $post_data );
 
 				if ( 'normal' == TM_EPO()->tm_epo_hide_options_in_cart && 'advanced' != TM_EPO()->tm_epo_cart_field_display && ! empty( $cart_item['tmcartepo'] ) ) {
 					$cart_item['quantity']         = 1;
 					$cart_item['data']             = wc_get_product( $variation_id ? $variation_id : $product_id );
 					$cart_item['tm_cart_item_key'] = '';
-					$item_data                     = TM_EPO()->get_item_data_array( array(), $cart_item );
+					$item_data                     = $cart_class->get_item_data_array( array(), $cart_item );
 
 					foreach ( $item_data as $key => $data ) {
 						// Set hidden to true to not display meta on cart.
@@ -1559,7 +1562,10 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 			$product_id = $wl_product['product_id'];
 			$has_epo    = TM_EPO_API()->has_options( $product_id );
 			if ( TM_EPO_API()->is_valid_options( $has_epo ) ) {
-				$cart_item             = TM_EPO()->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
+
+				$cart_class = version_compare( TM_EPO_VERSION, '4.8.0', '<' ) ? TM_EPO() : TM_EPO_CART();
+
+				$cart_item             = $cart_class->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
 				$cart_item['quantity'] = 1;
 				$cart_item['data']     = $product;
 
@@ -1574,7 +1580,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 					}
 				}
 
-				$price = apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', TM_EPO()->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
+				$price = apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', $cart_class->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
 			}
 		}
 

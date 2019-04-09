@@ -206,6 +206,7 @@ class TInvWL_Activator {
 	 *            array    'field'        Array fields.
 	 *            string    'charset'    Charset table.
 	 *            string    'key'        Primary key.
+	 *            string    'index'       Custom index.
 	 *            string    'post'        Custom elements in format SQL.
 	 *
 	 * @return string
@@ -213,6 +214,7 @@ class TInvWL_Activator {
 	public static function table( $name, $table ) {
 		$name   = self::$wpdb_prefix . self::$_name . '_' . $name;
 		$fields = $table['field'];
+		$index  = ( isset( $table['index'] ) ) ? $table['index'] : null;
 		$table  = filter_var_array( $table, array(
 			'charset' => FILTER_SANITIZE_STRING,
 			'key'     => FILTER_SANITIZE_STRING,
@@ -267,13 +269,19 @@ class TInvWL_Activator {
 		} else {
 			$table['post'] = ', ' . $table['post'];
 		}
+		$indexes = '';
+		if ( $index ) {
+			foreach ( $index as $index_name => $columns ) {
+				$indexes = sprintf( ', INDEX %s (%s)', $index_name, $columns );
+			}
+		}
 
 		foreach ( $fields as $key => $format ) {
 			$fields[ $key ] = self::field( $key, $format );
 		}
 		$fields = implode( ', ', $fields );
 
-		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` ( %s%s%s) %s; ', $name, $fields, $table['key'], $table['post'], $table['charset'] );
+		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` ( %s%s%s%s) %s; ', $name, $fields, $table['key'], $indexes, $table['post'], $table['charset'] );
 
 		return $sql;
 	}
@@ -533,6 +541,30 @@ class TInvWL_Activator {
 			$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
 			$prev_field = $field;
+		}
+	}
+
+	/**
+	 * Apply upgrade action
+	 * Add table index
+	 *
+	 * @global wpdb $wpdb
+	 *
+	 * @param string $name Table name.
+	 * @param array $table Table array.
+	 */
+	public static function upgrade_action_add_index( $name, $table ) {
+		global $wpdb;
+
+		$indexes = $table['index'];
+
+
+		foreach ( $indexes as $index => $columns ) {
+
+			$sql = sprintf( 'ALTER TABLE `%s` ADD INDEX %s (%s);', $name, $index, $columns );
+
+			$wpdb->query( $sql ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+
 		}
 	}
 
@@ -849,6 +881,37 @@ class TInvWL_Activator {
 					array(
 						'action' => 'update_fields',
 					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Database
+	 *
+	 * @return array
+	 * @since             1.10.0
+	 */
+	private static function database_1_10_0() {
+
+		return array(
+			'analytics' => array(
+				'field' => array(
+					'ID'               => array( 'VARCHAR', 32 ),
+					'wishlist_id'      => 'int_0',
+					'product_id'       => 'int_0',
+					'variation_id'     => 'int_0',
+					'visite_author'    => 'int_0',
+					'visite'           => 'int_0',
+					'click_author'     => 'int_0',
+					'click'            => 'int_0',
+					'cart'             => 'int_0',
+					'sell_of_wishlist' => 'int_0',
+					'sell_as_gift'     => 'int_0',
+				),
+				'key'   => 'ID',
+				'index' => array(
+					'unique_product' => 'wishlist_id, product_id, variation_id',
 				),
 			),
 		);

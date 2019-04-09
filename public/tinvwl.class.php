@@ -74,6 +74,7 @@ class TInvWL_Public_TInvWL {
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
+		add_action( 'wp', array( $this, 'analytics_referer' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
 
 		add_action( 'wp_ajax_nopriv_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );
@@ -129,6 +130,38 @@ class TInvWL_Public_TInvWL {
 		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
 		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_updcart_before' ), 15 );
 		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 100 );
+	}
+
+	/**
+	 * Add analytic click from wishlist
+	 */
+	function analytics_referer() {
+		$product_id = absint( get_query_var( 'tiwp' ) );
+		if ( empty( $product_id ) ) {
+			return false;
+		}
+		$wishlist = tinv_wishlist_get();
+		$wlp      = null;
+		if ( 0 === $wishlist['ID'] ) {
+			$wlp = TInvWL_Product_Local::instance();
+		} else {
+			$wlp = new TInvWL_Product( $wishlist );
+		}
+		$items = $wlp->get( array( 'ID' => $product_id ) );
+		$item  = array_shift( $items );
+		if ( empty( $item ) ) {
+			return false;
+		}
+		if ( empty( $item['data'] ) ) {
+			return false;
+		}
+		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
+		if ( $wishlist['is_owner'] ) {
+			$wla->click_author_product_from_wl( $item['product_id'], $item['variation_id'] );
+		} else {
+			$wla->click_product_from_wl( $item['product_id'], $item['variation_id'] );
+		}
+		wp_redirect( remove_query_arg( 'tiwp' ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
 	}
 
 	/**

@@ -79,6 +79,7 @@ class TInvWL_Public_Cart {
 		} else {
 			add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta_v3' ) );
 		}
+		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
 	}
 
 	/**
@@ -143,6 +144,8 @@ class TInvWL_Public_Cart {
 				 * @param array $product product data.
 				 * */
 				do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
+				$wla = new TInvWL_Analytics( $wishlist, self::$_name );
+				$wla->cart_product( $product_id, $variation_id );
 				if ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' ) ) {
 					self::ar_f_wl( $wishlist, $product_id, $quantity, $variation_id, $product['meta'] );
 				}
@@ -360,5 +363,48 @@ class TInvWL_Public_Cart {
 		$wlp->remove_product_from_wl( 0, $product_id, $variation_id, $product['meta'] );
 
 		return 0;
+	}
+
+	/**
+	 * Analytics check completed orders
+	 *
+	 * @param integer $order_id Order id.
+	 * @param string $old_status Not used.
+	 * @param string $new_status Updated status order.
+	 *
+	 * @return boolean
+	 */
+	function order_status_analytics( $order_id, $old_status, $new_status ) {
+		$new_status = str_replace( 'wc-', '', $new_status );
+
+		if ( 'completed' == $new_status ) { // WPCS: loose comparison ok.
+			$order = new WC_Order( $order_id );
+			$items = $order->get_items();
+			if ( empty( $items ) || ! is_array( $items ) ) {
+				return false;
+			}
+
+			foreach ( $items as $item ) {
+				if ( array_key_exists( 'tinvwl_wishlist_cart', (array) $item ) ) {
+					$_wishlist_cart = maybe_unserialize( $item['tinvwl_wishlist_cart'] );
+					$_quantity      = absint( $item['qty'] );
+					if ( is_array( $_wishlist_cart ) ) {
+						// @bug remove individual product from all user wishlists
+						foreach ( $_wishlist_cart as $key => $quantity ) {
+							if ( 0 >= $_quantity ) {
+								break;
+							}
+							$wishlist = $this->get_order_wishlist( $key );
+
+							if ( empty( $wishlist ) ) {
+								continue;
+							}
+							$wla = new TInvWL_Analytics( $wishlist, self::$_name );
+							$wla->sell_product_from_wl( $item['product_id'], $item['variation_id'] );
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -528,6 +528,9 @@ class TInvWL_Public_Wishlist_View {
 
 		$this->lists_per_page = $atts['lists_per_page'];
 
+		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
+		$wla->wishlist_view( 0, $wishlist['is_owner'] );
+
 		foreach ( $products as $key => $product ) {
 			if ( ! isset( $product['data'] ) ) {
 				unset( $products[ $key ] );

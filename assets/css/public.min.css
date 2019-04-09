@@ -130,10 +130,10 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist .social-buttons>span{margin-right:27px}
 .tinv-wishlist .social-buttons li{float:left;margin-right:5px;list-style:none}
 .tinv-wishlist .social-buttons li:last-child{margin-right:0}
-.tinv-wishlist .social-buttons li a{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:2em;height:2em;border-radius:50%;text-align:center;-webkit-box-shadow:none;box-shadow:none;border:0;font-size:20px}
-.tinv-wishlist .social-buttons li a.white{color:#fff}
-.tinv-wishlist .social-buttons li a.dark{color:#000}
-.tinv-wishlist .social-buttons li a i{line-height:2em}
+.tinv-wishlist .social-buttons li a.social{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:2em;height:2em;border-radius:50%;text-align:center;-webkit-box-shadow:none;box-shadow:none;border:0;font-size:20px;text-decoration:none}
+.tinv-wishlist .social-buttons li a.social.white{color:#fff}
+.tinv-wishlist .social-buttons li a.social.dark{color:#000}
+.tinv-wishlist .social-buttons li a.social i{line-height:2em}
 .tinv-wishlist .navigation-button .tinv-create-list>a.tinvwl-no-icon>i,.tinv-wishlist .navigation-button li>a.tinvwl-no-icon>i{display:none}
 .tinv-wishlist .tinv-lists-nav{margin-bottom:35px}
 .tinv-wishlist .tinv-next{display:inline-block;float:left}

@@ -498,7 +498,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 				margin-right: 0;
 			}
 
-			a {
+			a.social {
 				display: flex;
 				align-content: center;
 				justify-content: center;
@@ -509,6 +509,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 				box-shadow: none;
 				border: 0;
 				font-size: 20px;
+				text-decoration: none;
 
 				&.white {
 					color: #ffffff;

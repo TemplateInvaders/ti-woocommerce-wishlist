@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist if a current user is owner.
  *
- * @version             1.9.0
+ * @version             1.10.0
  * @package           TInvWishlist\Template
  */
 
@@ -16,7 +16,11 @@ wp_enqueue_script( 'tinvwl' );
 	<?php if ( function_exists( 'wc_print_notices' ) ) {
 		wc_print_notices();
 	} ?>
-	<form action="<?php echo esc_url( tinv_url_wishlist() ); ?>" method="post" autocomplete="off">
+	<?php
+	$wl_paged = get_query_var( 'wl_paged' );
+	$form_url = ( $wl_paged ) ? add_query_arg( 'wl_paged', $wl_paged, tinv_url_wishlist() ) : tinv_url_wishlist();
+	?>
+	<form action="<?php echo esc_url( $form_url ); ?>" method="post" autocomplete="off">
 		<?php do_action( 'tinvwl_before_wishlist_table', $wishlist ); ?>
 		<table class="tinvwl-table-manage-list">
 			<thead>

@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.1  
-**Stable tag:** 1.9.18  
+**Stable tag:** 1.10.0  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -162,6 +162,17 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.10.0 ###
+*Release Date - 9 April 2019*
+
+* Added Force permalinks rewrite feature
+* Added numeric pagination on a Wishlist page
+* Added analytic tracking feature for compatibility with the premium version of plugin
+* Improved compatibility with TM Extra Product Options plugin
+* Fixed pagination issue on a Wishlist page for all actions
+* Fixed minor PHP issues
+* Fixed minor CSS issues
+
 ### 1.9.18 ###
 *Release Date - 4 April 2019*
 

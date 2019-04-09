@@ -1,8 +1,8 @@
-# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.9.18
-# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.9.18 package.
+# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.10.0
+# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.10.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin - 1.9.18\n"
+"Project-Id-Version: WooCommerce Wishlist Plugin - 1.10.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,15 +32,15 @@ msgstr ""
 msgid "Template Custom CSS"
 msgstr ""
 
-#: admin/basestyle.helper.php:114, admin/settings/general.class.php:800
+#: admin/basestyle.helper.php:114, admin/settings/general.class.php:814
 msgid "Save Settings"
 msgstr ""
 
-#: admin/basestyle.helper.php:120, admin/settings/general.class.php:806
+#: admin/basestyle.helper.php:120, admin/settings/general.class.php:820
 msgid "Reset"
 msgstr ""
 
-#: admin/basestyle.helper.php:126, admin/settings/general.class.php:812
+#: admin/basestyle.helper.php:126, admin/settings/general.class.php:826
 msgid "Save"
 msgstr ""
 
@@ -92,11 +92,11 @@ msgstr ""
 msgid "Remove Product from Wishlist if added to cart"
 msgstr ""
 
-#: admin/settings/general.class.php:125, admin/settings/general.class.php:244
+#: admin/settings/general.class.php:125, admin/settings/general.class.php:258
 msgid "Redirect to the checkout page from Wishlist if added to cart"
 msgstr ""
 
-#: admin/settings/general.class.php:131, admin/settings/general.class.php:251
+#: admin/settings/general.class.php:131, admin/settings/general.class.php:265
 msgid "Remove by anyone"
 msgstr ""
 
@@ -145,326 +145,338 @@ msgid "This notification will be shown once the product is removed from Wishlist
 msgstr ""
 
 #: admin/settings/general.class.php:202
+msgid "Permalinks Settings"
+msgstr ""
+
+#: admin/settings/general.class.php:208
+msgid "Force permalinks rewrite"
+msgstr ""
+
+#: admin/settings/general.class.php:209
+msgid "This option should be enabled to avoid any issues with URL rewrites between other plugins and Wishlist"
+msgstr ""
+
+#: admin/settings/general.class.php:216
 msgid "Wishlist Page Options"
 msgstr ""
 
-#: admin/settings/general.class.php:203, admin/settings/general.class.php:220
+#: admin/settings/general.class.php:217, admin/settings/general.class.php:234
 msgid "Coming soon"
 msgstr ""
 
-#: admin/settings/general.class.php:210, views/wizard/step-page.php:36
+#: admin/settings/general.class.php:224, views/wizard/step-page.php:36
 msgid "My Wishlist"
 msgstr ""
 
-#: admin/settings/general.class.php:219
+#: admin/settings/general.class.php:233
 msgid "Wishlist Processing Options"
 msgstr ""
 
-#: admin/settings/general.class.php:227
+#: admin/settings/general.class.php:241
 msgid "Automatic removal"
 msgstr ""
 
-#: admin/settings/general.class.php:234
+#: admin/settings/general.class.php:248
 msgid "Remove condition"
 msgstr ""
 
-#: admin/settings/general.class.php:237
+#: admin/settings/general.class.php:251
 msgid "Add to Cart"
 msgstr ""
 
-#: admin/settings/general.class.php:259
+#: admin/settings/general.class.php:273
 msgid "Product page \"Add to Wishlist\" Button Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:265, admin/settings/general.class.php:389, views/wizard/step-button.php:32
+#: admin/settings/general.class.php:279, admin/settings/general.class.php:403, views/wizard/step-button.php:32
 msgid "Button position"
 msgstr ""
 
-#: admin/settings/general.class.php:266
+#: admin/settings/general.class.php:280
 msgid "Add this shortcode <code>[ti_wishlists_addtowishlist]</code> anywhere on product page, if you have chosen custom position for product button. You will have to do this for each product."
 msgstr ""
 
-#: admin/settings/general.class.php:269, admin/settings/general.class.php:392, includes/wizard.class.php:408
+#: admin/settings/general.class.php:283, admin/settings/general.class.php:406, includes/wizard.class.php:408
 msgid "After \"Add to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:270, admin/settings/general.class.php:393, includes/wizard.class.php:409
+#: admin/settings/general.class.php:284, admin/settings/general.class.php:407, includes/wizard.class.php:409
 msgid "Before \"Add to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:271, admin/settings/general.class.php:395, includes/wizard.class.php:410
+#: admin/settings/general.class.php:285, admin/settings/general.class.php:409, includes/wizard.class.php:410
 msgid "Custom position with code"
 msgstr ""
 
-#: admin/settings/general.class.php:277, admin/settings/general.class.php:402
+#: admin/settings/general.class.php:291, admin/settings/general.class.php:416
 msgid "Button custom CSS class"
 msgstr ""
 
-#: admin/settings/general.class.php:278, admin/settings/general.class.php:403
+#: admin/settings/general.class.php:292, admin/settings/general.class.php:417
 msgid "You can add custom CSS classes to button markup separated by spaces. Most of themes using <code>button</code> class for this type of buttons."
 msgstr ""
 
-#: admin/settings/general.class.php:287, admin/settings/general.class.php:412
+#: admin/settings/general.class.php:301, admin/settings/general.class.php:426
 msgid "\"Add to Wishlist\" Icon"
 msgstr ""
 
-#: admin/settings/general.class.php:288, admin/settings/general.class.php:682
+#: admin/settings/general.class.php:302, admin/settings/general.class.php:696
 msgid "You can choose from our predefined icons or upload your custom icon. Custom icon size is limited to 16x16 px."
 msgstr ""
 
-#: admin/settings/general.class.php:291, admin/settings/general.class.php:415, admin/settings/general.class.php:677
+#: admin/settings/general.class.php:305, admin/settings/general.class.php:429, admin/settings/general.class.php:691
 msgid "None"
 msgstr ""
 
-#: admin/settings/general.class.php:292, admin/settings/general.class.php:416, admin/settings/general.class.php:678
+#: admin/settings/general.class.php:306, admin/settings/general.class.php:430, admin/settings/general.class.php:692
 msgid "Heart"
 msgstr ""
 
-#: admin/settings/general.class.php:293, admin/settings/general.class.php:417, admin/settings/general.class.php:679
+#: admin/settings/general.class.php:307, admin/settings/general.class.php:431, admin/settings/general.class.php:693
 msgid "Heart+"
 msgstr ""
 
-#: admin/settings/general.class.php:294, admin/settings/general.class.php:418, admin/settings/general.class.php:680
+#: admin/settings/general.class.php:308, admin/settings/general.class.php:432, admin/settings/general.class.php:694
 msgid "Custom"
 msgstr ""
 
-#: admin/settings/general.class.php:311, admin/settings/general.class.php:434, admin/settings/general.class.php:697
+#: admin/settings/general.class.php:325, admin/settings/general.class.php:448, admin/settings/general.class.php:711
 msgid "Upload"
 msgstr ""
 
-#: admin/settings/general.class.php:320, admin/settings/general.class.php:443
+#: admin/settings/general.class.php:334, admin/settings/general.class.php:457
 msgid "\"Add to Wishlist\" Icon Color"
 msgstr ""
 
-#: admin/settings/general.class.php:322, admin/settings/general.class.php:445, admin/settings/general.class.php:657, admin/settings/general.class.php:708
+#: admin/settings/general.class.php:336, admin/settings/general.class.php:459, admin/settings/general.class.php:671, admin/settings/general.class.php:722
 msgid "Use font color"
 msgstr ""
 
-#: admin/settings/general.class.php:323, admin/settings/general.class.php:446, admin/settings/general.class.php:709
+#: admin/settings/general.class.php:337, admin/settings/general.class.php:460, admin/settings/general.class.php:723
 msgid "Black"
 msgstr ""
 
-#: admin/settings/general.class.php:324, admin/settings/general.class.php:447, admin/settings/general.class.php:659, admin/settings/general.class.php:710
+#: admin/settings/general.class.php:338, admin/settings/general.class.php:461, admin/settings/general.class.php:673, admin/settings/general.class.php:724
 msgid "White"
 msgstr ""
 
-#: admin/settings/general.class.php:331, admin/settings/general.class.php:454
+#: admin/settings/general.class.php:345, admin/settings/general.class.php:468
 msgid "Show preloader"
 msgstr ""
 
-#: admin/settings/general.class.php:332, admin/settings/general.class.php:455
+#: admin/settings/general.class.php:346, admin/settings/general.class.php:469
 msgid "If enabled, applies animation for the button icon until product adding or removing processed. (Usable for servers with slow connection mostly.)"
 msgstr ""
 
-#: admin/settings/general.class.php:338, admin/settings/general.class.php:461
+#: admin/settings/general.class.php:352, admin/settings/general.class.php:475
 msgid "Show button text"
 msgstr ""
 
-#: admin/settings/general.class.php:353
+#: admin/settings/general.class.php:367
 msgid "\"Add to Wishlist\" button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:359, admin/settings/general.class.php:482
+#: admin/settings/general.class.php:373, admin/settings/general.class.php:496
 msgid "\"Remove from Wishlist\" Button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:367
+#: admin/settings/general.class.php:381
 msgid "Product listing Button Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:368
+#: admin/settings/general.class.php:382
 msgid "These are separate settings for the \"Add to Wishlist\" button on a product listing (Shop page, categories, etc.). You can also adjust button and text colors, size, etc. in a <code>TI Wishlist > Style Options.</code>"
 msgstr ""
 
-#: admin/settings/general.class.php:374
+#: admin/settings/general.class.php:388
 msgid "Show in Product Listing"
 msgstr ""
 
-#: admin/settings/general.class.php:394
+#: admin/settings/general.class.php:408
 msgid "Above Thumbnail"
 msgstr ""
 
-#: admin/settings/general.class.php:397
+#: admin/settings/general.class.php:411
 msgid "Note: if \"Custom position with code\" option is applied, the \"Add to Wishlist\" button should be added into template using <code>do_shortcode()</code> function like this:<br /><code>do_shortcode(\"[ti_wishlists_addtowishlist loop=yes]\")</code>"
 msgstr ""
 
-#: admin/settings/general.class.php:476, views/wizard/step-button.php:41
+#: admin/settings/general.class.php:490, views/wizard/step-button.php:41
 msgid "\"Add to Wishlist\" Text"
 msgstr ""
 
-#: admin/settings/general.class.php:490
+#: admin/settings/general.class.php:504
 msgid "Wishlist Product Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:491
+#: admin/settings/general.class.php:505
 msgid "Following options allows you to choose what information/functionality to show/enable in wishlist table on wishlist page."
 msgstr ""
 
-#: admin/settings/general.class.php:497
+#: admin/settings/general.class.php:511
 msgid "Show \"Add to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:504
+#: admin/settings/general.class.php:518
 msgid "\"Add to Cart\" Text"
 msgstr ""
 
-#: admin/settings/general.class.php:511
+#: admin/settings/general.class.php:525
 msgid "Show Unit price"
 msgstr ""
 
-#: admin/settings/general.class.php:517
+#: admin/settings/general.class.php:531
 msgid "Show Stock status"
 msgstr ""
 
-#: admin/settings/general.class.php:523
+#: admin/settings/general.class.php:537
 msgid "Show Date of addition"
 msgstr ""
 
-#: admin/settings/general.class.php:530
+#: admin/settings/general.class.php:544
 msgid "Wishlist Table Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:531
+#: admin/settings/general.class.php:545
 msgid "Following options will help user to manage and add products to cart from wishlist table in bulk."
 msgstr ""
 
-#: admin/settings/general.class.php:537
+#: admin/settings/general.class.php:551
 msgid "Show Checkboxes"
 msgstr ""
 
-#: admin/settings/general.class.php:549
+#: admin/settings/general.class.php:563
 msgid "Show Actions button"
 msgstr ""
 
-#: admin/settings/general.class.php:550
+#: admin/settings/general.class.php:564
 msgid "Bulk actions drop down at the bottom of wishlist table"
 msgstr ""
 
-#: admin/settings/general.class.php:556
+#: admin/settings/general.class.php:570
 msgid "Show \"Add Selected to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:563
+#: admin/settings/general.class.php:577
 msgid "\"Add Selected to Cart\" Button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:574
+#: admin/settings/general.class.php:588
 msgid "Show \"Add All to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:581
+#: admin/settings/general.class.php:595
 msgid "\"Add All to Cart\" Button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:594
+#: admin/settings/general.class.php:608
 msgid "Following options enable/disable Social share icons below wishlist table on wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can't be shared."
 msgstr ""
 
-#: admin/settings/general.class.php:600
+#: admin/settings/general.class.php:614
 msgid "Social Networks Sharing Options"
 msgstr ""
 
-#: admin/settings/general.class.php:606, views/wizard/step-social.php:26
+#: admin/settings/general.class.php:620, views/wizard/step-social.php:26
 msgid "Show \"Facebook\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:612, views/wizard/step-social.php:35
+#: admin/settings/general.class.php:626, views/wizard/step-social.php:35
 msgid "Show \"Twitter\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:618, views/wizard/step-social.php:44
+#: admin/settings/general.class.php:632, views/wizard/step-social.php:44
 msgid "Show \"Pinterest\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:624, views/wizard/step-social.php:53
+#: admin/settings/general.class.php:638, views/wizard/step-social.php:53
 msgid "Show \"Google+\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:630, views/wizard/step-social.php:62
+#: admin/settings/general.class.php:644, views/wizard/step-social.php:62
 msgid "Show \"WhatsApp\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:636
+#: admin/settings/general.class.php:650
 msgid "Show \"Copy to clipboard\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:642, views/wizard/step-social.php:80
+#: admin/settings/general.class.php:656, views/wizard/step-social.php:80
 msgid "Show \"Share by Email\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:648
+#: admin/settings/general.class.php:662
 msgid "\"Share on\" Text"
 msgstr ""
 
-#: admin/settings/general.class.php:654
+#: admin/settings/general.class.php:668
 msgid "Social Icons Color"
 msgstr ""
 
-#: admin/settings/general.class.php:658
+#: admin/settings/general.class.php:672
 msgid "Dark"
 msgstr ""
 
-#: admin/settings/general.class.php:667
+#: admin/settings/general.class.php:681
 msgid "Wishlist Product Counter"
 msgstr ""
 
-#: admin/settings/general.class.php:668
+#: admin/settings/general.class.php:682
 msgid "Add this shortcode <code>[ti_wishlist_products_counter]</code> anywhere into a page content to show Wishlist Counter.<br/><br/>It can be also added as a widget <code>Wishlist Products Counter</code> under the <a href=\"%s\">Appearance -> Widgets</a> section."
 msgstr ""
 
-#: admin/settings/general.class.php:674
+#: admin/settings/general.class.php:688
 msgid "\"Wishlist\" Counter Icon"
 msgstr ""
 
-#: admin/settings/general.class.php:706
+#: admin/settings/general.class.php:720
 msgid "\"Wishlist\" Counter Icon Color"
 msgstr ""
 
-#: admin/settings/general.class.php:717
+#: admin/settings/general.class.php:731
 msgid "Show \"Wishlist\" Counter Text"
 msgstr ""
 
-#: admin/settings/general.class.php:726
+#: admin/settings/general.class.php:740
 msgid "\"Wishlist\" Counter Text"
 msgstr ""
 
-#: admin/settings/general.class.php:727
+#: admin/settings/general.class.php:741
 msgid "Wishlist - "
 msgstr ""
 
-#: admin/settings/general.class.php:733
+#: admin/settings/general.class.php:747
 msgid "Add counter to menu"
 msgstr ""
 
-#: admin/settings/general.class.php:735
+#: admin/settings/general.class.php:749
 msgid "You can add a wishlist products counter as item to the selected menu."
 msgstr ""
 
-#: admin/settings/general.class.php:744
+#: admin/settings/general.class.php:758
 msgid "Counter position (Menu item order)"
 msgstr ""
 
-#: admin/settings/general.class.php:745
+#: admin/settings/general.class.php:759
 msgid "Allows you to add the wishlist counter as a menu item and apply its position."
 msgstr ""
 
-#: admin/settings/general.class.php:756
+#: admin/settings/general.class.php:770
 msgid "Show number of products in counter"
 msgstr ""
 
-#: admin/settings/general.class.php:765
+#: admin/settings/general.class.php:779
 msgid "Hide zero value"
 msgstr ""
 
-#: admin/settings/general.class.php:766
+#: admin/settings/general.class.php:780
 msgid "Do not show the \"0\" value in a counter if wishlist is empty."
 msgstr ""
 
-#: admin/settings/general.class.php:777
+#: admin/settings/general.class.php:791
 msgid "Support chat settings"
 msgstr ""
 
-#: admin/settings/general.class.php:784
+#: admin/settings/general.class.php:798
 msgid "Disable support chat"
 msgstr ""
 
@@ -820,7 +832,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:586
+#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:646
 msgid "Wishlist"
 msgstr ""
 
@@ -864,23 +876,23 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: public/tinvwl.class.php:324
+#: public/tinvwl.class.php:384
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: public/tinvwl.class.php:483
+#: public/tinvwl.class.php:543
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:486
+#: public/tinvwl.class.php:546
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:487
+#: public/tinvwl.class.php:547
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:488
+#: public/tinvwl.class.php:548
 msgid "Copied!"
 msgstr ""
 
@@ -927,11 +939,11 @@ msgstr[1] ""
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:72
+#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:76
 msgid "Remove"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:495, public/wishlist/view.class.php:360
+#: public/wishlist/buttons.class.php:495, public/wishlist/view.class.php:364
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
@@ -941,23 +953,23 @@ msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/view.class.php:370
+#: public/wishlist/view.class.php:374
 msgid "%s has been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:372
+#: public/wishlist/view.class.php:376
 msgid "%s has not been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:515
+#: public/wishlist/view.class.php:519
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:610
+#: public/wishlist/view.class.php:617
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:619
+#: public/wishlist/view.class.php:643
 msgid "Next Page"
 msgstr ""
 
@@ -981,35 +993,35 @@ msgstr ""
 msgid "Wishlist is not found!"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:26, templates/ti-wishlist.php:26
+#: templates/ti-wishlist-user.php:30, templates/ti-wishlist.php:30
 msgid "Select all for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:31, templates/ti-wishlist.php:32
+#: templates/ti-wishlist-user.php:35, templates/ti-wishlist.php:36
 msgid "Product Name"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:32, templates/ti-wishlist.php:33
+#: templates/ti-wishlist-user.php:36, templates/ti-wishlist.php:37
 msgid "Product"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:34, templates/ti-wishlist.php:35
+#: templates/ti-wishlist-user.php:38, templates/ti-wishlist.php:39
 msgid "Unit Price"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:37, templates/ti-wishlist.php:38
+#: templates/ti-wishlist-user.php:41, templates/ti-wishlist.php:42
 msgid "Date Added"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:40, templates/ti-wishlist.php:41
+#: templates/ti-wishlist-user.php:44, templates/ti-wishlist.php:45
 msgid "Stock Status"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:63, templates/ti-wishlist.php:64
+#: templates/ti-wishlist-user.php:67, templates/ti-wishlist.php:68
 msgid "Select for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:116, templates/ti-wishlist.php:124, tinv-wishlists-function-integration.php:774, tinv-wishlists-function-integration.php:931, tinv-wishlists-function-integration.php:1093, tinv-wishlists-function-integration.php:1307
+#: templates/ti-wishlist-user.php:120, templates/ti-wishlist.php:128, tinv-wishlists-function-integration.php:774, tinv-wishlists-function-integration.php:931, tinv-wishlists-function-integration.php:1093, tinv-wishlists-function-integration.php:1307
 msgid "In stock"
 msgstr ""
 
@@ -1041,7 +1053,7 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1652
+#: tinv-wishlists-function-integration.php:1658
 msgid "Base price"
 msgstr ""
 

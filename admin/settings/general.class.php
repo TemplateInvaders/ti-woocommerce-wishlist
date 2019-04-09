@@ -198,6 +198,20 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 				),
 			),
 			array(
+				'id'         => 'permalinks',
+				'title'      => __( 'Permalinks Settings', 'ti-woocommerce-wishlist' ),
+				'show_names' => false,
+				'fields'     => array(
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'force',
+						'text' => __( 'Force permalinks rewrite', 'ti-woocommerce-wishlist' ),
+						'desc' => __( 'This option should be enabled to avoid any issues with URL rewrites between other plugins and Wishlist', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
+					),
+				),
+			),
+			array(
 				'id'         => 'page',
 				'title'      => __( 'Wishlist Page Options', 'ti-woocommerce-wishlist' ),
 				'desc'       => __( 'Coming soon', 'ti-woocommerce-wishlist' ),

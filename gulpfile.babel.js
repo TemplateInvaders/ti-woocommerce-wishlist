@@ -66,7 +66,7 @@ const defaults = require('lodash.defaults');
 const checktextdomain = require('gulp-checktextdomain');
 const header = require('gulp-header');
 const bump = require('gulp-bump');
-const zip = require('gulp-zip'); // Gulp plugin to generate zip folder and remove unwanted files.
+const zip = require('gulp-vinyl-zip').zip; // Gulp plugin to generate zip folder and remove unwanted files.
 const readme = require('gulp-readme-to-markdown');
 /**
  * Custom Error Handler.
@@ -374,21 +374,22 @@ gulp.task('bump', function () {
 
 gulp.task('zip', function () {
 	return gulp.src([
-		'./**/*',
-		'!./{node_modules,node_modules/**/*}',
-		'!./.git',
-		'!./sass/**',
-		'!./assets/img/raw/**',
-		'!./assets/js/public/**',
-		'!./assets/js/admin/**',
-		'!./gulpfile.babel.js',
-		'!./wpgulp.config.js',
-		'!./readme.md',
-		'!./.eslintrc.js',
-		'!./.eslintignore',
-		'!./.editorconfig',
-		'!./package.json',
-		'!./package-lock.json'])
+			'./**/*',
+			'!./{node_modules,node_modules/**/*}',
+			'!./.git',
+			'!./sass/**',
+			'!./assets/img/raw/**',
+			'!./assets/js/public/**',
+			'!./assets/js/admin/**',
+			'!./gulpfile.babel.js',
+			'!./wpgulp.config.js',
+			'!./readme.md',
+			'!./.eslintrc.js',
+			'!./.eslintignore',
+			'!./.editorconfig',
+			'!./package.json',
+			'!./package-lock.json'],
+		{base: "./../"})
 		.pipe(zip(pkg.name + '.zip'))
 		.pipe(gulp.dest('./../'))
 		.pipe(notify({message: '\n\n✅  ===> ZIP — completed!\n', onLast: true}));

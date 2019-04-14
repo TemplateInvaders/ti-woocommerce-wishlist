@@ -2,7 +2,7 @@
 /**
  * Analytics function class
  *
- * @since             1.0.0
+ * @since             1.10.0
  * @package           TInvWishlist\Analytics
  */
 
@@ -33,16 +33,17 @@ class TInvWL_Analytics {
 	/**
 	 * Constructor
 	 *
-	 * @global wpdb $wpdb
-	 * @param array  $wishlist Object wishlist.
+	 * @param array $wishlist Object wishlist.
 	 * @param string $plugin_name Plugin name.
+	 *
+	 * @global wpdb $wpdb
 	 */
 	function __construct( $wishlist, $plugin_name = TINVWL_PREFIX ) {
 		global $wpdb;
 
-		$this->wishlist	 = (array) $wishlist;
-		$this->_name		 = $plugin_name;
-		$this->table	 = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'analytics' );
+		$this->wishlist = (array) $wishlist;
+		$this->_name    = $plugin_name;
+		$this->table    = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'analytics' );
 	}
 
 	/**
@@ -54,6 +55,7 @@ class TInvWL_Analytics {
 		if ( is_array( $this->wishlist ) && array_key_exists( 'ID', $this->wishlist ) ) {
 			return $this->wishlist['ID'];
 		}
+
 		return 0;
 	}
 
@@ -66,6 +68,7 @@ class TInvWL_Analytics {
 		if ( is_array( $this->wishlist ) && array_key_exists( 'author', $this->wishlist ) ) {
 			return $this->wishlist['author'];
 		}
+
 		return 0;
 	}
 
@@ -74,15 +77,16 @@ class TInvWL_Analytics {
 	 *
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
+	 *
 	 * @return mixed
 	 */
 	private function product_data( $product_id, $variation_id = 0 ) {
-		$product_id		 = absint( $product_id );
-		$variation_id	 = absint( $variation_id );
+		$product_id   = absint( $product_id );
+		$variation_id = absint( $variation_id );
 
 		if ( 'product_variation' == get_post_type( $product_id ) ) { // WPCS: loose comparison ok.
-			$variation_id	 = $product_id;
-			$product_id		 = wp_get_post_parent_id( $variation_id );
+			$variation_id = $product_id;
+			$product_id   = wp_get_post_parent_id( $variation_id );
 		}
 
 		$product_data = wc_get_product( $variation_id ? $variation_id : $product_id );
@@ -92,6 +96,7 @@ class TInvWL_Analytics {
 		}
 
 		$product_data->variation_id = absint( $product_data->variation_id );
+
 		return $product_data;
 	}
 
@@ -100,6 +105,7 @@ class TInvWL_Analytics {
 	 *
 	 * @param integer $wishlist_id If exist wishlist object, you can put 0.
 	 * @param boolean $author is author wislist.
+	 *
 	 * @return boolean
 	 */
 	function wishlist_view( $wishlist_id = 0, $author = null ) {
@@ -107,7 +113,8 @@ class TInvWL_Analytics {
 			$wishlist_id = $this->wishlist_id();
 		}
 		$this->view_products( $wishlist_id, $author );
-		return $this->add( ($author ? 'author' : 'visite' ), $wishlist_id );
+
+		return $this->add( ( $author ? 'author' : 'visite' ), $wishlist_id );
 	}
 
 	/**
@@ -115,6 +122,7 @@ class TInvWL_Analytics {
 	 *
 	 * @param integer $wishlist_id If exist wishlist object, you can put 0.
 	 * @param boolean $author is author wislist.
+	 *
 	 * @return boolean
 	 */
 	function view_products( $wishlist_id = 0, $author = null ) {
@@ -122,10 +130,10 @@ class TInvWL_Analytics {
 			$wishlist_id = $this->wishlist_id();
 		}
 		$wishlist_id = absint( $wishlist_id );
-		$wlp		 = new TInvWL_Product( array(), $this->_name );
-		$products	 = $wlp->get_wishlist( array(
-			'wishlist_id'	 => $wishlist_id,
-			'external'		 => false,
+		$wlp         = new TInvWL_Product( array(), $this->_name );
+		$products    = $wlp->get_wishlist( array(
+			'wishlist_id' => $wishlist_id,
+			'external'    => false,
 		) );
 		if ( empty( $products ) || ! is_array( $products ) ) {
 			return false;
@@ -133,21 +141,24 @@ class TInvWL_Analytics {
 		foreach ( $products as $product ) {
 			$this->add( ( $author ? 'author' : 'visite' ), $wishlist_id, $product['product_id'], $product['variation_id'] );
 		}
+
 		return true;
 	}
 
 	/**
 	 * Apply analytics actions
 	 *
-	 * @param string  $type Type action.
+	 * @param string $type Type action.
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	private function _product( $type, $product_id, $variation_id = 0, $quantity = 1 ) {
 		$wishlist_id = $this->wishlist_id();
-		$quantity	 = absint( $quantity );
+		$quantity    = absint( $quantity );
+
 		return $this->add( $type, $wishlist_id, $product_id, $variation_id, $quantity );
 	}
 
@@ -157,6 +168,7 @@ class TInvWL_Analytics {
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function cart_product( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -169,6 +181,7 @@ class TInvWL_Analytics {
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function sell_product( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -181,6 +194,7 @@ class TInvWL_Analytics {
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function click_product_from_wl( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -193,6 +207,7 @@ class TInvWL_Analytics {
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function click_author_product_from_wl( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -200,11 +215,12 @@ class TInvWL_Analytics {
 	}
 
 	/**
-	 * Bougt product from wishlist
+	 * Bought product from wishlist
 	 *
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function sell_product_from_wl( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -217,6 +233,7 @@ class TInvWL_Analytics {
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed product.
+	 *
 	 * @return boolean
 	 */
 	function gifted_product( $product_id, $variation_id = 0, $quantity = 1 ) {
@@ -226,16 +243,25 @@ class TInvWL_Analytics {
 	/**
 	 * Add action product
 	 *
-	 * @global wpdb $wpdb
-	 * @param string  $type Action field.
+	 * @param string $type Action field.
 	 * @param integer $wishlist_id If exist wishlist object, you can put 0.
 	 * @param integer $product_id Product id.
 	 * @param integer $variation_id Product variation id.
 	 * @param integer $quantity Quantity applyed actions.
+	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
 	 */
 	function add( $type = 'visite', $wishlist_id = 0, $product_id = 0, $variation_id = 0, $quantity = 1 ) {
-		if ( ! in_array( $type, array( 'add_to_cart', 'author', 'author_click', 'click', 'gift', 'visite', 'wishlist' ) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
+		if ( ! in_array( $type, array(
+			'add_to_cart',
+			'author',
+			'author_click',
+			'click',
+			'gift',
+			'visite',
+			'wishlist'
+		) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 			return false;
 		}
 		if ( empty( $wishlist_id ) ) {
@@ -247,18 +273,18 @@ class TInvWL_Analytics {
 		if ( empty( $product_id ) && ! empty( $variation_id ) ) {
 			$product_data = $this->product_data( $product_id, $variation_id );
 			if ( $product_data ) {
-				$product_id		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-				$variation_id	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+				$product_id   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
+				$variation_id = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 			} else {
 				return false;
 			}
 		}
-		$data = array(
-			'wishlist_id'	 => $wishlist_id,
-			'product_id'	 => $product_id,
-			'variation_id'	 => $variation_id,
+		$data       = array(
+			'wishlist_id'  => $wishlist_id,
+			'product_id'   => $product_id,
+			'variation_id' => $variation_id,
 		);
-		$data['ID'] = md5( implode( '|' , $data ) );
+		$data['ID'] = md5( implode( '|', $data ) );
 
 		if ( 'visite' == $type ) { // WPCS: loose comparison ok.
 			$user = wp_get_current_user();
@@ -270,22 +296,22 @@ class TInvWL_Analytics {
 		}
 		switch ( $type ) {
 			case 'author':
-				$data['visite_author']		 = $quantity;
+				$data['visite_author'] = $quantity;
 			case 'visite':
-				$data['visite']				 = $quantity;
+				$data['visite'] = $quantity;
 				break;
 			case 'author_click':
-				$data['click_author']		 = $quantity;
+				$data['click_author'] = $quantity;
 			case 'click':
-				$data['click']				 = $quantity;
+				$data['click'] = $quantity;
 				break;
 			case 'add_to_cart':
-				$data['cart']				 = $quantity;
+				$data['cart'] = $quantity;
 				break;
 			case 'gift':
-				$data['sell_as_gift']		 = $quantity;
+				$data['sell_as_gift'] = $quantity;
 			case 'wishlist':
-				$data['sell_of_wishlist']	 = $quantity;
+				$data['sell_of_wishlist'] = $quantity;
 				break;
 		}
 		switch ( $type ) {
@@ -297,39 +323,49 @@ class TInvWL_Analytics {
 					return false;
 				}
 		}
-		$fields		 = array();
-		$values		 = array();
-		$duplicates	 = array();
+		$fields     = array();
+		$values     = array();
+		$duplicates = array();
 		foreach ( $data as $key => $value ) {
-			$fields[]	 = $key;
-			$values[]	 = $value;
-			if ( in_array( $key, array( 'cart', 'sell_as_gift', 'click_author', 'click', 'sell_of_wishlist', 'visite', 'visite_author' ) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
+			$fields[] = $key;
+			$values[] = $value;
+			if ( in_array( $key, array(
+				'cart',
+				'sell_as_gift',
+				'click_author',
+				'click',
+				'sell_of_wishlist',
+				'visite',
+				'visite_author'
+			) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 				$duplicates[] = sprintf( '`%s`=`%s`+%d', $key, $key, $value );
 			}
 		}
-		$fields		 = '`' . implode( '`,`', $fields ) . '`';
-		$values		 = "'" . implode( "','", $values ) . "'";
-		$duplicates	 = implode( ',', $duplicates );
+		$fields     = '`' . implode( '`,`', $fields ) . '`';
+		$values     = "'" . implode( "','", $values ) . "'";
+		$duplicates = implode( ',', $duplicates );
 		global $wpdb;
+
 		return $wpdb->query( "INSERT INTO `$this->table` ($fields) VALUES ($values) ON DUPLICATE KEY UPDATE $duplicates" ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}
 
 	/**
 	 * Get products
 	 *
-	 * @global wpdb $wpdb
 	 * @param array $data Request.
+	 *
 	 * @return array
+	 * @global wpdb $wpdb
 	 */
 	function get( $data = array() ) {
 		$default = array(
-			'count'		 => 10,
-			'field'		 => null,
-			'offset'	 => 0,
-			'order'		 => 'ASC',
-			'order_by'	 => 'visite',
-			'external'	 => true,
-			'sql'		 => '',
+			'count'    => 10,
+			'field'    => null,
+			'offset'   => 0,
+			'order'    => 'ASC',
+			'order_by' => 'visite',
+			'external' => true,
+			'sql'      => '',
 		);
 
 		foreach ( $default as $_k => $_version ) {
@@ -340,12 +376,12 @@ class TInvWL_Analytics {
 		}
 
 		$default['offset'] = absint( $default['offset'] );
-		$default['count']	 = absint( $default['count'] );
+		$default['count']  = absint( $default['count'] );
 		if ( is_array( $default['field'] ) ) {
 			$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
 		} elseif ( is_string( $default['field'] ) ) {
-			$default['field']	 = array( 'ID', $default['field'] );
-			$default['field']	 = '`' . implode( '`,`', $default['field'] ) . '`';
+			$default['field'] = array( 'ID', $default['field'] );
+			$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
 		} else {
 			$default['field'] = '*';
 		}
@@ -356,30 +392,30 @@ class TInvWL_Analytics {
 			foreach ( $data as $f => $v ) {
 				$s = is_array( $v ) ? ' IN ' : '=';
 				if ( is_array( $v ) ) {
-					$v	 = "'" . implode( "','", $v ) . "'";
-					$v	 = "($v)";
+					$v = "'" . implode( "','", $v ) . "'";
+					$v = "($v)";
 				} else {
 					$v = "'$v'";
 				}
 				$data[ $f ] = sprintf( '`%s`%s%s', $f, $s, $v );
 			}
 			$where = implode( ' AND ', $data );
-			$sql .= ' WHERE ' . $where;
+			$sql   .= ' WHERE ' . $where;
 		}
 
 		$sql .= sprintf( ' ORDER BY `%s` %s LIMIT %d,%d;', $default['order_by'], $default['order'], $default['offset'], $default['count'] );
 		if ( ! empty( $default['sql'] ) ) {
-			$replacer		 = $replace		 = array();
-			$replace[0]	 = '{table}';
-			$replacer[0]	 = $this->table;
-			$replace[1]	 = '{where}';
-			$replacer[1]	 = $where;
+			$replacer    = $replace = array();
+			$replace[0]  = '{table}';
+			$replacer[0] = $this->table;
+			$replace[1]  = '{where}';
+			$replacer[1] = $where;
 
 			foreach ( $default as $key => $value ) {
 				$i = count( $replace );
 
-				$replace[ $i ]	 = '{' . $key . '}';
-				$replacer[ $i ]	 = $value;
+				$replace[ $i ]  = '{' . $key . '}';
+				$replacer[ $i ] = $value;
 			}
 
 			$sql = str_replace( $replace, $replacer, $default['sql'] );
@@ -394,22 +430,24 @@ class TInvWL_Analytics {
 			foreach ( $products as $k => $product ) {
 				$product_data = $this->product_data( $product['variation_id'], $product['product_id'] );
 				if ( $product_data ) {
-					$product['product_id']		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-					$product['variation_id']	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
+					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 				}
 				$product['data'] = $product_data;
-				$products[ $k ] = $product;
+				$products[ $k ]  = $product;
 			}
 		}
+
 		return $products;
 	}
 
 	/**
 	 * Get Analytics
 	 *
-	 * @global wpdb $wpdb
 	 * @param integer $wishlist_id If exist wishlist object, you can put 0.
+	 *
 	 * @return array
+	 * @global wpdb $wpdb
 	 */
 	function get_wishlist( $wishlist_id = 0 ) {
 		$wishlist_id = absint( $wishlist_id );
@@ -432,17 +470,19 @@ class TInvWL_Analytics {
 			}
 			$analytics[ $key ] = $analytic;
 		}
+
 		return $analytics;
 	}
 
 	/**
 	 * Get Analytics Product
 	 *
-	 * @global wpdb $wpdb
 	 * @param type $wishlist_id If exist wishlist object, you can put 0.
 	 * @param type $product_id Product id.
 	 * @param type $variation_id Product variation id.
+	 *
 	 * @return type
+	 * @global wpdb $wpdb
 	 */
 	function get_product( $wishlist_id = 0, $product_id = 0, $variation_id = 0 ) {
 
@@ -450,21 +490,21 @@ class TInvWL_Analytics {
 		if ( empty( $wishlist_id ) ) {
 			$wishlist_id = $this->wishlist_id();
 		}
-		$wishlist_id	 = absint( $wishlist_id );
-		$product_id		 = absint( $product_id );
-		$variation_id	 = absint( $variation_id );
+		$wishlist_id  = absint( $wishlist_id );
+		$product_id   = absint( $product_id );
+		$variation_id = absint( $variation_id );
 		if ( ! empty( $product_id ) || ! empty( $variation_id ) ) {
 			$product_data = $this->product_data( $product_id, $variation_id );
 			if ( $product_data ) {
-				$product_id		 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-				$variation_id	 = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+				$product_id   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
+				$variation_id = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 			} else {
-				$product_id		 = 0;
-				$variation_id	 = 0;
+				$product_id   = 0;
+				$variation_id = 0;
 			}
 		} else {
-			$product_id		 = 0;
-			$variation_id	 = 0;
+			$product_id   = 0;
+			$variation_id = 0;
 		}
 
 		global $wpdb;
@@ -492,6 +532,7 @@ class TInvWL_Analytics {
 			}
 			$analytics[ $key ] = $analytic;
 		}
+
 		return $analytics;
 	}
 }

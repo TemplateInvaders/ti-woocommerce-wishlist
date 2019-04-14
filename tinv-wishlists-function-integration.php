@@ -1341,8 +1341,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_add_on' )
 	 * @return array
 	 */
 	function tinv_wishlist_metasupport_woocommerce_product_add_on( $meta, $product_id ) {
-		$personalized_meta = absint( get_post_meta( $product_id, '_product_meta_id', true ) );
-		if ( ! empty( $personalized_meta ) ) {
+		if ( isset( $meta['ppom'] ) ) {
 			$meta = array();
 		}
 
@@ -1364,9 +1363,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 	 * @return array
 	 */
 	function tinv_wishlist_item_meta_woocommerce_product_add_on( $meta, $wl_product, $product ) {
-		$personalized_meta = absint( get_post_meta( $wl_product['product_id'], '_product_meta_id', true ) );
-		if ( ! empty( $personalized_meta ) && class_exists( 'NM_PersonalizedProduct' ) ) {
-
+		if ( isset( $wl_product['meta'] ) && isset( $wl_product['meta']['ppom'] ) && class_exists( 'NM_PersonalizedProduct' ) ) {
 			$product_meta = ( isset( $wl_product['meta']['ppom'] ) ) ? $wl_product['meta']['ppom']['fields'] : '';
 
 			$item_meta = array();
@@ -1483,7 +1480,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 			if ( 0 < count( $item_meta ) ) {
 				ob_start();
 				tinv_wishlist_template( 'ti-wishlist-item-data.php', array( 'item_data' => $item_meta ) );
-				$meta .= '<br/>' . ob_get_clean();
+				$meta .= ob_get_clean();
 			}
 		} // End if().
 

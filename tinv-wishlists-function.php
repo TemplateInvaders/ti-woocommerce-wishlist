@@ -742,7 +742,9 @@ if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {
 				echo esc_html( $data['key'] ) . ': ' . wp_kses_post( $data['display'] ) . '<br>';
 			}
 		} else {
-			tinv_wishlist_template( 'ti-wishlist-item-data.php', array( 'item_data' => $item_data ) );
+			if ( $item_data ) {
+				tinv_wishlist_template( 'ti-wishlist-item-data.php', array( 'item_data' => $item_data ) );
+			}
 		}
 
 		return apply_filters( 'tinvwl_wishlist_item_meta_wishlist', ob_get_clean() );

@@ -2279,3 +2279,45 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 
 	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_custom_product_addons', 10, 3 );
 }
+
+
+if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
+
+	/**
+	 * Set description for meta Improved Product Options for WooCommerce
+	 *
+	 * @param array $meta Meta array.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_meta_support_ivpa( $meta ) {
+
+		if ( class_exists( 'WC_Improved_Variable_Product_Attributes_Init' ) ) {
+
+			$curr_customizations = WC_Improved_Variable_Product_Attributes::get_custom();
+
+			foreach ( $meta as $k => $v ) {
+				$prefix  = 'ivpac_';
+				$k_ivpac = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k;
+				if ( isset( $curr_customizations['ivpa_attr'][ $k_ivpac ] ) ) {
+					$v = is_array( $v['display'] ) ? implode( ', ', $v['display'] ) : $v['display'];
+					if ( $curr_customizations['ivpa_attr'][ $k_ivpac ] == 'ivpa_custom' ) {
+						$meta[ $k ] = array(
+							'key'     => $curr_customizations['ivpa_title'][ $k_ivpac ],
+							'display' => $v,
+						);
+					} else {
+						$meta[ $k ] = array(
+							'key'     => wc_attribute_label( $curr_customizations['ivpa_attr'][ $k_ivpac ] ),
+							'display' => $v,
+						);
+					}
+				}
+			}
+		}
+
+		return $meta;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_ivpa' );
+} // End if().

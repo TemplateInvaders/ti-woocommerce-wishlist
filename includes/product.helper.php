@@ -368,7 +368,7 @@ class TInvWL_Product {
 				$product['quantity'] = 1;
 			}
 			if ( $default['external'] ) {
-				$product_data = $this->product_data( $product['variation_id'], $product['product_id'] );
+				$product_data = $this->product_data(  $product['product_id'], $product['variation_id'] );
 				if ( $product_data ) {
 					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
 					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
@@ -408,7 +408,7 @@ class TInvWL_Product {
 			$product_id   = wp_get_post_parent_id( $variation_id );
 		}
 
-		$product_data = wc_get_product( $variation_id ? $variation_id : $product_id );
+		$product_data = apply_filters( 'tinvwl_product_data', wc_get_product( $variation_id ? $variation_id : $product_id ), $product_id, $variation_id );
 
 		if ( ! $product_data || 'trash' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->post->post_status : get_post( $product_data->get_id() )->post_status ) ) {
 			return null;

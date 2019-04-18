@@ -126,6 +126,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		global $wp_roles;
 		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888' );
 		add_action( "load-$page", array( $this, 'onload' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_inline_scripts' ) );
 		$menu = apply_filters( $this->_name . '_admin_menu', array() );
 		foreach ( $menu as $item ) {
 			if ( ! array_key_exists( 'page_title', $item ) ) {
@@ -172,6 +173,13 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
 		wp_enqueue_style( $this->_name, TINVWL_URL . 'assets/css/admin.css', array(), $this->_version, 'all' );
 		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_version, 'all' );
+	}
+
+	/**
+	 * Load javascript
+	 */
+	function add_inline_scripts() {
+		wp_add_inline_script( 'iris', 'jQuery("body").on("click.woo",\'a[href*="woocommerce.com"]\',function(o){var e=o.originalEvent.target.href,r="&";o.currentTarget.href=e.split("?")[0]+"?utm_source=dashboard"+r+"aff=3955"+r+"utm_campaign=promo"+r+"cid=2034496"+r+"utm_medium=free",setTimeout(function(){o.originalEvent.target.href=e},1),jQuery("body").off("click.woo",\'a[href*="woocommerce.com"]\')});' );
 	}
 
 	/**

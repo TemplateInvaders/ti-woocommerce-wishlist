@@ -2516,7 +2516,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 								<input type="text"
 								       name="<?php echo $this->field_name( array( 'tinvwl_added' => 'log' ) ); ?>"
 								       id="<?php echo $this->field_id( array( 'tinvwl_added' => 'log' ) ); ?>"
-								       placeholder="<?php _e( 'required', 'mycred' ); ?>"
+								       placeholder="<?php _e( 'required', 'ti-woocommerce-wishlist' ); ?>"
 								       value="<?php echo esc_attr( $prefs['tinvwl_added']['log'] ); ?>"
 								       class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags( array(
@@ -2561,7 +2561,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 								<input type="text"
 								       name="<?php echo $this->field_name( array( 'tinvwl_purchased' => 'log' ) ); ?>"
 								       id="<?php echo $this->field_id( array( 'tinvwl_purchased' => 'log' ) ); ?>"
-								       placeholder="<?php _e( 'required', 'mycred' ); ?>"
+								       placeholder="<?php _e( 'required', 'ti-woocommerce-wishlist' ); ?>"
 								       value="<?php echo esc_attr( $prefs['tinvwl_purchased']['log'] ); ?>"
 								       class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags( array(

@@ -1,8 +1,8 @@
-# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.10.1
-# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.10.1 package.
+# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.11.0
+# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.11.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin - 1.10.1\n"
+"Project-Id-Version: WooCommerce Wishlist Plugin - 1.11.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Default Wishlist Name"
 msgstr ""
 
-#: admin/settings/general.class.php:86, admin/tinvwl.class.php:390
+#: admin/settings/general.class.php:86, admin/tinvwl.class.php:398
 msgid "Wishlist Page"
 msgstr ""
 
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Normal Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:34, admin/tinvwl.class.php:265, views/wizard/finish.php:31
+#: admin/settings/upgrade.class.php:34, admin/tinvwl.class.php:273, views/wizard/finish.php:31
 msgid "Upgrade to Premium"
 msgstr ""
 
@@ -732,15 +732,15 @@ msgstr ""
 msgid " or "
 msgstr ""
 
-#: admin/tinvwl.class.php:188
+#: admin/tinvwl.class.php:196
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:304
+#: admin/tinvwl.class.php:312
 msgid "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:330
+#: admin/tinvwl.class.php:338
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
@@ -939,7 +939,7 @@ msgstr[1] ""
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:76
+#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:88
 msgid "Remove"
 msgstr ""
 
@@ -1017,11 +1017,11 @@ msgstr ""
 msgid "Stock Status"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:67, templates/ti-wishlist.php:68
+#: templates/ti-wishlist-user.php:79, templates/ti-wishlist.php:80
 msgid "Select for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:120, templates/ti-wishlist.php:128, tinv-wishlists-function-integration.php:774, tinv-wishlists-function-integration.php:931, tinv-wishlists-function-integration.php:1093, tinv-wishlists-function-integration.php:1307
+#: templates/ti-wishlist-user.php:132, templates/ti-wishlist.php:140, tinv-wishlists-function-integration.php:774, tinv-wishlists-function-integration.php:931, tinv-wishlists-function-integration.php:1093, tinv-wishlists-function-integration.php:1307
 msgid "In stock"
 msgstr ""
 
@@ -1055,6 +1055,46 @@ msgstr ""
 
 #: tinv-wishlists-function-integration.php:1655
 msgid "Base price"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2336
+msgid "WooCommerce Wishlist"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2337
+msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2484
+msgid "Adding Product to Wishlist"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2489, tinv-wishlists-function-integration.php:2534
+msgid "Points"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2502, tinv-wishlists-function-integration.php:2547
+msgid "Limit"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2515, tinv-wishlists-function-integration.php:2560
+msgid "Log Template"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2519, tinv-wishlists-function-integration.php:2564
+msgid "required"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2529
+msgid "Purchasing Product from Wishlist"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2615
+msgid "Purchased From Wishlist"
+msgstr ""
+
+#: tinv-wishlists-function-integration.php:2616
+msgid "Added To Wishlist"
 msgstr ""
 
 #: views/admin/premium-features.php:36

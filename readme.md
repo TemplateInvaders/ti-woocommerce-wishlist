@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.1  
-**Stable tag:** 1.11.0  
+**Stable tag:** 1.11.1  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -162,6 +162,12 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.11.1 ###
+*Release Date - 19 April 2019*
+
+* Fixed a hook for [myCRED](https://wordpress.org/plugins/mycred/) plugin when purchased product from a wishlist
+* Plugin display name changed to "TI WooCommerce Wishlist Plugin"
+
 ### 1.11.0 ###
 *Release Date - 18 April 2019*
 

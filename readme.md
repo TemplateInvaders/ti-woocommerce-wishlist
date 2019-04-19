@@ -1,4 +1,4 @@
-# WooCommerce Wishlist Plugin #
+# TI WooCommerce Wishlist Plugin #
 **Contributors:** [templateinvaders](https://profiles.wordpress.org/templateinvaders)  
 **Donate link:** https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=donate  
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
@@ -16,7 +16,7 @@ Add Wishlist functionality to your store for free.
 ### Increase Sales and Conversions ###
 WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can’t buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales. 
 
-🔗 [Live Preview](https://woocommercewishlist.com/preview/?utm_source=wordpressorg&utm_content=preview)
+🔗 [Live Preview](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/preview/?utm_source=wordpressorg&utm_content=preview)
 
 🔗 [View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
 

@@ -78,6 +78,7 @@ class TInvWL_Public_Cart {
 			add_action( 'woocommerce_add_order_item_meta', array( $this, 'add_order_item_meta' ), 10, 3 );
 		} else {
 			add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta_v3' ) );
+			add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'purchased_items' ) );
 		}
 		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
 	}
@@ -179,7 +180,7 @@ class TInvWL_Public_Cart {
 	}
 
 	/**
-	 * Unrepare _POST data
+	 * Unprepare _POST data
 	 */
 	public static function unprepare_post() {
 		$_POST    = self::$_post;
@@ -304,21 +305,6 @@ class TInvWL_Public_Cart {
 		$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $cart_item_key, $values );
 		if ( ! empty( $data ) ) {
 			wc_add_order_item_meta( $item_id, '_tinvwl_wishlist_cart', $data );
-
-			$wishlist = null;
-
-			reset( $data );
-			$share_key = key( $data );
-
-			$wl       = new TInvWL_Wishlist();
-			$wishlist = $wl->get_by_share_key( $share_key );
-			/* Run a 3rd party code when product purchased from wishlist.
-			 *
-			 * @param string $item_id Order item id.
-			 * @param array $values order item data.
-			 * @param array $wishlist A wishlist data where product added from.
-			 * */
-			do_action( 'tinvwl_product_purchased', $item_id, $values, $wishlist );
 		}
 	}
 
@@ -333,14 +319,37 @@ class TInvWL_Public_Cart {
 			$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $item->legacy_cart_item_key, $item->legacy_values );
 			if ( ! empty( $data ) ) {
 				$item->update_meta_data( '_tinvwl_wishlist_cart', $data );
+			}
+		}
+	}
 
+
+	/**
+	 *  Run action when purchased product from a wishlist.
+	 *
+	 * @param int $order Order ID.
+	 */
+	public function purchased_items( $order_id ) {
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			return;
+		}
+		foreach ( $order->get_items() as $item ) {
+
+			$_wishlist_cart = self::get_order_item_meta( $item, '_tinvwl_wishlist_cart' );
+
+			if ( $_wishlist_cart ) {
 				$wishlist = null;
 
-				reset( $data );
-				$share_key = key( $data );
+				if ( is_array( $_wishlist_cart ) ) {
+					reset( $_wishlist_cart );
+					$share_key = key( $_wishlist_cart );
 
-				$wl       = new TInvWL_Wishlist();
-				$wishlist = $wl->get_by_share_key( $share_key );
+					$wl       = new TInvWL_Wishlist();
+					$wishlist = $wl->get_by_share_key( $share_key );
+				}
+
+
 				/* Run a 3rd party code when product purchased from wishlist.
 				 *
 				 * @param WC_order $order Order object.
@@ -444,18 +453,7 @@ class TInvWL_Public_Cart {
 
 			foreach ( $items as $item ) {
 
-				if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
-					//WooCommerce before 3.0
-
-					if ( array_key_exists( '_tinvwl_wishlist_cart', (array) $item ) ) {
-						$_wishlist_cart = maybe_unserialize( $item['_tinvwl_wishlist_cart'] );
-					}
-				} else {
-					// WooCommerce 3.0
-
-					// Check if wishlist meta exists for current item order.
-					$_wishlist_cart = $item->get_meta( '_tinvwl_wishlist_cart' );
-				}
+				$_wishlist_cart = self::get_order_item_meta( $item, '_tinvwl_wishlist_cart' );
 
 				if ( $_wishlist_cart ) {
 					$_quantity = absint( $item['qty'] );
@@ -478,5 +476,30 @@ class TInvWL_Public_Cart {
 
 			update_post_meta( $order_id, '_wishlist_analytics_processed', '1' );
 		}
+	}
+
+	/**
+	 * Get order item meta value.
+	 *
+	 * @param $item
+	 * @param $key
+	 *
+	 * @return mixed
+	 */
+	public static function get_order_item_meta( $item, $key ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
+			//WooCommerce before 3.0
+
+			if ( array_key_exists( $key, (array) $item ) ) {
+				$value = maybe_unserialize( $item[ $key ] );
+			}
+		} else {
+			// WooCommerce 3.0
+
+			// Check if wishlist meta exists for current item order.
+			$value = $item->get_meta( $key );
+		}
+
+		return $value;
 	}
 }

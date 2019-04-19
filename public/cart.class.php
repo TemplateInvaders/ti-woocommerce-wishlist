@@ -78,8 +78,8 @@ class TInvWL_Public_Cart {
 			add_action( 'woocommerce_add_order_item_meta', array( $this, 'add_order_item_meta' ), 10, 3 );
 		} else {
 			add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta_v3' ) );
-			add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'purchased_items' ) );
 		}
+		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'purchased_items' ) );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
 	}
 

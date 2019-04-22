@@ -118,10 +118,6 @@ class TInvWL {
 	 * Load function
 	 */
 	function load_function() {
-		if ( tinv_get_option( 'template_checker', 'checked' ) ) {
-			return;
-		}
-		TInvWL_CheckerHook::instance();
 	}
 
 	/**

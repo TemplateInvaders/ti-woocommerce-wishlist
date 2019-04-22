@@ -796,15 +796,15 @@ msgstr ""
 msgid "%1$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
-#: includes/tinvwl.class.php:154
+#: includes/tinvwl.class.php:150
 msgid "Settings"
 msgstr ""
 
-#: includes/tinvwl.class.php:155
+#: includes/tinvwl.class.php:151
 msgid "Premium Version"
 msgstr ""
 
-#: includes/tinvwl.class.php:156
+#: includes/tinvwl.class.php:152
 msgid "Live Demo"
 msgstr ""
 
@@ -832,7 +832,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:646
+#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:581
 msgid "Wishlist"
 msgstr ""
 
@@ -868,31 +868,27 @@ msgstr ""
 msgid "Ready!"
 msgstr ""
 
-#: public/addtowishlist.class.php:173
+#: public/addtowishlist.class.php:180
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:175
+#: public/addtowishlist.class.php:182
 msgid "Login"
 msgstr ""
 
-#: public/tinvwl.class.php:384
-msgid "%1$s by %2$s"
-msgstr ""
-
-#: public/tinvwl.class.php:543
+#: public/tinvwl.class.php:478
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:546
+#: public/tinvwl.class.php:481
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:547
+#: public/tinvwl.class.php:482
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:548
+#: public/tinvwl.class.php:483
 msgid "Copied!"
 msgstr ""
 
@@ -943,7 +939,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:495, public/wishlist/view.class.php:364
+#: public/wishlist/buttons.class.php:495, public/wishlist/view.class.php:497
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
@@ -953,23 +949,27 @@ msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/view.class.php:374
+#: public/wishlist/view.class.php:425
+msgid "%1$s by %2$s"
+msgstr ""
+
+#: public/wishlist/view.class.php:507
 msgid "%s has been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:376
+#: public/wishlist/view.class.php:509
 msgid "%s has not been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/view.class.php:519
+#: public/wishlist/view.class.php:652
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:617
+#: public/wishlist/view.class.php:775
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:643
+#: public/wishlist/view.class.php:801
 msgid "Next Page"
 msgstr ""
 
@@ -1021,7 +1021,7 @@ msgstr ""
 msgid "Select for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:132, templates/ti-wishlist.php:140, tinv-wishlists-function-integration.php:774, tinv-wishlists-function-integration.php:931, tinv-wishlists-function-integration.php:1093, tinv-wishlists-function-integration.php:1307
+#: templates/ti-wishlist-user.php:132, templates/ti-wishlist.php:140, tinv-wishlists-function-integration.php:777, tinv-wishlists-function-integration.php:934, tinv-wishlists-function-integration.php:1096, tinv-wishlists-function-integration.php:1310
 msgid "In stock"
 msgstr ""
 
@@ -1049,51 +1049,51 @@ msgstr ""
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1246
+#: tinv-wishlists-function-integration.php:1249
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1655
+#: tinv-wishlists-function-integration.php:1658
 msgid "Base price"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2336
+#: tinv-wishlists-function-integration.php:2339
 msgid "WooCommerce Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2337
+#: tinv-wishlists-function-integration.php:2340
 msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2484
+#: tinv-wishlists-function-integration.php:2487
 msgid "Adding Product to Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2489, tinv-wishlists-function-integration.php:2534
+#: tinv-wishlists-function-integration.php:2492, tinv-wishlists-function-integration.php:2537
 msgid "Points"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2502, tinv-wishlists-function-integration.php:2547
+#: tinv-wishlists-function-integration.php:2505, tinv-wishlists-function-integration.php:2550
 msgid "Limit"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2515, tinv-wishlists-function-integration.php:2560
+#: tinv-wishlists-function-integration.php:2518, tinv-wishlists-function-integration.php:2563
 msgid "Log Template"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2519, tinv-wishlists-function-integration.php:2564
+#: tinv-wishlists-function-integration.php:2522, tinv-wishlists-function-integration.php:2567
 msgid "required"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2529
+#: tinv-wishlists-function-integration.php:2532
 msgid "Purchasing Product from Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2615
+#: tinv-wishlists-function-integration.php:2618
 msgid "Purchased From Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2616
+#: tinv-wishlists-function-integration.php:2619
 msgid "Added To Wishlist"
 msgstr ""
 

@@ -203,7 +203,7 @@ class TInvWL_Product {
 	 *
 	 * @return array
 	 */
-	function get_wishlist( $data = array() ) {
+	function get_wishlist( $data = array(), $count = false ) {
 		if ( ! array_key_exists( 'wishlist_id', $data ) ) {
 			$data['wishlist_id'] = $this->wishlist_id();
 		}
@@ -211,7 +211,7 @@ class TInvWL_Product {
 			return array();
 		}
 
-		return $this->get( $data );
+		return $this->get( $data, $count );
 	}
 
 	/**
@@ -261,20 +261,21 @@ class TInvWL_Product {
 	 * Get products
 	 *
 	 * @param array $data Request.
+	 * @param bool $count COUNT QUERY.
 	 *
 	 * @return array
 	 * @global wpdb $wpdb
 	 *
 	 */
-	function get( $data = array() ) {
+	function get( $data = array(), $count = false ) {
 		global $wpdb;
 
 		$default = array(
 			'count'    => 10,
 			'field'    => null,
 			'offset'   => 0,
-			'order'    => 'ASC',
-			'order_by' => 'in_stock',
+			'order'    => 'DESC',
+			'order_by' => 'date',
 			'external' => true,
 			'sql'      => '',
 		);
@@ -296,8 +297,11 @@ class TInvWL_Product {
 		} else {
 			$default['field'] = '*';
 		}
-		$sql = "SELECT {$default[ 'field' ]} FROM `{$this->table}`";
+		if ( $count ) {
+			$default['field'] = 'COUNT(`ID`) as `count`';
+		}
 
+		$sql   = "SELECT {$default[ 'field' ]} FROM `{$this->table}`";
 		$where = '1';
 		if ( ! empty( $data ) && is_array( $data ) ) {
 			if ( array_key_exists( 'meta', $data ) ) {
@@ -347,8 +351,12 @@ class TInvWL_Product {
 		}
 		$products = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
-		if ( empty( $products ) ) {
+		if ( empty( $products ) || is_wp_error( $products ) ) {
 			return array();
+		}
+
+		if ( $count ) {
+			return $products[0]['count'];
 		}
 
 		foreach ( $products as $k => $product ) {
@@ -368,7 +376,7 @@ class TInvWL_Product {
 				$product['quantity'] = 1;
 			}
 			if ( $default['external'] ) {
-				$product_data = $this->product_data(  $product['product_id'], $product['variation_id'] );
+				$product_data = $this->product_data( $product['product_id'], $product['variation_id'] );
 				if ( $product_data ) {
 					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
 					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
@@ -402,11 +410,6 @@ class TInvWL_Product {
 	function product_data( $product_id, $variation_id = 0 ) {
 		$product_id   = absint( $product_id );
 		$variation_id = absint( $variation_id );
-
-		if ( 'product_variation' == get_post_type( $product_id ) ) { // WPCS: loose comparison ok.
-			$variation_id = $product_id;
-			$product_id   = wp_get_post_parent_id( $variation_id );
-		}
 
 		$product_data = apply_filters( 'tinvwl_product_data', wc_get_product( $variation_id ? $variation_id : $product_id ), $product_id, $variation_id );
 

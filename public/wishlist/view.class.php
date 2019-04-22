@@ -36,6 +36,35 @@ class TInvWL_Public_Wishlist_View {
 	 * @var array
 	 */
 	private $current_wishlist;
+
+	/**
+	 * Current products
+	 *
+	 * @var array
+	 */
+	private $current_products_query;
+
+	/**
+	 * Social image
+	 *
+	 * @var string
+	 */
+	public $social_image;
+
+	/**
+	 * Wishlist full URL
+	 *
+	 * @var string
+	 */
+	public $wishlist_url;
+
+	/**
+	 * Wishlist product helper
+	 *
+	 * @var TInvWL_Product
+	 */
+	public $wishlist_products_helper;
+
 	/**
 	 * This class
 	 *
@@ -77,11 +106,12 @@ class TInvWL_Public_Wishlist_View {
 		add_action( 'wp_loaded', array( $this, 'login_post_redirect' ), 19 );
 
 		add_action( 'wp', array( $this, 'wishlist_action' ), 0 );
+		add_action( 'wp_head', array( $this, 'add_meta_tags' ), 1 );
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
 
 		add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
-
+		add_filter( 'tinvwl_wishlist_item_url', array( $this, 'add_argument' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_action_add_to_cart', array( $this, 'product_allow_add_to_cart' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'external_text' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'variable_text' ), 10, 3 );
@@ -181,6 +211,19 @@ class TInvWL_Public_Wishlist_View {
 	}
 
 	/**
+	 * Add analytics argument for url
+	 *
+	 * @param string $url Product url.
+	 * @param array $wl_product Wishlist product.
+	 * @param object $product Product.
+	 *
+	 * @return type
+	 */
+	function add_argument( $url, $wl_product, $product ) {
+		return add_query_arg( 'tiwp', $wl_product['ID'], $url );
+	}
+
+	/**
 	 * Get current wishlist
 	 *
 	 * @return array
@@ -194,6 +237,20 @@ class TInvWL_Public_Wishlist_View {
 	}
 
 	/**
+	 * Get current products query
+	 *
+	 * @return array
+	 */
+	function get_current_products_query() {
+		if ( ! is_array( $this->current_products_query ) ) {
+			return false;
+		}
+
+		return $this->current_products_query;
+	}
+
+
+	/**
 	 * Get current products from wishlist
 	 *
 	 * @param array $wishlist Wishlist object.
@@ -203,15 +260,30 @@ class TInvWL_Public_Wishlist_View {
 	 * @return array
 	 */
 	function get_current_products( $wishlist = null, $external = true, $lists_per_page = 10 ) {
-		if ( empty( $wishlist ) ) {
+		if ( empty( $wishlist ) || $wishlist === $this->get_current_wishlist() ) {
 			$wishlist = $this->get_current_wishlist();
-		}
-		$wlp = null;
-		if ( isset( $wishlist['ID'] ) && 0 === $wishlist['ID'] ) {
-			$wlp = TInvWL_Product_Local::instance();
+
+			if ( ! $this->wishlist_products_helper ) {
+				$wlp = null;
+				if ( isset( $wishlist['ID'] ) && 0 === $wishlist['ID'] ) {
+					$wlp = TInvWL_Product_Local::instance();
+				} else {
+					$wlp = new TInvWL_Product( $wishlist );
+				}
+				$this->wishlist_products_helper = $wlp;
+			} else {
+				$wlp = $this->wishlist_products_helper;
+			}
+
 		} else {
-			$wlp = new TInvWL_Product( $wishlist );
+			$wlp = null;
+			if ( isset( $wishlist['ID'] ) && 0 === $wishlist['ID'] ) {
+				$wlp = TInvWL_Product_Local::instance();
+			} else {
+				$wlp = new TInvWL_Product( $wishlist );
+			}
 		}
+
 		if ( empty( $wlp ) ) {
 			return array();
 		}
@@ -226,25 +298,14 @@ class TInvWL_Public_Wishlist_View {
 			'order_by' => 'date',
 			'order'    => 'DESC',
 		);
-		$pages        = ceil( count( $wlp->get_wishlist( array(
-				'count'    => 9999999,
-				'external' => false,
-			) ) ) / absint( $lists_per_page ) );
-
-		if ( 1 < $paged ) {
-			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_prev' ) );
-		}
-		if ( 1 < $pages ) {
-			$this->pages = $pages;
-			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'pages' ) );
-		}
-		if ( $pages > $paged ) {
-			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_next' ) );
-		}
 
 		$product_data = apply_filters( 'tinvwl_before_get_current_product', $product_data );
 		$products     = $wlp->get_wishlist( $product_data );
 		$products     = apply_filters( 'tinvwl_after_get_current_product', $products );
+
+		if ( 10 === absint( $lists_per_page ) ) {
+			$this->current_products_query = $products;
+		}
 
 		return $products;
 	}
@@ -311,6 +372,78 @@ class TInvWL_Public_Wishlist_View {
 				do_action( 'tinvwl_after_action_user', $wishlist );
 			}
 		}
+	}
+
+	/**
+	 * Create social meta tags
+	 */
+	function add_meta_tags() {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) ) {
+			$wishlist = $this->get_current_wishlist();
+			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
+				if ( is_user_logged_in() ) {
+					$user = get_user_by( 'id', $wishlist['author'] );
+					if ( $user && $user->exists() ) {
+						$user_name = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
+						$user      = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+					} else {
+						$user_name = '';
+						$user      = '';
+					}
+				} else {
+					$user_name = '';
+					$user      = '';
+				}
+
+				if ( is_array( $this->get_current_products_query() ) ) {
+					$products = $this->current_products_query;
+				} else {
+					$products = $this->get_current_products( $wishlist, true );
+				}
+
+				$products_title = array();
+				foreach ( $products as $product ) {
+					if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
+						$title = $product['data']->get_title();
+						if ( ! in_array( $title, $products_title ) ) {
+							$products_title[] = $title;
+						}
+					}
+				}
+				$product = array_shift( $products );
+				$image   = '';
+				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
+					list( $image, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
+				}
+
+				$this->social_image = $image;
+				$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
+
+				$meta = apply_filters( 'tinvwl_social_header_meta', array(
+					'url'         => $this->wishlist_url,
+					'type'        => 'product.group',
+					'title'       => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
+					'description' => implode( ', ', $products_title ),
+					'image'       => $image,
+				) );
+				if ( tinv_get_option( 'social', 'facebook' ) ) {
+					foreach ( $meta as $name => $content ) {
+						echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
+					}
+					echo "\n";
+				}
+				if ( tinv_get_option( 'social', 'google' ) ) {
+					unset( $meta['url'], $meta['type'] );
+					foreach ( $meta as $name => $content ) {
+						if ( 'title' === $name ) {
+							$name = 'name';
+						}
+						echo sprintf( '<meta itemprop="%s" content="%s">', esc_attr( $name ), esc_attr( $content ) );
+					}
+					echo "\n";
+				}
+			} // End if().
+		} // End if().
 	}
 
 	/**
@@ -524,12 +657,16 @@ class TInvWL_Public_Wishlist_View {
 			}
 		}
 
-		$products = $this->get_current_products( $wishlist, true, absint( $atts['lists_per_page'] ) );
+		$this->lists_per_page = absint( $atts['lists_per_page'] );
 
-		$this->lists_per_page = $atts['lists_per_page'];
+		if ( 10 === $this->lists_per_page && is_array( $this->get_current_products_query() ) ) {
+			$products = $this->current_products_query;
+		} else {
+			$products = $this->get_current_products( $wishlist, true, $this->lists_per_page );
+		}
 
 		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
-		$wla->wishlist_view( 0, $wishlist['is_owner'] );
+		$wla->view_products( $wishlist, $wishlist['is_owner'] );
 
 		foreach ( $products as $key => $product ) {
 			if ( ! isset( $product['data'] ) ) {
@@ -550,6 +687,27 @@ class TInvWL_Public_Wishlist_View {
 			'wishlist_table'     => tinv_get_option( 'table' ),
 			'wishlist_table_row' => $wishlist_table_row,
 		);
+
+		$paged = get_query_var( 'wl_paged', 1 );
+		$paged = 1 < $paged ? $paged : 1;
+
+
+		if ( 1 < $paged ) {
+			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_prev' ) );
+		}
+		$pages = ceil( absint( $this->wishlist_products_helper->get_wishlist( array(
+				'count'    => 9999999,
+				'external' => false,
+			), true ) ) / absint( $this->lists_per_page ) );
+
+		if ( 1 < $pages ) {
+			$this->pages = $pages;
+			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'pages' ) );
+		}
+		if ( $pages > $paged ) {
+			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_next' ) );
+		}
+
 
 		if ( $wishlist['is_owner'] ) {
 			tinv_wishlist_template( 'ti-wishlist.php', $data );
@@ -652,7 +810,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function page( $paged, $text, $style = array() ) {
 		$paged    = absint( $paged );
-		$wishlist = tinv_wishlist_get();
+		$wishlist = $this->get_current_wishlist();
 		$link     = tinv_url_wishlist( $wishlist['share_key'], $paged, true );
 		if ( is_array( $style ) ) {
 			$style = TInvWL_Form::__atrtostr( $style );

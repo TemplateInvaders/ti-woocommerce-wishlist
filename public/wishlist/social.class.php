@@ -42,30 +42,12 @@ class TInvWL_Public_Wishlist_Social {
 			return false;
 		}
 
-		self::prepare( $wishlist );
+		self::$image = TInvWL_Public_Wishlist_View::instance()->social_image;
+		self::$url   = TInvWL_Public_Wishlist_View::instance()->wishlist_url;
+
 		self::htmloutput( $wishlist );
 	}
 
-	/**
-	 * Prepare data for social buttons
-	 *
-	 * @param array $wishlist Set from action.
-	 */
-	public static function prepare( $wishlist ) {
-		self::$url   = tinv_url_wishlist( $wishlist['share_key'] );
-		$wlp         = new TInvWL_Product( $wishlist );
-		$products    = $wlp->get_wishlist( array(
-			'count'    => 1,
-			'order_by' => 'date',
-			'order'    => 'DESC',
-		) );
-		$product     = array_shift( $products );
-		self::$image = '';
-		if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-			list( $url, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
-			self::$image = $url;
-		}
-	}
 
 	/**
 	 * Output social buttons

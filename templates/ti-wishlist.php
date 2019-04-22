@@ -18,7 +18,7 @@ wp_enqueue_script( 'tinvwl' );
 	} ?>
 	<?php
 	$wl_paged = get_query_var( 'wl_paged' );
-	$form_url = ( $wl_paged ) ? add_query_arg( 'wl_paged', $wl_paged, tinv_url_wishlist() ) : tinv_url_wishlist();
+	$form_url = tinv_url_wishlist( $wishlist['share_key'], $wl_paged, true );
 	?>
 	<form action="<?php echo esc_url( $form_url ); ?>" method="post" autocomplete="off">
 		<?php do_action( 'tinvwl_before_wishlist_table', $wishlist ); ?>

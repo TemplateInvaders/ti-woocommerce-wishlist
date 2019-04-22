@@ -341,7 +341,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			$options['add_selected'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 		}
 
-		$wishlist_curent = tinv_wishlist_get();
+		$wishlist_curent = TInvWL_Public_Wishlist_View::instance()->get_current_wishlist();
 		if ( $wishlist_curent['is_owner'] ) {
 			$options['remove'] = __( 'Remove', 'ti-woocommerce-wishlist' );
 		}

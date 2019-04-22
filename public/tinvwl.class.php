@@ -29,6 +29,13 @@ class TInvWL_Public_TInvWL {
 	 * @var string
 	 */
 	public $_version;
+
+	/**
+	 * Raw rewrites
+	 *
+	 * @var array
+	 */
+	public static $rules_raw;
 	/**
 	 * This class
 	 *
@@ -68,8 +75,7 @@ class TInvWL_Public_TInvWL {
 	 * Create all object and shortcode
 	 */
 	function pre_load_function() {
-		add_action( 'init', array( $this, 'apply_rewrite_rules' ), 0 );
-		add_action( 'init', array( $this, 'add_rewrite_rules' ), 0 );
+		add_action( 'tinvwl_flush_rewrite_rules', array( __CLASS__, 'apply_rewrite_rules' ) );
 
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
@@ -97,9 +103,9 @@ class TInvWL_Public_TInvWL {
 	 * @return mixed
 	 */
 	function add_rewrite_rules_raw( $rules ) {
-
 		if ( tinv_get_option( 'permalinks', 'force' ) ) {
-			$rules = $this->rules_raw + $rules;
+			self::add_rewrite_rules();
+			$rules = self::$rules_raw + $rules;
 		}
 
 		return $rules;
@@ -112,7 +118,6 @@ class TInvWL_Public_TInvWL {
 	function define_hooks() {
 		if ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) {
 			add_filter( 'language_attributes', array( $this, 'add_ogp' ), 100 );
-			add_action( 'wp_head', array( $this, 'add_meta_tags' ), 0 );
 		}
 
 		if ( tinv_get_option( 'general', 'link_in_myaccount' ) ) {
@@ -140,13 +145,9 @@ class TInvWL_Public_TInvWL {
 		if ( empty( $product_id ) ) {
 			return false;
 		}
-		$wishlist = tinv_wishlist_get();
-		$wlp      = null;
-		if ( 0 === $wishlist['ID'] ) {
-			$wlp = TInvWL_Product_Local::instance();
-		} else {
-			$wlp = new TInvWL_Product( $wishlist );
-		}
+
+		$wlp = new TInvWL_Product();
+
 		$items = $wlp->get( array( 'ID' => $product_id ) );
 		$item  = array_shift( $items );
 		if ( empty( $item ) ) {
@@ -155,6 +156,8 @@ class TInvWL_Public_TInvWL {
 		if ( empty( $item['data'] ) ) {
 			return false;
 		}
+		$wishlist = tinv_wishlist_get( $item['wishlist_id'] );
+
 		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
 		if ( $wishlist['is_owner'] ) {
 			$wla->click_author_product_from_wl( $item['product_id'], $item['variation_id'] );
@@ -218,24 +221,21 @@ class TInvWL_Public_TInvWL {
 	 * Update rewrite url for wishlist
 	 */
 	public static function update_rewrite_rules() {
-		set_transient( '_tinvwl_rewrite_rules', 1, 30 );
+		wp_schedule_single_event( time(), 'tinvwl_flush_rewrite_rules' );
 	}
 
 	/**
 	 * Apply rewrite url for wishlist
 	 */
-	function apply_rewrite_rules() {
-		if ( ! get_transient( '_tinvwl_rewrite_rules' ) ) {
-			return;
-		}
-		delete_transient( '_tinvwl_rewrite_rules' );
+	public static function apply_rewrite_rules() {
+		self::add_rewrite_rules();
 		flush_rewrite_rules();
 	}
 
 	/**
 	 * Create rewrite url for wishlist
 	 */
-	function add_rewrite_rules() {
+	public static function add_rewrite_rules() {
 		$id             = tinv_get_option( 'page', 'wishlist' );
 		$pages          = array( $id );
 		$language_codes = array();
@@ -266,26 +266,29 @@ class TInvWL_Public_TInvWL {
 
 				if ( $language_codes && defined( 'POLYLANG_VERSION' ) ) {
 					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
-					$this->rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
+					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
 					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
-					$this->rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
+					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
 				}
 
 				// Wishlist on frontpage.
 				$page_on_front = absint( get_option( 'page_on_front' ) );
 				if ( $page_on_front && 'page' === get_option( 'show_on_front' ) && $page->ID === $page_on_front ) {
-					add_filter( 'redirect_canonical', array( $this, 'disable_canonical_redirect_for_front_page' ) );
+					add_filter( 'redirect_canonical', array(
+						'TInvWL_Public_TInvWL',
+						'disable_canonical_redirect_for_front_page'
+					) );
 					// Match the front page and pass item value as a query var.
 					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );
-					$this->rules_raw['^([A-Fa-f0-9]{6})?/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]';
+					self::$rules_raw['^([A-Fa-f0-9]{6})?/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]';
 					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-					$this->rules_raw['^([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+					self::$rules_raw['^([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]';
 				}
 
 				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-				$this->rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]';
 				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]', 'top' );
-				$this->rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]';
+				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]';
 
 				// Wishlist on shop page.
 				$shop_page_id = wc_get_page_id( 'shop' );
@@ -293,11 +296,11 @@ class TInvWL_Public_TInvWL {
 					$shop      = get_post( $shop_page_id );
 					$shop_slug = $shop->post_name;
 					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]', 'top' );
-					$this->rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]';
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]';
 					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-					$this->rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]';
 					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]', 'top' );
-					$this->rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]';
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]';
 				}
 			}
 		}
@@ -310,7 +313,7 @@ class TInvWL_Public_TInvWL {
 	 *
 	 * @return bool
 	 */
-	public function disable_canonical_redirect_for_front_page( $redirect ) {
+	public static function disable_canonical_redirect_for_front_page( $redirect ) {
 		$page_on_front = absint( get_option( 'page_on_front' ) );
 		if ( is_page() && 'page' === get_option( 'show_on_front' ) && $page_on_front ) {
 			if ( is_page( $page_on_front ) ) {
@@ -331,78 +334,10 @@ class TInvWL_Public_TInvWL {
 	function add_query_var( $public_var ) {
 		$public_var[] = 'tinvwlID';
 		$public_var[] = 'tiws';
+		$public_var[] = 'tiwp';
 		$public_var[] = 'wl_paged';
 
 		return $public_var;
-	}
-
-	/**
-	 * Create social meta tags
-	 */
-	function add_meta_tags() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) ) {
-			$wishlist = tinv_wishlist_get( '', false );
-			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
-				if ( is_user_logged_in() ) {
-					$user = get_user_by( 'id', $wishlist['author'] );
-					if ( $user ) {
-						$user_name = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
-						$user      = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
-					} else {
-						$user_name = '';
-						$user      = '';
-					}
-				} else {
-					$user_name = '';
-					$user      = '';
-				}
-
-				$wlp            = new TInvWL_Product( $wishlist );
-				$products       = $wlp->get_wishlist( array(
-					'count'    => 999999,
-					'order_by' => 'date',
-					'order'    => 'DESC',
-				) );
-				$products_title = array();
-				foreach ( $products as $product ) {
-					if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-						$title = $product['data']->get_title();
-						if ( ! in_array( $title, $products_title ) ) {
-							$products_title[] = $title;
-						}
-					}
-				}
-				$product = array_shift( $products );
-				$image   = '';
-				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-					list( $image, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
-				}
-
-				$meta = apply_filters( 'tinvwl_social_header_meta', array(
-					'url'         => tinv_url_wishlist( $wishlist['share_key'] ),
-					'type'        => 'product.group',
-					'title'       => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
-					'description' => implode( ', ', $products_title ),
-					'image'       => $image,
-				) );
-				if ( tinv_get_option( 'social', 'facebook' ) ) {
-					foreach ( $meta as $name => $content ) {
-						echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
-					}
-					echo "\n";
-				}
-				if ( tinv_get_option( 'social', 'google' ) ) {
-					unset( $meta['url'], $meta['type'] );
-					foreach ( $meta as $name => $content ) {
-						if ( 'title' === $name ) {
-							$name = 'name';
-						}
-						echo sprintf( '<meta itemprop="%s" content="%s">', esc_attr( $name ), esc_attr( $content ) );
-					}
-					echo "\n";
-				}
-			} // End if().
-		} // End if().
 	}
 
 	/**

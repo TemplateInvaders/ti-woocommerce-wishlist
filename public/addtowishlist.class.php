@@ -44,6 +44,13 @@ class TInvWL_Public_AddToWishlist {
 	private $wishlist;
 
 	/**
+	 * This wishlist all products
+	 *
+	 * @var array
+	 */
+	private $all_products;
+
+	/**
 	 * Check is loop button
 	 *
 	 * @var bolean
@@ -341,8 +348,8 @@ class TInvWL_Public_AddToWishlist {
 		if ( ! empty( $this->user_wishlist ) ) {
 			return $this->user_wishlist;
 		}
-		$wishlists = array();
-		$wl        = new TInvWL_Wishlist( $this->_name );
+
+		$wl = new TInvWL_Wishlist( $this->_name );
 		if ( is_user_logged_in() ) {
 			$wishlists = $wl->get_by_user_default();
 		} else {
@@ -376,15 +383,15 @@ class TInvWL_Public_AddToWishlist {
 	 * @return array
 	 */
 	function user_wishlist( $product, $wlp = null ) {
-		$wishlists = $this->wishlist = array();
-		$vproduct  = in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+		$this->wishlist = array();
+		$vproduct       = in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
 			'variable',
 			'variation',
 			'variable-subscription'
 		) );
-		$wlp       = new TInvWL_Product();
-		$wishlists = $this->user_wishlists();
-		$ids       = array();
+		$wlp            = new TInvWL_Product();
+		$wishlists      = $this->user_wishlists();
+		$ids            = array();
 		foreach ( $wishlists as $key => $wishlist ) {
 			$ids[] = $wishlist['ID'];
 		}
@@ -393,12 +400,23 @@ class TInvWL_Public_AddToWishlist {
 		if ( empty( $ids ) ) {
 			return $wishlists;
 		}
-		$products = $wlp->get( array(
-			'product_id'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ),
-			'wishlist_id' => $ids,
-			'external'    => false,
-		) );
-		$in       = array();
+
+		if ( ! $this->all_products ) {
+			$this->all_products = $wlp->get( array(
+				'wishlist_id' => $ids,
+				'external'    => false,
+				'count'       => 9999999,
+			) );
+		}
+
+		$products = array();
+		foreach ( $this->all_products as $_product ) {
+			if ( $_product['product_id'] === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ) ) {
+				$products[] = $_product;
+			}
+		}
+
+		$in = array();
 		if ( ! empty( $products ) ) {
 			foreach ( $products as $product ) {
 				$in[ $product['wishlist_id'] ][] = $product['variation_id'];

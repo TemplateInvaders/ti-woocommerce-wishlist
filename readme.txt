@@ -4,7 +4,7 @@ Donate link: https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpr
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.5
 Tested up to: 5.1
-Stable tag: 1.11.1
+Stable tag: 1.12.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.12.0 =
+*Release Date - 22 April 2019*
+
+* Greatly improved frontend performance
+* Fixed wishlist analytics issues
+* Code cleanup
+
 = 1.11.1 =
 *Release Date - 19 April 2019*
 

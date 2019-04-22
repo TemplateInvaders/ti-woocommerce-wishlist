@@ -161,7 +161,7 @@ class TInvWL_Public_WishlistCounter {
 				);
 
 
-				foreach ( $items as $key => $item ) {
+				foreach ( array_keys( $items ) as $key ) {
 
 					if ( $items[ $key ]->menu_order > ( $menu_order - 1 ) ) {
 						$items[ $key ]->menu_order = $items[ $key ]->menu_order + 1;

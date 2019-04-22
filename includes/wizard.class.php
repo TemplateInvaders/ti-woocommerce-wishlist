@@ -324,7 +324,7 @@ class TInvWL_Wizard {
 		$data            = array(
 			'general_default_title' => FILTER_SANITIZE_STRING,
 		);
-		foreach ( $title_pages as $key => $text ) {
+		foreach ( array_keys( $title_pages ) as $key ) {
 			$data[ 'page_' . $key ]           = FILTER_VALIDATE_INT;
 			$data[ 'page_' . $key . '_new' ]  = FILTER_SANITIZE_STRING;
 			$data[ 'page_' . $key . '_auto' ] = FILTER_VALIDATE_BOOLEAN;

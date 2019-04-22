@@ -82,15 +82,15 @@ class TInvWL_PluginExtend {
 	public function __construct( $plugin, $root_file = null, $plugin_name = TINVWL_PREFIX ) {
 		$this->_name = $plugin_name;
 		if ( empty( $plugin ) ) {
-			$this->transient	 = plugin_basename( $root_file );
-			$this->plugin_path	 = trailingslashit( plugin_dir_path( dirname( $root_file ) ) );
+			$this->transient   = plugin_basename( $root_file );
+			$this->plugin_path = trailingslashit( plugin_dir_path( dirname( $root_file ) ) );
 		} else {
-			$this->transient	 = $plugin;
-			$this->plugin_path	 = trailingslashit( dirname( TINVWL_PATH ) );
+			$this->transient   = $plugin;
+			$this->plugin_path = trailingslashit( dirname( TINVWL_PATH ) );
 		}
-		$this->dependency	 = array();
-		$this->plugin_data	 = array();
-		$this->message		 = array();
+		$this->dependency  = array();
+		$this->plugin_data = array();
+		$this->message     = array();
 	}
 
 	/**
@@ -102,9 +102,12 @@ class TInvWL_PluginExtend {
 
 			$plugins = $this->get_dependency_plugins();
 
-			foreach ( $plugins as $plugin => $data ) {
+			foreach ( array_keys( $plugins ) as $plugin ) {
 				add_filter( 'plugin_action_links_' . $plugin, array( $this, 'plugin_action_links_maybe_deactivate' ) );
-				add_filter( 'network_admin_plugin_action_links_' . $plugin, array( $this, 'plugin_action_links_maybe_deactivate' ) );
+				add_filter( 'network_admin_plugin_action_links_' . $plugin, array(
+					$this,
+					'plugin_action_links_maybe_deactivate',
+				) );
 			}
 
 			add_action( 'after_plugin_row_' . $this->transient, array( $this, 'plugin_row' ), 10 );
@@ -119,11 +122,13 @@ class TInvWL_PluginExtend {
 	 *
 	 * @param string $plugin Plugin transient name.
 	 * @param string $nice_name Plugin nice name.
+	 *
 	 * @return \TInvWL_PluginExtend
 	 */
 	public function set_dependency( $plugin, $nice_name ) {
-		$this->dependency_current		 = $plugin;
-		$this->dependency_current_nice_name	 = $nice_name;
+		$this->dependency_current           = $plugin;
+		$this->dependency_current_nice_name = $nice_name;
+
 		return $this;
 	}
 
@@ -134,6 +139,7 @@ class TInvWL_PluginExtend {
 	 */
 	public function reset_dependency() {
 		$this->dependency_current = null;
+
 		return $this;
 	}
 
@@ -141,11 +147,12 @@ class TInvWL_PluginExtend {
 	 * Set dependency version by index rules
 	 *
 	 * @param integer $index Index rules.
-	 * 					0 Min version.
-	 * 					1 Max version.
-	 * 					2 Need plugin verion.
-	 * 					3 Conflict plugin verion.
-	 * @param string  $version Version dependency.
+	 *                    0 Min version.
+	 *                    1 Max version.
+	 *                    2 Need plugin verion.
+	 *                    3 Conflict plugin verion.
+	 * @param string $version Version dependency.
+	 *
 	 * @return boolean
 	 */
 	private function set_dependency_version( $index, $version = '1.0.0' ) {
@@ -164,6 +171,7 @@ class TInvWL_PluginExtend {
 	 * Set minimal dependency version
 	 *
 	 * @param string $version Version dependency.
+	 *
 	 * @return \TInvWL_PluginExtend
 	 */
 	public function min( $version = '1.0.0' ) {
@@ -171,6 +179,7 @@ class TInvWL_PluginExtend {
 			$version = '';
 		}
 		$this->set_dependency_version( 0, $version );
+
 		return $this;
 	}
 
@@ -178,6 +187,7 @@ class TInvWL_PluginExtend {
 	 * Set maximum dependency version
 	 *
 	 * @param string $version Version dependency.
+	 *
 	 * @return \TInvWL_PluginExtend
 	 */
 	public function max( $version = '1.0.0' ) {
@@ -185,6 +195,7 @@ class TInvWL_PluginExtend {
 			$version = '';
 		}
 		$this->set_dependency_version( 1, $version );
+
 		return $this;
 	}
 
@@ -192,10 +203,12 @@ class TInvWL_PluginExtend {
 	 * Set need plugin dependency version
 	 *
 	 * @param string $version Version dependency. Can use '*' for check any version.
+	 *
 	 * @return \TInvWL_PluginExtend
 	 */
 	public function need( $version = '*' ) {
 		$this->set_dependency_version( 2, $version );
+
 		return $this;
 	}
 
@@ -203,10 +216,12 @@ class TInvWL_PluginExtend {
 	 * Set conflict plugin dependency version
 	 *
 	 * @param string $version Version dependency. Can use '*' for check any version.
+	 *
 	 * @return \TInvWL_PluginExtend
 	 */
 	public function conflict( $version = '*' ) {
 		$this->set_dependency_version( 3, $version );
+
 		return $this;
 	}
 
@@ -214,24 +229,27 @@ class TInvWL_PluginExtend {
 	 * Get dependency array
 	 *
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return array
 	 */
 	private function get_dependency( $plugin ) {
 		if ( array_key_exists( $plugin, $this->dependency ) ) {
 			return $this->dependency[ $plugin ];
 		}
+
 		return array();
 	}
 
 	/**
 	 * Get dependency version from array.
 	 *
-	 * @param string  $plugin Plugin transient name.
-	 * @param integer $index  Index rules.
-	 * 					0 Min version.
-	 * 					1 Max version.
-	 * 					2 Need plugin verion.
-	 * 					3 Conflict plugin verion.
+	 * @param string $plugin Plugin transient name.
+	 * @param integer $index Index rules.
+	 *                    0 Min version.
+	 *                    1 Max version.
+	 *                    2 Need plugin verion.
+	 *                    3 Conflict plugin verion.
+	 *
 	 * @return array
 	 */
 	private function get_dep_ver( $plugin, $index ) {
@@ -239,6 +257,7 @@ class TInvWL_PluginExtend {
 		if ( array_key_exists( $index, $dependency ) ) {
 			return $dependency[ $index ];
 		}
+
 		return null;
 	}
 
@@ -257,9 +276,9 @@ class TInvWL_PluginExtend {
 	 * @return boolean
 	 */
 	public function status_dependency() {
-		$this->message	 = array();
-		$plugins	 = $this->get_dependency_plugins();
-		$status		 = true;
+		$this->message = array();
+		$plugins       = $this->get_dependency_plugins();
+		$status        = true;
 
 		foreach ( $plugins as $plugin => $data ) {
 			if ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_conflict_version( $plugin ) ) {
@@ -274,6 +293,7 @@ class TInvWL_PluginExtend {
 				$status = $this->set_message( 'activate', $data['nice_name'] );
 			}
 		}
+
 		return $status;
 	}
 
@@ -281,6 +301,7 @@ class TInvWL_PluginExtend {
 	 * Check plugin minimal version dependency.
 	 *
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function is_plugin_at_min_version( $plugin ) {
@@ -291,6 +312,7 @@ class TInvWL_PluginExtend {
 	 * Check plugin maximal version dependency.
 	 *
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function is_plugin_at_max_version( $plugin ) {
@@ -301,6 +323,7 @@ class TInvWL_PluginExtend {
 	 * Check plugin need version dependency.
 	 *
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function is_plugin_at_need_version( $plugin ) {
@@ -311,6 +334,7 @@ class TInvWL_PluginExtend {
 	 * Check plugin conflict version dependency.
 	 *
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function is_plugin_at_conflict_version( $plugin ) {
@@ -321,32 +345,33 @@ class TInvWL_PluginExtend {
 	 * Check plugin version dependency.
 	 *
 	 * @param integer $i Index rules.
-	 * 					0 Min version.
-	 * 					1 Max version.
-	 * 					2 Need plugin verion.
-	 * 					3 Conflict plugin verion.
-	 * @param string  $plugin Plugin transient name.
+	 *                    0 Min version.
+	 *                    1 Max version.
+	 *                    2 Need plugin verion.
+	 *                    3 Conflict plugin verion.
+	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function is_plugin_at_version( $i = 0, $plugin ) {
 
 		switch ( $i ) {
 			case 3:
-				$type	 = 'ne';
-				$i	 = 3;
+				$type = 'ne';
+				$i    = 3;
 				break;
 			case 2:
-				$type	 = 'eq';
-				$i	 = 2;
+				$type = 'eq';
+				$i    = 2;
 				break;
 			case 1:
-				$type	 = 'le';
-				$i	 = 1;
+				$type = 'le';
+				$i    = 1;
 				break;
 			case 0:
 			default:
-				$type	 = 'ge';
-				$i	 = 0;
+				$type = 'ge';
+				$i    = 0;
 		}
 		$version = $this->get_dep_ver( $plugin, $i );
 		if ( is_null( $version ) ) {
@@ -360,6 +385,7 @@ class TInvWL_PluginExtend {
 				return ! empty( $version_plugin );
 			}
 		}
+
 		return version_compare( $version_plugin, $version, $type );
 	}
 
@@ -367,17 +393,20 @@ class TInvWL_PluginExtend {
 	 * Get error messages
 	 *
 	 * @param boolean $first Get first or all error messages.
+	 *
 	 * @return string
 	 */
 	public function get_messages( $first = false ) {
 		if ( $first ) {
-			$message	 = array_shift( $this->message );
-			$this->message	 = array();
+			$message       = array_shift( $this->message );
+			$this->message = array();
+
 			return $message;
 		}
 
-		$message	 = '<p>' . implode( '</p><p>', $this->message ) . '</p>';
-		$this->message	 = array();
+		$message       = '<p>' . implode( '</p><p>', $this->message ) . '</p>';
+		$this->message = array();
+
 		return $message;
 	}
 
@@ -386,6 +415,7 @@ class TInvWL_PluginExtend {
 	 *
 	 * @param string $old_value Not used.
 	 * @param string $value Not used.
+	 *
 	 * @return string
 	 */
 	public function maybe_deactivate( $old_value, $value ) {
@@ -413,12 +443,14 @@ class TInvWL_PluginExtend {
 	 * Deactivation plugin
 	 *
 	 * @param string $actions Not used.
+	 *
 	 * @return string
 	 */
 	public function plugin_action_links_maybe_deactivate( $actions ) {
 		if ( ! $this->status_dependency() ) {
 			self::deactivate_self( $this->transient );
 		}
+
 		return $actions;
 	}
 
@@ -432,13 +464,14 @@ class TInvWL_PluginExtend {
 			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 			?>
 			<tr class="plugin-update-tr installer-plugin-update-tr">
-	        <td colspan="<?php echo $wp_list_table->get_column_count(); // WPCS: xss ok. ?>" class="plugin-update colspanchange">
-	    	<div class="notice inline notice-warning notice-alt">
-	    	    <p class="installer-q-icon">
-			    <?php echo $this->get_messages( true ); // WPCS: xss ok. ?>
-	    	    </p>
-	    	</div>
-	        </td>
+				<td colspan="<?php echo $wp_list_table->get_column_count(); // WPCS: xss ok. ?>"
+				    class="plugin-update colspanchange">
+					<div class="notice inline notice-warning notice-alt">
+						<p class="installer-q-icon">
+							<?php echo $this->get_messages( true ); // WPCS: xss ok. ?>
+						</p>
+					</div>
+				</td>
 			</tr>
 			<?php
 		}
@@ -447,7 +480,7 @@ class TInvWL_PluginExtend {
 	/**
 	 * Deactivation plugin
 	 *
-	 * @param string  $file Plugin file path.
+	 * @param string $file Plugin file path.
 	 * @param boolean $network_wide Network wide.
 	 */
 	public static function deactivate_self( $file, $network_wide = false ) {
@@ -463,12 +496,13 @@ class TInvWL_PluginExtend {
 	 *
 	 * @param string $type Type error message.
 	 * @param string $plugin Plugin transient name.
+	 *
 	 * @return boolean
 	 */
 	private function set_message( $type, $plugin ) {
-		$current	 = $this->get_plugin_data( 'current', 'Name' ) ? $this->get_plugin_data( 'current', 'Name' ) : $this->transient;
-		$version	 = $this->get_plugin_data( 'current', 'Version' );
-		$plugname	 = $this->get_plugin_data( $plugin, 'Name' ) ? $this->get_plugin_data( $plugin, 'Name' ) : $plugin;
+		$current  = $this->get_plugin_data( 'current', 'Name' ) ? $this->get_plugin_data( 'current', 'Name' ) : $this->transient;
+		$version  = $this->get_plugin_data( 'current', 'Version' );
+		$plugname = $this->get_plugin_data( $plugin, 'Name' ) ? $this->get_plugin_data( $plugin, 'Name' ) : $plugin;
 
 		$message = '';
 		switch ( $type ) {
@@ -521,6 +555,7 @@ class TInvWL_PluginExtend {
 		$message = sprintf( $message, $current, $plugname, $version );
 
 		$this->message[] = $message;
+
 		return false;
 	}
 
@@ -538,6 +573,7 @@ class TInvWL_PluginExtend {
 	 *
 	 * @param string $plugin Plugin transient name.
 	 * @param string $attr Plugin attribute name.
+	 *
 	 * @return mixed
 	 */
 	public function get_plugin_data( $plugin, $attr = null ) {
@@ -562,6 +598,7 @@ class TInvWL_PluginExtend {
 		if ( array_key_exists( $attr, (array) $this->plugin_data[ $plugin ] ) ) {
 			return $this->plugin_data[ $plugin ][ $attr ];
 		}
+
 		return null;
 	}
 }

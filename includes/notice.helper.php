@@ -150,7 +150,7 @@ class TInvWL_Notice {
 		if ( is_array( self::$shownotices[ $name ] ) ) {
 			if ( array_key_exists( $name, self::$shownotices ) ) {
 				if ( empty( $tag ) ) {
-					foreach ( self::$shownotices[ $name ] as $tag => $value ) {
+					foreach ( array_keys( self::$shownotices[ $name ] ) as $tag ) {
 						self::hide( $name, $tag );
 					}
 				} else {
@@ -197,7 +197,7 @@ class TInvWL_Notice {
 		}
 		self::add( $name );
 		$_notice = get_option( 'ti_admin_notice_' . $name, array() );
-		foreach ( $notice as $key => $value ) {
+		foreach ( $notice as $value ) {
 			$_value = wp_kses_post( $value );
 			if ( ! in_array( $_value, $_notice ) ) {
 				$_notice[ $index ] = $_value;

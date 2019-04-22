@@ -52,7 +52,7 @@ class TInvWL_Public_Widget_Topwishlist extends WC_Widget {
 	 * @param array $instance Instance.
 	 */
 	public function widget( $args, $instance ) {
-		global $wpdb;
+
 		if ( $this->get_cached_widget( $args ) ) {
 			return;
 		}

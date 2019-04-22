@@ -163,7 +163,7 @@ class TInvWL_Update {
 		$wishlists_table       = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
 		$wishlists_items_table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
 		$sql                   = "DELETE FROM wl USING `{$wishlists_table}` AS wl WHERE NOT EXISTS( SELECT * FROM `{$wishlists_items_table}` WHERE {$wishlists_items_table}.wishlist_id = wl.ID ) AND wl.type='default'";
-		$cleanup               = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+		$wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 	}
 
 	/**

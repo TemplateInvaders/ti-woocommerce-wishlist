@@ -302,7 +302,7 @@ class TInvWL_Activator {
 	public static function field( $name, $newformat ) {
 		$format = array( 'TEXT', null, false, null, false );
 
-		foreach ( $format as $key => $value ) {
+		foreach ( array_keys( $format ) as $key ) {
 			if ( array_key_exists( $key, $newformat ) ) {
 				$format[ $key ] = $newformat[ $key ];
 			}
@@ -548,10 +548,11 @@ class TInvWL_Activator {
 	 * Apply upgrade action
 	 * Add table index
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param string $name Table name.
 	 * @param array $table Table array.
+	 *
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public static function upgrade_action_add_index( $name, $table ) {
 		global $wpdb;

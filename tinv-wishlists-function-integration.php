@@ -66,7 +66,7 @@ if ( ! function_exists( 'tinvwl_wp_fastest_cache_reject' ) ) {
 
 					$rules_std = json_decode( $rules_json, true );
 					$ex_pages  = array();
-					foreach ( $rules_std as $key => $value ) {
+					foreach ( $rules_std as $value ) {
 						$value['type'] = isset( $value['type'] ) ? $value['type'] : 'page';
 						if ( 'page' === $value['type'] ) {
 							$ex_pages[] = $value['content'];
@@ -432,6 +432,7 @@ if ( ! function_exists( 'tinvwl_gift_card_add' ) ) {
 				}
 			}
 		}
+
 		return $redirect;
 	}
 
@@ -460,6 +461,7 @@ if ( ! function_exists( 'tinvwl_gift_card_add_url' ) ) {
 				}
 			}
 		}
+
 		return $redirect_url;
 	}
 
@@ -595,8 +597,6 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_bookings' ) ) {
 			if ( is_wp_error( $cost ) ) {
 				return $price;
 			}
-
-			$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
 
 			if ( 'incl' === get_option( 'woocommerce_tax_display_shop' ) ) {
 				if ( function_exists( 'wc_get_price_excluding_tax' ) ) {
@@ -878,7 +878,6 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	 */
 	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
-			$product_quantity = $product->is_sold_individually() ? 1 : $wl_product['quantity'];
 
 			$product_id    = WC_PB_Core_Compatibility::get_id( $product );
 			$bundled_items = $product->get_bundled_items();
@@ -2119,7 +2118,7 @@ if ( ! function_exists( 'tinv_wishlist_metaprepare_gtm4wp' ) ) {
 	 */
 	function tinv_wishlist_metaprepare_gtm4wp( $meta ) {
 
-		foreach ( $meta as $key => $value ) {
+		foreach ( array_keys( $meta ) as $key ) {
 			if ( strpos( $key, 'gtm4wp_' ) === 0 ) {
 				unset( $meta[ $key ] );
 			}
@@ -2239,7 +2238,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 			}
 
 
-			foreach ( $data as $k => $v ) {
+			foreach ( $data as $v ) {
 
 				$form_data = clone $v;
 				unset( $form_data->values ); //avoid saving large number of data
@@ -2253,7 +2252,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 							if ( is_array( $item_data[ $v->name ] ) ) {
 
 								$_values = $item_data[ $v->name ];
-								array_walk( $_values, function ( &$a, $b ) {
+								array_walk( $_values, function ( &$a ) {
 									sanitize_text_field( $a );
 								} ); // using this array_wal method to preserve the keys
 								$value = $_values;

@@ -308,7 +308,6 @@ class TInvWL_Public_AddToWishlist {
 		} // End if().
 		$data['status']       = $status;
 		$data['wishlist_url'] = tinv_url_wishlist_default();
-		$wishlist_page_id     = apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true );
 
 		if ( ! empty( $wishlist ) ) {
 			$data['wishlist_url'] = tinv_url_wishlist( $wishlist['ID'] );

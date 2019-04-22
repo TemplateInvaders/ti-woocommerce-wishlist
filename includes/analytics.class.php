@@ -280,7 +280,6 @@ class TInvWL_Analytics {
 			) ) );
 		}
 
-
 		if ( 'visite' == $type ) { // WPCS: loose comparison ok.
 			$user = wp_get_current_user();
 			if ( $user->exists() ) {
@@ -322,7 +321,7 @@ class TInvWL_Analytics {
 		$values     = array();
 		$duplicates = array();
 
-		foreach ( $product_id as $index => $product ) {
+		foreach ( array_keys( $product_id ) as $index ) {
 			foreach ( $data as $key => $value ) {
 				if ( 0 === $index ) {
 					$fields[] = $key;
@@ -379,7 +378,7 @@ class TInvWL_Analytics {
 			'sql'      => '',
 		);
 
-		foreach ( $default as $_k => $_version ) {
+		foreach ( array_keys( $default ) as $_k ) {
 			if ( array_key_exists( $_k, $data ) ) {
 				$default[ $_k ] = $data[ $_k ];
 				unset( $data[ $_k ] );

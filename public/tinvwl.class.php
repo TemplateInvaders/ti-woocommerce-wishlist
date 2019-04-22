@@ -276,7 +276,7 @@ class TInvWL_Public_TInvWL {
 				if ( $page_on_front && 'page' === get_option( 'show_on_front' ) && $page->ID === $page_on_front ) {
 					add_filter( 'redirect_canonical', array(
 						'TInvWL_Public_TInvWL',
-						'disable_canonical_redirect_for_front_page'
+						'disable_canonical_redirect_for_front_page',
 					) );
 					// Match the front page and pass item value as a query var.
 					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );

@@ -99,7 +99,7 @@ class TInvWL_Form {
 			2 => null,
 			3 => null,
 		);
-		foreach ( $_arg as $key => $value ) {
+		foreach ( array_keys( $_arg ) as $key ) {
 			$_arg[ $key ] = array_shift( $arg );
 		}
 		$arg    = $_arg;
@@ -179,13 +179,13 @@ class TInvWL_Form {
 	/**
 	 * Create color picker
 	 *
-	 * @see colorpicker
-	 *
 	 * @param mixed $data Name field or array attributes.
 	 * @param string $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
 	 * @return string
+	 * @see colorpicker
+	 *
 	 */
 	public static function _color( $data = '', $value = '', $extra = '' ) {
 		$class = sprintf( ' %s-form-color', self::$_name );
@@ -218,13 +218,13 @@ class TInvWL_Form {
 	/**
 	 * Create date input
 	 *
-	 * @see jquery-ui-datepicker
-	 *
 	 * @param mixed $data Name field or array attributes.
 	 * @param string $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
 	 * @return string
+	 * @see jquery-ui-datepicker
+	 *
 	 */
 	public static function _date( $data = '', $value = '', $extra = '' ) {
 		if ( ! is_array( $data ) ) {
@@ -1084,7 +1084,7 @@ class TInvWL_Form {
 	public static function setvalue( $data, $value = '' ) {
 		$_value = $value;
 		if ( is_array( $data ) ) {
-			foreach ( self::$value as $key => $val ) {
+			foreach ( array_keys( self::$value ) as $key ) {
 				if ( isset( $data[ $key ] ) ) {
 					self::$value[ $key ] = $data[ $key ];
 					unset( $data[ $key ] );
@@ -1149,7 +1149,7 @@ class TInvWL_Form {
 	public static function setoptions( $data, $option = array() ) {
 		$_option = $option;
 		if ( is_array( $data ) ) {
-			foreach ( self::$option as $key => $val ) {
+			foreach ( array_keys( self::$option ) as $key ) {
 				if ( isset( $data[ $key ] ) ) {
 					self::$option[ $key ] = $data[ $key ];
 					unset( $data[ $key ] );

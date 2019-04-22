@@ -864,7 +864,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		tinv_update_option( 'processing', 'redirect_checkout', $data['general']['processing_redirect_checkout'] );
 		tinv_update_option( 'processing', 'autoremove_status', 'tinvwl-addcart' );
 		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
-			foreach ( $data as $key => $value ) {
+			foreach ( array_keys( $data ) as $key ) {
 				if ( ! in_array( $key, array( 'page' ) ) ) {
 					$data[ $key ] = array();
 				}

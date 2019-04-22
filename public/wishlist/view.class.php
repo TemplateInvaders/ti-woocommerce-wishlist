@@ -413,7 +413,7 @@ class TInvWL_Public_Wishlist_View {
 				$product = array_shift( $products );
 				$image   = '';
 				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-					list( $image, $width, $height, $is_intermediate ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
+					list( $image ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
 				}
 
 				$this->social_image = $image;
@@ -707,7 +707,6 @@ class TInvWL_Public_Wishlist_View {
 		if ( $pages > $paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_next' ) );
 		}
-
 
 		if ( $wishlist['is_owner'] ) {
 			tinv_wishlist_template( 'ti-wishlist.php', $data );

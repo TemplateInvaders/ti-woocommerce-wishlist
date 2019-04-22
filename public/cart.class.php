@@ -458,7 +458,7 @@ class TInvWL_Public_Cart {
 				if ( $_wishlist_cart ) {
 					$_quantity = absint( $item['qty'] );
 					if ( is_array( $_wishlist_cart ) ) {
-						foreach ( $_wishlist_cart as $key => $quantity ) {
+						foreach ( array_keys( $_wishlist_cart ) as $key ) {
 							if ( 0 >= $_quantity ) {
 								break;
 							}

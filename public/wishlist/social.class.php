@@ -48,7 +48,6 @@ class TInvWL_Public_Wishlist_Social {
 		self::htmloutput( $wishlist );
 	}
 
-
 	/**
 	 * Output social buttons
 	 *

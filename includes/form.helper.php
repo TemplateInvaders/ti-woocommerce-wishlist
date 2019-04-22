@@ -61,7 +61,7 @@ class TInvWL_Form {
 			2 => null,
 			3 => null,
 		);
-		foreach ( $_arg as $key => $value ) {
+		foreach ( array_keys( $_arg ) as $key ) {
 			$_arg[ $key ] = array_shift( $arg );
 		}
 		$arg    = $_arg;

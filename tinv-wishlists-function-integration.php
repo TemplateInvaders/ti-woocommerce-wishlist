@@ -1912,7 +1912,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_fields' ) ) 
 				// Get fields to save values for
 				$fields = WCCF_Product_Field_Controller::get_filtered( null, array(
 					'item_id'  => $product_id,
-					'child_id' => $variation_id
+					'child_id' => $variation_id,
 				) );
 
 				// Set quantity
@@ -2106,11 +2106,11 @@ if ( ! function_exists( 'oceanwp_fix_archive_markup' ) ) {
 	}
 }
 
-// Google Tag Manager for Wordpress compatibility.
+// Google Tag Manager for WordPress compatibility.
 if ( ! function_exists( 'tinv_wishlist_metaprepare_gtm4wp' ) ) {
 
 	/**
-	 * Prepare save meta for WooCommerce - Google Tag Manager for Wordpress
+	 * Prepare save meta for WooCommerce - Google Tag Manager for WordPress
 	 *
 	 * @param array $meta Meta array.
 	 *
@@ -2178,7 +2178,7 @@ if ( ! function_exists( 'tinv_wishlist_qty_woo_advanced_url' ) ) {
 				$args         = $advanced_qty->qty_input_args( array(
 					'min_value' => 1,
 					'max_value' => '',
-					'step'      => 1
+					'step'      => 1,
 				), $product );
 
 				$url = preg_replace( '/&quantity=[0-9.]*/', '', $url );
@@ -2223,7 +2223,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 						'include'        => $post_ids,
 						'fields'         => 'ids',
 						'post_type'      => WCPA_POST_TYPE,
-						'posts_per_page' => - 1
+						'posts_per_page' => - 1,
 					) );
 				}
 			}
@@ -2269,7 +2269,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 							'label'     => ( isset( $v->label ) ) ? $v->label : '',
 							'value'     => $value['display'],
 							'price'     => false,
-							'form_data' => $form_data
+							'form_data' => $form_data,
 						) );
 					}
 				}
@@ -2337,7 +2337,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 		$installed['tinvwl'] = array(
 			'title'       => __( 'WooCommerce Wishlist', 'ti-woocommerce-wishlist' ),
 			'description' => __( 'Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist.', 'ti-woocommerce-wishlist' ),
-			'callback'    => array( 'myCRED_Hook_TinvWL' )
+			'callback'    => array( 'myCRED_Hook_TinvWL' ),
 		);
 
 		return $installed;
@@ -2373,9 +2373,9 @@ if ( defined( 'myCRED_VERSION' ) ) {
 						'tinvwl_purchased' => array(
 							'creds' => 1,
 							'log'   => '%plural% for purchasing a product from a wishlist',
-							'limit' => '0/x'
+							'limit' => '0/x',
 						),
-					)
+					),
 				), $hook_prefs, $type );
 
 			}
@@ -2471,7 +2471,6 @@ if ( defined( 'myCRED_VERSION' ) ) {
 
 				}
 
-
 			}
 
 			/**
@@ -2552,7 +2551,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 									'limit'
 								) ), $this->field_id( array(
 									'tinvwl_purchased',
-									'limit'
+									'limit',
 								) ), $prefs['tinvwl_purchased']['limit'] ); ?>
 							</div>
 						</div>
@@ -2568,7 +2567,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 								       class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags( array(
 										'general',
-										'post'
+										'post',
 									) ); ?></span>
 							</div>
 						</div>

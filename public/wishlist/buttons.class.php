@@ -65,11 +65,11 @@ class TInvWL_Public_Wishlist_Buttons {
 			);
 			add_filter( self::$_name . '_prepare_attr__button_product_apply', array(
 				__CLASS__,
-				'add_break_class_input'
+				'add_break_class_input',
 			) );
 			add_filter( self::$_name . '_prepare_attr__button_product_apply', array(
 				__CLASS__,
-				'add_break_class_checkbox'
+				'add_break_class_checkbox',
 			) );
 		}
 		if ( tinv_get_option( 'table', 'colm_checkbox' ) && tinv_get_option( 'table', 'add_select_to_cart' ) ) {
@@ -81,7 +81,7 @@ class TInvWL_Public_Wishlist_Buttons {
 			);
 			add_filter( self::$_name . '_prepare_attr__button_product_selected', array(
 				__CLASS__,
-				'add_break_class_checkbox'
+				'add_break_class_checkbox',
 			) );
 		}
 		if ( tinv_get_option( 'table', 'add_all_to_cart' ) ) {
@@ -413,7 +413,6 @@ class TInvWL_Public_Wishlist_Buttons {
 				$redirect_url = $product_data->add_to_cart_url();
 				remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
-
 				// restore global product data.
 				$product = $_product_tmp;
 
@@ -499,11 +498,11 @@ class TInvWL_Public_Wishlist_Buttons {
 		if ( ! empty( $titles ) ) {
 			add_action( 'tinvwl_before_wishlist', array(
 				'TInvWL_Public_Wishlist_View',
-				'check_cart_hash'
+				'check_cart_hash',
 			), 99, 1 );
 			add_action( 'woocommerce_set_cart_cookies', array(
 				'TInvWL_Public_Wishlist_View',
-				'reset_cart_hash'
+				'reset_cart_hash',
 			), 199, 1 );
 			wc_add_notice( sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) ) );
 		}

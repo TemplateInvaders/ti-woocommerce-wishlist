@@ -619,7 +619,7 @@ class TInvWL_Product {
 				'variation_id',
 				'quantity',
 				'undefined',
-				'product_sku'
+				'product_sku',
 			) as $field
 		) {
 			if ( array_key_exists( $field, $meta ) ) {

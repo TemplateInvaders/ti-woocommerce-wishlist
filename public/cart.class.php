@@ -349,7 +349,6 @@ class TInvWL_Public_Cart {
 					$wishlist = $wl->get_by_share_key( $share_key );
 				}
 
-
 				/* Run a 3rd party code when product purchased from wishlist.
 				 *
 				 * @param WC_order $order Order object.
@@ -443,7 +442,7 @@ class TInvWL_Public_Cart {
 
 		if ( in_array( $new_status, array(
 				'processing',
-				'completed'
+				'completed',
 			) ) && empty( get_post_meta( $order_id, '_wishlist_analytics_processed', true ) ) ) {
 
 			$items = $order->get_items();

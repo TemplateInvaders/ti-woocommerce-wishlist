@@ -198,7 +198,7 @@ class TInvWL_Public_Wishlist_View {
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
 		     && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
 				'variable',
-				'variable-subscription'
+				'variable-subscription',
 			) ) ) {
 
 			$text = $product->add_to_cart_text();
@@ -498,11 +498,11 @@ class TInvWL_Public_Wishlist_View {
 			if ( $wlp->remove( $product_data ) ) {
 				add_action( 'tinvwl_before_wishlist', array(
 					'TInvWL_Public_Wishlist_View',
-					'check_cart_hash'
+					'check_cart_hash',
 				), 99, 1 );
 				add_action( 'woocommerce_set_cart_cookies', array(
 					'TInvWL_Public_Wishlist_View',
-					'reset_cart_hash'
+					'reset_cart_hash',
 				), 99, 1 );
 				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
 			} else {
@@ -690,7 +690,6 @@ class TInvWL_Public_Wishlist_View {
 
 		$paged = get_query_var( 'wl_paged', 1 );
 		$paged = 1 < $paged ? $paged : 1;
-
 
 		if ( 1 < $paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_prev' ) );

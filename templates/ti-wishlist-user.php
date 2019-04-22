@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist if a current user not an owner.
  *
- * @version             1.11.0
+ * @version             1.12.0
  * @package           TInvWishlist\Template
  */
 

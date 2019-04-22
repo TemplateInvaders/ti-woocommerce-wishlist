@@ -401,7 +401,6 @@ if ( ! function_exists( 'tinv_url_wishlist_by_key' ) ) {
 			}
 		}
 
-
 		return $link;
 	}
 } // End if().

@@ -97,13 +97,6 @@ class TInvWL_Yoast_I18n_V2 {
 	private $register_url;
 
 	/**
-	 * Your plugins textdomain
-	 *
-	 * @var string
-	 */
-	private $textdomain;
-
-	/**
 	 * Indicates whether there's a translation available at all.
 	 *
 	 * @access private
@@ -231,7 +224,7 @@ class TInvWL_Yoast_I18n_V2 {
 
 			echo '<div style="overflow: hidden;padding:20px 10px 10px">';
 
-			if ( isset( $this->glotpress_logo ) && '' != $this->glotpress_logo ) {
+			if ( isset( $this->glotpress_logo ) && '' !== $this->glotpress_logo ) {
 				echo '<a href="' . esc_url( $this->register_url ) . '"><img class="alignleft" style="margin:0 15px 10px 0;max-width:200px;" src="' . esc_url( $this->glotpress_logo ) . '" alt="' . esc_attr( $this->glotpress_name ) . '"/></a>';
 			}
 			echo '<h2>' . sprintf( __( 'Translation of %s', 'ti-woocommerce-wishlist' ), $this->plugin_name ) . '</h2>'; // @codingStandardsIgnoreLine WordPress.WP.I18n.NonSingularStringLiteralDomain

@@ -404,8 +404,9 @@ class TInvWL_Product_Legacy {
 		$data['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
 		$data['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 
-		return $this->update_cookies( $data, array( 'product_id'   => $data['product_id'],
-		                                            'variation_id' => $data['variation_id']
+		return $this->update_cookies( $data, array(
+			'product_id'   => $data['product_id'],
+			'variation_id' => $data['variation_id'],
 		) );
 	}
 

@@ -178,7 +178,7 @@ class TInvWL_Wizard {
 		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form.css', array(), $this->_version, 'all' );
 		wp_enqueue_style( $this->_name . '-setup', TINVWL_URL . 'assets/css/admin-setup.css', array(
 			'dashicons',
-			'install'
+			'install',
 		), $this->_version, 'all' );
 	}
 

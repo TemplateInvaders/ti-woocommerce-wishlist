@@ -559,7 +559,6 @@ class TInvWL_Activator {
 
 		$indexes = $table['index'];
 
-
 		foreach ( $indexes as $index => $columns ) {
 
 			$sql = sprintf( 'ALTER TABLE `%s` ADD INDEX %s (%s);', $name, $index, $columns );

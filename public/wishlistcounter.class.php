@@ -160,7 +160,6 @@ class TInvWL_Public_WishlistCounter {
 					'post_mime_type'        => '',
 				);
 
-
 				foreach ( array_keys( $items ) as $key ) {
 
 					if ( $items[ $key ]->menu_order > ( $menu_order - 1 ) ) {

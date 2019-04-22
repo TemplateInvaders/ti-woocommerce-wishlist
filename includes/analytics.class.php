@@ -237,7 +237,7 @@ class TInvWL_Analytics {
 			'click',
 			'gift',
 			'visite',
-			'wishlist'
+			'wishlist',
 		) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 			return false;
 		}
@@ -270,7 +270,6 @@ class TInvWL_Analytics {
 			'product_id'   => $product_id,
 			'variation_id' => $variation_id,
 		);
-
 
 		foreach ( $product_id as $key => $id ) {
 			$data['ID'][ $key ] = md5( implode( '|', array(
@@ -332,7 +331,7 @@ class TInvWL_Analytics {
 						'click',
 						'sell_of_wishlist',
 						'visite',
-						'visite_author'
+						'visite_author',
 					) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 						$duplicates[] = sprintf( '`%s`=`%s`+%d', $key, $key, $value );
 					}

@@ -111,7 +111,6 @@ class TInvWL_Public_TInvWL {
 		return $rules;
 	}
 
-
 	/**
 	 * Define hooks
 	 */
@@ -472,7 +471,7 @@ class TInvWL_Public_TInvWL {
 		wp_register_script( $this->_name, TINVWL_URL . 'assets/js/public' . $suffix . '.js', array(
 			'jquery',
 			version_compare( WC_VERSION, '3.0.0', '<' ) ? 'jquery-cookie' : 'js-cookie',
-			apply_filters( 'tinvwl-wc-cart-fragments', true ) ? 'wc-cart-fragments' : 'jquery'
+			apply_filters( 'tinvwl-wc-cart-fragments', true ) ? 'wc-cart-fragments' : 'jquery',
 		), $this->_version, true );
 		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),

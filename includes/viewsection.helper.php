@@ -182,7 +182,6 @@ class TInvWL_ViewSection extends TInvWL_View {
 		return $groups;
 	}
 
-
 	/**
 	 * Create show group
 	 *

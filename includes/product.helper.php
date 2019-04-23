@@ -358,7 +358,7 @@ class TInvWL_Product {
 		if ( $count ) {
 			return $products[0]['count'];
 		}
-
+		$ids = array();
 		foreach ( $products as $k => $product ) {
 			if ( empty( $default['sql'] ) ) {
 				$product             = filter_var_array( $product, array(
@@ -375,16 +375,11 @@ class TInvWL_Product {
 				) );
 				$product['quantity'] = 1;
 			}
+
 			if ( $default['external'] ) {
-				$product_data = $this->product_data( $product['product_id'], $product['variation_id'] );
-				if ( $product_data ) {
-					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
-				} else {
-					unset( $products[ $k ] );
-					continue;
+				if ( isset( $product['product_id'] ) ) {
+					$ids[] = $product['product_id'];
 				}
-				$product['data'] = $product_data;
 			}
 			$product['meta'] = array();
 			if ( array_key_exists( 'formdata', $product ) ) {
@@ -394,6 +389,31 @@ class TInvWL_Product {
 				$product['meta'] = $this->prepare_retrun_meta( $meta, $product['product_id'], $product['variation_id'], $product['quantity'] );
 			}
 			$products[ $k ] = apply_filters( 'tinvwl_wishlist_product_get', $product );
+		}
+
+		if ( ! empty( $ids ) ) {
+			$args      = array(
+				'include' => $ids,
+				'limit'   => count( $ids ),
+			);
+			$_products = wc_get_products( $args );
+
+			foreach ( $_products as $_product ) {
+
+				foreach ( $products as $key => $wlproduct ) {
+					if ( ! isset( $wlproduct['product_id'] ) ) {
+						continue;
+					}
+
+					if ( $_product->get_id() === $wlproduct['product_id'] ) {
+						if ( $_product->is_type( 'variable' ) ) {
+							$products[ $key ]['data'] = $wlproduct['variation_id'] ? wc_get_product( $wlproduct['variation_id'] ) : $_product;
+						} else {
+							$products[ $key ]['data'] = $_product;
+						}
+					}
+				}
+			}
 		}
 
 		return $products;

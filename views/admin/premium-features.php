@@ -14,21 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 <section class="tinvwl-premium-feat tinvwl-panel w-shadow w-bg">
 	<div class="container-fluid">
 		<div class="row">
-			<!--			<div class="tinvwl-pic-col col-lg-4">-->
-			<!--				<div class="tinvwl-feat-col-inner">-->
-			<!--					<h3>-->
-			<?php //esc_html_e( 'benefit from all the', 'ti-woocommerce-wishlist' ) ?><!--</h3>-->
-			<!--					<h2>--><?php //esc_html_e( 'features', 'ti-woocommerce-wishlist' ) ?><!--</h2>-->
-			<!--					<i class="premium_adv"></i>-->
-			<!--					<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=-->
-			<?php //echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?><!--&utm_campaign=-->
-			<?php //echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?><!--&utm_medium=-->
-			<?php //echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?><!--&utm_content=premium_explore&partner=-->
-			<?php //echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?><!--"-->
-			<!--					   class="tinvwl-btn red round">-->
-			<?php //esc_html_e( 'explore premium features', 'ti-woocommerce-wishlist' ) ?><!--</a>-->
-			<!--				</div>-->
-			<!--			</div>-->
 			<div class="tinvwl-pic-col col-lg-4">
 				<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=premium_explore_logo&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>">
 					<i class="premium_adv"></i>
@@ -85,8 +70,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			</div>
 			<div class="tinvwl-sup-col col-lg-4">
-				<div class="half-containers hosting">
-					<a href="https://kinsta.com?kaid=ROJRBSUSKYJM"><span><?php esc_html_e( 'Your WooCommers store worth the best hosting solution', 'ti-woocommerce-wishlist' ) ?></span></a>
+				<div class="half-containers money-back">
+					<a href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN;// WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM;// WPCS: xss ok. ?>&utm_content=money_back&partner=<?php echo TINVWL_UTM_SOURCE;// WPCS: xss ok. ?>">
+						<span>Money Back Guarantee</span>
+					</a>
+					<p><?php esc_html_e( '100% No-Risk 14-Days Money Back Guarantee', 'ti-woocommerce-wishlist' ) ?></p>
 				</div>
 				<div class="half-containers customization">
 					<h2><?php esc_html_e( 'Need customization?', 'ti-woocommerce-wishlist' ) ?></h2>

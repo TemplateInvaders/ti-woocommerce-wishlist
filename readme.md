@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.1  
-**Stable tag:** 1.12.0  
+**Stable tag:** 1.12.1  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -57,6 +57,8 @@ TI WooCommerce Wishlist Premium version is a powerful marketing tool on top of a
 🔹 Premium predefined styles skin
 
 🔗 [See the difference between free and premium versions](https://templateinvaders.com/free-vs-premium-woocommerce-wishlist-comparison/?utm_source=wordpressorg&utm_content=compare) of the most powerful Wishlist solution for WooCommerce.
+
+💰 <strong>[100% Money Back Guarantee](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=money_back)</strong>
 
 ### COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  ###
 We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
@@ -162,6 +164,14 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.12.1 ###
+*Release Date - 2 May 2019*
+
+* Improved performance of wishlist page
+* Added method tinvwl_get_wishlist_products() to get wishlist products by wishlist ID or SHAREKEY
+* Fixed URI rewrites issue
+* Fixed issue with auto removing grouped products from wishlist
+
 ### 1.12.0 ###
 *Release Date - 22 April 2019*
 

@@ -1,8 +1,8 @@
-# Copyright (C) 2019 WooCommerce Wishlist Plugin - 1.12.0
-# This file is distributed under the same license as the WooCommerce Wishlist Plugin - 1.12.0 package.
+# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.12.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.12.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Wishlist Plugin - 1.12.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.12.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -832,7 +832,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:580
+#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:583
 msgid "Wishlist"
 msgstr ""
 
@@ -876,19 +876,19 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: public/tinvwl.class.php:477
+#: public/tinvwl.class.php:480
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:480
+#: public/tinvwl.class.php:483
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:481
+#: public/tinvwl.class.php:484
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:482
+#: public/tinvwl.class.php:485
 msgid "Copied!"
 msgstr ""
 
@@ -1097,51 +1097,51 @@ msgstr ""
 msgid "Added To Wishlist"
 msgstr ""
 
-#: views/admin/premium-features.php:36
+#: views/admin/premium-features.php:21
 msgid "Premium version"
 msgstr ""
 
-#: views/admin/premium-features.php:37
+#: views/admin/premium-features.php:22
 msgid "benefit from all the features"
 msgstr ""
 
-#: views/admin/premium-features.php:39
+#: views/admin/premium-features.php:24
 msgid "check premium options"
 msgstr ""
 
-#: views/admin/premium-features.php:45
+#: views/admin/premium-features.php:30
 msgid "Rate us please"
 msgstr ""
 
-#: views/admin/premium-features.php:47
+#: views/admin/premium-features.php:32
 msgid "We’d really appreciate if you could spend a few minutes to"
 msgstr ""
 
-#: views/admin/premium-features.php:49
+#: views/admin/premium-features.php:34
 msgid "leave a review"
 msgstr ""
 
-#: views/admin/premium-features.php:53
+#: views/admin/premium-features.php:38
 msgid "We love making new friends"
 msgstr ""
 
-#: views/admin/premium-features.php:54
+#: views/admin/premium-features.php:39
 msgid "sign up for emails to get updates and instant discount"
 msgstr ""
 
-#: views/admin/premium-features.php:89
-msgid "Your WooCommers store worth the best hosting solution"
+#: views/admin/premium-features.php:77
+msgid "100% No-Risk 14-Days Money Back Guarantee"
 msgstr ""
 
-#: views/admin/premium-features.php:92
+#: views/admin/premium-features.php:80
 msgid "Need customization?"
 msgstr ""
 
-#: views/admin/premium-features.php:93
+#: views/admin/premium-features.php:81
 msgid "Highly skilled WordPress experts are ready to satisfy your needs"
 msgstr ""
 
-#: views/admin/premium-features.php:95
+#: views/admin/premium-features.php:83
 msgid "get started now"
 msgstr ""
 

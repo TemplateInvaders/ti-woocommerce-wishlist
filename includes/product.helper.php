@@ -406,7 +406,7 @@ class TInvWL_Product {
 					}
 
 					if ( $_product->get_id() === $wlproduct['product_id'] ) {
-						if ( $_product->is_type( 'variable' ) ) {
+						if ( in_array( $_product->get_type(), array( 'variable', 'grouped' ) ) ) {
 							$products[ $key ]['data'] = $wlproduct['variation_id'] ? wc_get_product( $wlproduct['variation_id'] ) : $_product;
 						} else {
 							$products[ $key ]['data'] = $_product;
@@ -522,19 +522,17 @@ class TInvWL_Product {
 		if ( empty( $product_id ) ) {
 			return false !== $wpdb->delete( $this->table, array( 'wishlist_id' => $wishlist_id ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		}
-		$product_data = $this->product_data( $product_id, $variation_id );
-		if ( ! $product_data ) {
-			return false;
-		}
+
 		$data             = array(
 			'wishlist_id'  => $wishlist_id,
-			'product_id'   => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ),
-			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ),
+			'product_id'   => $product_id,
+			'variation_id' => $variation_id,
 		);
 		$data['formdata'] = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
-		$result           = false !== $wpdb->delete( $this->table, $data ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+
+		$result = false !== $wpdb->delete( $this->table, $data ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
-			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) );
+			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
 		}
 
 		return $result;

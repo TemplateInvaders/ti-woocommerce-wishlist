@@ -866,3 +866,27 @@ if ( ! function_exists( 'is_wishlist' ) ) {
 		return ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) );
 	}
 }
+
+if ( ! function_exists( 'tinvwl_get_wishlist_products' ) ) {
+	/**
+	 * Get wishlist products for default user wishlist or by ID or SHAREKEY
+	 *
+	 * @param int $wishlist_id by ID or SHAREKEY, 0 = default wishlist of current user
+	 *
+	 * @return array|bool
+	 */
+	function tinvwl_get_wishlist_products( $wishlist_id = 0 ) {
+		$wishlist = tinv_wishlist_get( $wishlist_id );
+		if ( empty( $wishlist ) ) {
+			return false;
+		}
+		$wlp      = new TInvWL_Product( $wishlist );
+		$products = $wlp->get_wishlist();
+
+		if ( empty( $products ) ) {
+			return false;
+		}
+
+		return $products;
+	}
+}

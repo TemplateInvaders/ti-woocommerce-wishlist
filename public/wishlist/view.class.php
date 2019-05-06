@@ -378,7 +378,7 @@ class TInvWL_Public_Wishlist_View {
 	 * Create social meta tags
 	 */
 	function add_meta_tags() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) ) {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
 			$wishlist = $this->get_current_wishlist();
 			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
 				if ( is_user_logged_in() ) {

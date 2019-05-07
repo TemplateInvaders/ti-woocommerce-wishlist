@@ -53,7 +53,9 @@
 				}
 				update_cart_hash();
 			},
-			onPrepareDataAction: function () {
+			onPrepareDataAction: function (a, data) {
+				$('body').trigger('tinvwl_wishlist_button_clicked', [a, data]);
+
 			},
 			filterProductAlreadyIn: function (WList) {
 				var WList = WList || [],
@@ -263,7 +265,8 @@
 					data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
 				}
 			});
-			data = s.onPrepareDataAction.call(a, data) || data;
+			data = s.onPrepareDataAction.call(a, a, data) || data;
+
 			$.post(s.api_url, data, function (body) {
 				s.onDialogHide.call(a.tinvwl_dialog, a);
 				if ('object' === typeof body) {

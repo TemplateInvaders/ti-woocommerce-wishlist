@@ -1,8 +1,8 @@
-# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.12.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.12.1 package.
+# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.12.2
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.12.2 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.12.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.12.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -832,7 +832,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:583
+#: includes/wizard.class.php:288, includes/wizard.class.php:319, public/tinvwl.class.php:584
 msgid "Wishlist"
 msgstr ""
 
@@ -1057,43 +1057,43 @@ msgstr ""
 msgid "Base price"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2338
+#: tinv-wishlists-function-integration.php:2415
 msgid "WooCommerce Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2339
+#: tinv-wishlists-function-integration.php:2416
 msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2485
+#: tinv-wishlists-function-integration.php:2562
 msgid "Adding Product to Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2490, tinv-wishlists-function-integration.php:2535
+#: tinv-wishlists-function-integration.php:2567, tinv-wishlists-function-integration.php:2612
 msgid "Points"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2503, tinv-wishlists-function-integration.php:2548
+#: tinv-wishlists-function-integration.php:2580, tinv-wishlists-function-integration.php:2625
 msgid "Limit"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2516, tinv-wishlists-function-integration.php:2561
+#: tinv-wishlists-function-integration.php:2593, tinv-wishlists-function-integration.php:2638
 msgid "Log Template"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2520, tinv-wishlists-function-integration.php:2565
+#: tinv-wishlists-function-integration.php:2597, tinv-wishlists-function-integration.php:2642
 msgid "required"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2530
+#: tinv-wishlists-function-integration.php:2607
 msgid "Purchasing Product from Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2616
+#: tinv-wishlists-function-integration.php:2693
 msgid "Purchased From Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2617
+#: tinv-wishlists-function-integration.php:2694
 msgid "Added To Wishlist"
 msgstr ""
 

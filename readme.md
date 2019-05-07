@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.2  
-**Stable tag:** 1.12.1  
+**Stable tag:** 1.12.2  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -164,6 +164,13 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.12.2 ###
+*Release Date - 7 May 2019*
+
+* Added filter <i>tinvwl_wc_cart_fragments_refresh</i> to disable WC cart fragments refreshing
+* Fixed integration issues with Improved Product Options for WooCommerce plugin
+* Fixed issue with wishlist URL for sharing buttons
+
 ### 1.12.1 ###
 *Release Date - 2 May 2019*
 

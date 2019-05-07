@@ -529,6 +529,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 })(jQuery);
 
 function update_cart_hash() {
+  if (!tinvwl_add_to_wishlist.wc_cart_fragments_refresh) {
+    return false;
+  }
+
   jQuery(document.body).on('wc_fragments_loaded.wishlist wc_fragments_refreshed.wishlist', function () {
     if (typeof wc_cart_fragments_params === 'undefined') {
       return false;

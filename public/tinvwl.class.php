@@ -484,6 +484,7 @@ class TInvWL_Public_TInvWL {
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
 			'allow_parent_variable'      => apply_filters( 'tinvwl-allow_parent_variable', false ),
+			'wc_cart_fragments_refresh'  => apply_filters( 'tinvwl_wc_cart_fragments_refresh', true ),
 		) );
 
 		if ( wp_script_is( 'woocommerce', 'enqueued' ) ) {

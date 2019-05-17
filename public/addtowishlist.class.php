@@ -554,7 +554,7 @@ class TInvWL_Public_AddToWishlist {
 				) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ),
 			'TInvWishlist'        => $wishlists,
 			'button_icon'         => tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon' ),
-			'add_to_wishlist'     => tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ),
+			'add_to_wishlist'     => apply_filters( 'tinvwl-add_to_wishlist_catalog-text', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ),
 			'browse_in_wishlist'  => apply_filters( 'tinvwl-general-text_browse', tinv_get_option( 'general', 'text_browse' ) ),
 			'product_in_wishlist' => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
 			'product_to_wishlist' => apply_filters( 'tinvwl-general-text_added_to', tinv_get_option( 'general', 'text_added_to' ) ),
@@ -600,21 +600,24 @@ class TInvWL_Public_AddToWishlist {
 				'variable',
 				'variable-subscription'
 			) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) );
-		foreach ( $this->wishlist as $value ) {
-			if ( $value['in'] && in_array( $variation_id, $value['in'] ) ) {
-				$icon .= ' tinvwl-product-in-list';
-				if ( tinv_get_option( 'general', 'simple_flow' ) ) {
-					if ( $this->is_loop ) {
-						if ( ! is_array( $value['in'] ) || in_array( $variation_id, $value['in'] ) ) {
+
+		if ( $this->wishlist ) {
+			foreach ( $this->wishlist as $value ) {
+				if ( $value['in'] && in_array( $variation_id, $value['in'] ) ) {
+					$icon .= ' tinvwl-product-in-list';
+					if ( tinv_get_option( 'general', 'simple_flow' ) ) {
+						if ( $this->is_loop ) {
+							if ( ! is_array( $value['in'] ) || in_array( $variation_id, $value['in'] ) ) {
+								$icon   .= ' tinvwl-product-make-remove';
+								$action = 'remove';
+							}
+						} else {
 							$icon   .= ' tinvwl-product-make-remove';
 							$action = 'remove';
 						}
-					} else {
-						$icon   .= ' tinvwl-product-make-remove';
-						$action = 'remove';
 					}
+					break;
 				}
-				break;
 			}
 		}
 

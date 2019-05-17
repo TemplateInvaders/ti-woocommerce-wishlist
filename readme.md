@@ -4,7 +4,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.5  
 **Tested up to:** 5.2  
-**Stable tag:** 1.12.2  
+**Stable tag:** 1.12.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -164,6 +164,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.12.3 ###
+*Release Date - 17 May 2019*
+
+* Fixed wishlist products issue with WPML plugin
+
 ### 1.12.2 ###
 *Release Date - 7 May 2019*
 

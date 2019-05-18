@@ -127,7 +127,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$page = add_menu_page( 'TI Wishlist', 'TI Wishlist', 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888' );
 		add_action( "load-$page", array( $this, 'onload' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_inline_scripts' ) );
-		$menu = apply_filters( $this->_name . '_admin_menu', array() );
+		$menu = apply_filters( 'tinvwl_admin_menu', array() );
 		foreach ( $menu as $item ) {
 			if ( ! array_key_exists( 'page_title', $item ) ) {
 				$item['page_title'] = $item['title'];
@@ -163,7 +163,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_filter( 'admin_footer_text', array( $this, 'footer_admin' ) );
 		add_filter( 'screen_options_show_screen', array( $this, 'screen_options_hide_screen' ), 10, 2 );
 
-		add_filter( $this->_name . '_view_panelstatus', array( $this, 'status_panel' ), 9999 );
+		add_filter( 'tinvwl_view_panelstatus', array( $this, 'status_panel' ), 9999 );
 	}
 
 	/**

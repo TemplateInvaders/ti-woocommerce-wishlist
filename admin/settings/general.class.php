@@ -59,7 +59,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * @return array
 	 */
 	function constructor_data() {
-		add_action( $this->_name . '_section_before', array( $this, 'premium_features' ), 9 );
+		add_action( 'tinvwl_section_before', array( $this, 'premium_features' ), 9 );
 		$lists     = get_pages( array( 'number' => 999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
 		$page_list = array( '' => '' );
 		$menus     = $this->get_wp_menus();

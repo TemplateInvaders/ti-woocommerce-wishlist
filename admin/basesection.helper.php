@@ -34,7 +34,7 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 		$this->_version = $version;
 		$menu     = $this->menu();
 		if ( ! empty( $menu ) ) {
-			add_action( $this->_name . '_admin_menu', array( $this, 'adminmenu' ), $this->priority );
+			add_action( 'tinvwl_admin_menu', array( $this, 'adminmenu' ), $this->priority );
 		}
 		$this->load_function();
 	}
@@ -160,8 +160,8 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 * Form for section
 	 */
 	function form() {
-		add_filter( $this->_name . '_section_before', array( $this, 'start_form' ) );
-		add_filter( $this->_name . '_section_after', array( $this, 'end_form' ) );
+		add_filter( 'tinvwl_section_before', array( $this, 'start_form' ) );
+		add_filter( 'tinvwl_section_after', array( $this, 'end_form' ) );
 	}
 
 	/**

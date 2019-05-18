@@ -133,10 +133,10 @@ class TInvWL_Public_TInvWL {
 		add_action( 'init', array( $this, 'legacy_transfer' ), 90 );
 		add_action( 'clear_auth_cookie', array( $this, 'set_user_sharekey' ) );
 
-		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
-		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
-		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_updcart_before' ), 15 );
-		add_action( $this->_name . '_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 100 );
+		add_action( 'tinvwl_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
+		add_action( 'tinvwl_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 15 );
+		add_action( 'tinvwl_after_wishlist_table', array( $this, 'wishlist_button_updcart_before' ), 15 );
+		add_action( 'tinvwl_after_wishlist_table', array( $this, 'wishlist_button_action_after' ), 100 );
 	}
 
 	/**
@@ -577,7 +577,7 @@ class TInvWL_Public_TInvWL {
 	 * @return array
 	 */
 	function account_menu_items( $items ) {
-		$index_position = apply_filters( $this->_name . '_myaccount_position_wishlist', - 1, $items );
+		$index_position = apply_filters( 'tinvwl_myaccount_position_wishlist', - 1, $items );
 		$items          = array_merge(
 			array_slice( $items, 0, $index_position, true ),
 			array(

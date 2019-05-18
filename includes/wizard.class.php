@@ -39,7 +39,7 @@ class TInvWL_Wizard {
 	function __construct( $plugin_name, $version ) {
 		$this->_name    = $plugin_name;
 		$this->_version = $version;
-		if ( apply_filters( $this->_name . '_enable_wizard', true ) ) {
+		if ( apply_filters( 'tinvwl_enable_wizard', true ) ) {
 			$this->define_hooks();
 		}
 		update_option( $this->_name . '_wizard', true );

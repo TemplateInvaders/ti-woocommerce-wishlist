@@ -634,7 +634,7 @@ class TInvWL_Public_Wishlist_View {
 				return $this->wishlist_empty( array(), array(
 					'ID'        => '',
 					'author'    => get_current_user_id(),
-					'title'     => apply_filters( 'tinvwl-general-default_title', tinv_get_option( 'general', 'default_title' ) ),
+					'title'     => apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) ),
 					'status'    => 'private',
 					'type'      => 'default',
 					'share_key' => '',
@@ -679,7 +679,7 @@ class TInvWL_Public_Wishlist_View {
 		}
 
 		$wishlist_table_row                     = tinv_get_option( 'product_table' );
-		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl-product_table-text_add_to_cart', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
+		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl_add_to_cart_text', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 
 		$data = array(
 			'products'           => $products,

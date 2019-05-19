@@ -25,6 +25,28 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 	public $priority = 100;
 
 	/**
+	 * This class
+	 *
+	 * @var \TInvWL_Admin_Settings_Style
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * Get this class object
+	 *
+	 * @param string $plugin_name Plugin name.
+	 *
+	 * @return \TInvWL_Admin_Settings_Style
+	 */
+	public static function instance( $plugin_name = TINVWL_PREFIX, $plugin_version = TINVWL_FVERSION ) {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self( $plugin_name, $plugin_version );
+		}
+
+		return self::$_instance;
+	}
+
+	/**
 	 * Menu array
 	 *
 	 * @return array
@@ -45,7 +67,7 @@ class TInvWL_Admin_Settings_Style extends TInvWL_Admin_BaseStyle {
 	 * @return array
 	 */
 	function default_style_settings() {
-		$font_family = apply_filters( 'tinwl_prepare_fonts', array(
+		$font_family = apply_filters( 'tinvwl_prepare_fonts', array(
 			'inherit'                                                            => __( 'Use Default Font', 'ti-woocommerce-wishlist' ),
 			'Georgia, serif'                                                     => 'Georgia',
 			"'Times New Roman', Times, serif"                                    => 'Times New Roman, Times',

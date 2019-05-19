@@ -298,7 +298,7 @@ class TInvWL_Wizard {
 			$page_name[ $list->post_name ] = $list->ID;
 		}
 		$data = array(
-			'general_default_title_value' => apply_filters( 'tinvwl-general-default_title', tinv_get_option( 'general', 'default_title' ) ),
+			'general_default_title_value' => apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) ),
 		);
 		foreach ( $title_pages as $key => $text ) {
 			$_data['options']   = $page_list;

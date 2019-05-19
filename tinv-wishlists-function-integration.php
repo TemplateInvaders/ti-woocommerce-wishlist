@@ -1604,23 +1604,25 @@ if ( ! function_exists( 'TII18n' ) ) {
 // WP Multilang string translations.
 if ( function_exists( 'wpm_translate_string' ) ) {
 
-	add_filter( 'tinvwl-general-default_title', 'wpm_translate_string' );
-	add_filter( 'tinvwl-general-text_browse', 'wpm_translate_string' );
-	add_filter( 'tinvwl-general-text_added_to', 'wpm_translate_string' );
-	add_filter( 'tinvwl-general-text_already_in', 'wpm_translate_string' );
-	add_filter( 'tinvwl-general-text_removed_from', 'wpm_translate_string' );
+	add_filter( 'tinvwl_default_wishlist_title', 'wpm_translate_string' );
+	add_filter( 'tinvwl_view_wishlist_text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_added_to_wishlist_text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_already_in_wishlist_text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_removed_from_wishlist_text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_remove_from_wishlist_text', 'wpm_translate_string' );
 
-	add_filter( 'tinvwl-add_to_wishlist_catalog-text', 'wpm_translate_string' );
-	add_filter( 'tinvwl-add_to_wishlist_catalog-text_remove', 'wpm_translate_string' );
+	add_filter( 'tinvwl_added_to_wishlist_text_loop', 'wpm_translate_string' );
+	add_filter( 'tinvwl_remove_from_wishlist_text_loop', 'wpm_translate_string' );
 
-	add_filter( 'tinvwl-product_table-text_add_to_cart', 'wpm_translate_string' );
 
-	add_filter( 'tinvwl-table-text_add_select_to_cart', 'wpm_translate_string' );
-	add_filter( 'tinvwl-table-text_add_all_to_cart', 'wpm_translate_string' );
+	add_filter( 'tinvwl_add_to_cart_text', 'wpm_translate_string' );
 
-	add_filter( 'tinvwl-social-share_on', 'wpm_translate_string' );
+	add_filter( 'tinvwl_add_selected_to_cart_text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_add_all_to_cart_text', 'wpm_translate_string' );
 
-	add_filter( 'tinvwl-topline-text', 'wpm_translate_string' );
+	add_filter( 'tinvwl_share_on_text', 'wpm_translate_string' );
+
+	add_filter( 'tinvwl_wishlist_products_counter_text', 'wpm_translate_string' );
 
 } // End if().
 

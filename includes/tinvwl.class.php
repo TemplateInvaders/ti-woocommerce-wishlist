@@ -40,6 +40,12 @@ class TInvWL {
 	 * @var TInvWL_Public_TInvWL
 	 */
 	public $object_public;
+	/**
+	 * Array of deprecated hook handlers.
+	 *
+	 * @var array of WC_Deprecated_Hooks
+	 */
+	public $deprecated_hook_handlers = array();
 
 	/**
 	 * Constructor
@@ -56,7 +62,7 @@ class TInvWL {
 		$this->object_admin = new TInvWL_Admin_TInvWL( $this->_name, $this->_version );
 
 		// Allow to disable wishlist for frontend conditionally. Must be hooked on 'plugins_loaded' action.
-		if ( apply_filters( 'tinvwl-load_frontend', true ) ) {
+		if ( apply_filters( 'tinvwl_load_frontend', true ) ) {
 			$this->object_public = TInvWL_Public_TInvWL::instance( $this->_name, $this->_version );
 		}
 	}
@@ -77,10 +83,13 @@ class TInvWL {
 			$this->object_admin->load_function();
 		} else {
 			// Allow to disable wishlist for frontend conditionally. Must be hooked on 'plugins_loaded' action.
-			if ( apply_filters( 'tinvwl-load_frontend', true ) ) {
+			if ( apply_filters( 'tinvwl_load_frontend', true ) ) {
 				$this->object_public->load_function();
 			}
 		}
+
+		$this->deprecated_hook_handlers['actions'] = new TInvWL_Deprecated_Actions();
+		$this->deprecated_hook_handlers['filters'] = new TInvWL_Deprecated_Filters();
 	}
 
 	/**

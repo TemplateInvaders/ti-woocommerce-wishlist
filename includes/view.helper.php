@@ -292,7 +292,7 @@ class TInvWL_View {
 	 * @param array $_data Parameter for template.
 	 */
 	public static function render( $_template_name, $_data = array() ) {
-		$_data = apply_filters( 'tinv_view_general', $_data );
+		$_data = apply_filters( 'tinvwl_view_general', $_data );
 		self::init();
 		$_header = empty( $_data['_header'] ) ? '' : $_data['_header'];
 		$_footer = empty( $_data['_footer'] ) ? '' : $_data['_footer'];
@@ -311,7 +311,7 @@ class TInvWL_View {
 			$_template_name = implode( '-', $_template_name );
 		}
 		if ( is_string( $_template_name ) ) {
-			$_data = apply_filters( 'tinv_view_' . $_template_name, $_data );
+			$_data = apply_filters( 'tinvwl_view_' . $_template_name, $_data );
 		}
 		if ( array_key_exists( 'options', $_data ) ) {
 			TInvWL_Form::setoptions( $_data['options'] );

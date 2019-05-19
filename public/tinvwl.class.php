@@ -474,16 +474,16 @@ class TInvWL_Public_TInvWL {
 		wp_register_script( $this->_name, TINVWL_URL . 'assets/js/public' . $suffix . '.js', array(
 			'jquery',
 			version_compare( WC_VERSION, '3.0.0', '<' ) ? 'jquery-cookie' : 'js-cookie',
-			apply_filters( 'tinvwl-wc-cart-fragments', true ) ? 'wc-cart-fragments' : 'jquery',
+			apply_filters( 'tinvwl_wc_cart_fragments_enabled', true ) ? 'wc-cart-fragments' : 'jquery',
 		), $this->_version, true );
 		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
-			'text_already_in'            => apply_filters( 'tinvwl-general-text_already_in', tinv_get_option( 'general', 'text_already_in' ) ),
+			'text_already_in'            => apply_filters( 'tinvwl_already_in_wishlist_text', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
-			'allow_parent_variable'      => apply_filters( 'tinvwl-allow_parent_variable', false ),
+			'allow_parent_variable'      => apply_filters( 'tinvwl_allow_add_parent_variable_product', false ),
 			'wc_cart_fragments_refresh'  => apply_filters( 'tinvwl_wc_cart_fragments_refresh', true ),
 		) );
 

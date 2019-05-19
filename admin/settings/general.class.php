@@ -25,6 +25,42 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	public $priority = 20;
 
 	/**
+	 * This class
+	 *
+	 * @var \TInvWL_Admin_Settings_General
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * Get this class object
+	 *
+	 * @param string $plugin_name Plugin name.
+	 *
+	 * @return \TInvWL_Admin_Settings_General
+	 */
+	public static function instance( $plugin_name = TINVWL_PREFIX, $plugin_version = TINVWL_FVERSION ) {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self( $plugin_name, $plugin_version );
+		}
+
+		return self::$_instance;
+	}
+
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $plugin_name Plugin name.
+	 * @param string $version Plugin version.
+	 */
+	function __construct( $plugin_name, $version ) {
+		$this->_name    = $plugin_name;
+		$this->_version = $version;
+		parent::__construct( $plugin_name, $version );
+		add_action( 'tinvwl_section_before', array( $this, 'premium_features' ), 9 );
+	}
+
+	/**
 	 * Menu array
 	 *
 	 * @return array
@@ -59,7 +95,6 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * @return array
 	 */
 	function constructor_data() {
-		add_action( 'tinvwl_section_before', array( $this, 'premium_features' ), 9 );
 		$lists     = get_pages( array( 'number' => 999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
 		$page_list = array( '' => '' );
 		$menus     = $this->get_wp_menus();
@@ -159,7 +194,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'text',
-						'name'  => 'text_browse',
+						'name'  => 'text_t',
 						'text'  => __( '"View Wishlist" button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'View Wishlist',
 						'class' => 'tiwl-button-show-notice',
@@ -878,6 +913,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * Show Premium Features sections
 	 */
 	function premium_features() {
-		TInvWL_View::view( 'premium-features' );
+		global $current_screen;
+		if ( is_object( $current_screen ) && 'toplevel_page_tinvwl' === $current_screen->id ) {
+			TInvWL_View::view( 'premium-features' );
+		}
 	}
 }

@@ -102,7 +102,7 @@ if ( ! function_exists( 'tinv_get_option_defaults' ) ) {
 		$defaults = array();
 		foreach ( $files as $file ) {
 			$class         = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-			$class         = new $class( '', '' );
+			$class         = $class::instance();
 			$class_methods = get_class_methods( $class );
 			foreach ( $class_methods as $method ) {
 				if ( preg_match( '/_data$/i', $method ) ) {

@@ -71,7 +71,7 @@ class TInvWL_Wishlist {
 
 		$this->_name              = $plugin_name;
 		$this->table           = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
-		$this->default_name    = apply_filters( 'tinvwl-general-default_title', tinv_get_option( 'general', 'default_title' ) );
+		$this->default_name    = apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) );
 		$this->default_privacy = 'share';
 		$this->privacy         = array( 'public', 'share', 'private' );
 		if ( ! in_array( $this->default_privacy, $this->privacy ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict

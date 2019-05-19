@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php if ( isset( $wishlist_url ) ) : ?>
 						<button class="button tinvwl_button_view tinvwl-btn-onclick"
 						        data-url="<?php echo esc_url( $wishlist_url ); ?>" type="button"><i
-								class="ftinvwl ftinvwl-heart-o"></i><?php echo esc_html( apply_filters( 'tinvwl-general-text_browse', tinv_get_option( 'general', 'text_browse' ) ) ); ?>
+								class="ftinvwl ftinvwl-heart-o"></i><?php echo esc_html( apply_filters( 'tinvwl_view_wishlist_text', tinv_get_option( 'general', 'text_browse' ) ) ); ?>
 						</button>
 					<?php endif; ?>
 					<?php if ( isset( $dialog_custom_url ) && isset( $dialog_custom_html ) ) : ?>

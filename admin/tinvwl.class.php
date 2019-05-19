@@ -55,7 +55,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 			if ( preg_match( '/\.class\.php$/i', $value ) ) {
 				$file  = preg_replace( '/\.class\.php$/i', '', $value );
 				$class = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-				new $class( $this->_name, $this->_version );
+				$class::instance( $this->_name, $this->_version );
 			}
 		}
 

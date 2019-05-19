@@ -37,7 +37,7 @@ class TInvWL_Public_Widget_Topwishlist extends WC_Widget {
 			),
 			'text'      => array(
 				'type'  => 'text',
-				'std'   => apply_filters( 'tinvwl-topline-text', tinv_get_option( 'topline', 'text' ) ),
+				'std'   => apply_filters( 'tinvwl_wishlist_products_counter_text', tinv_get_option( 'topline', 'text' ) ),
 				'label' => __( 'Counter Text', 'ti-woocommerce-wishlist' ),
 			),
 		);

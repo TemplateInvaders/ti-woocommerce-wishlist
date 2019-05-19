@@ -265,7 +265,7 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 		} // End if().
 
 		// Filter item data to allow 3rd parties to add more to the array.
-		$item_data = apply_filters( 'tinv_wishlist_get_item_data', $item_data, $product );
+		$item_data = apply_filters( 'tinvwl_wishlist_get_item_data', $item_data, $product );
 
 		// Format item data ready to display.
 		foreach ( $item_data as $key => $data ) {

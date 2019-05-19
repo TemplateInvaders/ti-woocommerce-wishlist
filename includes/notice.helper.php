@@ -352,10 +352,10 @@ class TInvWL_Notice {
 			if ( ! empty( $name ) ) {
 				if ( isset( $data['_ti_notice_nonce'] ) && wp_verify_nonce( $data['_ti_notice_nonce'], 'ti_hide' ) ) {
 					self::hide( $name, $data['ti-hide-notice-trigger'] );
-					do_action( 'tinv_notice_hide_' . $name );
+					do_action( 'tinvwl_notice_hide_' . $name );
 				} elseif ( isset( $data['_ti_notice_nonce'] ) && wp_verify_nonce( $data['_ti_notice_nonce'], 'ti_remove' ) ) {
 					self::remove_notice( $name );
-					do_action( 'tinv_notice_remove_' . $name );
+					do_action( 'tinvwl_notice_remove_' . $name );
 				}
 			}
 		}

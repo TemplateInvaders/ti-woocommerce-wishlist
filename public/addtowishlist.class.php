@@ -522,7 +522,7 @@ class TInvWL_Public_AddToWishlist {
 
 		$wishlists = $this->user_wishlist( $this->product );
 
-		add_action( 'tinv_wishlist_addtowishlist_button', array( $this, 'button' ) );
+		add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
 		if ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
 				'variable',

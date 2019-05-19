@@ -22,14 +22,20 @@ class TInvWL_Deprecated_Actions extends TInvWL_Deprecated {
 	 *
 	 * @var array
 	 */
-	protected $deprecated_hooks = array();
+	protected $deprecated_hooks = array(
+		'tinvwl_wishlist_addtowishlist_button'    => 'tinv_wishlist_addtowishlist_button',
+		'tinvwl_wishlist_addtowishlist_dialogbox' => 'tinv_wishlist_addtowishlist_dialogbox',
+	);
 
 	/**
 	 * Array of versions on each hook has been deprecated.
 	 *
 	 * @var array
 	 */
-	protected $deprecated_version = array();
+	protected $deprecated_version = array(
+		'tinv_wishlist_addtowishlist_button'    => '1.13.0',
+		'tinv_wishlist_addtowishlist_dialogbox' => '1.13.0',
+	);
 
 	/**
 	 * Hook into the new hook so we can handle deprecated hooks once fired.

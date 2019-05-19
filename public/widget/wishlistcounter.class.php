@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget "Popular product"
  */
-class TInvWL_Public_Widget_Topwishlist extends WC_Widget {
+class TInvWL_Public_Widget_WishlistCounter extends WC_Widget {
 
 	/**
 	 * Constructor.

@@ -76,8 +76,6 @@ class TInvWL_Public_WishlistCounter {
 	 * @return array
 	 */
 	public static function add_to_menu( $items, $menu, $args ) {
-
-
 		$menu_cnt = count( $items ) + 1;
 		$menu_id  = tinv_get_option( 'topline', 'menu' );
 

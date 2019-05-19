@@ -2151,7 +2151,7 @@ if ( ! function_exists( 'tinv_wishlist_qty_woo_advanced_qty' ) ) {
 			$args = $advanced_qty->qty_input_args( array(
 				'min_value' => 1,
 				'max_value' => '',
-				'step'      => 1
+				'step'      => 1,
 			), $product );
 
 			$quantity = $args['input_value'];
@@ -2239,9 +2239,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 				}
 			}
 
-
 			foreach ( $data as $v ) {
-
 				$form_data = clone $v;
 				unset( $form_data->values ); //avoid saving large number of data
 				unset( $form_data->className ); //avoid saving no use data
@@ -2578,14 +2576,14 @@ if ( defined( 'myCRED_VERSION' ) ) {
 							<div class="form-group">
 								<label for="<?php echo $this->field_id( array(
 									'tinvwl_added',
-									'limit'
+									'limit',
 								) ); ?>"><?php _e( 'Limit', 'ti-woocommerce-wishlist' ); ?></label>
 								<?php echo $this->hook_limit_setting( $this->field_name( array(
 									'tinvwl_added',
-									'limit'
+									'limit',
 								) ), $this->field_id( array(
 									'tinvwl_added',
-									'limit'
+									'limit',
 								) ), $prefs['tinvwl_added']['limit'] ); ?>
 							</div>
 						</div>
@@ -2601,7 +2599,7 @@ if ( defined( 'myCRED_VERSION' ) ) {
 								       class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags( array(
 										'general',
-										'post'
+										'post',
 									) ); ?></span>
 							</div>
 						</div>
@@ -2623,11 +2621,11 @@ if ( defined( 'myCRED_VERSION' ) ) {
 							<div class="form-group">
 								<label for="<?php echo $this->field_id( array(
 									'tinvwl_purchased',
-									'limit'
+									'limit',
 								) ); ?>"><?php _e( 'Limit', 'ti-woocommerce-wishlist' ); ?></label>
 								<?php echo $this->hook_limit_setting( $this->field_name( array(
 									'tinvwl_purchased',
-									'limit'
+									'limit',
 								) ), $this->field_id( array(
 									'tinvwl_purchased',
 									'limit',

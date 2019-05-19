@@ -323,7 +323,6 @@ class TInvWL_Public_Cart {
 		}
 	}
 
-
 	/**
 	 *  Run action when purchased product from a wishlist.
 	 *

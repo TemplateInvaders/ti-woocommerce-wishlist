@@ -100,7 +100,6 @@ class TInvWL_Analytics {
 		return $product_data;
 	}
 
-
 	/**
 	 * Add views analitycs
 	 *

@@ -99,7 +99,6 @@ class TInvWL_Public_TInvWL {
 		$this->topwishlist = TInvWL_Public_WishlistCounter::instance( $this->_name );
 	}
 
-
 	/**
 	 * @param $rules
 	 *

@@ -249,7 +249,6 @@ class TInvWL_Public_Wishlist_View {
 		return $this->current_products_query;
 	}
 
-
 	/**
 	 * Get current products from wishlist
 	 *

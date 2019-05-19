@@ -46,7 +46,6 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		return self::$_instance;
 	}
 
-
 	/**
 	 * Constructor
 	 *

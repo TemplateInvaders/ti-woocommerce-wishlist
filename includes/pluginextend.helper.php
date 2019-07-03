@@ -484,7 +484,7 @@ class TInvWL_PluginExtend {
 	 * @param boolean $network_wide Network wide.
 	 */
 	public static function deactivate_self( $file, $network_wide = false ) {
-		if ( is_multisite() && false !== $network_wide ) {
+		if ( is_multisite() ) {
 			$network_wide = is_plugin_active_for_network( $file );
 		}
 

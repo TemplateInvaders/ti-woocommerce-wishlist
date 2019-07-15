@@ -90,6 +90,7 @@ class TInvWL {
 
 		$this->deprecated_hook_handlers['actions'] = new TInvWL_Deprecated_Actions();
 		$this->deprecated_hook_handlers['filters'] = new TInvWL_Deprecated_Filters();
+		$this->rest_api                            = TInvWL_API::init();
 	}
 
 	/**

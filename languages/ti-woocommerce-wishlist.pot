@@ -1,8 +1,8 @@
-# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.12.3
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.12.3 package.
+# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.13.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.13.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.12.3\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.13.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -744,6 +744,34 @@ msgstr ""
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
+#: includes/api/wishlist.class.php:102, includes/api/wishlist.class.php:165, includes/api/wishlist.class.php:213, includes/api/wishlist.class.php:269
+msgid "Invalid wishlist share key."
+msgstr ""
+
+#: includes/api/wishlist.class.php:132
+msgid "No wishlists found for this user."
+msgstr ""
+
+#: includes/api/wishlist.class.php:186
+msgid "Update wishlist data failed."
+msgstr ""
+
+#: includes/api/wishlist.class.php:235
+msgid "No products found for this wishlist."
+msgstr ""
+
+#: includes/api/wishlist.class.php:291
+msgid "Add product to wishlist failed."
+msgstr ""
+
+#: includes/api/wishlist.class.php:327
+msgid "Product not found."
+msgstr ""
+
+#: includes/api/wishlist.class.php:330
+msgid "Product removed from a wishlist."
+msgstr ""
+
 #: includes/api/yoasti18n/i18n-module.php:200
 msgid "As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help complete the translation to %1$s!"
 msgstr ""
@@ -796,15 +824,15 @@ msgstr ""
 msgid "%1$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
-#: includes/tinvwl.class.php:159
+#: includes/tinvwl.class.php:160
 msgid "Settings"
 msgstr ""
 
-#: includes/tinvwl.class.php:160
+#: includes/tinvwl.class.php:161
 msgid "Premium Version"
 msgstr ""
 
-#: includes/tinvwl.class.php:161
+#: includes/tinvwl.class.php:162
 msgid "Live Demo"
 msgstr ""
 
@@ -935,7 +963,7 @@ msgstr[1] ""
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:88
+#: public/wishlist/buttons.class.php:346, templates/ti-wishlist.php:92
 msgid "Remove"
 msgstr ""
 
@@ -1017,11 +1045,11 @@ msgstr ""
 msgid "Stock Status"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:79, templates/ti-wishlist.php:80
+#: templates/ti-wishlist-user.php:83, templates/ti-wishlist.php:84
 msgid "Select for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:132, templates/ti-wishlist.php:140, tinv-wishlists-function-integration.php:777, tinv-wishlists-function-integration.php:933, tinv-wishlists-function-integration.php:1095, tinv-wishlists-function-integration.php:1309
+#: templates/ti-wishlist-user.php:136, templates/ti-wishlist.php:144, tinv-wishlists-function-integration.php:777, tinv-wishlists-function-integration.php:933, tinv-wishlists-function-integration.php:1095, tinv-wishlists-function-integration.php:1309
 msgid "In stock"
 msgstr ""
 
@@ -1053,47 +1081,47 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:1659
+#: tinv-wishlists-function-integration.php:1671
 msgid "Base price"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2413
+#: tinv-wishlists-function-integration.php:2425
 msgid "WooCommerce Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2414
+#: tinv-wishlists-function-integration.php:2426
 msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2560
+#: tinv-wishlists-function-integration.php:2572
 msgid "Adding Product to Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2565, tinv-wishlists-function-integration.php:2610
+#: tinv-wishlists-function-integration.php:2577, tinv-wishlists-function-integration.php:2622
 msgid "Points"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2578, tinv-wishlists-function-integration.php:2623
+#: tinv-wishlists-function-integration.php:2590, tinv-wishlists-function-integration.php:2635
 msgid "Limit"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2591, tinv-wishlists-function-integration.php:2636
+#: tinv-wishlists-function-integration.php:2603, tinv-wishlists-function-integration.php:2648
 msgid "Log Template"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2595, tinv-wishlists-function-integration.php:2640
+#: tinv-wishlists-function-integration.php:2607, tinv-wishlists-function-integration.php:2652
 msgid "required"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2605
+#: tinv-wishlists-function-integration.php:2617
 msgid "Purchasing Product from Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2691
+#: tinv-wishlists-function-integration.php:2703
 msgid "Purchased From Wishlist"
 msgstr ""
 
-#: tinv-wishlists-function-integration.php:2692
+#: tinv-wishlists-function-integration.php:2704
 msgid "Added To Wishlist"
 msgstr ""
 

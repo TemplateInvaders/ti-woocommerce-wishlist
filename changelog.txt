@@ -1,3 +1,13 @@
+= 1.13.0 =
+*Release Date - 15 July 2019*
+
+* Added wishlist REST API
+* Refactored filters and actions
+* Prevent plugin network wide activation
+* Fixed an issue with deleted products in frontend templates
+* Fixed wishlist products query issue  on multilingual setup
+* TM Product Options plugin integration updated
+
 = 1.12.3 =
 *Release Date - 17 May 2019*
 

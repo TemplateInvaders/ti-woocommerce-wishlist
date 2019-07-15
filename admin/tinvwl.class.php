@@ -93,7 +93,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function wizard_run_admin_notice() {
 		printf( '<div class="notice notice-error"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a> <a href="%4$s" class="button-secondary">%5$s</a></p></div>',
-			__( '<strong>Welcome to WooCommerce Wishlist Plugin<strong> – You‘re almost ready to start :)', 'ti-woocommerce-wishlist' ), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
+			__( '<strong>Welcome to WooCommerce Wishlist Plugin</strong> – You‘re almost ready to start :)', 'ti-woocommerce-wishlist' ), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
 			esc_url( admin_url( 'index.php?page=tinvwl-wizard' ) ),
 			esc_html__( 'Run the Setup Wizard', 'ti-woocommerce-wishlist' ),
 			esc_url( admin_url( 'index.php?page=' . $this->_name . '&' . $this->_name . '-wizard=skip' ) ),
@@ -214,7 +214,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 				$parent_theme = $current_theme->parent();
 
 				wp_add_inline_script( $this->_name, 'window.intercomSettings = {
-					app_id: "wj7rirzi",				
+					app_id: "wj7rirzi",
 					"Website": "' . get_site_url() . '",
 					"Plugin name": "WooCommerce Wishlist Plugin",
 					"Plugin version":"' . TINVWL_FVERSION . '",

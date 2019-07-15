@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist if a current user not an owner.
  *
- * @version             1.12.0
+ * @version             1.13.0
  * @package           TInvWishlist\Template
  */
 
@@ -60,6 +60,10 @@ wp_enqueue_script( 'tinvwl' );
 			$_post_tmp = $post;
 
 			foreach ( $products as $wl_product ) {
+
+				if ( empty( $wl_product['data'] ) ) {
+					continue;
+				}
 
 				// override global product data.
 				$product = apply_filters( 'tinvwl_wishlist_item', $wl_product['data'] );

@@ -377,8 +377,8 @@ class TInvWL_Product {
 			}
 
 			if ( $default['external'] ) {
-				if ( isset( $product['product_id'] ) && apply_filters( 'wpml_object_id', $product['product_id'], 'product', false ) ) {
-					$ids[] = apply_filters( 'wpml_object_id', $product['product_id'], 'product', false );
+				if ( isset( $product['product_id'] ) ) {
+					$ids[] = ( apply_filters( 'wpml_object_id', $product['product_id'], 'product', false ) ) ? apply_filters( 'wpml_object_id', $product['product_id'], 'product', false ) : $product['product_id'];
 				}
 			}
 			$product['meta'] = array();
@@ -405,9 +405,9 @@ class TInvWL_Product {
 						continue;
 					}
 
-					if ( $_product->get_id() === absint( apply_filters( 'wpml_object_id', $wlproduct['product_id'], 'product', false ) ) ) {
+					if ( $_product->get_id() === absint( ( apply_filters( 'wpml_object_id', $wlproduct['product_id'], 'product', false ) ) ? apply_filters( 'wpml_object_id', $wlproduct['product_id'], 'product', false ) : $wlproduct['product_id'] ) ) {
 						if ( in_array( $_product->get_type(), array( 'variable', 'grouped' ) ) ) {
-							$products[ $key ]['data'] = $wlproduct['variation_id'] ? wc_get_product( apply_filters( 'wpml_object_id', $wlproduct['variation_id'], 'product', false ) ) : $_product;
+							$products[ $key ]['data'] = $wlproduct['variation_id'] ? wc_get_product( $wlproduct['variation_id'] ) : $_product;
 						} else {
 							$products[ $key ]['data'] = $_product;
 						}

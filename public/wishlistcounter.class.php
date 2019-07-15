@@ -65,7 +65,6 @@ class TInvWL_Public_WishlistCounter {
 		}
 	}
 
-
 	/**
 	 * Add to menu wishlist link
 	 *

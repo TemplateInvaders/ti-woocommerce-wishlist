@@ -212,8 +212,8 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 		$attr = implode( ' ', $attr );
 
-		$html .= apply_filters( 'tinvwl__button_' . $value, sprintf( '<button %s>%s</button>', $attr, $title ) );
-		$html .= apply_filters( 'tinvwl_after__button_' . $value, '' );
+		$html .= apply_filters( 'tinvwl_button_' . $value, sprintf( '<button %s>%s</button>', $attr, $title ) );
+		$html .= apply_filters( 'tinvwl_after_button_' . $value, '' );
 
 		if ( $echo ) {
 			echo $html; // WPCS: xss ok.

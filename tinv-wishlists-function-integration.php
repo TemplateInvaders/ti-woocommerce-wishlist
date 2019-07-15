@@ -2214,8 +2214,6 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 			$form     = new WCPA_Form();
 			$frontend = new WCPA_Front_End();
 			$data     = array();
-
-
 			$post_ids = $form->get_form_ids( $product_id );
 
 			if ( wcpa_get_option( 'form_loading_order_by_date' ) === true ) {

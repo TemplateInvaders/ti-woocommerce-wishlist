@@ -689,7 +689,7 @@ msgid "Premium Features"
 msgstr ""
 
 #: admin/tinvwl.class.php:96
-msgid "<strong>Welcome to WooCommerce Wishlist Plugin<strong> – You‘re almost ready to start :)"
+msgid "<strong>Welcome to WooCommerce Wishlist Plugin</strong> – You‘re almost ready to start :)"
 msgstr ""
 
 #: admin/tinvwl.class.php:98, admin/tinvwl.class.php:118

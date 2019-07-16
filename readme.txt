@@ -133,6 +133,8 @@ There are few ways to install TI WooCommerce Wishlist Plugin:
 
 For help setting up and configuring, please refer to our [online documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation_faq)
 
+[REST API documentation](https://templateinvaders.com/api/wishlist/?utm_source=wordpressorg&utm_content=documentation_faq)
+
 = Where can I get support or talk to other users? =
 
 If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.org/support/plugin/ti-woocommerce-wishlist) or [help page](https://templateinvaders.com/help/?utm_source=wordpressorg&utm_content=help_faq) on our website.
@@ -158,7 +160,7 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 = 1.13.0 =
 *Release Date - 15 July 2019*
 
-* Added wishlist REST API
+* Added wishlist [REST API](https://templateinvaders.com/api/wishlist/?utm_source=wordpressorg&utm_content=changelog)
 * Refactored filters and actions
 * Prevent plugin network wide activation
 * Fixed an issue with deleted products in frontend templates

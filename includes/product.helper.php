@@ -412,6 +412,16 @@ class TInvWL_Product {
 					}
 				}
 			}
+
+			// remove deleted products from database
+			if ( $default['external'] ) {
+				foreach ( $products as $key => $product ) {
+					if ( empty( $product['data'] ) ) {
+						unset( $products[ $key ] );
+						$this->remove( $product );
+					}
+				}
+			}
 		}
 
 		return $products;

@@ -377,7 +377,7 @@ class TInvWL_Public_Wishlist_View {
 	 * Create social meta tags
 	 */
 	function add_meta_tags() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && tinv_get_option( 'social', 'facebook' ) ) {
 			$wishlist = $this->get_current_wishlist();
 			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
 				if ( is_user_logged_in() ) {
@@ -425,12 +425,12 @@ class TInvWL_Public_Wishlist_View {
 					'description' => implode( ', ', $products_title ),
 					'image'       => $image,
 				) );
-				if ( tinv_get_option( 'social', 'facebook' ) ) {
-					foreach ( $meta as $name => $content ) {
-						echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
-					}
-					echo "\n";
+
+				foreach ( $meta as $name => $content ) {
+					echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
 				}
+				echo "\n";
+
 			} // End if().
 		} // End if().
 	}

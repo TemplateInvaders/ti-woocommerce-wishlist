@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 1.13.0
+Stable tag: 1.13.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -157,6 +157,17 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.13.1 =
+*Release Date - 29 July 2019*
+
+* Fixed unclosed 'strong' tag in admin notification
+* Fixed empty URL issue for sharing buttons
+* Fixed performance for meta tags addition on wishlist page
+* Fixed empty text issue for 'View Wishlist' button
+* Removed Google Plus (G+) sharing option since the service is closed
+* Added cleanup of deleted products from wishlist
+* Added parameters to the 'tinvwl_get_wishlist_products' to get a custom products query results
+
 = 1.13.0 =
 *Release Date - 15 July 2019*
 
@@ -224,12 +235,6 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed pagination issue on a Wishlist page for all actions
 * Fixed minor PHP issues
 * Fixed minor CSS issues
-
-= 1.9.18 =
-*Release Date - 4 April 2019*
-
-* Fixed an issue with removing products from wishlist when added to cart for WooCommerce prior 3.x versions.
-* Fixed an issue when the wizard add multiple shortcodes to an exists page
 
 [See changelog for all versions](https://raw.githubusercontent.com/TemplateInvaders/ti-woocommerce-wishlist/master/changelog.txt).
 

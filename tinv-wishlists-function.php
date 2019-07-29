@@ -872,16 +872,17 @@ if ( ! function_exists( 'tinvwl_get_wishlist_products' ) ) {
 	 * Get wishlist products for default user wishlist or by ID or SHAREKEY
 	 *
 	 * @param int $wishlist_id by ID or SHAREKEY, 0 = default wishlist of current user
+	 * @param array $data query parameters for get() method of TInvWL_Product() class.
 	 *
 	 * @return array|bool
 	 */
-	function tinvwl_get_wishlist_products( $wishlist_id = 0 ) {
+	function tinvwl_get_wishlist_products( $wishlist_id = 0, $data = array() ) {
 		$wishlist = tinv_wishlist_get( $wishlist_id );
 		if ( empty( $wishlist ) ) {
 			return false;
 		}
 		$wlp      = new TInvWL_Product( $wishlist );
-		$products = $wlp->get_wishlist();
+		$products = $wlp->get_wishlist( $data );
 
 		if ( empty( $products ) ) {
 			return false;

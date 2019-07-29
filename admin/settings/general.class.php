@@ -193,7 +193,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type'  => 'text',
-						'name'  => 'text_t',
+						'name'  => 'text_browse',
 						'text'  => __( '"View Wishlist" button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'View Wishlist',
 						'class' => 'tiwl-button-show-notice',

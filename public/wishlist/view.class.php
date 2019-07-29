@@ -377,60 +377,62 @@ class TInvWL_Public_Wishlist_View {
 	 * Create social meta tags
 	 */
 	function add_meta_tags() {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) && tinv_get_option( 'social', 'facebook' ) ) {
+		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
 			$wishlist = $this->get_current_wishlist();
-			if ( $wishlist && 0 < $wishlist['ID'] && 'private' !== $wishlist['status'] ) {
-				if ( is_user_logged_in() ) {
-					$user = get_user_by( 'id', $wishlist['author'] );
-					if ( $user && $user->exists() ) {
-						$user_name = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
-						$user      = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+			if ( $wishlist && 0 < $wishlist['ID'] ) {
+				$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
+				if ( 'private' !== $wishlist['status'] && tinv_get_option( 'social', 'facebook' ) ) {
+					if ( is_user_logged_in() ) {
+						$user = get_user_by( 'id', $wishlist['author'] );
+						if ( $user && $user->exists() ) {
+							$user_name = trim( sprintf( '%s %s', $user->user_firstname, $user->user_lastname ) );
+							$user      = @$user->display_name; // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+						} else {
+							$user_name = '';
+							$user      = '';
+						}
 					} else {
 						$user_name = '';
 						$user      = '';
 					}
-				} else {
-					$user_name = '';
-					$user      = '';
-				}
 
-				if ( is_array( $this->get_current_products_query() ) ) {
-					$products = $this->current_products_query;
-				} else {
-					$products = $this->get_current_products( $wishlist, true );
-				}
+					if ( is_array( $this->get_current_products_query() ) ) {
+						$products = $this->current_products_query;
+					} else {
+						$products = $this->get_current_products( $wishlist, true );
+					}
 
-				$products_title = array();
-				foreach ( $products as $product ) {
-					if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-						$title = $product['data']->get_title();
-						if ( ! in_array( $title, $products_title ) ) {
-							$products_title[] = $title;
+					$products_title = array();
+					foreach ( $products as $product ) {
+						if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
+							$title = $product['data']->get_title();
+							if ( ! in_array( $title, $products_title ) ) {
+								$products_title[] = $title;
+							}
 						}
 					}
+					$product = array_shift( $products );
+					$image   = '';
+					if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
+						list( $image ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
+					}
+
+					$this->social_image = $image;
+
+
+					$meta = apply_filters( 'tinvwl_social_header_meta', array(
+						'url'         => $this->wishlist_url,
+						'type'        => 'product.group',
+						'title'       => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
+						'description' => implode( ', ', $products_title ),
+						'image'       => $image,
+					) );
+
+					foreach ( $meta as $name => $content ) {
+						echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
+					}
+					echo "\n";
 				}
-				$product = array_shift( $products );
-				$image   = '';
-				if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-					list( $image ) = wp_get_attachment_image_src( $product['data']->get_image_id(), 'full' );
-				}
-
-				$this->social_image = $image;
-				$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
-
-				$meta = apply_filters( 'tinvwl_social_header_meta', array(
-					'url'         => $this->wishlist_url,
-					'type'        => 'product.group',
-					'title'       => sprintf( __( '%1$s by %2$s', 'ti-woocommerce-wishlist' ), $wishlist['title'], ( empty( $user_name ) ? $user : $user_name ) ),
-					'description' => implode( ', ', $products_title ),
-					'image'       => $image,
-				) );
-
-				foreach ( $meta as $name => $content ) {
-					echo sprintf( '<meta property="og:%s" content="%s" />', esc_attr( $name ), esc_attr( $content ) );
-				}
-				echo "\n";
-
 			} // End if().
 		} // End if().
 	}

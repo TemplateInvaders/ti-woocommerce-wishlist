@@ -50,15 +50,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="form-horizontal">
 				<div class="form-group">
-					<?php echo TInvWL_Form::_label( 'social_google', __( 'Show "Google+" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
-					<div class="col-md-6">
-						<?php echo TInvWL_Form::_checkboxonoff( 'social_google', $social_google_value ); // WPCS: xss ok. ?>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-horizontal">
-				<div class="form-group">
 					<?php echo TInvWL_Form::_label( 'social_whatsapp', __( 'Show "WhatsApp" Button', 'ti-woocommerce-wishlist' ), array( 'class' => 'col-md-6 control-label' ) ); // WPCS: xss ok. ?>
 					<div class="col-md-6">
 						<?php echo TInvWL_Form::_checkboxonoff( 'social_whatsapp', $social_whatsapp_value ); // WPCS: xss ok. ?>

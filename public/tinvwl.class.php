@@ -117,7 +117,7 @@ class TInvWL_Public_TInvWL {
 	 * Define hooks
 	 */
 	function define_hooks() {
-		if ( tinv_get_option( 'social', 'facebook' ) || tinv_get_option( 'social', 'google' ) ) {
+		if ( tinv_get_option( 'social', 'facebook' ) ) {
 			add_filter( 'language_attributes', array( $this, 'add_ogp' ), 100 );
 		}
 

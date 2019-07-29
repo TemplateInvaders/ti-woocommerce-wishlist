@@ -668,12 +668,6 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					),
 					array(
 						'type' => 'checkboxonoff',
-						'name' => 'google',
-						'text' => __( 'Show "Google+" Button', 'ti-woocommerce-wishlist' ),
-						'std'  => true,
-					),
-					array(
-						'type' => 'checkboxonoff',
 						'name' => 'whatsapp',
 						'text' => __( 'Show "WhatsApp" Button', 'ti-woocommerce-wishlist' ),
 						'std'  => true,

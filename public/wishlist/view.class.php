@@ -431,16 +431,6 @@ class TInvWL_Public_Wishlist_View {
 					}
 					echo "\n";
 				}
-				if ( tinv_get_option( 'social', 'google' ) ) {
-					unset( $meta['url'], $meta['type'] );
-					foreach ( $meta as $name => $content ) {
-						if ( 'title' === $name ) {
-							$name = 'name';
-						}
-						echo sprintf( '<meta itemprop="%s" content="%s">', esc_attr( $name ), esc_attr( $content ) );
-					}
-					echo "\n";
-				}
 			} // End if().
 		} // End if().
 	}

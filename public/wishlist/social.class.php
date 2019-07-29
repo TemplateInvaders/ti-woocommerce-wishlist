@@ -127,19 +127,6 @@ class TInvWL_Public_Wishlist_Social {
 	}
 
 	/**
-	 * Create google++ share url
-	 *
-	 * @return string
-	 */
-	public static function google() {
-		$data = array(
-			'url' => self::$url,
-		);
-
-		return 'https://plus.google.com/share?' . http_build_query( $data );
-	}
-
-	/**
 	 * Create email share url
 	 *
 	 * @return string

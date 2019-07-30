@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 1.13.1
+Stable tag: 1.13.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -157,6 +157,11 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.13.2 =
+*Release Date - 30 July 2019*
+
+* Fixed a compatibility issue with WooCommerce Show Single Variations by Iconic plugin
+
 = 1.13.1 =
 *Release Date - 29 July 2019*
 
@@ -236,5 +241,5 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed minor PHP issues
 * Fixed minor CSS issues
 
-[See changelog for all versions](https://raw.githubusercontent.com/TemplateInvaders/ti-woocommerce-wishlist/master/changelog.txt).
+[See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

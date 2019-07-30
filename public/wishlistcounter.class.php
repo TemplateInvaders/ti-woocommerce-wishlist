@@ -107,9 +107,9 @@ class TInvWL_Public_WishlistCounter {
 			if ( $menu_title ) {
 
 				$wishlist_item = (object) array(
-					'ID'                    => $menu_cnt + 100000,
-					'object_id'             => $menu_cnt + 100000,
-					'db_id'                 => $menu_cnt + 100000,
+					'ID'                    => $menu_cnt + 2147480000,
+					'object_id'             => $menu_cnt + 2147480000,
+					'db_id'                 => $menu_cnt + 2147480000,
 					'title'                 => $menu_title,
 					'post_title'            => $menu_title,
 					'url'                   => esc_url( tinv_url_wishlist_default() ),

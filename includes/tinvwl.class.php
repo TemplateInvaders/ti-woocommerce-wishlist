@@ -97,7 +97,9 @@ class TInvWL {
 	 * Set localization
 	 */
 	private function set_locale() {
-		$locale  = apply_filters( 'plugin_locale', get_locale(), TINVWL_DOMAIN );
+		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$locale = apply_filters( 'plugin_locale', $locale, TINVWL_DOMAIN );
+
 		$mofile  = sprintf( '%1$s-%2$s.mo', TINVWL_DOMAIN, $locale );
 		$mofiles = array();
 

@@ -181,17 +181,16 @@ if ( function_exists( 'spl_autoload_register' ) && ! function_exists( 'autoload_
 		}
 		$basicclass = $class;
 		array_unshift( $class, 'includes' );
-		$classs = array(
+		$classes = array(
 			TINVWL_PATH . strtolower( implode( DIRECTORY_SEPARATOR, $basicclass ) ),
 			TINVWL_PATH . strtolower( implode( DIRECTORY_SEPARATOR, $class ) ),
 		);
-		foreach ( $classs as $class ) {
+
+		foreach ( $classes as $class ) {
 			foreach ( array( '.class', '.helper' ) as $suffix ) {
 				$filename = $class . $suffix . $ext;
 				if ( file_exists( $filename ) ) {
 					require_once $filename;
-
-					return true;
 				}
 			}
 		}
@@ -229,7 +228,10 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 	 */
 	function run_tinv_wishlist() {
 		require_once TINVWL_PATH . 'tinv-wishlists-function.php';
-		require_once TINVWL_PATH . 'tinv-wishlists-function-integration.php';
+
+		foreach ( glob( TINVWL_PATH . 'integrations' . DIRECTORY_SEPARATOR . '*.php' ) as $file ) {
+			require_once $file;
+		}
 
 		if ( ! function_exists( 'is_plugin_active' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );

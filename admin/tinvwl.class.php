@@ -33,7 +33,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Load settings classes.
 	 */
 	function load_function() {
-		TII18n();
+		TInvWL_Includes_API_Yoasti18n::instance();
 
 		$this->load_settings();
 

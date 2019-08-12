@@ -820,15 +820,15 @@ msgstr ""
 msgid "%1$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
-#: includes/tinvwl.class.php:160
+#: includes/tinvwl.class.php:162
 msgid "Settings"
 msgstr ""
 
-#: includes/tinvwl.class.php:161
+#: includes/tinvwl.class.php:163
 msgid "Premium Version"
 msgstr ""
 
-#: includes/tinvwl.class.php:162
+#: includes/tinvwl.class.php:164
 msgid "Live Demo"
 msgstr ""
 
@@ -890,6 +890,82 @@ msgstr ""
 
 #: includes/wizard.class.php:520
 msgid "Ready!"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:92
+msgid "Note"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:95
+msgid "To"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:98
+msgid "To Email"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:101
+msgid "Address"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:104
+msgid "Reload existing Gift Card"
+msgstr ""
+
+#: integrations/mycred.php:30
+msgid "WooCommerce Wishlist"
+msgstr ""
+
+#: integrations/mycred.php:31
+msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
+msgstr ""
+
+#: integrations/mycred.php:177
+msgid "Adding Product to Wishlist"
+msgstr ""
+
+#: integrations/mycred.php:182, integrations/mycred.php:227
+msgid "Points"
+msgstr ""
+
+#: integrations/mycred.php:195, integrations/mycred.php:240
+msgid "Limit"
+msgstr ""
+
+#: integrations/mycred.php:208, integrations/mycred.php:253
+msgid "Log Template"
+msgstr ""
+
+#: integrations/mycred.php:212, integrations/mycred.php:257
+msgid "required"
+msgstr ""
+
+#: integrations/mycred.php:222
+msgid "Purchasing Product from Wishlist"
+msgstr ""
+
+#: integrations/mycred.php:308
+msgid "Purchased From Wishlist"
+msgstr ""
+
+#: integrations/mycred.php:309
+msgid "Added To Wishlist"
+msgstr ""
+
+#: integrations/woocommerce-composite-products.php:106, integrations/woocommerce-mix-and-match-products.php:83, integrations/woocommerce-product-bundles.php:104, integrations/yith-woocommerce-product-bundles.php:135, templates/ti-wishlist-user.php:136, templates/ti-wishlist.php:144
+msgid "In stock"
+msgstr ""
+
+#: integrations/woocommerce-gravityforms-product-addons.php:43
+msgid "Select options"
+msgstr ""
+
+#: integrations/yith-woocommerce-product-add-ons.php:47
+msgid "Base price"
+msgstr ""
+
+#: integrations/yith-woocommerce-product-bundles.php:74
+msgid "Out of stock"
 msgstr ""
 
 #: public/addtowishlist.class.php:180
@@ -1043,82 +1119,6 @@ msgstr ""
 
 #: templates/ti-wishlist-user.php:83, templates/ti-wishlist.php:84
 msgid "Select for bulk action"
-msgstr ""
-
-#: templates/ti-wishlist-user.php:136, templates/ti-wishlist.php:144, tinv-wishlists-function-integration.php:777, tinv-wishlists-function-integration.php:933, tinv-wishlists-function-integration.php:1095, tinv-wishlists-function-integration.php:1309
-msgid "In stock"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:149
-msgid "Select options"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:485
-msgid "Note"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:488
-msgid "To"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:491
-msgid "To Email"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:494
-msgid "Address"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:497
-msgid "Reload existing Gift Card"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:1248
-msgid "Out of stock"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:1671
-msgid "Base price"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2425
-msgid "WooCommerce Wishlist"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2426
-msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2572
-msgid "Adding Product to Wishlist"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2577, tinv-wishlists-function-integration.php:2622
-msgid "Points"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2590, tinv-wishlists-function-integration.php:2635
-msgid "Limit"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2603, tinv-wishlists-function-integration.php:2648
-msgid "Log Template"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2607, tinv-wishlists-function-integration.php:2652
-msgid "required"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2617
-msgid "Purchasing Product from Wishlist"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2703
-msgid "Purchased From Wishlist"
-msgstr ""
-
-#: tinv-wishlists-function-integration.php:2704
-msgid "Added To Wishlist"
 msgstr ""
 
 #: views/admin/premium-features.php:21

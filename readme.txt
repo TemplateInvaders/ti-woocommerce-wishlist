@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 1.13.2
+Stable tag: 1.14.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -157,6 +157,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 == Changelog ==
+= 1.14.0 =
+*Release Date - 12 August 2019*
+
+* Added support for WooCommerce 3.7
+* Added compatibility with [Variations Swatches and Photos](https://woocommerce.com/products/variation-swatches-and-photos/?aff=3955) plugin
+* Added compatibility with Clever Swatches plugin
+* Added compatibility with WooCommerce Custom Product Addons (Pro) plugin
+* Added compatibility with WooCommerce Rental & Bookings System plugin
+* Added compatibility with Booking & Appointment Plugin for WooCommerce
+* Refactored all 3rd party integrations code
+* Fixed an issue with properly load custom translation files
+
 = 1.13.2 =
 *Release Date - 30 July 2019*
 
@@ -229,17 +241,6 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 * [WooCommerce PPOM](https://wordpress.org/plugins/woocommerce-product-addon/) plugin integration updated
 * Fixed analytics purchase count issue
-
-= 1.10.0 =
-*Release Date - 9 April 2019*
-
-* Added Force permalinks rewrite feature
-* Added numeric pagination on a Wishlist page
-* Added analytic tracking feature for compatibility with the premium version of plugin
-* Improved compatibility with TM Extra Product Options plugin
-* Fixed pagination issue on a Wishlist page for all actions
-* Fixed minor PHP issues
-* Fixed minor CSS issues
 
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

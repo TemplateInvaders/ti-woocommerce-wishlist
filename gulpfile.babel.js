@@ -317,7 +317,7 @@ gulp.task(
 			.pipe(
 				checktextdomain(
 					{
-						text_domain: [config.textDomain, 'woocommerce'], //Specify allowed domain(s)
+						text_domain: [config.textDomain, 'woocommerce', 'redq-rental'], //Specify allowed domain(s)
 						keywords: [ //List keyword specifications
 							'__:1,2d',
 							'_e:1,2d',

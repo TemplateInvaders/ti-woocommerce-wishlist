@@ -73,7 +73,6 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_booking' ) ) {
 	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_woocommerce_booking', 20, 3 );
 } // End if().
 
-
 if ( ! function_exists( 'tinvwl_item_price_woocommerce_booking' ) ) {
 
 	/**

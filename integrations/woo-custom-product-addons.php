@@ -88,7 +88,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 							'value'     => $value['display'],
 							'price'     => false,
 							'form_data' => $form_data,
-						) );
+						), wc_get_product( $product_id ) );
 					}
 				}
 			}

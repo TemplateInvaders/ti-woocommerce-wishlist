@@ -29,7 +29,8 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' 
 	 */
 	function tinv_wishlist_metasupport_woocommerce_product_bundles( $meta, $product_id ) {
 		$product = wc_get_product( $product_id );
-		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
+
+		if ( is_object( $product ) && $product->is_type( 'bundle' ) && empty( $meta['bkap_price_charged'] ) ) {
 			$meta = array();
 		}
 

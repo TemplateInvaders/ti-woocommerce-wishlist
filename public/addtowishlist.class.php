@@ -582,7 +582,10 @@ class TInvWL_Public_AddToWishlist {
 			if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 				$text = sprintf( '<span class="tinvwl_add_to_wishlist-text">%s</span><span class="tinvwl_remove_from_wishlist-text">%s</span>', $text, apply_filters( 'tinvwl_remove_from_wishlist_text' . ( $this->is_loop ? '_loop' : '' ), tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text_remove' ) ) );
 			} else {
-				$text = sprintf( '<span class="tinvwl_add_to_wishlist-text">%s</span>', $text );
+
+				$already_on = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'already_on' ) ? sprintf( '<span class="tinvwl_already_on_wishlist-text">%s</span>', apply_filters( 'tinvwl_already_on_wishlist_text' . ( $this->is_loop ? '_loop' : '' ), tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text_already_on' ) ) ) : '';
+
+				$text = sprintf( '<span class="tinvwl_add_to_wishlist-text">%s</span>' . $already_on, $text );
 			}
 		}
 		if ( ! empty( $icon ) ) {
@@ -620,6 +623,8 @@ class TInvWL_Public_AddToWishlist {
 				}
 			}
 		}
+
+		$icon .= tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'already_on' ) ? ' tinvwl-product-already-on-wishlist' : '';
 
 		$icon .= ' ' . tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'class' );
 

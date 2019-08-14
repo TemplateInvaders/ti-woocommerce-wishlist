@@ -402,6 +402,22 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'std'  => 'Add to Wishlist',
 					),
 					array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'already_on',
+						'text'  => __( 'Show "Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+						'extra' => array(
+							'tiwl-show' => '.tiwl-button-already-on',
+						),
+					),
+					array(
+						'type'  => 'text',
+						'name'  => 'text_already_on',
+						'text'  => __( '"Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => 'Already on Wishlist',
+						'class' => 'tiwl-button-already-on',
+					),
+					array(
 						'type'  => 'text',
 						'name'  => 'text_remove',
 						'text'  => __( '"Remove from Wishlist" Button Text', 'ti-woocommerce-wishlist' ),
@@ -523,6 +539,22 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name' => 'text',
 						'text' => __( '"Add to Wishlist" Text', 'ti-woocommerce-wishlist' ),
 						'std'  => 'Add to Wishlist',
+					),
+					array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'already_on',
+						'text'  => __( 'Show "Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+						'extra' => array(
+							'tiwl-show' => '.tiwl-button-already-on-catalog',
+						),
+					),
+					array(
+						'type'  => 'text',
+						'name'  => 'text_already_on',
+						'text'  => __( '"Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => 'Already on Wishlist',
+						'class' => 'tiwl-button-already-on-catalog',
 					),
 					array(
 						'type'  => 'text',

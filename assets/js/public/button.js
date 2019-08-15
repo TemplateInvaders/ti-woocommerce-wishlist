@@ -136,6 +136,7 @@
 					});
 				},
 				status: function (status) {
+					$('body').trigger('tinvwl_wishlist_added_status', [this, status]);
 					if (status) {
 						$(this).addClass('tinvwl-product-in-list');
 					}

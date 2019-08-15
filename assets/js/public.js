@@ -148,6 +148,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           });
         },
         status: function status(_status) {
+          $('body').trigger('tinvwl_wishlist_added_status', [this, _status]);
+
           if (_status) {
             $(this).addClass('tinvwl-product-in-list');
           }

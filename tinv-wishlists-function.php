@@ -673,7 +673,9 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 			$variations        = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_data : ( $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array() ) );
 			$passed_validation = $product->is_purchasable() && ( $product->is_in_stock() || $product->backorders_allowed() ) && 'external' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() );
 			ob_start();
-			wc_clear_notices();
+			if ( ! function_exists( 'wc_clear_notices' ) ) {
+				wc_clear_notices();
+			}
 			$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 			$wc_errors         = wc_get_notices( 'error' );
 			$wc_output         = ob_get_clean();

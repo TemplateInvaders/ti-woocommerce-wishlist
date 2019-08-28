@@ -3,7 +3,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.2  
-**Stable tag:** 1.14.1  
+**Stable tag:** 1.14.2  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -179,6 +179,18 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.14.2 ###
+*Release Date - 28 August 2019*
+
+* Added JavaScript event 'tinvwl_wishlist_added_status'
+* Added integration with WP Grid Builder plugin
+* Added integration with WooCommerce Show Single Variations by Iconic plugin
+* Fixed the option name 'Already In Wishlist'
+* Fixed PHP Error when 'wc_clear_notices' method is not available
+* Fixed integration with WooCommerce TM Extra Product Options plugin
+* Fixed WooCommerce.com affiliate code issue
+* Improved integration with WooCommerce Custom Product Addons (Pro) plugin
+
 ### 1.14.1 ###
 *Release Date - 15 August 2019*
 
@@ -254,14 +266,6 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 * Fixed a hook for [myCRED](https://wordpress.org/plugins/mycred/) plugin when purchased product from a wishlist
 * Plugin display name changed to "TI WooCommerce Wishlist Plugin"
-
-### 1.11.0 ###
-*Release Date - 18 April 2019*
-
-* WooCommerce 3.6.x support
-* Added integration with Improved Product Options for WooCommerce plugin
-* Added custom hook for [myCRED](https://wordpress.org/plugins/mycred/) plugin
-* Minor PHP fixes and improvements
 
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

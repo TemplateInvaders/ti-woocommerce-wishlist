@@ -10,10 +10,12 @@
 		<key name="tinvwl-add_to_wishlist">
 			<key name="text"/>
 			<key name="text_remove"/>
+			<key name="text_already_on"/>
 		</key>
 		<key name="tinvwl-add_to_wishlist_catalog">
 			<key name="text"/>
 			<key name="text_remove"/>
+			<key name="text_already_on"/>
 		</key>
 		<key name="tinvwl-product_table">
 			<key name="text_add_to_cart"/>

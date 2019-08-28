@@ -404,18 +404,19 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'checkboxonoff',
 						'name'  => 'already_on',
-						'text'  => __( 'Show "Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'text'  => __( 'Show "Already In Wishlist" button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-button-already-on',
 						),
+						'class' => 'tiwl-general-simple-flow-hide',
 					),
 					array(
 						'type'  => 'text',
 						'name'  => 'text_already_on',
-						'text'  => __( '"Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
-						'std'   => 'Already on Wishlist',
-						'class' => 'tiwl-button-already-on',
+						'text'  => __( '"Already In Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => 'Already In Wishlist',
+						'class' => 'tiwl-button-already-on tiwl-general-simple-flow-hide',
 					),
 					array(
 						'type'  => 'text',
@@ -543,18 +544,19 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'checkboxonoff',
 						'name'  => 'already_on',
-						'text'  => __( 'Show "Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'text'  => __( 'Show "Already In Wishlist" button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-button-already-on-catalog',
 						),
+						'class' => 'tiwl-general-simple-flow-hide',
 					),
 					array(
 						'type'  => 'text',
 						'name'  => 'text_already_on',
-						'text'  => __( '"Already On Wishlist" button Text', 'ti-woocommerce-wishlist' ),
-						'std'   => 'Already on Wishlist',
-						'class' => 'tiwl-button-already-on-catalog',
+						'text'  => __( '"Already In Wishlist" button Text', 'ti-woocommerce-wishlist' ),
+						'std'   => 'Already In Wishlist',
+						'class' => 'tiwl-button-already-on-catalog tiwl-general-simple-flow-hide',
 					),
 					array(
 						'type'  => 'text',

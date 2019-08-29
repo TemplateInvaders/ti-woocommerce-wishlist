@@ -17,6 +17,14 @@ module.exports = {
 			styleDestination: './assets/css/', // Path to place the compiled CSS file.
 		},
 		{
+			styleSRC: './assets/css/admin-form.css', // Path to .scss file.
+			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+		},
+		{
+			styleSRC: './assets/css/admin-setup.css', // Path to .scss file.
+			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+		},
+		{
 			styleSRC: './sass/public.scss', // Path to .scss file.
 			styleDestination: './assets/css/', // Path to place the compiled CSS file.
 		},

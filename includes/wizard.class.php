@@ -288,7 +288,7 @@ class TInvWL_Wizard {
 		$title_pages = array(
 			'wishlist' => __( 'Wishlist', 'ti-woocommerce-wishlist' ),
 		);
-		$lists       = get_pages( array( 'number' => 999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
+		$lists       = get_pages( array( 'number' => 9999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
 		$page_list   = array(
 			''    => __( 'Create Automatically', 'ti-woocommerce-wishlist' ),
 			- 100 => __( 'Create new Page', 'ti-woocommerce-wishlist' ),

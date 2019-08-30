@@ -79,7 +79,7 @@ class TInvWL_Public_Wishlist_Buttons {
 				'method'   => array( __CLASS__, 'apply_action_add_selected' ),
 				'priority' => 25,
 			);
-			add_filter( 'tinvwl_prepare_attr__button_product_selected', array(
+			add_filter( 'tinvwl_prepare_attr_button_product_selected', array(
 				__CLASS__,
 				'add_break_class_checkbox',
 			) );
@@ -91,8 +91,8 @@ class TInvWL_Public_Wishlist_Buttons {
 				'method'   => array( __CLASS__, 'add_all' ),
 				'priority' => 30,
 			);
-			add_filter( 'tinvwl_prepare_attr__button_product_selected', array( __CLASS__, 'class_action' ) );
-			add_filter( 'tinvwl_prepare_attr__button_product_all', array( __CLASS__, 'class_action' ) );
+			add_filter( 'tinvwl_prepare_attr_button_product_selected', array( __CLASS__, 'class_action' ) );
+			add_filter( 'tinvwl_prepare_attr_button_product_all', array( __CLASS__, 'class_action' ) );
 		}
 		$buttons = apply_filters( 'tinvwl_manage_buttons_create', $buttons );
 
@@ -249,6 +249,19 @@ class TInvWL_Public_Wishlist_Buttons {
 	}
 
 	/**
+	 * Get all products fix offset issue when paged argument exists.
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	public static function get_all_products_fix_offset( $data ) {
+		$data['offset'] = 0;
+
+		return $data;
+	}
+
+	/**
 	 * Apply action for product_all
 	 *
 	 * @param array $wishlist Wishlist object.
@@ -259,8 +272,8 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return boolean
 	 */
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
+		add_filter( 'tinvwl_before_get_current_product', array( __CLASS__, 'get_all_products_fix_offset' ) );
 		$products = self::get_current_products( $wishlist, 9999999 );
-
 		$result = $errors = array();
 		foreach ( $products as $_product ) {
 			$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );

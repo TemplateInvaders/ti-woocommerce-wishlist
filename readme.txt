@@ -139,6 +139,13 @@ For help setting up and configuring, please refer to our [online documentation](
 
 If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.org/support/plugin/ti-woocommerce-wishlist) or [help page](https://templateinvaders.com/help/?utm_source=wordpressorg&utm_content=help_faq) on our website.
 
+= Where can I find the REST API documentation? =
+
+You can find the documentation of our [TI WooCommerce Wishlist REST API Docs](https://templateinvaders.com/api/wishlist/).
+
+= This plugin is awesome! Can I contribute? =
+
+Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
 == Screenshots ==
 

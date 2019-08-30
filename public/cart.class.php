@@ -72,7 +72,11 @@ class TInvWL_Public_Cart {
 	 * Define hooks
 	 */
 	function define_hooks() {
-		add_action( 'woocommerce_before_cart_item_quantity_zero', array( __CLASS__, 'remove_item_data' ) );
+		if ( version_compare( WC_VERSION, '3.7.0', '<' ) ) {
+			add_action( 'woocommerce_before_cart_item_quantity_zero', array( __CLASS__, 'remove_item_data' ) );
+		} else {
+			add_action( 'woocommerce_remove_cart_item', array( __CLASS__, 'remove_item_data' ) );
+		}
 		add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data' ) );
 		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
 			add_action( 'woocommerce_add_order_item_meta', array( $this, 'add_order_item_meta' ), 10, 3 );

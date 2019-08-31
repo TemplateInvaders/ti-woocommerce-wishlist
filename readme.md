@@ -3,7 +3,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.2  
-**Stable tag:** 1.14.2  
+**Stable tag:** 1.14.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -139,6 +139,13 @@ For help setting up and configuring, please refer to our [online documentation](
 
 If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.org/support/plugin/ti-woocommerce-wishlist) or [help page](https://templateinvaders.com/help/?utm_source=wordpressorg&utm_content=help_faq) on our website.
 
+### Where can I find the REST API documentation? ###
+
+You can find the documentation of our [TI WooCommerce Wishlist REST API Docs](https://templateinvaders.com/api/wishlist/).
+
+### This plugin is awesome! Can I contribute? ###
+
+Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
 ## Screenshots ##
 
@@ -179,6 +186,14 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 
 
 ## Changelog ##
+### 1.14.3 ###
+*Release Date - 31 August 2019*
+
+* Added compatibility for hook 'woocommerce_before_cart_item_quantity_zero' that deprecated from WooCommerce 3.7.0
+* Fixed 'Add All to Cart' button issue
+* Fixed PHP Error when 'wc_clear_notices' method is not available
+* Improved stylesheets loading for plugin settings
+
 ### 1.14.2 ###
 *Release Date - 28 August 2019*
 
@@ -261,11 +276,6 @@ If you get stuck, you can ask for help in the [Plugin Forum](https://wordpress.o
 * Fixed wishlist analytics issues
 * Code cleanup
 
-### 1.11.1 ###
-*Release Date - 19 April 2019*
-
-* Fixed a hook for [myCRED](https://wordpress.org/plugins/mycred/) plugin when purchased product from a wishlist
-* Plugin display name changed to "TI WooCommerce Wishlist Plugin"
 
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

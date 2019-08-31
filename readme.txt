@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 1.14.2
+Stable tag: 1.14.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 == Changelog ==
+= 1.14.3 =
+*Release Date - 31 August 2019*
+
+* Added compatibility for hook 'woocommerce_before_cart_item_quantity_zero' that deprecated from WooCommerce 3.7.0
+* Fixed 'Add All to Cart' button issue
+* Fixed PHP Error when 'wc_clear_notices' method is not available
+* Improved stylesheets loading for plugin settings
+
 = 1.14.2 =
 *Release Date - 28 August 2019*
 
@@ -246,11 +254,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 * Fixed wishlist analytics issues
 * Code cleanup
 
-= 1.11.1 =
-*Release Date - 19 April 2019*
-
-* Fixed a hook for [myCRED](https://wordpress.org/plugins/mycred/) plugin when purchased product from a wishlist
-* Plugin display name changed to "TI WooCommerce Wishlist Plugin"
 
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

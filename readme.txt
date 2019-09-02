@@ -151,15 +151,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 1. Wishlist Settings page
 2. Wishlist Appearance Options
-3. "Add to Wishlist" button options
-4. The look of "Add to Wishlist" button on frontend with different settings
-5. Wishlist page with all columns, desktop view
-6. Wishlist page with turned off date of addition, checkboxes and bulk actions.
-7. When you click Add to Wishlist button a popup with success or error message appears.
-8. Wishlist page, Tablet view
-9. Wishlist page, Mobile view
-10. Simplified Wishlist page, Mobile view
-11. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.
+3. The look of "Add to Wishlist" button on frontend with different settings
+4. Wishlist page with all columns, desktop view
+5. Wishlist page with turned off date of addition, checkboxes and bulk actions.
+6. When you click Add to Wishlist button a popup with success or error message appears.
+7. Wishlist page, Tablet view
+8. Wishlist page, Mobile view
+9. Simplified Wishlist page, Mobile view
+10. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.
 
 
 

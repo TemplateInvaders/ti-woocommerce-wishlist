@@ -142,7 +142,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_woocommerce_product_bundles( $price, $wl_product, $product ) {
+	function tinvwl_item_price_woocommerce_product_bundles( $price, $wl_product, $product, $raw = false ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
 			$bundle_price  = $product->get_price();
@@ -190,8 +190,10 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 					}
 
 				} // End foreach().
-				$price = wc_price( (double) $bundle_price + $bundled_items_price );
-				$price = apply_filters( 'woocommerce_get_price_html', $price, $product );
+				$price = (double) $bundle_price + $bundled_items_price;
+				if ( ! $raw ) {
+					$price = apply_filters( 'woocommerce_get_price_html', wc_price( $price ), $product );
+				}
 			} // End if().
 		} // End if().
 

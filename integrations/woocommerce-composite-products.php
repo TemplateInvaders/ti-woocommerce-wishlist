@@ -107,7 +107,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					$row_string        = '<tr>';
 					$row_string        .= ( ( ! is_user_logged_in() || get_current_user_id() !== $wl_product['author'] ) ? ( ( ! tinv_get_option( 'table', 'colm_checkbox' ) ) ? '' : '<td colspan="1"></td>' ) : '<td colspan="' . ( ( ! tinv_get_option( 'table', 'colm_checkbox' ) ) ? '1' : '2' ) . '"></td>' ) . '&nbsp;<td class="product-thumbnail">%2$s</td><td class="product-name">%1$s:<br/>%3$s</td>';
 					if ( tinv_get_option( 'product_table', 'colm_price' ) ) {
-						$row_string .= ( $product_price ) ? '<td class="product-price">%4$s &times; %6$s</td>' : '<td class="product-price">%4$s</td>';
+						$row_string .= ( $product_price && ! $composited_product->is_type( 'bundle' ) ) ? '<td class="product-price">%4$s &times; %6$s</td>' : '<td class="product-price">%4$s</td>';
 					}
 					if ( tinv_get_option( 'product_table', 'colm_date' ) ) {
 						$row_string .= '<td class="product-date">&nbsp;</td>';
@@ -123,7 +123,30 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					}
 					$row_string .= '</tr>';
 
+					if ( $composited_product->is_type( 'bundle' ) ) {
+						$product_price = $availability_html = $product_title = '';
+					}
+
 					echo sprintf( $row_string, $component->get_title(), $product_image, $product_title, $product_price, $availability_html, $composited_product_quantity * $product_quantity ); // WPCS: xss ok.
+
+					if ( $composited_product->is_type( 'bundle' ) ) {
+
+						$wl_product_bundle               = $wl_product;
+						$wl_product_bundle['product_id'] = $composited_product->get_id();
+
+						$component_meta = array();
+
+						foreach ( $wl_product['meta'] as $key => $value ) {
+							if ( substr( $key, 0, strlen( 'component_' . $component_id ) ) === 'component_' . $component_id ) {
+
+								$component_meta[ substr( $key, strlen( 'component_' . $component_id . '_' ), strlen( $key ) ) ] = $value;
+							}
+						}
+
+						$wl_product_bundle['meta'] = $component_meta;
+
+						tinvwl_row_woocommerce_product_bundles( $wl_product_bundle, $composited_product );
+					}
 				} // End if().
 			} // End foreach().
 		} // End if().
@@ -157,6 +180,30 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 				if ( $composited_product_id ) {
 					$composited_product_wrapper = $component->get_option( $composited_variation_id ? $composited_variation_id : $composited_product_id );
 					if ( $component->is_priced_individually() ) {
+
+						$composited_product = $composited_product_wrapper->get_product();
+						if ( $composited_product->is_type( 'bundle' ) ) {
+
+							$wl_product_bundle               = $wl_product;
+							$wl_product_bundle['product_id'] = $composited_product->get_id();
+
+							$component_meta = array();
+
+							foreach ( $wl_product['meta'] as $key => $value ) {
+								if ( substr( $key, 0, strlen( 'component_' . $component_id ) ) === 'component_' . $component_id ) {
+
+									$component_meta[ substr( $key, strlen( 'component_' . $component_id . '_' ), strlen( $key ) ) ] = $value;
+								}
+							}
+
+							$wl_product_bundle['meta'] = $component_meta;
+
+							$bundle_price  = tinvwl_item_price_woocommerce_product_bundles( 0, $wl_product_bundle, $composited_product, true );
+							$_price        += $bundle_price;
+							$regular_price += $bundle_price;
+							continue;
+						}
+
 						$_price        += $composited_product_wrapper->get_price() * $composited_product_quantity;
 						$regular_price += $composited_product_wrapper->get_regular_price() * $composited_product_quantity;
 					}

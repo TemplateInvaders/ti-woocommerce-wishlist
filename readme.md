@@ -3,7 +3,7 @@
 **Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.2  
-**Stable tag:** 1.14.3  
+**Stable tag:** 1.14.4  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -155,37 +155,41 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 ### 2. Wishlist Appearance Options ###
 ![Wishlist Appearance Options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-2.png)
 
-### 3. "Add to Wishlist" button options ###
-!["Add to Wishlist" button options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-3.png)
+### 3. The look of "Add to Wishlist" button on frontend with different settings ###
+![The look of "Add to Wishlist" button on frontend with different settings](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-3.png)
 
-### 4. The look of "Add to Wishlist" button on frontend with different settings ###
-![The look of "Add to Wishlist" button on frontend with different settings](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-4.png)
+### 4. Wishlist page with all columns, desktop view ###
+![Wishlist page with all columns, desktop view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-4.png)
 
-### 5. Wishlist page with all columns, desktop view ###
-![Wishlist page with all columns, desktop view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-5.png)
+### 5. Wishlist page with turned off date of addition, checkboxes and bulk actions. ###
+![Wishlist page with turned off date of addition, checkboxes and bulk actions.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-5.png)
 
-### 6. Wishlist page with turned off date of addition, checkboxes and bulk actions. ###
-![Wishlist page with turned off date of addition, checkboxes and bulk actions.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-6.png)
+### 6. When you click Add to Wishlist button a popup with success or error message appears. ###
+![When you click Add to Wishlist button a popup with success or error message appears.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-6.png)
 
-### 7. When you click Add to Wishlist button a popup with success or error message appears. ###
-![When you click Add to Wishlist button a popup with success or error message appears.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-7.png)
+### 7. Wishlist page, Tablet view ###
+![Wishlist page, Tablet view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-7.png)
 
-### 8. Wishlist page, Tablet view ###
-![Wishlist page, Tablet view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-8.png)
+### 8. Wishlist page, Mobile view ###
+![Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-8.png)
 
-### 9. Wishlist page, Mobile view ###
-![Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-9.png)
+### 9. Simplified Wishlist page, Mobile view ###
+![Simplified Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-9.png)
 
-### 10. Simplified Wishlist page, Mobile view ###
-![Simplified Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
-
-### 11. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings. ###
-![WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-11.png)
+### 10. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings. ###
+![WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
 
 
 
 
 ## Changelog ##
+### 1.14.4 ###
+*Release Date - 4 September 2019*
+
+* Fixed an issue with bundle products inside composite product
+* Fixed Setup Wizard errors
+* Fixed WooCommerce 'My account' endpoint rewrites issue
+
 ### 1.14.3 ###
 *Release Date - 31 August 2019*
 

@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 1.14.3
+Stable tag: 1.14.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,6 +163,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 == Changelog ==
+= 1.14.4 =
+*Release Date - 4 September 2019*
+
+* Fixed an issue with bundle products inside composite product
+* Fixed Setup Wizard errors
+* Fixed WooCommerce 'My account' endpoint rewrites issue
+
 = 1.14.3 =
 *Release Date - 31 August 2019*
 

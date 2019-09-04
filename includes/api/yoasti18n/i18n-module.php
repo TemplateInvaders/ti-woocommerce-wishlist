@@ -213,7 +213,11 @@ class TInvWL_Yoast_I18n_V2 {
 	/**
 	 * Outputs a promo box
 	 */
-	public function promo() {
+	public function promo( $data ) {
+
+		if ( is_array( $data ) ) {
+			return;
+		}
 		$this->translation_details();
 
 		$message = $this->promo_message();

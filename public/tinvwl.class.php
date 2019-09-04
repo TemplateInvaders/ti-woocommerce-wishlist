@@ -584,7 +584,7 @@ class TInvWL_Public_TInvWL {
 			),
 			array_slice( $items, $index_position, null, true )
 		);
-
+		flush_rewrite_rules();
 		return $items;
 	}
 

@@ -349,7 +349,8 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function add_ogp( $text ) {
-		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
+		global $wp_query;
+		if ( isset( $wp_query ) && is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
 			if ( ! preg_match( '/prefix\=/i', $text ) ) {
 				$text .= ' prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#"';
 			}
@@ -585,6 +586,7 @@ class TInvWL_Public_TInvWL {
 			array_slice( $items, $index_position, null, true )
 		);
 		flush_rewrite_rules();
+
 		return $items;
 	}
 

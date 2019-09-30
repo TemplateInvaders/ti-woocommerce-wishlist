@@ -274,7 +274,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	public static function add_all( $wishlist, $selected = array(), $_quantity = array(), $owner = false ) {
 		add_filter( 'tinvwl_before_get_current_product', array( __CLASS__, 'get_all_products_fix_offset' ) );
 		$products = self::get_current_products( $wishlist, 9999999 );
-		$result = $errors = array();
+		$result   = $errors = array();
 		foreach ( $products as $_product ) {
 			$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );
 
@@ -504,7 +504,10 @@ class TInvWL_Public_Wishlist_Buttons {
 		$titles = array();
 		foreach ( $products as $product ) {
 			if ( $wlp->remove_product_from_wl( $product['wishlist_id'], $product['product_id'], $product['variation_id'], $product['meta'] ) ) {
-				$titles[] = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product['data']->get_title() );
+				$titles[] = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), is_callable( array(
+					$product['data'],
+					'get_name'
+				) ) ? $product['data']->get_name() : $product['data']->get_title() );
 			}
 		}
 

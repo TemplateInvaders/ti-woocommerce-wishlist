@@ -83,7 +83,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 
 					$product_url   = $bundled_item->product->get_permalink();
 					$product_image = $bundled_item->product->get_image();
-					$product_title = $bundled_item->has_title_override() ? $bundled_item->get_title() : $bundled_item->get_raw_title();
+					$product_title = $bundled_item->has_title_override() ? is_callable( array(
+						$bundled_item,
+						'get_name'
+					) ) ? $bundled_item->get_name() : $bundled_item->get_title() : $bundled_item->get_raw_title();
 
 					$product_price     = $bundled_item->product->get_price_html();
 					$product_price_raw = $bundled_item->product->get_regular_price();

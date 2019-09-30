@@ -73,7 +73,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 
 					$product_url   = $composited_product->get_permalink();
 					$product_image = $composited_product->get_image();
-					$product_title = $composited_product->get_title();
+					$product_title = is_callable( array(
+						$composited_product,
+						'get_name'
+					) ) ? $composited_product->get_name() : $component->get_title();
 					$product_price = $composited_product->get_price_html();
 
 					$component_option = $product->get_component_option( $component_id, $composited_product_id );
@@ -127,7 +130,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 						$product_price = $availability_html = $product_title = '';
 					}
 
-					echo sprintf( $row_string, $component->get_title(), $product_image, $product_title, $product_price, $availability_html, $composited_product_quantity * $product_quantity ); // WPCS: xss ok.
+					echo sprintf( $row_string, is_callable( array(
+						$component,
+						'get_name'
+					) ) ? $component->get_name() : $component->get_title(), $product_image, $product_title, $product_price, $availability_html, $composited_product_quantity * $product_quantity ); // WPCS: xss ok.
 
 					if ( $composited_product->is_type( 'bundle' ) ) {
 

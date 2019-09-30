@@ -117,7 +117,10 @@ if ( ! function_exists( 'tinvwl_row_yith_woocommerce_product_bundles' ) ) {
 
 					$product_url   = $product->get_permalink();
 					$product_image = $product->get_image();
-					$product_title = $product->get_title();
+					$product_title = is_callable( array(
+						$product,
+						'get_name'
+					) ) ? $product->get_name() : $product->get_title();
 					$product_price = $product->get_price_html();
 					if ( $product->is_visible() ) {
 						$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );

@@ -405,7 +405,10 @@ class TInvWL_Public_Wishlist_View {
 					$products_title = array();
 					foreach ( $products as $product ) {
 						if ( ! empty( $product ) && ! empty( $product['data'] ) ) {
-							$title = $product['data']->get_title();
+							$title = is_callable( array(
+								$product['data'],
+								'get_name'
+							) ) ? $product['data']->get_name() : $product['data']->get_title();
 							if ( ! in_array( $title, $products_title ) ) {
 								$products_title[] = $title;
 							}
@@ -485,7 +488,10 @@ class TInvWL_Public_Wishlist_View {
 			if ( empty( $product_data ) ) {
 				return false;
 			}
-			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), $product_data['data']->get_title() );
+			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), is_callable( array(
+				$product['data'],
+				'get_name'
+			) ) ? $product['data']->get_name() : $product['data']->get_title() );
 			if ( $wlp->remove( $product_data ) ) {
 				add_action( 'tinvwl_before_wishlist', array(
 					'TInvWL_Public_Wishlist_View',

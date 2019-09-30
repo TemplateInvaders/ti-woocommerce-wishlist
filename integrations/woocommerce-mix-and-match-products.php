@@ -65,7 +65,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_mix_and_match_products' ) ) {
 
 					$product_url   = $mnm_item->get_permalink();
 					$product_image = $mnm_item->get_image();
-					$product_title = $mnm_item->get_title();
+					$product_title = is_callable( array(
+						$mnm_item,
+						'get_name'
+					) ) ? $mnm_item->get_name() : $mnm_item->get_title();
 					$product_price = $mnm_item->get_price_html();
 					if ( $mnm_item->is_visible() ) {
 						$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );

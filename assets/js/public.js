@@ -7,7 +7,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   //Add to wishlist main function.
   $.fn.tinvwl_to_wishlist = function (so) {
     var sd = {
-      api_url: window.location.href,
+      api_url: window.location.href.split('?')[0],
       text_create: window.tinvwl_add_to_wishlist['text_create'],
       text_already_in: window.tinvwl_add_to_wishlist['text_already_in'],
       class: {

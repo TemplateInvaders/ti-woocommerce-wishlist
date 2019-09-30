@@ -47,8 +47,9 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	 *
 	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
+	 * @param int $discount_extra possible discount on bundle row.
 	 */
-	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product ) {
+	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product, $discount_extra = 0 ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
 			$product_id    = WC_PB_Core_Compatibility::get_id( $product );
@@ -87,6 +88,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					$product_price     = $bundled_item->product->get_price_html();
 					$product_price_raw = $bundled_item->product->get_regular_price();
 					$discount          = $bundled_item->get_discount();
+					$discount          = empty( $discount ) ? $discount_extra : ( 100 - $discount ) / $discount_extra + $discount;
 					$product_price     = empty( $discount ) ? $product_price : wc_price( WC_PB_Product_Prices::get_discounted_price( $product_price_raw, $discount ) );
 
 					if ( $bundled_item->product->is_visible() ) {
@@ -184,7 +186,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 						$discount      = $bundled_item->get_discount();
 						$product_price = empty( $discount ) ? $product_price : WC_PB_Product_Prices::get_discounted_price( $product_price, $discount );
 
-						$bundled_item_price = $product_price * $bundled_product_qty;
+						$bundled_item_price = (double) $product_price * (int) $bundled_product_qty;
 
 						$bundled_items_price += (double) $bundled_item_price;
 					}

@@ -60,7 +60,7 @@
 			filterProductAlreadyIn: function (WList) {
 				var WList = WList || [],
 					data = {};
-				$('form.cart[method=post], .woocommerce-variation-add-to-cart').find('input, select').each(function () {
+				$('form.cart[method=post], .woocommerce-variation-add-to-cart, form.vtajaxform[method=post]').find('input, select').each(function () {
 					var name_elm = $(this).attr('name'),
 						type_elm = $(this).attr('type'),
 						value_elm = $(this).val();
@@ -215,7 +215,7 @@
 					redirect: window.location.href
 				},
 				a = this;
-			$(a).closest('form.cart[method=post], .tinvwl-loop-button-wrapper').find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
+			$(a).closest('form.cart[method=post], form.vtajaxform[method=post], .tinvwl-loop-button-wrapper').find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
 				var name_elm = $(this).attr('name'),
 					type_elm = $(this).attr('type'),
 					value_elm = $(this).val(),

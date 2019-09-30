@@ -1,14 +1,15 @@
-# TI WooCommerce Wishlist Plugin #
+# TI WooCommerce Wishlist #
 **Contributors:** [templateinvaders](https://profiles.wordpress.org/templateinvaders)  
-**Tags:** wishlist, woocommerce, woocommerce wishlist, e-commerce, ecommerce  
+**Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.2  
-**Stable tag:** 1.14.4  
+**Stable tag:** 1.14.5  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
+**Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
 
+Add WooCommerce Wishlist functionality to your store for free.
 Allow your store guests and customers to add products to Wishlist.
-Add Wishlist functionality to your store for free.
 
 ## Description ##
 
@@ -74,24 +75,24 @@ Make it a link or a button, choose from predefined icons or upload your own. Sel
 You can show/hide any column in wishlist table on wishlist page. So it is for you to decide what information to show and what not. Make your wishlist page informative or simple.
 
 ### Make it fit your website perfectly ###
-WooCommerce Wishlist Plugin comes with over 60 appearance options such as colors, font size, borders, etc. Not enough? You can add your custom CSS styles directly in admin panel.
+TI WooCommerce Wishlist comes with over 60 appearance options such as colors, font size, borders, etc. Not enough? You can add your custom CSS styles directly in admin panel.
 
 ### Translation Ready ###
-You can easily translate WooCommerce Wishlist Plugin to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/), [WP Multilang](https://wordpress.org/plugins/wp-multilang/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
+You can easily translate TI WooCommerce Wishlist to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/), [WP Multilang](https://wordpress.org/plugins/wp-multilang/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
 
 ### Responsive & Retina Ready ###
 We know how important responsive website for the online store in nowadays.
 That is why we made sure that Wishlist looks and works perfectly on any devices and the layouts are user-friendly. Simply check screenshots or preview.
 
 ### GDPR Ready ###
-The WooCommerce Wishlist plugin does not collect any personal data from website visitors which makes it GDPR compliant.
+The TI WooCommerce Wishlist does not collect any personal data from website visitors which makes it GDPR compliant.
 
 ## Translations ##
-Want to add a new language to WooCommerce Wishlist Plugin? You can contribute via [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/ti-woocommerce-wishlist).
+Want to add a new language to TI WooCommerce Wishlist? You can contribute via [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/ti-woocommerce-wishlist).
 
 
 ## Suggestions ##
-You are excited from the "WooCommerce Wishlist" plugin and want to contribute? Get involved at our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
+You are excited from the TI WooCommerce Wishlist and want to contribute? Get involved at our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
 
 ## Documentation ##
@@ -99,13 +100,13 @@ Full documentation is available [here](https://templateinvaders.com/documentatio
 
 ## Installation ##
 
-There are few ways to install TI WooCommerce Wishlist Plugin:
+There are few ways to install TI WooCommerce Wishlist:
 
 ### 1. From WordPress admin panel: ###
 
-+ Go to "Plugins" > "Add New" and search for "WooCommerce Wishlist Plugin"
++ Go to "Plugins" > "Add New" and search for "TI WooCommerce Wishlist"
 
-+ Press "Install Now" button for the "WooCommerce Wishlist Plugin" plugin
++ Press "Install Now" button for the "TI WooCommerce Wishlist" plugin
 
 + After the installation is complete click "Activate" link (Plugins > Installed Plugins).
 
@@ -149,11 +150,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 ## Screenshots ##
 
-### 1. Wishlist Settings page ###
-![Wishlist Settings page](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-1.png)
+### 1. TI WooCommerce Wishlist Settings page ###
+![TI WooCommerce Wishlist Settings page](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-1.png)
 
-### 2. Wishlist Appearance Options ###
-![Wishlist Appearance Options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-2.png)
+### 2. TI WooCommerce Wishlist Appearance Options ###
+![TI WooCommerce Wishlist Appearance Options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-2.png)
 
 ### 3. The look of "Add to Wishlist" button on frontend with different settings ###
 ![The look of "Add to Wishlist" button on frontend with different settings](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-3.png)
@@ -176,13 +177,26 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 ### 9. Simplified Wishlist page, Mobile view ###
 ![Simplified Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-9.png)
 
-### 10. WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings. ###
-![WooCommerce Wishlist Plugin Comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
+### 10. TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings. ###
+![TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
 
 
 
 
 ## Changelog ##
+### 1.14.5 ###
+*Release Date - 30 September 2019*
+
+* Added compatibility with Flatsome theme
+* Added compatibility with WooCommerce Variations Table - Grid plugin
+* Added compatibility with YITH WooCommerce Quick View plugin
+* Enhanced integration with WooCommerce Composite Products plugin
+* Enhanced integration with WooCommerce Product Bundles plugin
+* Enhanced integration with Improved Product Options for WooCommerce plugin
+* Updated title method to the name method for WooCommerce 3+
+* Fixed potential warning for conditional function is_page()
+* Fixed JavaScript issue with URL get parameters
+
 ### 1.14.4 ###
 *Release Date - 4 September 2019*
 

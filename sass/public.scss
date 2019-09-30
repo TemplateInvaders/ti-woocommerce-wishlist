@@ -1391,16 +1391,16 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 }
 
 .tinvwl_remove_from_wishlist-text, .tinvwl_already_on_wishlist-text {
-	display: none;
+	display: none !important;
 }
 
 .tinvwl-product-in-list.tinvwl-product-make-remove, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist {
 	.tinvwl_remove_from_wishlist-text, .tinvwl_already_on_wishlist-text {
-		display: inline;
+		display: inline !important;
 	}
 
 	.tinvwl_add_to_wishlist-text {
-		display: none;
+		display: none !important;
 	}
 }
 

@@ -4,7 +4,7 @@
  *
  * @name Improved Product Options for WooCommerce
  *
- * @version 4.5.2
+ * @version 4.8.0
  *
  * @slug improved-variable-product-attributes
  *
@@ -29,9 +29,9 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 	function tinv_wishlist_meta_support_ivpa( $meta ) {
 		global $product;
 
-		if ( class_exists( 'WC_Improved_Variable_Product_Attributes_Init' ) ) {
+		if ( class_exists( 'XforWC_Improved_Options' ) ) {
 
-			$curr_customizations = WC_Improved_Variable_Product_Attributes::get_custom();
+			$curr_customizations = XforWC_Improved_Options_Frontend::get_custom();
 
 			foreach ( $meta as $k => $v ) {
 				$prefix  = 'ivpac_';
@@ -69,40 +69,40 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 
 
 function tinv_add_to_wishlist_ivpa() {
-	if ( class_exists( 'WC_Improved_Variable_Product_Attributes_Init' ) ) {
+	if ( class_exists( 'XforWC_Improved_Options' ) ) {
 
 		wp_add_inline_script( 'tinvwl', "
 		jQuery(document).ready(function($){		
 		    $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
-		    
 				if (!ivpa) {
 					return false;
 				}
 				var button = $(el);
 				var container = button.closest(ivpa.settings.archive_selector);
 				var find = button.closest('.summary').length > 0 ? '#ivpa-content' : '.ivpa-content';
-	
-				if (container.find(find).length > 0) {
-					var var_id = container.find(find).attr('data-selected');
-	
-					if (typeof var_id == 'undefined' || var_id == '') {
-						var_id = container.find('[name=\"variation_id\"]').val();
-					}
-	
-					if (typeof var_id == 'undefined' || var_id == '') {
-						var_id = container.find(find).attr('data-id');
-					}
-	
-					var item = {};
-					container.find(find + ' .ivpa_attribute').each(function () {
-						var attribute = $(this).attr('data-attribute');
-						var attribute_value = $(this).find('.ivpa_term.ivpa_clicked').attr('data-term');
-	
+
+				if ( container.find(find).length > 0 ) {
+						var var_id = container.find(find).attr('data-selected');
+			
+						if ( typeof var_id == 'undefined' || var_id == '' ) {
+							var_id = container.find('[name=\"variation_id\"]').val();
+						}
+			
+						if ( typeof var_id == 'undefined' || var_id == '' ) {
+							var_id = container.find(find).attr('data-id');
+						}
+			
+						var item = {};
+			
+						container.find(find+' .ivpa_attribute').each( function() {
+							var attribute = $(this).attr('data-attribute');
+							var attribute_value = $(this).find('.ivpa_term.ivpa_clicked').attr('data-term');
+			
 						data.form['attribute_' + attribute] = attribute_value;
-					});
-	
-					var ivpac = container.find(find + ' .ivpa_custom_option').length > 0 ? container.find(find + ' .ivpa_custom_option [name^=\"ivpac_\"]').serialize() : '';
-	
+						});
+			
+						var ivpac = container.find(find+' .ivpa_custom_option').length>0 ? container.find(find+' .ivpa_custom_option [name^=\"ivpac_\"]').serialize() : '';
+			
 					var ivpac_fields = container.find(find + ' .ivpa_custom_option').length > 0 ? container.find(find + ' .ivpa_custom_option [name^=\"ivpac_\"]') : '';
 	
 					ivpac_fields.each(function () {
@@ -122,11 +122,10 @@ function tinv_add_to_wishlist_ivpa() {
 							data.form[name] = $(this).val();
 						}
 					});
-	
-	
-					data.form.variation_id = var_id;
-					data.ivpac = ivpac;				
-				}
+			
+						data.form.variation_id = var_id;						
+						data.ivpac = ivpac;
+					}
 			});
         });
         " );

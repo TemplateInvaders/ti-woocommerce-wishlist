@@ -145,7 +145,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 
 						$wl_product_bundle['meta'] = $component_meta;
 
-						tinvwl_row_woocommerce_product_bundles( $wl_product_bundle, $composited_product );
+						tinvwl_row_woocommerce_product_bundles( $wl_product_bundle, $composited_product, $composited_product_wrapper->get_discount() );
 					}
 				} // End if().
 			} // End foreach().
@@ -199,8 +199,13 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 							$wl_product_bundle['meta'] = $component_meta;
 
 							$bundle_price  = tinvwl_item_price_woocommerce_product_bundles( 0, $wl_product_bundle, $composited_product, true );
-							$_price        += $bundle_price;
 							$regular_price += $bundle_price;
+
+							if ( $discount = $composited_product_wrapper->get_discount() ) {
+								$bundle_price = empty( $bundle_price ) ? $bundle_price : round( (double) $bundle_price * ( 100 - $discount ) / 100, wc_cp_price_num_decimals() );
+							}
+							$_price += $bundle_price;
+
 							continue;
 						}
 

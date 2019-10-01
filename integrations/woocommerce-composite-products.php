@@ -76,7 +76,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 					$product_title = is_callable( array(
 						$composited_product,
 						'get_name'
-					) ) ? $composited_product->get_name() : $component->get_title();
+					) ) ? $composited_product->get_name() : $composited_product->get_title();
 					$product_price = $composited_product->get_price_html();
 
 					$component_option = $product->get_component_option( $component_id, $composited_product_id );

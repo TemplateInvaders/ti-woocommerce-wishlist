@@ -489,9 +489,9 @@ class TInvWL_Public_Wishlist_View {
 				return false;
 			}
 			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), is_callable( array(
-				$product['data'],
+				$product_data['data'],
 				'get_name'
-			) ) ? $product['data']->get_name() : $product['data']->get_title() );
+			) ) ? $product_data['data']->get_name() : $product_data['data']->get_title() );
 			if ( $wlp->remove( $product_data ) ) {
 				add_action( 'tinvwl_before_wishlist', array(
 					'TInvWL_Public_Wishlist_View',

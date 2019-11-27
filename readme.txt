@@ -2,8 +2,8 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
-Tested up to: 5.2
-Stable tag: 1.14.6
+Tested up to: 5.3
+Stable tag: 1.15.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -164,6 +164,22 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 == Changelog ==
+= 1.15.0 =
+*Release Date - 27 November 2019*
+
+* Added support for WordPress 5.3
+* Added support for WooCommerce 3.8
+* Added compatibility with Flatsome theme
+* Added AutomateWoo plugin integration with following triggers:
+ * product added to wishlist;
+ * wishlist reminder;
+ * product from wishlist added to cart;
+ * product from wishlist purchased;
+ * product removed from wishlist;
+* Fixed issue related to 'Add All to cart' action
+* Fixed issue with removing products after adding to cart
+* Fixed issue with uppercase while wishlist share via copy to clipboard action
+
 = 1.14.6 =
 *Release Date - 1 October 2019*
 
@@ -263,22 +279,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 * Added filter <i>tinvwl_wc_cart_fragments_refresh</i> to disable WC cart fragments refreshing
 * Fixed integration issues with Improved Product Options for WooCommerce plugin
 * Fixed issue with wishlist URL for sharing buttons
-
-= 1.12.1 =
-*Release Date - 2 May 2019*
-
-* Improved performance of wishlist page
-* Added method tinvwl_get_wishlist_products() to get wishlist products by wishlist ID or SHAREKEY
-* Fixed URI rewrites issue
-* Fixed issue with auto removing grouped products from wishlist
-
-= 1.12.0 =
-*Release Date - 22 April 2019*
-
-* Greatly improved frontend performance
-* Fixed wishlist analytics issues
-* Code cleanup
-
 
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

@@ -3,7 +3,7 @@
 **Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 1.15.0  
+**Stable tag:** 1.15.1  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
@@ -184,6 +184,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
+### 1.15.1 ###
+*Release Date - 4 December 2019*
+
+* Added WP GridBuilder plugin custom block to show wishlist button
+* Fixed bulk adding products from wishlist to cart for WooCommerce versions below 3.8
+* Fixed pricing issue for TM Extra Product Options plugin integration
+
 ### 1.15.0 ###
 *Release Date - 27 November 2019*
 

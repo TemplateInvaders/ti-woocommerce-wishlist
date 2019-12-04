@@ -1,8 +1,8 @@
-# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.15.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.15.0 package.
+# Copyright (C) 2019 TI WooCommerce Wishlist Plugin - 1.15.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.15.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.15.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.15.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1010,6 +1010,10 @@ msgstr ""
 
 #: integrations/woocommerce-gravityforms-product-addons.php:43
 msgid "Select options"
+msgstr ""
+
+#: integrations/wp-grid-builder.php:72
+msgid "Wishlist Button"
 msgstr ""
 
 #: integrations/yith-woocommerce-product-add-ons.php:47

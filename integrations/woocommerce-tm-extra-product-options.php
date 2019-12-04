@@ -108,9 +108,11 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 					if ( ! empty( $cart_item['tmcartepo'] ) ) {
 						$to_currency = version_compare( $version, '4.9.0', '<' ) ? tc_get_woocommerce_currency() : themecomplete_get_woocommerce_currency();
 						foreach ( $cart_item['tmcartepo'] as $value ) {
-							if ( array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
+							if ( isset( $value['price_per_currency'] ) && array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
 								$value         = floatval( $value['price_per_currency'][ $to_currency ] );
 								$product_price += $value;
+							} else {
+								$product_price += floatval( $value['price'] );
 							}
 						}
 					}

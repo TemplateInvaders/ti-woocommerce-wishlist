@@ -4,7 +4,7 @@
  *
  * @name WP Grid Builder
  *
- * @version 1.0.3
+ * @version 1.1.7
  *
  * @slug wp-grid-builder
  *
@@ -64,6 +64,32 @@ if ( defined( 'WPGB_VERSION' ) ) {
 
 	function tinvwl_wpkses_fix_remove() {
 		remove_filter( 'wp_kses_allowed_html', 'tinvwl_wpkses_post_tags', 10, 2 );
+	}
+
+	// Add custom block to show wishlist button.
+	function tinvwl_wpgb_block_add_to_wishlist( $blocks ) {
+		$blocks['wishlist_button'] = [
+			'name'            => __( 'Wishlist Button', 'ti-woocommerce-wishlist' ),
+			'render_callback' => 'tinvwl_wpgb_add_to_wishlist',
+			'icon'            => TINVWL_URL . '/assets/img/heart-tinv.svg#tinv',
+		];
+
+		return $blocks;
+	}
+
+	add_filter( 'wp_grid_builder/blocks', 'tinvwl_wpgb_block_add_to_wishlist', 10, 1 );
+
+	// Output wishlist button.
+	function tinvwl_wpgb_add_to_wishlist() {
+
+		$post = wpgb_get_post();
+
+		if ( ! isset( $post->post_type ) && "product" !== $post->post_type ) {
+			return;
+		}
+
+		// Output loop button.
+		echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $post->ID . '" loop="1"]' );
 	}
 
 }

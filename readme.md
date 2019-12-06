@@ -3,7 +3,7 @@
 **Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 1.15.1  
+**Stable tag:** 1.15.2  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
@@ -184,6 +184,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
+### 1.15.2 ###
+*Release Date - 6 December 2019*
+
+* Added compatibility with WooCommerce Variation Swatches - Pro plugin
+* Enhanced integration with WP Grid Builder plugin
+* Updated integration with WooCommerce TM Extra Product Options plugin
+* Updated integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955) plugin
+
 ### 1.15.1 ###
 *Release Date - 4 December 2019*
 
@@ -295,17 +303,4 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 * Fixed wishlist products query issue  on multilingual setup
 * TM Product Options plugin integration updated
 
-### 1.12.3 ###
-*Release Date - 17 May 2019*
-
-* Fixed wishlist products issue with WPML plugin
-
-### 1.12.2 ###
-*Release Date - 7 May 2019*
-
-* Added filter <i>tinvwl_wc_cart_fragments_refresh</i> to disable WC cart fragments refreshing
-* Fixed integration issues with Improved Product Options for WooCommerce plugin
-* Fixed issue with wishlist URL for sharing buttons
-
 [See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
-

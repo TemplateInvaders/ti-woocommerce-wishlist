@@ -147,8 +147,7 @@ class TInvWL_Public_Wishlist_View {
 					$full_link = add_query_arg( 'tinvwlID', $share_key, $full_link );
 				}
 			}
-
-			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', esc_url( $full_link ), wc_get_page_permalink( 'myaccount' ) ) );
+			wp_safe_redirect( add_query_arg( 'tinvwl_redirect', rawurlencode( $full_link ), wc_get_page_permalink( 'myaccount' ) ) );
 			exit;
 		}
 	}
@@ -518,14 +517,14 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	public static function check_cart_hash( $wishlist ) {
 		wp_add_inline_script( 'woocommerce', "
-		jQuery(document).ready(function($){		
+		jQuery(document).ready(function($){
 		    if ( typeof wc_cart_fragments_params === 'undefined' ) {
 		        return false;
 		    }
 
             var cart_hash_key           = wc_cart_fragments_params.cart_hash_key,
                 cart_hash    = sessionStorage.getItem( cart_hash_key );
-                
+
             if ( cart_hash === null || cart_hash === undefined || cart_hash === '' ) {
                 sessionStorage.setItem( cart_hash_key, 'empty' );
             }

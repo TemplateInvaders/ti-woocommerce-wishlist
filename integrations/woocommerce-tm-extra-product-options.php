@@ -4,7 +4,7 @@
  *
  * @name WooCommerce TM Extra Product Options
  *
- * @version 4.9.7
+ * @version 4.9.11
  *
  * @slug woocommerce-tm-extra-product-options
  *
@@ -45,11 +45,11 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 				$cart_class = version_compare( $version, '4.8.0', '<' ) ? $core : $cart;
 
 				$cart_item = $cart_class->add_cart_item_data_helper( array(), $product_id, $post_data );
-
 				if ( 'normal' == $core->tm_epo_hide_options_in_cart && 'advanced' != $core->tm_epo_cart_field_display && ! empty( $cart_item['tmcartepo'] ) ) {
 					$cart_item['quantity']         = 1;
 					$cart_item['data']             = wc_get_product( $variation_id ? $variation_id : $product_id );
 					$cart_item['tm_cart_item_key'] = '';
+					$cart_item['product_id']       = $product_id;
 					$item_data                     = $cart_class->get_item_data_array( array(), $cart_item );
 
 					foreach ( $item_data as $key => $data ) {

@@ -633,7 +633,9 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 		$product = $_product;
 
 		add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
+		do_action( 'before_get_redirect_url' );
 		$_redirect_url = apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $_product->add_to_cart_url(), $_product );
+		do_action( 'after_get_redirect_url' );
 		remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
 
 		// restore global product data.

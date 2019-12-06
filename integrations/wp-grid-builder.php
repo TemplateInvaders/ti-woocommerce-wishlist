@@ -68,11 +68,11 @@ if ( defined( 'WPGB_VERSION' ) ) {
 
 	// Add custom block to show wishlist button.
 	function tinvwl_wpgb_block_add_to_wishlist( $blocks ) {
-		$blocks['wishlist_button'] = [
+		$blocks['wishlist_button'] = array(
 			'name'            => __( 'Wishlist Button', 'ti-woocommerce-wishlist' ),
 			'render_callback' => 'tinvwl_wpgb_add_to_wishlist',
 			'icon'            => TINVWL_URL . '/assets/img/heart-tinv.svg#tinv',
-		];
+		);
 
 		return $blocks;
 	}
@@ -88,8 +88,11 @@ if ( defined( 'WPGB_VERSION' ) ) {
 			return;
 		}
 
+		global $product;
+		$product = wc_get_product( $post->ID );
+
 		// Output loop button.
-		echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $post->ID . '" loop="1"]' );
+		echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $post->ID . '" loop="yes"]' );
 	}
 
 }

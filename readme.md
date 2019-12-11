@@ -3,7 +3,7 @@
 **Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 1.15.2  
+**Stable tag:** 1.15.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
@@ -184,6 +184,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
+### 1.15.2 ###
+*Release Date - 12 December 2019*
+
+* Added compatibility for Divi builder to fix 'out of stock' issue
+* Enhanced compatibility with Improved Product Options for WooCommerce plugin
+
 ### 1.15.2 ###
 *Release Date - 6 December 2019*
 

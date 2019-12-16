@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Run hooks on page redirect.
  */
 function divi_init() {
-	if ( class_exists( 'ET_Builder_Element' ) && is_product() ) {
+	if ( class_exists( 'ET_Builder_Element' ) && is_product() && version_compare( ET_BUILDER_PRODUCT_VERSION, '4.0.0', '>=' ) ) {
 		global $post;
 		$product = wc_get_product( $post->ID );
 		if ( ! empty( $product ) && ! $product->is_in_stock() ) {

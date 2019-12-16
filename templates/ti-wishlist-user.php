@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist if a current user not an owner.
  *
- * @version             1.13.0
+ * @version             1.15.5
  * @package           TInvWishlist\Template
  */
 
@@ -13,7 +13,7 @@ wp_enqueue_script( 'tinvwl' );
 ?>
 <div class="tinv-wishlist woocommerce tinv-wishlist-clear">
 	<?php do_action( 'tinvwl_before_wishlist', $wishlist ); ?>
-	<?php if ( function_exists( 'wc_print_notices' ) ) {
+	<?php if ( function_exists( 'wc_print_notices' ) && isset( WC()->session ) ) {
 		wc_print_notices();
 	} ?>
 	<?php

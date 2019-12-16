@@ -3,7 +3,7 @@
 **Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 1.15.3  
+**Stable tag:** 1.15.4  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
@@ -184,7 +184,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
-### 1.15.2 ###
+### 1.15.4 ###
+*Release Date - 16 December 2019*
+
+* Added compatibility with Kallyas theme and guest issue when cart hidden
+* Fixed product meta display on wishlist table
+* Improved compatibility with Divi builder
+
+### 1.15.3 ###
 *Release Date - 12 December 2019*
 
 * Added compatibility for Divi builder to fix 'out of stock' issue

@@ -715,7 +715,7 @@ if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {
 		if ( array_key_exists( 'variation_id', $meta ) ) {
 			$variation_id = $meta['variation_id'];
 		}
-		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity' ) as $field ) {
+		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'action', 'variation' ) as $field ) {
 			if ( array_key_exists( $field, $meta ) ) {
 				unset( $meta[ $field ] );
 			}

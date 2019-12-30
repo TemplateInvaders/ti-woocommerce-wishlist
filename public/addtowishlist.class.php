@@ -511,7 +511,7 @@ class TInvWL_Public_AddToWishlist {
 			$product_data = wc_get_product( $variation_id ? $variation_id : $product_id );
 
 			if ( $product_data && 'trash' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->post->post_status : get_post( $product_data->get_id() )->post_status ) ) {
-				$this->product = $product_data;
+				$this->product = apply_filters( 'tinvwl_addtowishlist_out_prepare_product', $product_data );
 			} else {
 				return '';
 			}
@@ -524,7 +524,7 @@ class TInvWL_Public_AddToWishlist {
 
 		add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
-		if ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+		if ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
 				'variable',
 				'variable-subscription',
 			) ) ) {

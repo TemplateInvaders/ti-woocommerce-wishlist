@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.3
-Stable tag: 1.15.4
+Stable tag: 1.16.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -164,6 +164,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 == Changelog ==
+= 1.16.0 =
+*Release Date - 30 December 2019*
+
+* WooCommerce 3.9.0 support
+* PHP 7.4 support
+* Added {product_name} placeholder support for options of add to wishlist notice text
+* Added filter `tinvwl_api_wishlist_get_products_response` to allow modify REST API response via 3rd party code
+* Fixed fatal error throws by add to wishlist shortcode
+* Fixed wishlist frontend issue when WooCommerce session don't exists
+
 = 1.15.4 =
 *Release Date - 16 December 2019*
 

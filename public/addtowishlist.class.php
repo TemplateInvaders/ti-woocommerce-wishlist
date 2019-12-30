@@ -323,7 +323,19 @@ class TInvWL_Public_AddToWishlist {
 		$data['icon'] = $data['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
+
+		$msg_placeholders = array(
+			'{product_name}' => is_callable( array(
+				$product,
+				'get_name'
+			) ) ? $product->get_name() : $product->get_title(),
+		);
+
+		$find    = array_keys( $msg_placeholders );
+		$replace = array_values( $msg_placeholders );
+
 		if ( ! empty( $data['msg'] ) ) {
+			$data['msg'] = str_replace( $find, $replace, $data['msg'] );
 			$data['msg'] = apply_filters( 'tinvwl_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
 			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 		}

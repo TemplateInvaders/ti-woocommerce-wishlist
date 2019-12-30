@@ -274,7 +274,7 @@ class TInvWL_Analytics {
 			$data['ID'][ $key ] = md5( implode( '|', array(
 				'wishlist_id'  => $wishlist_id,
 				'product_id'   => $id,
-				'variation_id' => $variation_id{$key},
+				'variation_id' => $variation_id[ $key ],
 			) ) );
 		}
 

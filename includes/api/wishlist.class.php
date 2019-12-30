@@ -241,7 +241,7 @@ class TInvWL_Includes_API_Wishlist {
 					$response[] = $this->prepare_product_data( $product );
 				}
 
-				return rest_ensure_response( $response );
+				return rest_ensure_response( apply_filters( 'tinvwl_api_wishlist_get_products_response', $response ) );
 			}
 		} catch ( WC_REST_Exception $e ) {
 			return new WP_Error( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );

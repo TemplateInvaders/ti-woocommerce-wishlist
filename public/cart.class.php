@@ -77,7 +77,11 @@ class TInvWL_Public_Cart {
 		} else {
 			add_action( 'woocommerce_remove_cart_item', array( __CLASS__, 'remove_item_data' ) );
 		}
-		add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data' ) );
+		if ( version_compare( WC_VERSION, '3.9.0', '<' ) ) {
+			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data' ) );
+		} else {
+			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data_cart_session' ) );
+		}
 		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
 			add_action( 'woocommerce_add_order_item_meta', array( $this, 'add_order_item_meta' ), 10, 3 );
 		} else {
@@ -296,6 +300,22 @@ class TInvWL_Public_Cart {
 
 		return true;
 	}
+
+	/**
+	 * Clear wishlist cart session.
+	 *
+	 * @param bool $clear_persistent_cart Should the persistant cart be cleared too. Defaults to true.
+	 *
+	 * @return boolean
+	 */
+	public static function remove_item_data_cart_session( $clear_persistent_cart = true ) {
+		if ( $clear_persistent_cart ) {
+			WC()->session->set( 'tinvwl_wishlist_cart', array() );
+
+			return true;
+		}
+	}
+
 
 	/**
 	 * Add meta data for product when created order

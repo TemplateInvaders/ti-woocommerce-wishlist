@@ -170,7 +170,6 @@ class TInvWL_Update {
 	 * Buttons class fallback.
 	 */
 	function up_p_1_8_9() {
-
 		$class = tinv_get_option( 'add_to_wishlist_catalog', 'class' );
 		if ( 'button' == tinv_get_option( 'add_to_wishlist_catalog', 'type' ) && empty( $class ) ) {
 			tinv_update_option( 'add_to_wishlist_catalog', 'class', 'button tinvwl-button' );
@@ -179,6 +178,15 @@ class TInvWL_Update {
 		$class = tinv_get_option( 'add_to_wishlist', 'class' );
 		if ( 'button' == tinv_get_option( 'add_to_wishlist', 'type' ) && empty( $class ) ) {
 			tinv_update_option( 'add_to_wishlist', 'class', 'button tinvwl-button' );
+		}
+	}
+
+	/**
+	 * Buttons class fallback.
+	 */
+	function up_1_16_1() {
+		{
+			wp_schedule_single_event( time(), 'tinvwl_flush_rewrite_rules' );
 		}
 	}
 }

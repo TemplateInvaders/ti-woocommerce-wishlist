@@ -3,7 +3,7 @@
 **Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 1.16.1  
+**Stable tag:** 1.16.2  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
@@ -184,11 +184,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
+### 1.16.2 ###
+*Release Date - 27 January 2020*
+
+* Fixed PHP error for WP Rocket old versions
+
 ### 1.16.1 ###
 *Release Date - 24 January 2020*
 
 * Fixed PHP Warning related to cart clearing in WooCommerce 3.9+
-* WP Rocket integration updated to use dynamic cookies for cache and fixed issue with cached withlist products counter value
+* WP Rocket integration updated to use dynamic cookies for cache and fixed issue with cached wishlist products counter value
 
 ### 1.16.0 ###
 *Release Date - 30 December 2019*

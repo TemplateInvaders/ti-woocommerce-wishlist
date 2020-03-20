@@ -10,7 +10,7 @@
 			}
 		});
 
-		$('body').on('click', '.social-buttons .social[title!=email][title!=whatsapp][title!=clipboard]', function (e) {
+		$('body').on('click', '.social-buttons .social:not(.social-email,.social-whatsapp,.social-clipboard)', function (e) {
 			var newWind = window.open($(this).attr('href'), $(this).attr('title'), "width=420,height=320,resizable=yes,scrollbars=yes,status=yes");
 			if (newWind) {
 				newWind.focus();

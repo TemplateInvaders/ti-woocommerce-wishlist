@@ -61,7 +61,8 @@ class TInvWL_Public_Wishlist_Social {
 
 		foreach ( $social as $name => $soc_network ) {
 			if ( $soc_network && method_exists( __CLASS__, $name ) ) {
-				$social[ $name ] = self::$name();
+				$social[ $name ]        = self::$name();
+				$social_titles[ $name ] = self::$name( true );
 				if ( 'clipboard' === $name ) {
 					wp_enqueue_script( 'tinvwl-clipboard' );
 				}
@@ -80,8 +81,9 @@ class TInvWL_Public_Wishlist_Social {
 			return false;
 		}
 		$data = array(
-			'social'   => $social,
-			'share_on' => $share_on,
+			'social'        => $social,
+			'social_titles' => $social_titles,
+			'share_on'      => $share_on,
 		);
 		tinv_wishlist_template( 'ti-wishlist-social.php', $data );
 	}
@@ -89,9 +91,15 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Create facebook share url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function facebook() {
+	public static function facebook( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'Facebook', 'ti-woocommerce-wishlist' );
+		}
+
 		$data = array(
 			'u' => self::$url,
 		);
@@ -102,9 +110,15 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Create twitter share url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function twitter() {
+	public static function twitter( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'Twitter', 'ti-woocommerce-wishlist' );
+		}
+
 		$data = array(
 			'url' => self::$url,
 		);
@@ -115,9 +129,15 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Create pinterest share url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function pinterest() {
+	public static function pinterest( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'Pinterest', 'ti-woocommerce-wishlist' );
+		}
+
 		$data = array(
 			'url'   => self::$url,
 			'media' => self::$image,
@@ -129,9 +149,15 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Create email share url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function email() {
+	public static function email( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'Email', 'ti-woocommerce-wishlist' );
+		}
+
 		$data = array(
 			'body' => self::$url,
 		);
@@ -142,18 +168,30 @@ class TInvWL_Public_Wishlist_Social {
 	/**
 	 * Create copy to clipboard url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function clipboard() {
+	public static function clipboard( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'Clipboard', 'ti-woocommerce-wishlist' );
+		}
+
 		return self::$url;
 	}
 
 	/**
 	 * Create WhatsApp share url
 	 *
+	 * @param bool $title return title for translation.
+	 *
 	 * @return string
 	 */
-	public static function whatsapp() {
+	public static function whatsapp( $title = false ) {
+		if ( $title ) {
+			return esc_html__( 'WhatsApp', 'ti-woocommerce-wishlist' );
+		}
+
 		$data = array(
 			'text' => self::$url,
 		);

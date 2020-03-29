@@ -231,10 +231,6 @@ class TInvWL_Includes_API_Wishlist {
 
 				$products = $wlp->get( $args );
 
-				if ( ! $products ) {
-					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_wishlist_products_not_found', __( 'No products found for this wishlist.', 'ti-woocommerce-wishlist' ), 400 );
-				}
-
 				$response = array();
 
 				foreach ( $products as $product ) {

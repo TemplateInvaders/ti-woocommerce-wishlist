@@ -80,6 +80,7 @@ class TInvWL {
 
 		if ( is_admin() ) {
 			new TInvWL_WizardSetup( $this->_name, $this->_version );
+			new TInvWL_Export( $this->_name, $this->_version );
 			$this->object_admin->load_function();
 		} else {
 			// Allow to disable wishlist for frontend conditionally. Must be hooked on 'plugins_loaded' action.

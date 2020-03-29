@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.16.2
+Stable tag: 1.17.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -164,6 +164,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 == Changelog ==
+= 1.17.0 =
+*Release Date - 29 March 2020*
+
+* WordPress 5.4 support
+* WooCommerce 4.0.x support
+* Added tool for export and import plugin settings
+* Added to share buttons translated title
+* REST API tweak: empty wishlist returns 200 response code and empty array now
+
+
 = 1.16.2 =
 *Release Date - 27 January 2020*
 

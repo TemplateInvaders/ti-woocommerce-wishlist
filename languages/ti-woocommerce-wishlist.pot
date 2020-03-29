@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.16.2
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.16.2 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.17.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.17.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.16.2\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.17.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -488,6 +488,14 @@ msgstr ""
 msgid "Disable support chat"
 msgstr ""
 
+#: admin/settings/settings.class.php:56
+msgid "Export/Import Settings"
+msgstr ""
+
+#: admin/settings/settings.class.php:57
+msgid "Export/Import Plugin Settings"
+msgstr ""
+
 #: admin/settings/style.class.php:56
 msgid "Style Options"
 msgstr ""
@@ -752,7 +760,7 @@ msgstr ""
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
-#: includes/api/wishlist.class.php:102, includes/api/wishlist.class.php:165, includes/api/wishlist.class.php:213, includes/api/wishlist.class.php:269
+#: includes/api/wishlist.class.php:102, includes/api/wishlist.class.php:165, includes/api/wishlist.class.php:213, includes/api/wishlist.class.php:265
 msgid "Invalid wishlist share key."
 msgstr ""
 
@@ -764,19 +772,15 @@ msgstr ""
 msgid "Update wishlist data failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:235
-msgid "No products found for this wishlist."
-msgstr ""
-
-#: includes/api/wishlist.class.php:291
+#: includes/api/wishlist.class.php:287
 msgid "Add product to wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:327
+#: includes/api/wishlist.class.php:323
 msgid "Product not found."
 msgstr ""
 
-#: includes/api/wishlist.class.php:330
+#: includes/api/wishlist.class.php:326
 msgid "Product removed from a wishlist."
 msgstr ""
 
@@ -798,6 +802,34 @@ msgstr ""
 
 #: includes/api/yoasti18n/i18n-module.php:236
 msgid "Register now &raquo;"
+msgstr ""
+
+#: includes/export.class.php:178
+msgid "The settings file is empty."
+msgstr ""
+
+#: includes/export.class.php:191
+msgid "The settings file is not valid."
+msgstr ""
+
+#: includes/export.class.php:214
+msgid "The file you are uploading is too big."
+msgstr ""
+
+#: includes/export.class.php:224
+msgid "There was an error uploading the file."
+msgstr ""
+
+#: includes/export.class.php:236
+msgid "There was an error importing your settings, please try again."
+msgstr ""
+
+#: includes/export.class.php:251
+msgid "Please upload the TI WooCommerce Wishlist setting file or copy the content."
+msgstr ""
+
+#: includes/export.class.php:264
+msgid "The settings json is not valid."
 msgstr ""
 
 #: includes/form.helper.php:508
@@ -832,15 +864,15 @@ msgstr ""
 msgid "%1$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
-#: includes/tinvwl.class.php:167
+#: includes/tinvwl.class.php:168
 msgid "Settings"
 msgstr ""
 
-#: includes/tinvwl.class.php:168
+#: includes/tinvwl.class.php:169
 msgid "Premium Version"
 msgstr ""
 
-#: includes/tinvwl.class.php:169
+#: includes/tinvwl.class.php:170
 msgid "Live Demo"
 msgstr ""
 
@@ -1109,6 +1141,30 @@ msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
+#: public/wishlist/social.class.php:100
+msgid "Facebook"
+msgstr ""
+
+#: public/wishlist/social.class.php:119
+msgid "Twitter"
+msgstr ""
+
+#: public/wishlist/social.class.php:138
+msgid "Pinterest"
+msgstr ""
+
+#: public/wishlist/social.class.php:158
+msgid "Email"
+msgstr ""
+
+#: public/wishlist/social.class.php:177
+msgid "Clipboard"
+msgstr ""
+
+#: public/wishlist/social.class.php:192
+msgid "WhatsApp"
+msgstr ""
+
 #: public/wishlist/view.class.php:428
 msgid "%1$s by %2$s"
 msgstr ""
@@ -1179,6 +1235,50 @@ msgstr ""
 
 #: templates/ti-wishlist-user.php:83, templates/ti-wishlist.php:84
 msgid "Select for bulk action"
+msgstr ""
+
+#: views/admin/export-import-settings.php:21
+msgid "You can import and export your TI WooCommerce Wishlist plugin settings here. "
+msgstr ""
+
+#: views/admin/export-import-settings.php:22
+msgid "This allows you to either backup the data, or to move your settings to a new WordPress instance."
+msgstr ""
+
+#: views/admin/export-import-settings.php:33
+msgid "Import settings"
+msgstr ""
+
+#: views/admin/export-import-settings.php:47
+msgid "Please upload the exported json file or"
+msgstr ""
+
+#: views/admin/export-import-settings.php:49
+msgid "paste the entire json"
+msgstr ""
+
+#: views/admin/export-import-settings.php:54
+msgid "Please paste the exported json file or"
+msgstr ""
+
+#: views/admin/export-import-settings.php:56
+msgid "upload the exported file"
+msgstr ""
+
+#: views/admin/export-import-settings.php:64
+msgid "Import"
+msgstr ""
+
+#: views/admin/export-import-settings.php:78
+msgid "Export settings"
+msgstr ""
+
+#: views/admin/export-import-settings.php:82
+msgid "Download the entire plugin configuration."
+msgstr ""
+
+#: views/admin/export-import-settings.php:86
+msgid "Export"
 msgstr ""
 
 #: views/admin/premium-features.php:21

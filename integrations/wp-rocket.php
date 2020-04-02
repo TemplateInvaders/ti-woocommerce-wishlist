@@ -137,7 +137,7 @@ if ( defined( 'WP_ROCKET_VERSION' ) ) {
 
 		if ( ( empty( $_COOKIE['woocommerce_cart_hash'] ) || empty( $_COOKIE['woocommerce_items_in_cart'] ) ) && apply_filters( 'tinvwl_rocket_disable_fragmetns_cache', true ) ) {
 
-			$lang = function_exists( rocket_get_current_language() ) ? rocket_get_current_language() : false;
+			$lang = function_exists( 'rocket_get_current_language' ) ? rocket_get_current_language() : false;
 
 			if ( $lang ) {
 				delete_transient( 'rocket_get_refreshed_fragments_cache_' . $lang );

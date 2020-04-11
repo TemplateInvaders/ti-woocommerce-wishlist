@@ -426,7 +426,11 @@ class TInvWL_Form {
 
 		$extra    = self::__atrtostr( $extra );
 		$multiple = ( count( $value ) > 1 && false === stripos( $extra, 'multiple' ) ) ? ' multiple="multiple"' : '';
-		$form     = '';
+
+		if ( $multiple || strpos( $extra, 'multiple' ) > - 1 ) {
+			$data['name'] = $data['name'] . '[]';
+		}
+		$form = '';
 		foreach ( $options as $key => $val ) {
 			$key = (string) $key;
 			if ( is_array( $val ) ) {

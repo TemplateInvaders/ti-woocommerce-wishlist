@@ -79,7 +79,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * @return array
 	 */
 	public function get_wp_menus() {
-		$menus     = array( esc_html__( 'Select Your Menu', 'ti-woocommerce-wishlist' ) );
+		$menus     = array();
 		$get_menus = get_terms( 'nav_menu', array( 'hide_empty' => true ) );
 		foreach ( $get_menus as $menu ) {
 			$menus[ $menu->term_id ] = $menu->name;
@@ -805,7 +805,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'class' => 'tiwl-dropdown-text',
 					),
 					array(
-						'type'    => 'select',
+						'type'    => 'multiselect',
 						'name'    => 'menu',
 						'text'    => __( 'Add counter to menu', 'ti-woocommerce-wishlist' ),
 						'options' => $menus,

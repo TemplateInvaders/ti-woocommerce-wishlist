@@ -76,98 +76,104 @@ class TInvWL_Public_WishlistCounter {
 	 */
 	public static function add_to_menu( $items, $menu, $args ) {
 		$menu_cnt = count( $items ) + 1;
-		$menu_id  = tinv_get_option( 'topline', 'menu' );
+		$menu_ids = tinv_get_option( 'topline', 'menu' );
 
-		if ( $menu_id == $menu->term_id ) {
+		if ( ! is_array( $menu_ids ) ) {
+			$menu_ids = array( $menu_ids );
+		}
 
-			$menu_order = tinv_get_option( 'topline', 'menu_order' ) ? tinv_get_option( 'topline', 'menu_order' ) : 100;
+		foreach ( $menu_ids as $menu_id ) {
 
-			// Item title.
+			if ( $menu_id == $menu->term_id && apply_filters( 'tinvwl_add_to_menu', true, $menu_id ) ) {
 
-			$show_icon   = (bool) tinv_get_option( 'topline', 'icon' );
-			$icon_type   = tinv_get_option( 'topline', 'icon' );
-			$icon_class  = ( $show_icon && tinv_get_option( 'topline', 'icon' ) ) ? 'top_wishlist-' . tinv_get_option( 'topline', 'icon' ) : '';
-			$icon_style  = ( $show_icon && tinv_get_option( 'topline', 'icon' ) ) ? esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ) : '';
-			$icon_upload = tinv_get_option( 'topline', 'icon_upload' );
+				$menu_order = tinv_get_option( 'topline', 'menu_order' ) ? tinv_get_option( 'topline', 'menu_order' ) : 100;
 
-			$counter = tinv_get_option( 'topline', 'show_counter' ) ? '<span class="wishlist_products_counter_number"></span>' : '';
+				// Item title.
 
-			$text = tinv_get_option( 'topline', 'show_text' ) ? apply_filters( 'tinvwl_wishlist_products_counter_text', tinv_get_option( 'topline', 'text' ) ) : '';
+				$show_icon   = (bool) tinv_get_option( 'topline', 'icon' );
+				$icon_type   = tinv_get_option( 'topline', 'icon' );
+				$icon_class  = ( $show_icon && tinv_get_option( 'topline', 'icon' ) ) ? 'top_wishlist-' . tinv_get_option( 'topline', 'icon' ) : '';
+				$icon_style  = ( $show_icon && tinv_get_option( 'topline', 'icon' ) ) ? esc_attr( 'top_wishlist-' . tinv_get_option( 'topline', 'icon_style' ) ) : '';
+				$icon_upload = tinv_get_option( 'topline', 'icon_upload' );
 
-			$icon = '<span class="wishlist_products_counter ' . $icon_class . ' ' . $icon_style . ( empty( $text ) ? ' no-txt' : '' ) . ( 0 < $counter ? ' wishlist-counter-with-products' : '' ) . '" >';
+				$counter = tinv_get_option( 'topline', 'show_counter' ) ? '<span class="wishlist_products_counter_number"></span>' : '';
 
-			if ( $icon_class && 'custom' === $icon_type && ! empty( $icon_upload ) ) {
-				$icon .= sprintf( '<img src="%s" />', esc_url( $icon_upload ) );
-			}
+				$text = tinv_get_option( 'topline', 'show_text' ) ? apply_filters( 'tinvwl_wishlist_products_counter_text', tinv_get_option( 'topline', 'text' ) ) : '';
 
-			$icon .= '</span>';
+				$icon = '<span class="wishlist_products_counter ' . $icon_class . ' ' . $icon_style . ( empty( $text ) ? ' no-txt' : '' ) . ( 0 < $counter ? ' wishlist-counter-with-products' : '' ) . '" >';
 
-			$menu_title = apply_filters( 'tinvwl_wishlist_products_counter_menu_html', $icon . ' ' . $text . ' ' . $counter, $icon, $text, $counter );
-
-			if ( $menu_title ) {
-
-				$wishlist_item = (object) array(
-					'ID'                    => $menu_cnt + 2147480000,
-					'object_id'             => $menu_cnt + 2147480000,
-					'db_id'                 => $menu_cnt + 2147480000,
-					'title'                 => $menu_title,
-					'post_title'            => $menu_title,
-					'url'                   => esc_url( tinv_url_wishlist_default() ),
-					'guid'                  => esc_url( tinv_url_wishlist_default() ),
-					'post_date'             => gmdate( 'Y-m-d H:i:s' ),
-					'post_date_gmt'         => gmdate( 'Y-m-d H:i:s' ),
-					'post_modified'         => gmdate( 'Y-m-d H:i:s' ),
-					'post_modified_gmt'     => gmdate( 'Y-m-d H:i:s' ),
-					'menu_order'            => $menu_order,
-					'menu_item_parent'      => 0,
-					'type'                  => 'custom',
-					'post_status'           => 'publish',
-					'post_author'           => 1,
-					'comment_status'        => 'closed',
-					'ping_status'           => 'closed',
-					'post_name'             => 'd',
-					'post_parent'           => 0,
-					'post_type'             => 'nav_menu_item',
-					'comment_count'         => 0,
-					'filter'                => 'raw',
-					'object'                => 'custom',
-					'type_label'            => '',
-					'target'                => '',
-					'attr_title'            => '',
-					'object'                => '',
-					'classes'               => '',
-					'post_content'          => '',
-					'post_excerpt'          => '',
-					'category_post'         => '',
-					'nolink'                => '',
-					'description'           => '',
-					'xfn'                   => '',
-					'template'              => '',
-					'mega_template'         => '',
-					'megamenu'              => '',
-					'megamenu_auto_width'   => '',
-					'megamenu_col'          => '',
-					'megamenu_heading'      => '',
-					'megamenu_widgetarea'   => '',
-					'icon'                  => '',
-					'post_password'         => '',
-					'to_ping'               => '',
-					'pinged'                => '',
-					'post_content_filtered' => '',
-					'post_mime_type'        => '',
-				);
-
-				foreach ( array_keys( $items ) as $key ) {
-
-					if ( $items[ $key ]->menu_order > ( $menu_order - 1 ) ) {
-						$items[ $key ]->menu_order = $items[ $key ]->menu_order + 1;
-					}
+				if ( $icon_class && 'custom' === $icon_type && ! empty( $icon_upload ) ) {
+					$icon .= sprintf( '<img src="%s" />', esc_url( $icon_upload ) );
 				}
 
-				if ( $menu_order < $menu_cnt ) {
-					array_splice( $items, $menu_order - 1, 0, array( $wishlist_item ) );
-				} else {
-					$items[] = $wishlist_item;
+				$icon .= '</span>';
+
+				$menu_title = apply_filters( 'tinvwl_wishlist_products_counter_menu_html', $icon . ' ' . $text . ' ' . $counter, $icon, $text, $counter );
+
+				if ( $menu_title ) {
+
+					$wishlist_item = (object) array(
+						'ID'                    => $menu_cnt + 2147480000,
+						'object_id'             => $menu_cnt + 2147480000,
+						'db_id'                 => $menu_cnt + 2147480000,
+						'title'                 => $menu_title,
+						'post_title'            => $menu_title,
+						'url'                   => esc_url( tinv_url_wishlist_default() ),
+						'guid'                  => esc_url( tinv_url_wishlist_default() ),
+						'post_date'             => gmdate( 'Y-m-d H:i:s' ),
+						'post_date_gmt'         => gmdate( 'Y-m-d H:i:s' ),
+						'post_modified'         => gmdate( 'Y-m-d H:i:s' ),
+						'post_modified_gmt'     => gmdate( 'Y-m-d H:i:s' ),
+						'menu_order'            => $menu_order,
+						'menu_item_parent'      => 0,
+						'type'                  => 'custom',
+						'post_status'           => 'publish',
+						'post_author'           => 1,
+						'comment_status'        => 'closed',
+						'ping_status'           => 'closed',
+						'post_name'             => 'd',
+						'post_parent'           => 0,
+						'post_type'             => 'nav_menu_item',
+						'comment_count'         => 0,
+						'filter'                => 'raw',
+						'type_label'            => '',
+						'target'                => '',
+						'attr_title'            => '',
+						'object'                => '',
+						'classes'               => '',
+						'post_content'          => '',
+						'post_excerpt'          => '',
+						'category_post'         => '',
+						'nolink'                => '',
+						'description'           => '',
+						'xfn'                   => '',
+						'template'              => '',
+						'mega_template'         => '',
+						'megamenu'              => '',
+						'megamenu_auto_width'   => '',
+						'megamenu_col'          => '',
+						'megamenu_heading'      => '',
+						'megamenu_widgetarea'   => '',
+						'icon'                  => '',
+						'post_password'         => '',
+						'to_ping'               => '',
+						'pinged'                => '',
+						'post_content_filtered' => '',
+						'post_mime_type'        => '',
+					);
+
+					foreach ( array_keys( $items ) as $key ) {
+
+						if ( $items[ $key ]->menu_order > ( $menu_order - 1 ) ) {
+							$items[ $key ]->menu_order = $items[ $key ]->menu_order + 1;
+						}
+					}
+
+					if ( $menu_order < $menu_cnt ) {
+						array_splice( $items, $menu_order - 1, 0, array( $wishlist_item ) );
+					} else {
+						$items[] = $wishlist_item;
+					}
 				}
 			}
 		}

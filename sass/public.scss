@@ -197,6 +197,15 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 .tinvwl_add_to_wishlist_button {
   display: inline-block;
   cursor: pointer;
+  transition: opacity 1s;
+  opacity: 1;
+  visibility: visible;
+
+  &.tinvwl-add-hide {
+	visibility: hidden;
+	opacity: 0.5;
+	pointer-events: none;
+  }
 }
 
 .tinv-wishlist.woocommerce .stock.in-stock:before {

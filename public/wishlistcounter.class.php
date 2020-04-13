@@ -58,8 +58,6 @@ class TInvWL_Public_WishlistCounter {
 	 * Define hooks
 	 */
 	function define_hooks() {
-		add_filter( 'tinvwl_addtowishlist_return_ajax', array( __CLASS__, 'update_widget' ) );
-		add_filter( 'woocommerce_add_to_cart_fragments', array( __CLASS__, 'update_fragments' ) );
 		if ( tinv_get_option( 'topline', 'menu' ) ) {
 			add_filter( 'wp_get_nav_menu_items', array( __CLASS__, 'add_to_menu' ), 9, 3 );
 		}
@@ -197,33 +195,6 @@ class TInvWL_Public_WishlistCounter {
 			'show_counter' => $atts['show_counter'],
 		);
 		tinv_wishlist_template( 'ti-wishlist-product-counter.php', $data );
-	}
-
-	/**
-	 * AJAX update elements.
-	 *
-	 * @param array $data AJAX data.
-	 *
-	 * @return array
-	 */
-	public static function update_widget( $data ) {
-		if ( apply_filters( 'tinvwl_wc_cart_fragments_enabled', true ) ) {
-			$data['fragments'] = self::update_fragments( array() );
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Load fragments for wishlist product counter
-	 *
-	 * @param array $data Woocommerce Fragments for updateing data.
-	 */
-	public static function update_fragments( $data = array() ) {
-		$data['span.wishlist_products_counter_number']            = sprintf( '<span class="wishlist_products_counter_number">%s</span>', apply_filters( 'tinvwl_wishlist_products_counter', self::counter() ) );
-		$data['span.sidr-class-wishlist_products_counter_number'] = sprintf( '<span class="sidr-class-wishlist_products_counter_number">%s</span>', apply_filters( 'tinvwl_wishlist_products_counter', self::counter() ) );
-
-		return $data;
 	}
 
 	/**

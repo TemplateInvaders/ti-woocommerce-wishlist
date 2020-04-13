@@ -72,7 +72,8 @@ a.wishlist_products_counter.top_wishlist-custom.no-txt,span.wishlist_products_co
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt img,a.wishlist_products_counter.top_wishlist-custom.no-txt img,span.wishlist_products_counter.top_wishlist-custom.no-txt img{margin-right:0 !important}
 .single-product div.product form.cart .tinvwl-button.tinvwl_add_to_wishlist_button,div.product form.cart .tinvwl_add_to_wishlist_button{float:none}
 ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
-.tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer}
+.tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer;-webkit-transition:opacity 1s;transition:opacity 1s;opacity:1;visibility:visible}
+.tinvwl_add_to_wishlist_button.tinvwl-add-hide{visibility:hidden;opacity:.5;pointer-events:none}
 .tinv-wishlist.woocommerce .stock.in-stock:before{content:none}
 .tinv-wraper.tinv-wishlist{font-size:100%}
 .tinv-create-list li input[type=radio]{margin-right:10px}

@@ -45,6 +45,9 @@ class TInvWL_API {
 	public static function register_routes() {
 		global $wp_version;
 
+		$controller = new TInvWL_Includes_API_Frontend();
+		$controller->register_routes();
+
 		if ( version_compare( $wp_version, 4.4, '<' ) || ( ! defined( 'WC_VERSION' ) || version_compare( WC_VERSION, '2.6', '<' ) ) ) {
 			return;
 		}

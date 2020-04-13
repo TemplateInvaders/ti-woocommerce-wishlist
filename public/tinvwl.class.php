@@ -475,8 +475,10 @@ class TInvWL_Public_TInvWL {
 			'jquery',
 			version_compare( WC_VERSION, '3.0.0', '<' ) ? 'jquery-cookie' : 'js-cookie',
 			apply_filters( 'tinvwl_wc_cart_fragments_enabled', true ) ? 'wc-cart-fragments' : 'jquery',
+			'wp-api-request',
 		), $this->_version, true );
-		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', array(
+
+		$args = array(
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
 			'text_already_in'            => apply_filters( 'tinvwl_already_in_wishlist_text', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
@@ -484,13 +486,14 @@ class TInvWL_Public_TInvWL {
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
 			'allow_parent_variable'      => apply_filters( 'tinvwl_allow_add_parent_variable_product', false ),
-			'wc_cart_fragments_refresh'  => apply_filters( 'tinvwl_wc_cart_fragments_refresh', true ),
-		) );
+			'hash_key' => 'ti_hash_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() )
+		);
+
+		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', $args );
 
 		if ( wp_script_is( 'woocommerce', 'enqueued' ) ) {
 			wp_enqueue_script( 'tinvwl' );
 		}
-
 	}
 
 	/**

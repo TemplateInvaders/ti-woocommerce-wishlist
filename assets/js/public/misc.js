@@ -73,33 +73,7 @@
 		});
 
 	});
-
-	$(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function () {
-		var has_products = !('0' == $('.wishlist_products_counter_number').html() || '' == $('.wishlist_products_counter_number').html());
-		$('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', has_products);
-	});
-
-	update_cart_hash();
-
-
 })(jQuery);
-
-function update_cart_hash() {
-	if (!tinvwl_add_to_wishlist.wc_cart_fragments_refresh) {
-		return false;
-	}
-
-	jQuery(document.body).on('wc_fragments_loaded.wishlist wc_fragments_refreshed.wishlist', function () {
-		if (typeof wc_cart_fragments_params === 'undefined') {
-			return false;
-		}
-
-		var cart_hash_key = wc_cart_fragments_params.cart_hash_key;
-		localStorage.setItem(cart_hash_key, localStorage.getItem(cart_hash_key) + (new Date()).getTime());
-		sessionStorage.setItem(cart_hash_key, sessionStorage.getItem(cart_hash_key) + (new Date()).getTime());
-		jQuery(document.body).off('wc_fragments_loaded.wishlist wc_fragments_refreshed.wishlist');
-	});
-}
 
 function showTooltip(elem, msg) {
 	elem.setAttribute('class', 'social social-clipboard tooltipped tooltipped-s');

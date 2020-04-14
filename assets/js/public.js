@@ -417,7 +417,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       if (hash_key === e.originalEvent.key && localStorage.getItem(hash_key) !== sessionStorage.getItem(hash_key)) {
         set_hash(localStorage.getItem(hash_key));
       }
-    }); // Get wishlist data from REST API.
+    });
+
+    var addParams = function addParams(url, data) {
+      if (!$.isEmptyObject(data)) {
+        url += (url.indexOf('?') >= 0 ? '&' : '?') + $.param(data);
+      }
+
+      return url;
+    }; // Get wishlist data from REST API.
+
 
     var tinvwl_products = [],
         tinvwl_counter = false;
@@ -434,7 +443,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           'ids': tinvwl_products,
           'counter': tinvwl_counter
         };
-        var endpoint = wpApiSettings.root + 'wishlist/v1/products?' + $.param(params);
+        var endpoint = addParams(wpApiSettings.root + 'wishlist/v1/products', params);
         $.ajax({
           url: endpoint,
           method: 'GET',

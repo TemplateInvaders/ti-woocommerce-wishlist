@@ -382,6 +382,15 @@
 			}
 		});
 
+
+		var addParams = function (url, data) {
+			if (!$.isEmptyObject(data)) {
+				url += (url.indexOf('?') >= 0 ? '&' : '?') + $.param(data);
+			}
+
+			return url;
+		}
+
 		// Get wishlist data from REST API.
 		var tinvwl_products = [], tinvwl_counter = false;
 		$('a.tinvwl_add_to_wishlist_button').each(function () {
@@ -400,7 +409,7 @@
 					'counter': tinvwl_counter,
 				};
 
-				var endpoint = wpApiSettings.root + 'wishlist/v1/products?' + $.param(params);
+				var endpoint = addParams(wpApiSettings.root + 'wishlist/v1/products', params);
 
 				$.ajax({
 					url: endpoint,

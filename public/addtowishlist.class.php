@@ -196,8 +196,9 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		$status = true;
-		if ( empty( $post['product_id'] ) ) {
-			$status = false;
+		if ( empty( $post['product_id'] ) || apply_filters( 'tinvwl_addtowishlist_not_allowed', false, $post ) ) {
+			$status        = false;
+			$data['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 		} else {
 			$post['product_type'] = apply_filters( 'tinvwl_addtowishlist_modify_type', $post['product_type'], $post );
 			$post                 = apply_filters( 'tinvwl_addtowishlist_prepare', $post );
@@ -317,7 +318,10 @@ class TInvWL_Public_AddToWishlist {
 			$data['redirect'] = $data['wishlist_url'];
 		}
 
-		$product           = wc_get_product( $post['product_id'] );
+		$product = wc_get_product( $post['product_id'] );
+		if ( empty( $form ) ) {
+			$form = array();
+		}
 		$data['wishlists'] = wp_json_encode( $this->user_wishlist( $product, $wlp ) );
 
 		$data['icon'] = $data['status'] ? 'icon_big_heart_check' : 'icon_big_times';

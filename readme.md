@@ -1,12 +1,12 @@
 # TI WooCommerce Wishlist #
-**Contributors:** [templateinvaders](https://profiles.wordpress.org/templateinvaders)  
-**Tags:** woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce  
-**Requires at least:** 4.7  
-**Tested up to:** 5.4  
-**Stable tag:** 1.17.1  
-**License:** GPLv3  
-**License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
-**Plugin URI:**  https://wordpress.org/plugins/ti-woocommerce-wishlist/  
+Contributors: templateinvaders
+Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
+Requires at least: 4.7
+Tested up to: 5.4
+Stable tag: 1.18.0
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
 
 Add WooCommerce Wishlist functionality to your store for free.
 Allow your store guests and customers to add products to Wishlist.
@@ -148,42 +148,31 @@ You can find the documentation of our [TI WooCommerce Wishlist REST API Docs](ht
 
 Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
-## Screenshots ##
 
-### 1. TI WooCommerce Wishlist Settings page ###
-![TI WooCommerce Wishlist Settings page](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-1.png)
 
-### 2. TI WooCommerce Wishlist Appearance Options ###
-![TI WooCommerce Wishlist Appearance Options](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-2.png)
-
-### 3. The look of "Add to Wishlist" button on frontend with different settings ###
-![The look of "Add to Wishlist" button on frontend with different settings](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-3.png)
-
-### 4. Wishlist page with all columns, desktop view ###
-![Wishlist page with all columns, desktop view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-4.png)
-
-### 5. Wishlist page with turned off date of addition, checkboxes and bulk actions. ###
-![Wishlist page with turned off date of addition, checkboxes and bulk actions.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-5.png)
-
-### 6. When you click Add to Wishlist button a popup with success or error message appears. ###
-![When you click Add to Wishlist button a popup with success or error message appears.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-6.png)
-
-### 7. Wishlist page, Tablet view ###
-![Wishlist page, Tablet view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-7.png)
-
-### 8. Wishlist page, Mobile view ###
-![Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-8.png)
-
-### 9. Simplified Wishlist page, Mobile view ###
-![Simplified Wishlist page, Mobile view](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-9.png)
-
-### 10. TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings. ###
-![TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings.](https://ps.w.org/ti-woocommerce-wishlist/assets/screenshot-10.png)
-
+1. TI WooCommerce Wishlist Settings page
+2. TI WooCommerce Wishlist Appearance Options
+3. The look of "Add to Wishlist" button on frontend with different settings
+4. Wishlist page with all columns, desktop view
+5. Wishlist page with turned off date of addition, checkboxes and bulk actions.
+6. When you click Add to Wishlist button a popup with success or error message appears.
+7. Wishlist page, Tablet view
+8. Wishlist page, Mobile view
+9. Simplified Wishlist page, Mobile view
+10. TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings.
 
 
 
 ## Changelog ##
+### 1.18.0 ###
+*Release Date - 14 April 2020*
+
+* Improved cache compatibility for 'add to wishlist' button states and wishlist products counter
+* Wishlist products counter updating moved from WooCommerce AJAX fragments to a custom solution
+* Added option to add wishlist products counter to multiple WordPress menus from plugin settings
+* Added filter 'tinvwl_add_to_menu' to allow disabling wishlist products counter from 3rd party code
+* Added filter 'tinvwl_addtowishlist_not_allowed' for validation of  product addition to wishlist from a 3rd party code
+
 ### 1.17.1 ###
 *Release Date - 02 April 2020*
 

@@ -63,7 +63,7 @@ class TInvWL_Includes_API_Frontend {
 		);
 
 		$params['counter'] = array(
-			'description' => __( 'Current user IDS.', 'ti-woocommerce-wishlist' ),
+			'description' => __( 'Return wishlist products counter.', 'ti-woocommerce-wishlist' ),
 			'type'        => 'bool',
 			'default'     => false,
 		);

@@ -358,7 +358,7 @@
 
 		$(document).on('show_variation', '.variations_form', function (a, b, d) {
 			var e = $(this).find('.tinvwl_add_to_wishlist_button');
-			if (e.length) {
+			if (e.length && e.attr('data-tinv-wl-list')) {
 				var f = JSON.parse(e.attr('data-tinv-wl-list')),
 					j = false,
 					g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];

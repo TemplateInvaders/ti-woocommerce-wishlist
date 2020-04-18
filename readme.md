@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.18.2
+Stable tag: 1.18.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -37,10 +37,9 @@ WooCommerce Wishlist is a simple but powerful tool that can help you to convert 
 + Share wishlist on social channels (Facebook, Twitter, Pinterest, Google+, WhatsApp, email)
 + Fully Customizable Appearance
 + Custom CSS styles
-+ Responsive & Retina Ready
 + Translation ready
 + [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) Support
-+ Product variations Support
++ Cache friendly
 
 ### Premium Features ###
 
@@ -164,6 +163,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 
 ## Changelog ##
+### 1.18.3 ###
+*Release Date - 18 April 2020*
+
+* Fixed an issue with wishlist buttons for multilingual setups
+
+### 1.18.2 ###
 *Release Date - 14 April 2020*
 
 * Fixed an issue with REST API requests error for plain permalinks structure

@@ -485,11 +485,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         if (newNodes !== null) {
           var $nodes = $(newNodes);
           $nodes.each(function () {
-            var $node = $(this); // check if new node added with class 'message'
+            var $node = $(this),
+                els = $node.find(".tinvwl_add_to_wishlist_button"); // check if new node added with class 'message'
 
-            if ($node.find(".tinvwl_add_to_wishlist_button").length) {
+            if (els.length) {
               tinvwl_products = [];
-              tinvwl_products.push($node.find(".tinvwl_add_to_wishlist_button").data('tinv-wl-product'));
+              els.each(function () {
+                tinvwl_products.push($(this).data('tinv-wl-product'));
+              });
               rest_request();
             }
           });

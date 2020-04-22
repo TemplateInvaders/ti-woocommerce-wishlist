@@ -368,9 +368,9 @@
 					}
 				}
 				e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('data-tinv-wl-action', ((j && g) ? 'remove' : 'addto'));
-				a.preventDefault();
-				e.removeClass('disabled-add-wishlist');
 			}
+			a.preventDefault();
+			e.removeClass('disabled-add-wishlist');
 		});
 
 		// Refresh when storage changes in another tab

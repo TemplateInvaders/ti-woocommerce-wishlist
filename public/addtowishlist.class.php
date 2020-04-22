@@ -328,11 +328,15 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 
-		$msg_placeholders = array(
-			'{product_name}' => is_callable( array(
-				$product,
-				'get_name'
-			) ) ? $product->get_name() : $product->get_title(),
+		$msg_placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders',
+			array(
+				'{product_name}' => is_callable( array(
+					$product,
+					'get_name'
+				) ) ? $product->get_name() : $product->get_title(),
+				'{product_sku}'  => $product->get_sku(),
+			),
+			$product
 		);
 
 		$find    = array_keys( $msg_placeholders );

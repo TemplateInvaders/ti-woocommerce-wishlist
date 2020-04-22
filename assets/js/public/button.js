@@ -450,20 +450,20 @@
 				var newNodes = mutation.addedNodes;
 				// If there are new nodes added
 				if (newNodes !== null) {
+					tinvwl_products = [];
 					var $nodes = $(newNodes);
 					$nodes.each(function () {
 						var $node = $(this),
 							els = $node.find(".tinvwl_add_to_wishlist_button");
-						// check if new node added with class 'message'
 						if (els.length) {
-							tinvwl_products = [];
 							els.each(function () {
 								tinvwl_products.push($(this).data('tinv-wl-product'));
 							});
-
-							rest_request();
 						}
 					});
+					if (tinvwl_products.length) {
+						rest_request();
+					}
 				}
 			});
 		});

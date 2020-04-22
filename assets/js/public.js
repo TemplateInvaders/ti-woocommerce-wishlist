@@ -443,13 +443,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           'ids': tinvwl_products,
           'counter': tinvwl_counter
         };
-        var endpoint = addParams(wpApiSettings.root + 'wishlist/v1/products', params);
+        var endpoint = addParams(tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products', params);
         $.ajax({
           url: endpoint,
           method: 'GET',
           beforeSend: function beforeSend(xhr) {
-            // Set nonce here
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
           }
         }).done(function (response) {
           var has_products = !('0' == response.counter || '' == response.counter);
@@ -483,19 +482,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var newNodes = mutation.addedNodes; // If there are new nodes added
 
         if (newNodes !== null) {
+          tinvwl_products = [];
           var $nodes = $(newNodes);
           $nodes.each(function () {
             var $node = $(this),
-                els = $node.find(".tinvwl_add_to_wishlist_button"); // check if new node added with class 'message'
+                els = $node.find(".tinvwl_add_to_wishlist_button");
 
             if (els.length) {
-              tinvwl_products = [];
               els.each(function () {
                 tinvwl_products.push($(this).data('tinv-wl-product'));
               });
-              rest_request();
             }
           });
+
+          if (tinvwl_products.length) {
+            rest_request();
+          }
         }
       });
     }); // Configuration of the observer:

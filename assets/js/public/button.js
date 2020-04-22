@@ -409,14 +409,13 @@
 					'counter': tinvwl_counter,
 				};
 
-				var endpoint = addParams(wpApiSettings.root + 'wishlist/v1/products', params);
+				var endpoint = addParams(tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products', params);
 
 				$.ajax({
 					url: endpoint,
 					method: 'GET',
 					beforeSend: function (xhr) {
-						// Set nonce here
-						xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+						xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
 					},
 				}).done(function (response) {
 

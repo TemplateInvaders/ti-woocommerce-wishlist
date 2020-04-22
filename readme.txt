@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.18.3
+Stable tag: 1.18.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -15,7 +15,7 @@ Allow your store guests and customers to add products to Wishlist.
 
 = Increase Sales and Conversions =
 
-WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can't buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales.
+WooCommerce Wishlist is a simple but powerful tool that can help you to convert your site visitors into loyal customers. There are many situations when customers can't buy a product at this time or simply don’t want. Possibility to save products for later encourages users to return to your site and after all, make a purchase. Adding products to Wishlist is easy and convenient so it may also force your customers to buy even more products than they planned. Users can share their wishlist, for example, to help their friends choose a gift for an upcoming holiday and so on. By sharing their Wishlists, they are bringing you, new potential customers. All in all this increasing amount of your site visitors, conversion and as a result sales.
 
 🔗 [Live Preview #1](https://wishlist2.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
 🔗 [Live Preview #2](https://wishlist3.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
@@ -26,8 +26,8 @@ WooCommerce Wishlist is a simple but powerful tool that can help you to convert 
 = Basic Features =
 
 + Select Wishlist page and Name
-+ Remove product from wishlist automatically, after adding it to cart
-+ Position of "Add to wishlist" button on product page and catalog
++ Remove the product from wishlist automatically, after adding it to cart
++ Position of "Add to wishlist" button on product page and catalogue
 + Shortcode for "Add to wishlist" button to place it anywhere on the page.
 + "Add to wishlist" Button or Link on product page
 + Predefined icons for "Add to Wishlist" button
@@ -63,18 +63,18 @@ TI WooCommerce Wishlist Premium version is a powerful marketing tool on top of a
 💰 <strong>[100% Money Back Guarantee](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=money_back)</strong>
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
-We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each others. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
+We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each other. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
 It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with [WP Rocket](https://wp-rocket.me/), [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) and [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugins.
 
 = Add to Wishlist button =
 You can adjust Add to wishlist button settings to make it work best for your website.
-Make it a link or a button, choose from predefined icons or upload your own. Select predefined button position or place it wherever you want using shortcode.
+Make it a link or a button, choose from predefined icons or upload your own. Select predefined button position or place it wherever you want using the shortcode.
 
 = Customizable Wishlist table =
-You can show/hide any column in wishlist table on wishlist page. So it is for you to decide what information to show and what not. Make your wishlist page informative or simple.
+You can show/hide any column in wishlist table on the wishlist page. So it is for you to decide what information to show and whatnot. Make your wishlist page informative or simple.
 
 = Make it fit your website perfectly =
-TI WooCommerce Wishlist comes with over 60 appearance options such as colors, font size, borders, etc. Not enough? You can add your custom CSS styles directly in admin panel.
+TI WooCommerce Wishlist comes with over 60 appearance options such as colours, font size, borders, etc. Not enough? You can add your custom CSS styles directly in the admin panel.
 
 = Translation Ready =
 You can easily translate TI WooCommerce Wishlist to any language. Simply choose the most convenient way for you: using poEdit tool, [Loco Translate](https://wordpress.org/plugins/loco-translate/), [WP Multilang](https://wordpress.org/plugins/wp-multilang/) or [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE).
@@ -101,7 +101,7 @@ Full documentation is available [here](https://templateinvaders.com/documentatio
 
 There are few ways to install TI WooCommerce Wishlist:
 
-= 1. From WordPress admin panel: =
+= 1. From the WordPress admin panel: =
 
 + Go to "Plugins" > "Add New" and search for "TI WooCommerce Wishlist"
 
@@ -109,11 +109,11 @@ There are few ways to install TI WooCommerce Wishlist:
 
 + After the installation is complete click "Activate" link (Plugins > Installed Plugins).
 
-= 2. Install manually using FTP method. =
+= 2. Install manually using the FTP method. =
 
 + Download the plugin
 
-+ Upload the plugin folder into /wp-content/plugins directory of your WordPress installation using your favorite FTP client.
++ Upload the plugin folder into /wp-content/plugins directory of your WordPress installation using your favourite FTP client.
 
 + Navigate to "Plugins" > "Installed Plugins" section in your dashboard and activate the plugin.
 
@@ -145,24 +145,31 @@ You can find the documentation of our [TI WooCommerce Wishlist REST API Docs](ht
 
 = This plugin is awesome! Can I contribute? =
 
-Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
+Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
 == Screenshots ==
 
 1. TI WooCommerce Wishlist Settings page
 2. TI WooCommerce Wishlist Appearance Options
-3. The look of "Add to Wishlist" button on frontend with different settings
+3. The look of "Add to Wishlist" button on the frontend with different settings
 4. Wishlist page with all columns, desktop view
 5. Wishlist page with turned off date of addition, checkboxes and bulk actions.
 6. When you click Add to Wishlist button a popup with success or error message appears.
 7. Wishlist page, Tablet view
 8. Wishlist page, Mobile view
 9. Simplified Wishlist page, Mobile view
-10. TI WooCommerce Wishlist comes with a setup Wizard to help you configure the settings.
+10. TI WooCommerce Wishlist comes with a setup wizard to help you configure the settings.
 
 
 
 == Changelog ==
+= 1.18.4 =
+*Release Date - 22 April 2020*
+
+* Added {product_sku} placeholder for add to wishlist message text
+* Added filter `tinvwl_addtowishlist_message_placeholders` to override add to wishlist message placeholders from  a 3rd party code
+* Fixed an issue with multiple wishlist button requests for AJAX products filtering
+
 = 1.18.3 =
 *Release Date - 18 April 2020*
 
@@ -221,12 +228,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 * Added {product_name} placeholder support for options of add to wishlist notice text
 * Added filter `tinvwl_api_wishlist_get_products_response` to allow modify REST API response via 3rd party code
 * Fixed fatal error throws by add to wishlist shortcode
-* Fixed wishlist frontend issue when WooCommerce session don't exists
+* Fixed wishlist frontend issue when WooCommerce session doesn’t exists
 
 = 1.15.4 =
 *Release Date - 16 December 2019*
 
-* Added compatibility with Kallyas theme and guest issue when cart hidden
+* Added compatibility with Kallyas theme and guest issue when cart is hidden
 * Fixed product meta display on wishlist table
 * Improved compatibility with Divi builder
 
@@ -248,7 +255,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 *Release Date - 4 December 2019*
 
 * Added WP GridBuilder plugin custom block to show wishlist button
-* Fixed bulk adding products from wishlist to cart for WooCommerce versions below 3.8
+* Fixed bulk-adding products from wishlist to cart for WooCommerce versions below 3.8
 * Fixed pricing issue for TM Extra Product Options plugin integration
 
 = 1.15.0 =
@@ -288,7 +295,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 = 1.14.4 =
 *Release Date - 4 September 2019*
 
-* Fixed an issue with bundle products inside composite product
+* Fixed an issue with bundle products inside the composite product
 * Fixed Setup Wizard errors
 * Fixed WooCommerce 'My account' endpoint rewrites issue
 
@@ -339,7 +346,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 * Fixed unclosed 'strong' tag in admin notification
 * Fixed empty URL issue for sharing buttons
-* Fixed performance for meta tags addition on wishlist page
+* Fixed performance for meta tags addition on the wishlist page
 * Fixed empty text issue for 'View Wishlist' button
 * Removed Google Plus (G+) sharing option since the service is closed
 * Added cleanup of deleted products from wishlist
@@ -350,9 +357,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/TemplateInvad
 
 * Added wishlist [REST API](https://templateinvaders.com/api/wishlist/?utm_source=wordpressorg&utm_content=changelog)
 * Refactored filters and actions
-* Prevent plugin network wide activation
+* Prevent plugin network-wide activation
 * Fixed an issue with deleted products in frontend templates
 * Fixed wishlist products query issue  on multilingual setup
 * TM Product Options plugin integration updated
 
-[See changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
+[See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).

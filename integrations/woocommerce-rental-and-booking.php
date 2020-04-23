@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Rental & Bookings System
  *
- * @version 7.0.3
+ * @version 9.0.5
  *
  * @slug woocommerce-rental-and-booking
  *
@@ -63,7 +63,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_rental_and_bookin
 			$options_data             = array();
 			$options_data['quote_id'] = '';
 
-			$get_labels   = reddq_rental_get_settings( $product_id, 'labels', array(
+			$get_labels   = redq_rental_get_settings( $product_id, 'labels', array(
 				'pickup_location',
 				'return_location',
 				'pickup_date',
@@ -74,13 +74,13 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_rental_and_bookin
 				'deposites'
 			) );
 			$labels       = $get_labels['labels'];
-			$get_displays = reddq_rental_get_settings( $product_id, 'display' );
+			$get_displays = redq_rental_get_settings( $product_id, 'display' );
 			$displays     = $get_displays['display'];
 
-			$get_conditions   = reddq_rental_get_settings( $product_id, 'conditions' );
+			$get_conditions   = redq_rental_get_settings( $product_id, 'conditions' );
 			$conditional_data = $get_conditions['conditions'];
 
-			$get_general  = reddq_rental_get_settings( $product_id, 'general' );
+			$get_general  = redq_rental_get_settings( $product_id, 'general' );
 			$general_data = $get_general['general'];
 
 			if ( isset( $meta['quote_id'] ) ) {

@@ -432,7 +432,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var tinvwl_products = [],
         tinvwl_counter = false;
     $('a.tinvwl_add_to_wishlist_button').each(function () {
-      tinvwl_products.push($(this).data('tinv-wl-product'));
+      if ($(this).data('tinv-wl-product') !== 'undefined' && $(this).data('tinv-wl-product')) {
+        tinvwl_products.push($(this).data('tinv-wl-product'));
+      }
     });
     $('.wishlist_products_counter_number').each(function () {
       tinvwl_counter = true;
@@ -491,7 +493,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
             if (els.length) {
               els.each(function () {
-                tinvwl_products.push($(this).data('tinv-wl-product'));
+                if ($(this).data('tinv-wl-product') !== 'undefined' && $(this).data('tinv-wl-product')) {
+                  tinvwl_products.push($(this).data('tinv-wl-product'));
+                }
               });
             }
           });

@@ -4,7 +4,7 @@
  *
  * @name Improved Product Options for WooCommerce
  *
- * @version 4.9.3
+ * @version 4.9.8
  *
  * @slug improved-variable-product-attributes
  *
@@ -34,12 +34,14 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 			$curr_customizations = XforWC_Improved_Options_Frontend::get_custom();
 
 			foreach ( $meta as $k => $v ) {
+
 				$prefix  = 'ivpac_';
 				$k_ivpac = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k;
 
-				$prefix  = 'attribute_';
-				$k_ivpac = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k_ivpac;
-				$v       = is_array( $v['display'] ) ? implode( ', ', $v['display'] ) : $v['display'];
+				$prefix          = 'attribute_';
+				$k_ivpac         = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k_ivpac;
+				$local_attribute = ( 0 === strpos( $k, $prefix ) ) ? true : false;
+				$v               = is_array( $v['display'] ) ? implode( ', ', $v['display'] ) : $v['display'];
 
 				if ( isset( $curr_customizations['ivpa_attr'][ $k_ivpac ] ) ) {
 					if ( $curr_customizations['ivpa_attr'][ $k_ivpac ] == 'ivpa_custom' ) {
@@ -71,6 +73,11 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 							'display' => $v,
 						);
 					}
+				} elseif ( wc_attribute_label( $k_ivpac ) && $local_attribute ) {
+					$meta[ $k ] = array(
+						'key'     => wc_attribute_label( $k_ivpac ),
+						'display' => $v,
+					);
 				}
 			}
 		}
@@ -88,7 +95,7 @@ function tinv_add_to_wishlist_ivpa() {
 		wp_add_inline_script( 'tinvwl', "
 		jQuery(document).ready(function($){
 		    $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
-				if (!ivpa) {
+				if (typeof ivpa === 'undefined' || !ivpa) {
 					return false;
 				}
 				var button = $(el);

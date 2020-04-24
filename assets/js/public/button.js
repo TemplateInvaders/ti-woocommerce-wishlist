@@ -447,11 +447,11 @@
 		/* Dynamic buttons */
 		// Create an observer instance
 		var observer = new MutationObserver(function (mutations) {
+			tinvwl_products = [];
 			mutations.forEach(function (mutation) {
 				var newNodes = mutation.addedNodes;
 				// If there are new nodes added
 				if (newNodes !== null) {
-					tinvwl_products = [];
 					var $nodes = $(newNodes);
 					$nodes.each(function () {
 						var $node = $(this),
@@ -464,18 +464,16 @@
 							});
 						}
 					});
-					if (tinvwl_products.length) {
-						rest_request();
-					}
 				}
 			});
+			if (tinvwl_products.length) {
+				rest_request();
+			}
 		});
 		// Configuration of the observer:
 		var config = {
 			childList: true,
-			attributes: true,
-			subtree: true,
-			characterData: true
+			subtree: true
 		};
 		var targetNode = document.body;
 		observer.observe(targetNode, config);

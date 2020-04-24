@@ -235,6 +235,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tooltipped-multiline.tooltipped-w::after,.tooltipped-multiline.tooltipped-e::after{right:100%}
 .tooltipped-sticky::before,.tooltipped-sticky::after{display:inline-block}
 .tooltipped-sticky.tooltipped-multiline::after{display:table-cell}
+.tinvwl-table-manage-list .component_table_item_price:before{font-family:'FontAwesomeCP';font-size:1rem;display:inline-block;-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";-webkit-transform:rotate(90deg);transform:rotate(90deg);content:"\e811";margin:0 12px 0 3px;opacity:.25}
 @media screen and (min-width:0 \0){.tooltipped-multiline::after{width:250px}
 }@media only screen and (max-width:1024px) and (min-width:641px){.tinv-wishlist .tinvwl-table-manage-list td.product-stock p{display:block;text-align:center}
 .tinv-wishlist .product-stock span{display:block}

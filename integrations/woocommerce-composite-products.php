@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Composite Products
  *
- * @version 4.2.0
+ * @version 6.2.1
  *
  * @slug woocommerce-composite-products
  *
@@ -77,9 +77,16 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 						$composited_product,
 						'get_name'
 					) ) ? $composited_product->get_name() : $composited_product->get_title();
-					$product_price = $composited_product->get_price_html();
+					$product_price = $composited_product->get_price();
 
 					$component_option = $product->get_component_option( $component_id, $composited_product_id );
+
+					$discount = $component_option->get_discount();
+
+					if ( $discount ) {
+						$product_price = $product_price * ( 100 - $discount ) / 100;
+					}
+					$product_price = wc_price( $product_price );
 
 					if ( $component_option ) {
 						if ( false === $component_option->is_priced_individually() && $composited_product->get_price() == 0 ) {
@@ -220,11 +227,9 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 					}
 				}
 			}
-			if ( $_price == $regular_price ) {
-				$price = wc_price( $_price ) . $product->get_price_suffix();
-			} else {
-				$price = wc_format_sale_price( $regular_price, $_price ) . $product->get_price_suffix();
-			}
+
+			$price = wc_price( $_price ) . $product->get_price_suffix();
+
 		}
 
 		return $price;

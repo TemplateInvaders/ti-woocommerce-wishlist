@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.18.4
+Stable tag: 1.19.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,20 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.19.0 ###
+*Release Date - 24 April 2020*
+
+* Added integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
+* Added integration with [Hide Price and Add to Cart Button](https://woocommerce.com/products/hide-price-add-to-cart-button/?aff=3955) plugin
+* Added integration with [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+* Added integration with WooCommerce Product Add-Ons Ultimate plugin
+* Added compatibility for wishlist products counter in Woostify theme
+* Fixed integration with WooCommerce Rental & Bookings System plugin
+* Fixed integration with Improved Product Options for WooCommerce plugin
+* Improved integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Fixed multiple REST API queries for dynamic buttons
+* Fixed wishlist product counter "hide zero value" issue
+
 ### 1.18.4 ###
 *Release Date - 22 April 2020*
 

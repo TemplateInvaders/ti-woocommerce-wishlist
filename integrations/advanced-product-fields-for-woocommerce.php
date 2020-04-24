@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 
 	/**
-	 * Set description for meta Product Options and Price Calculation Formulas for WooCommerce – Uni CPO
+	 * Set description for meta Advanced Product Fields (Product Options) for WooCommerce
 	 *
 	 * @param array $meta Meta array.
 	 * @param array $wl_product Wishlist Product.
@@ -79,7 +79,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 
 	/**
-	 * Modify price for Product Options and Price Calculation Formulas for WooCommerce – Uni CPO.
+	 * Modify price for Advanced Product Fields (Product Options) for WooCommerce
 	 *
 	 * @param string $price Returned price.
 	 * @param array $wl_product Wishlist Product.

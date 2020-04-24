@@ -535,7 +535,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     if ($supports_html5_storage) {
       localStorage.setItem(hash_key, hash);
       sessionStorage.setItem(hash_key, hash);
-      jQuery('.wishlist_products_counter_number').html(hash);
+      jQuery('.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count').html(hash);
     }
   }
 })(jQuery);

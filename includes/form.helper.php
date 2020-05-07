@@ -575,6 +575,9 @@ class TInvWL_Form {
 		$mimefiles = array_filter( $mimefiles );
 		$mimefiles = wp_json_encode( $mimefiles );
 
+		$extra_field  .= ' disabled="disabled"';
+		$data['type'] = 'text';
+
 		wp_enqueue_media();
 
 		return sprintf( "<div class='tinvwl-input-group'>%s%s<div class='tinvwl-input-group-btn'>%s</div></div><script type=\"text/javascript\">jQuery(document).ready(function($){var nn='%s';" . ( empty( $value ) ? "$('.' + nn + '-preview').hide();" : "" ) . "$('input[name=\"'+nn+'-btn\"]').click(function(e){e.preventDefault();var i=wp.media({multiple:false, library:{type:{$mimefiles}}}).open().on('select',function(e){var u=i.state().get('selection').first();var iu=u.toJSON().url;$('input[name=\"'+nn+'\"]').val(iu);$('.' + nn + '-preview').show();$('.' + nn + '-preview span img').attr('src', iu);});});});</script>", // @codingStandardsIgnoreLine Squiz.Strings.DoubleQuoteUsage.NotRequired

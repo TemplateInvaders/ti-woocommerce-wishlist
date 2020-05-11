@@ -62,14 +62,15 @@ class TInvWL_Wishlist {
 	/**
 	 * Constructor
 	 *
+	 * @param string $plugin_name Plugin name.
+	 *
 	 * @global wpdb $wpdb
 	 *
-	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name = TINVWL_PREFIX ) {
 		global $wpdb;
 
-		$this->_name              = $plugin_name;
+		$this->_name           = $plugin_name;
 		$this->table           = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
 		$this->default_name    = apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) );
 		$this->default_privacy = 'share';
@@ -83,8 +84,8 @@ class TInvWL_Wishlist {
 	/**
 	 * Generate unique share key
 	 *
-	 * @global wpdb $wpdb
 	 * @return string
+	 * @global wpdb $wpdb
 	 */
 	function unique_share_key() {
 		global $wpdb;
@@ -155,14 +156,14 @@ class TInvWL_Wishlist {
 	/**
 	 * Add wishlist
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param mixed $data wishlist name or object.
 	 * @param string $type List or default.
 	 * @param string $status Public, Share, Private.
 	 * @param integer $user_id Can put 0.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	function add( $data, $type = 'list', $status = 'public', $user_id = 0 ) {
 		$user_id = absint( $user_id );
@@ -271,7 +272,8 @@ class TInvWL_Wishlist {
 		$_data = array(
 			'author' => $user_id,
 		);
-		if ( empty( $this->user ) || ( $_data['author'] != $this->user ) ) { // WPCS: loose comparison ok.
+
+		if ( ! current_user_can( 'tinvwl_general_settings' ) && ( empty( $this->user ) || ( $_data['author'] != $this->user ) ) ) { // WPCS: loose comparison ok.
 			$_data['status'] = 'public';
 		}
 		$data = tinv_array_merge( $data, $_data );
@@ -318,11 +320,11 @@ class TInvWL_Wishlist {
 	/**
 	 * Get wishlist
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param array $data Requset.
 	 *
 	 * @return array
+	 * @global wpdb $wpdb
+	 *
 	 */
 	function get( $data = array() ) {
 		global $wpdb;
@@ -414,14 +416,14 @@ class TInvWL_Wishlist {
 	/**
 	 * Update wishlist
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param integer $id id database wishlist.
 	 * @param mixed $data wishlist name or object.
 	 * @param string $type List or default.
 	 * @param string $status Public, Share, Private.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	function update( $id, $data, $type = 'list', $status = 'public' ) {
 		if ( ! is_array( $data ) ) {
@@ -453,11 +455,11 @@ class TInvWL_Wishlist {
 	/**
 	 * Remove wishlist
 	 *
-	 * @global wpdb $wpdb
-	 *
 	 * @param integer $id id database wishlist.
 	 *
 	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
 	 */
 	public function remove( $id ) {
 		$id = absint( $id );

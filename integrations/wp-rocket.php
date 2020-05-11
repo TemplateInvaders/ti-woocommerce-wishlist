@@ -4,7 +4,7 @@
  *
  * @name WP Rocket
  *
- * @version 3.4.4
+ * @version 3.5.4
  *
  * @slug wp-rocket
  *
@@ -145,5 +145,36 @@ if ( defined( 'WP_ROCKET_VERSION' ) ) {
 
 			delete_transient( 'rocket_get_refreshed_fragments_cache' );
 		}
+	}
+
+	add_filter( 'nonce_user_logged_out', 'tinvwl_revert_uid_for_nonce_actions', 100, 2 );
+
+	/**
+	 * Set $user_id to 0 for certain nonce actions.
+	 *
+	 * WooCommerce core changes how nonces are used for non-logged customers.
+	 * When a user is logged out, but has items in their cart, WC core sets the $uid as a random string customer id.
+	 * This is going to mess out nonce validation with WP Rocket and third party plugins which do not bypass WC nonce changes.
+	 * WP Rocket caches the page so the nonce $uid will be always different than the session customer $uid.
+	 * This function will check the nonce against a UID of 0 because this is how WP Rocket generated the cached page.
+	 *
+	 *
+	 * @param string|int $user_id ID of the nonce-owning user.
+	 * @param string|int $action The nonce action.
+	 *
+	 * @return int $uid      ID of the nonce-owning user.
+	 *
+	 */
+	function tinvwl_revert_uid_for_nonce_actions( $user_id, $action ) {
+		// User ID is invalid.
+		if ( empty( $user_id ) || 0 === $user_id ) {
+			return $user_id;
+		}
+
+		if ( ! $action || 'wp_rest' !== $action ) {
+			return $user_id;
+		}
+
+		return 0;
 	}
 }

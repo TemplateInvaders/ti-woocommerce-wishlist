@@ -4,7 +4,7 @@
  *
  * @name Divi
  *
- * @version 4.0.7
+ * @version 4.4.6
  *
  * @slug Divi
  *

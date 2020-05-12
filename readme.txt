@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.19.0
+Stable tag: 1.20.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,20 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.20.0 =
+*Release Date - 12 May 2020*
+
+* Added integration with [ELEX WooCommerce Catalog Mode](https://wordpress.org/plugins/elex-woocommerce-catalog-mode/) plugin
+* Added integration with [WooCommerce Product Retailers](https://woocommerce.com/products/product-retailers/?aff=3955) plugin
+* Added integration with [Braintree For WooCommerce](https://wordpress.org/plugins/woo-payment-gateway/) plugin
+* Improved integration with WPML plugin
+* Improved integration with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
+* Improved security for Wishlist REST API
+* Fixed 'add to wishlist' button shortcode issue when product variation ID does not count for saved products
+* Fixed an issue when adding product variation that has an additional attribute(s) set as 'Any ...' to wishlist and from wishlist to cart
+* Fixed an issue with duplicated buttons for out of stock products and Divi theme
+* Fixed an issue with WP Rocket cache and WP REST API authorization for non-logged users
+
 = 1.19.0 =
 *Release Date - 24 April 2020*
 

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Show Single Variations by Iconic
  *
- * @version https://iconicwp.com
+ * @version 1.1.16
  *
  * @slug show-single-variations-premium
  *

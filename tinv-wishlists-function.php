@@ -733,6 +733,13 @@ if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {
 				);
 			}
 		}
+
+		foreach ( array_keys( $item_data ) as $key ) {
+			if ( strpos( $key, 'attribute_' ) === 0 ) {
+				unset( $item_data[ $key ] );
+			}
+		}
+
 		$item_data = apply_filters( 'tinvwl_wishlist_item_meta_post', $item_data, $product_id, $variation_id );
 		foreach ( $item_data as $key => $data ) {
 			if ( is_object( $data['display'] ) || is_array( $data['display'] ) ) {

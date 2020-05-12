@@ -212,7 +212,7 @@
 							return o2;
 						}
 					};
-				if ('button' === type_elm || 'undefined' == typeof name_elm || name_elm.substr(0, 10) == "attribute_") {
+				if ('button' === type_elm || 'undefined' == typeof name_elm) {
 					return;
 				}
 				while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {

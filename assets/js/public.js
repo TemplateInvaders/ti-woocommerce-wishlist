@@ -230,7 +230,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         };
 
-        if ('button' === type_elm || 'undefined' == typeof name_elm || name_elm.substr(0, 10) == "attribute_") {
+        if ('button' === type_elm || 'undefined' == typeof name_elm) {
           return;
         }
 

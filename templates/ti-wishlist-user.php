@@ -2,7 +2,7 @@
 /**
  * The Template for displaying wishlist if a current user not an owner.
  *
- * @version             1.15.5
+ * @version             1.20.0
  * @package           TInvWishlist\Template
  */
 
@@ -27,13 +27,14 @@ wp_enqueue_script( 'tinvwl' );
 			<tr>
 				<?php if ( isset( $wishlist_table['colm_checkbox'] ) && $wishlist_table['colm_checkbox'] ) { ?>
 					<th class="product-cb"><input type="checkbox" class="global-cb"
-					                              title="<?php _e( 'Select all for bulk action', 'ti-woocommerce-wishlist' ) ?>">
+												  title="<?php _e( 'Select all for bulk action', 'ti-woocommerce-wishlist' ) ?>">
 					</th>
 				<?php } ?>
 				<th class="product-thumbnail">&nbsp;</th>
 				<th class="product-name"><span
-						class="tinvwl-full"><?php esc_html_e( 'Product Name', 'ti-woocommerce-wishlist' ); ?></span><span
-						class="tinvwl-mobile"><?php esc_html_e( 'Product', 'ti-woocommerce-wishlist' ); ?></span></th>
+							class="tinvwl-full"><?php esc_html_e( 'Product Name', 'ti-woocommerce-wishlist' ); ?></span><span
+							class="tinvwl-mobile"><?php esc_html_e( 'Product', 'ti-woocommerce-wishlist' ); ?></span>
+				</th>
 				<?php if ( isset( $wishlist_table_row['colm_price'] ) && $wishlist_table_row['colm_price'] ) { ?>
 					<th class="product-price"><?php esc_html_e( 'Unit Price', 'ti-woocommerce-wishlist' ); ?></th>
 				<?php } ?>
@@ -80,7 +81,7 @@ wp_enqueue_script( 'tinvwl' );
 							<td class="product-cb">
 								<?php
 								echo apply_filters( 'tinvwl_wishlist_item_cb', sprintf( // WPCS: xss ok.
-									'<input type="checkbox" name="wishlist_pr[]" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
+										'<input type="checkbox" name="wishlist_pr[]" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
 								), $wl_product, $product );
 								?>
 							</td>
@@ -100,13 +101,13 @@ wp_enqueue_script( 'tinvwl' );
 							<?php
 							if ( ! $product->is_visible() ) {
 								echo apply_filters( 'tinvwl_wishlist_item_name', is_callable( array(
-										$product,
-										'get_name'
-									) ) ? $product->get_name() : $product->get_title(), $wl_product, $product ) . '&nbsp;'; // WPCS: xss ok.
+												$product,
+												'get_name'
+										) ) ? $product->get_name() : $product->get_title(), $wl_product, $product ) . '&nbsp;'; // WPCS: xss ok.
 							} else {
 								echo apply_filters( 'tinvwl_wishlist_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), is_callable( array(
-									$product,
-									'get_name'
+										$product,
+										'get_name'
 								) ) ? $product->get_name() : $product->get_title() ), $wl_product, $product ); // WPCS: xss ok.
 							}
 
@@ -124,7 +125,7 @@ wp_enqueue_script( 'tinvwl' );
 							<td class="product-date">
 								<?php
 								echo apply_filters( 'tinvwl_wishlist_item_date', sprintf( // WPCS: xss ok.
-									'<time class="entry-date" datetime="%1$s">%2$s</time>', $wl_product['date'], mysql2date( get_option( 'date_format' ), $wl_product['date'] )
+										'<time class="entry-date" datetime="%1$s">%2$s</time>', $wl_product['date'], mysql2date( get_option( 'date_format' ), $wl_product['date'] )
 								), $wl_product, $product );
 								?>
 							</td>
@@ -151,13 +152,15 @@ wp_enqueue_script( 'tinvwl' );
 								if ( apply_filters( 'tinvwl_wishlist_item_action_add_to_cart', $wishlist_table_row['add_to_cart'], $wl_product, $product ) ) {
 									?>
 									<button class="button alt" name="tinvwl-add-to-cart"
-									        value="<?php echo esc_attr( $wl_product['ID'] ); ?>"
-									        title="<?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?>">
+											value="<?php echo esc_attr( $wl_product['ID'] ); ?>"
+											title="<?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?>">
 										<i
-											class="ftinvwl ftinvwl-shopping-cart"></i><span
-											class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?></span>
+												class="ftinvwl ftinvwl-shopping-cart"></i><span
+												class="tinvwl-txt"><?php echo esc_html( apply_filters( 'tinvwl_wishlist_item_add_to_cart', $wishlist_table_row['text_add_to_cart'], $wl_product, $product ) ); ?></span>
 									</button>
-								<?php } ?>
+								<?php } elseif ( apply_filters( 'tinvwl_wishlist_item_action_default_loop_button', $wishlist_table_row['add_to_cart'], $wl_product, $product ) ) {
+									woocommerce_template_loop_add_to_cart();
+								} ?>
 							</td>
 						<?php } ?>
 					</tr>

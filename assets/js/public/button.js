@@ -411,6 +411,10 @@
 					'counter': tinvwl_counter,
 				};
 
+				if (tinvwl_add_to_wishlist.wpml) {
+					params['lang'] = tinvwl_add_to_wishlist.wpml;
+				}
+
 				var endpoint = addParams(tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products', params);
 
 				$.ajax({

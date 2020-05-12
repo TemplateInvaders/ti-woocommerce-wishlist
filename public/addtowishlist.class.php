@@ -156,6 +156,8 @@ class TInvWL_Public_AddToWishlist {
 			'redirect'           => FILTER_SANITIZE_URL,
 		) );
 
+		$post['original_product_id'] = $post['product_id'];
+
 		$wlp      = null;
 		$wishlist = null;
 		$data     = array( 'msg' => array() );
@@ -318,7 +320,7 @@ class TInvWL_Public_AddToWishlist {
 			$data['redirect'] = $data['wishlist_url'];
 		}
 
-		$product = wc_get_product( $post['product_id'] );
+		$product = $original_product = wc_get_product( $post['product_id'] );
 		if ( empty( $form ) ) {
 			$form = array();
 		}
@@ -328,15 +330,19 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 
+		if ( $post['product_id'] !== $post['original_product_id'] ) {
+			$original_product = wc_get_product( $post['original_product_id'] );
+		}
+
 		$msg_placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders',
 			array(
 				'{product_name}' => is_callable( array(
-					$product,
+					$original_product,
 					'get_name'
-				) ) ? $product->get_name() : $product->get_title(),
-				'{product_sku}'  => $product->get_sku(),
+				) ) ? $original_product->get_name() : $original_product->get_title(),
+				'{product_sku}'  => $original_product->get_sku(),
 			),
-			$product
+			$original_product
 		);
 
 		$find    = array_keys( $msg_placeholders );
@@ -403,6 +409,9 @@ class TInvWL_Public_AddToWishlist {
 	 * @return array
 	 */
 	function user_wishlist( $product, $wlp = null ) {
+
+		$product = apply_filters( 'tinvwl_addtowishlist_check_product', $product );
+
 		$this->wishlist = array();
 		$vproduct       = in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
 			'variable',

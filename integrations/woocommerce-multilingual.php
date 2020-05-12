@@ -54,6 +54,41 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare' ) ) {
 	add_filter( 'tinvwl_addtowishlist_prepare', 'tinvwl_wpml_addtowishlist_prepare' );
 }
 
+if ( ! function_exists( 'tinvwl_wpml_addtowishlist_check_product' ) ) {
+
+	/**
+	 * Change product data if product need translate in WooCommerce Multilingual
+	 *
+	 * @param object $product WC_Product object.
+	 *
+	 * @return object $product WC_Product object
+	 */
+	function tinvwl_wpml_addtowishlist_check_product( $product ) {
+		if ( class_exists( 'woocommerce_wpml' ) ) {
+
+			global $woocommerce_wpml, $sitepress, $wpdb;
+
+			// Reload products class.
+			if ( version_compare( WCML_VERSION, '4.4.0', '<' ) ) {
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
+			} else {
+				global $wpml_post_translations;
+				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
+			}
+
+			if ( $product ) {
+				$product = wc_get_product( $woocommerce_wpml->products->get_original_product_id( $product->get_id() ) );
+			}
+
+		}
+
+		return $product;
+	}
+
+	add_filter( 'tinvwl_addtowishlist_check_product', 'tinvwl_wpml_addtowishlist_check_product' );
+}
+
+
 if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare' ) ) {
 
 	/**

@@ -490,6 +490,10 @@ class TInvWL_Public_TInvWL {
 			'rest_root'                  => esc_url_raw( get_rest_url() ),
 		);
 
+		if ( function_exists( 'wpml_get_current_language' ) ) {
+			$args['wpml'] = wpml_get_current_language();
+		}
+
 		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', $args );
 
 		if ( wp_script_is( 'woocommerce', 'enqueued' ) ) {

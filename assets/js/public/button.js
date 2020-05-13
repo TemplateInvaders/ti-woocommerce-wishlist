@@ -382,15 +382,6 @@
 			}
 		});
 
-
-		var addParams = function (url, data) {
-			if (!$.isEmptyObject(data)) {
-				url += (url.indexOf('?') >= 0 ? '&' : '?') + $.param(data);
-			}
-
-			return url;
-		}
-
 		// Get wishlist data from REST API.
 		var tinvwl_products = [], tinvwl_counter = false;
 		$('a.tinvwl_add_to_wishlist_button').each(function () {
@@ -409,17 +400,17 @@
 				var params = {
 					'ids': tinvwl_products,
 					'counter': tinvwl_counter,
+					'tinvwl_request':true,
 				};
 
 				if (tinvwl_add_to_wishlist.wpml) {
 					params['lang'] = tinvwl_add_to_wishlist.wpml;
 				}
 
-				var endpoint = addParams(tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products', params);
-
 				$.ajax({
-					url: endpoint,
-					method: 'GET',
+					url: tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products',
+					method: 'POST',
+					data: params,
 					beforeSend: function (xhr) {
 						xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
 					},

@@ -39,7 +39,7 @@ class TInvWL_Includes_API_Frontend {
 		register_rest_route( $this->namespace . '/' . $this->rest_base, '/products',
 			array(
 				array(
-					'methods'  => WP_REST_Server::READABLE,
+					'methods'  => WP_REST_Server::CREATABLE,
 					'callback' => array( $this, 'get_wishlist_products_data' ),
 					'args'     => $this->get_wishlist_products_params(),
 				),

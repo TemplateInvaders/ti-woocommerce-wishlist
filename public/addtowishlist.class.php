@@ -638,7 +638,7 @@ class TInvWL_Public_AddToWishlist {
 
 		$icon .= ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_preloader' ) ) ? ' ftinvwl-animated' : '';
 
-		$content .= sprintf( '<a href="javascript:void(0)" class="tinvwl_add_to_wishlist_button tinvwl-add-hide %s" data-tinv-wl-list="" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add" rel="nofollow">%s</a>',
+		$content .= sprintf( '<a role="button" class="tinvwl_add_to_wishlist_button tinvwl-add-hide %s" data-tinv-wl-list="" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
 			$icon,
 			apply_filters( 'wpml_object_id', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), 'product', true ),
 			apply_filters( 'wpml_object_id', ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(

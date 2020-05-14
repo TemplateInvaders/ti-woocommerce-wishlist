@@ -225,7 +225,7 @@ class TInvWL_Wishlist {
 			'author' => $user_id,
 			'type'   => 'default',
 		);
-		if ( empty( $this->user ) || ( $data['author'] != $this->user ) ) { // WPCS: loose comparison ok.
+		if ( ! current_user_can( 'tinvwl_general_settings' ) && ( empty( $this->user ) || ( $data['author'] != $this->user ) ) ) { // WPCS: loose comparison ok.
 			$data['status'] = 'public';
 		}
 

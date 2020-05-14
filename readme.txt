@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.20.0
+Stable tag: 1.20.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.20.1 =
+*Release Date - 14 May 2020*
+
+* Fixed Wishlist REST API get_by_user method issue when an extra wishlist always created on each request
+* The href attribute removed from add to wishlist button tag
+* Wishlist REST API frontend request changed to POST method
+
 = 1.20.0 =
 *Release Date - 12 May 2020*
 

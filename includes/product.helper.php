@@ -670,7 +670,6 @@ class TInvWL_Product {
 		if ( empty( $meta ) ) {
 			return '';
 		}
-		ksort( $meta );
 
 		return json_encode( $meta );
 	}

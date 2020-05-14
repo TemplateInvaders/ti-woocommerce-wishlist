@@ -4,7 +4,7 @@
  *
  * @name Product Options and Price Calculation Formulas for WooCommerce – Uni CPO
  *
- * @version 4.7.4
+ * @version 4.7.5
  *
  * @slug uni-woo-custom-product-options
  *
@@ -30,6 +30,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_uni_woo_custom_product_options'
 	 */
 
 	function tinv_wishlist_item_meta_uni_woo_custom_product_options( $item_data, $product_id, $variation_id ) {
+
 		if ( class_exists( 'Uni_Cpo' ) ) {
 			foreach ( array_keys( $item_data ) as $key ) {
 				if ( strpos( $key, 'cpo_' ) === 0 ) {
@@ -39,7 +40,11 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_uni_woo_custom_product_options'
 
 			if ( ! empty( $item_data ) ) {
 
-				$form_data = $item_data;
+				$form_data = array();
+
+				foreach ( $item_data as $key => $value ) {
+					$form_data[ $key ] = $value['display'];
+				}
 
 				$filtered_form_data = array_filter( $form_data, function ( $k ) use ( $form_data ) {
 					return false !== strpos( $k, UniCpo()->get_var_slug() ) && ! empty( $form_data[ $k ] );
@@ -53,6 +58,26 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_uni_woo_custom_product_options'
 						foreach ( $posts_ids as $post_id ) {
 							$option = uni_cpo_get_option( $post_id );
 							if ( is_object( $option ) ) {
+								$calculate_result = $option->calculate( $filtered_form_data );
+								if ( is_array( $calculate_result ) && isset( $calculate_result[ $option->get_slug() ] ) ) {
+									if ( is_array( $calculate_result[ $option->get_slug() ]['order_meta'] ) ) {
+										$calculate_result[ $option->get_slug() ]['order_meta'] = array_map( function ( $item ) {
+											if ( ! is_numeric( $item ) ) {
+												return esc_html__( $item );
+											} else {
+												return $item;
+											}
+										}, $calculate_result[ $option->get_slug() ]['order_meta'] );
+										$display_value                                         = implode( ', ', $calculate_result[ $option->get_slug() ]['order_meta'] );
+									} else {
+										if ( ! is_numeric( $calculate_result[ $option->get_slug() ]['order_meta'] ) ) {
+											$display_value = esc_html__( $calculate_result[ $option->get_slug() ]['order_meta'] );
+										} else {
+											$display_value = $calculate_result[ $option->get_slug() ]['order_meta'];
+										}
+									}
+									$item_data[ $option->get_slug() ]['display'] = $display_value;
+								}
 								$item_data[ $option->get_slug() ]['key'] = uni_cpo_sanitize_label( $option->cpo_order_label() );
 							}
 						}

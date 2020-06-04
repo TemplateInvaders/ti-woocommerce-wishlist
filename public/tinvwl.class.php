@@ -105,7 +105,7 @@ class TInvWL_Public_TInvWL {
 	 * @return mixed
 	 */
 	function add_rewrite_rules_raw( $rules ) {
-		if ( tinv_get_option( 'permalinks', 'force' ) ) {
+		if ( is_array( self::$rules_raw ) && tinv_get_option( 'permalinks', 'force' ) ) {
 			self::add_rewrite_rules();
 			$rules = self::$rules_raw + $rules;
 		}

@@ -96,7 +96,7 @@ if ( class_exists( 'Addify_Woo_Hide_Price_Front' ) ) {
 	}
 
 	//wishlist add to cart button
-	add_filter( 'tinvwl_wishlist_item_action_add_to_cart', 'product_allow_add_to_cart_afwhp', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_action_add_to_cart', 'tinvwl_product_allow_add_to_cart_afwhp', 10, 3 );
 
 	/**
 	 * Allow show button add to cart
@@ -107,7 +107,7 @@ if ( class_exists( 'Addify_Woo_Hide_Price_Front' ) ) {
 	 *
 	 * @return boolean
 	 */
-	function product_allow_add_to_cart_afwhp( $allow, $wlproduct, $product ) {
+	function tinvwl_product_allow_add_to_cart_afwhp( $allow, $wlproduct, $product ) {
 
 		$args  = array(
 				'post_type'   => 'addify_whp',

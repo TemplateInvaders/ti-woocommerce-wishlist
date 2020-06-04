@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if ( ! function_exists( 'gf_productaddon_support' ) ) {
+if ( ! function_exists( 'tinvwl_gf_productaddon_support' ) ) {
 
 	/**
 	 * Add supports WooCommerce - Gravity Forms Product Add-Ons
 	 */
-	function gf_productaddon_support() {
+	function tinvwl_gf_productaddon_support() {
 		if ( ! class_exists( 'woocommerce_gravityforms' ) ) {
 			return false;
 		}
@@ -85,7 +85,7 @@ if ( ! function_exists( 'gf_productaddon_support' ) ) {
 		}
 	}
 
-	add_action( 'init', 'gf_productaddon_support' );
+	add_action( 'init', 'tinvwl_gf_productaddon_support' );
 } // End if().
 
 if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {

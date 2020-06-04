@@ -26,7 +26,7 @@ if ( ! class_exists( 'Abstract_Product_Table_Data' ) ) {
  *
  * @license   GPL-3.0
  */
-class Product_Table_Data_Wishlist extends Abstract_Product_Table_Data {
+class TINVWL_Product_Table_Data_Wishlist extends Abstract_Product_Table_Data {
 
 	public function get_data() {
 		return apply_filters( 'wc_product_table_data_wishlist', do_shortcode( '[ti_wishlists_addtowishlist]' ), $this->product );
@@ -35,5 +35,5 @@ class Product_Table_Data_Wishlist extends Abstract_Product_Table_Data {
 }
 
 add_filter( 'wc_product_table_custom_table_data_wishlist', function ( $data_obj, $product, $args ) {
-	return new Product_Table_Data_Wishlist( $product );
+	return new TINVWL_Product_Table_Data_Wishlist( $product );
 }, 10, 3 );

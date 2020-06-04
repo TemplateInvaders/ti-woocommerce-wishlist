@@ -23,8 +23,8 @@ if ( defined( 'myCRED_VERSION' ) ) {
 	/**
 	 * Register Hook
 	 */
-	add_filter( 'mycred_setup_hooks', 'mycred_register_ti_woocommerce_wishlist_hook', 100 );
-	function mycred_register_ti_woocommerce_wishlist_hook( $installed ) {
+	add_filter( 'mycred_setup_hooks', 'tinvwl_mycred_register_ti_woocommerce_wishlist_hook', 100 );
+	function tinvwl_mycred_register_ti_woocommerce_wishlist_hook( $installed ) {
 
 		$installed['tinvwl'] = array(
 			'title'       => __( 'WooCommerce Wishlist', 'ti-woocommerce-wishlist' ),
@@ -39,8 +39,8 @@ if ( defined( 'myCRED_VERSION' ) ) {
 	/**
 	 * TI WooCommerce Wihslist Hook
 	 */
-	add_action( 'mycred_load_hooks', 'mycred_load_ti_woocommerce_wishlist_hook', 100 );
-	function mycred_load_ti_woocommerce_wishlist_hook() {
+	add_action( 'mycred_load_hooks', 'tinvwl_mycred_load_ti_woocommerce_wishlist_hook', 100 );
+	function tinvwl_mycred_load_ti_woocommerce_wishlist_hook() {
 
 		// If the hook has been replaced or if plugin is not installed, exit now
 		if ( class_exists( 'myCRED_Hook_TinvWL' ) ) {

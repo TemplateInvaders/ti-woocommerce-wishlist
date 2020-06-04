@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if ( ! function_exists( 'kallyas_init' ) ) {
+if ( ! function_exists( 'tinvwl_kallyas_init' ) ) {
 
 	/**
 	 * Run hooks after theme init.
 	 */
-	function kallyas_init() {
+	function tinvwl_kallyas_init() {
 		if ( function_exists( 'zget_option' ) ) {
 
 			$show_cart_to_visitors = zget_option( 'show_cart_to_visitors', 'zn_woocommerce_options', false, 'yes' );
@@ -34,5 +34,5 @@ if ( ! function_exists( 'kallyas_init' ) ) {
 		}
 	}
 
-	add_action( 'init', 'kallyas_init' );
+	add_action( 'init', 'tinvwl_kallyas_init' );
 }

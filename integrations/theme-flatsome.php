@@ -17,18 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if ( ! function_exists( 'flatsome_init' ) ) {
+if ( ! function_exists( 'tinvwl_flatsome_init' ) ) {
 
 	/**
 	 * Run hooks after theme init.
 	 */
-	function flatsome_init() {
+	function tinvwl_flatsome_init() {
 		if ( function_exists( 'flatsome_option' ) ) {
 
 
 			if ( get_theme_mod( 'catalog_mode' ) ) {
 
-				add_filter( 'tinvwl_allow_addtowishlist_single_product_summary', 'flatsome_woocommerce_catalog_mode', 10, 2 );
+				add_filter( 'tinvwl_allow_addtowishlist_single_product_summary', 'tinvwl_flatsome_woocommerce_catalog_mode', 10, 2 );
 
 				switch ( tinv_get_option( 'add_to_wishlist', 'position' ) ) {
 					case 'before':
@@ -39,28 +39,28 @@ if ( ! function_exists( 'flatsome_init' ) ) {
 						break;
 				}
 
-				add_action( 'woocommerce_single_variation', 'flatsome_woocommerce_catalog_mode_variable', 20 );
+				add_action( 'woocommerce_single_variation', 'tinvwl_tinvwl_flatsome_woocommerce_catalog_mode_variable', 20 );
 
 
 			}
 		}
 	}
 
-	add_action( 'init', 'flatsome_init' );
+	add_action( 'init', 'tinvwl_flatsome_init' );
 }
 
-if ( ! function_exists( 'flatsome_woocommerce_catalog_mode_variable' ) ) {
+if ( ! function_exists( 'tinvwl_tinvwl_flatsome_woocommerce_catalog_mode_variable' ) ) {
 
 	/**
 	 * Output variation hidden field.
 	 *
 	 */
-	function flatsome_woocommerce_catalog_mode_variable() {
+	function tinvwl_tinvwl_flatsome_woocommerce_catalog_mode_variable() {
 		echo '<input type="hidden" name="variation_id" class="variation_id" value="0" />';
 	}
 }
 
-if ( ! function_exists( 'flatsome_woocommerce_catalog_mode' ) ) {
+if ( ! function_exists( 'tinvwl_flatsome_woocommerce_catalog_mode' ) ) {
 
 	/**
 	 * Output wishlist button for Flatsome catalog mode
@@ -69,7 +69,7 @@ if ( ! function_exists( 'flatsome_woocommerce_catalog_mode' ) ) {
 	 *
 	 * @return bool
 	 */
-	function flatsome_woocommerce_catalog_mode( $allow, $product ) {
+	function tinvwl_flatsome_woocommerce_catalog_mode( $allow, $product ) {
 		if ( ! $product->is_type( 'variable' ) ) {
 			return true;
 		}

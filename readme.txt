@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.20.1
+Stable tag: 1.20.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,16 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.20.2 =
+*Release Date - 4 June 2020*
+
+* Added compatibility with WooCommerce 4.2.x
+* Added integration with WooCommerce Product Table plugin as a custom table column 'wishlist'
+* Improved integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
+* Fixed PHP Fatal error in case wishlist page doesn't set and forced permalinks option is active
+* Fixed an issue when custom button icon didn't save in settings
+
+
 = 1.20.1 =
 *Release Date - 14 May 2020*
 

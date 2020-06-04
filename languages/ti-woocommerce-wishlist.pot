@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.20.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.20.1 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.20.2
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.20.2 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.20.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.20.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -988,6 +988,18 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+#: integrations/gift-cards-for-woocommerce.php:95
+msgid "To"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:98
+msgid "To Email"
+msgstr ""
+
+#: integrations/gift-cards-for-woocommerce.php:101
+msgid "Address"
+msgstr ""
+
 #: integrations/gift-cards-for-woocommerce.php:104
 msgid "Reload existing Gift Card"
 msgstr ""
@@ -1034,6 +1046,14 @@ msgstr ""
 
 #: integrations/product-extras-for-woocommerce.php:69
 msgid "Flat rate cost"
+msgstr ""
+
+#: integrations/woocommerce-composite-products.php:116, integrations/woocommerce-mix-and-match-products.php:86, integrations/woocommerce-product-bundles.php:110, integrations/yith-woocommerce-product-bundles.php:138, templates/ti-wishlist-user.php:143, templates/ti-wishlist.php:151
+msgid "In stock"
+msgstr ""
+
+#: integrations/woocommerce-gravityforms-product-addons.php:43
+msgid "Select options"
 msgstr ""
 
 #: integrations/wp-grid-builder.php:72

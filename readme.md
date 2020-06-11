@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.20.2
+Stable tag: 1.20.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.20.3 ###
+*Release Date - 11 June 2020*
+
+* Fixed WooCommerce Product Table integration to use proper wishlist button shortcode
+* Fixed an issue with "Already in wishlist" text for variable products
+
 ### 1.20.2 ###
 *Release Date - 4 June 2020*
 

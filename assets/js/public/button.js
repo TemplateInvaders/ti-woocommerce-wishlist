@@ -400,7 +400,7 @@
 				var params = {
 					'ids': tinvwl_products,
 					'counter': tinvwl_counter,
-					'tinvwl_request':true,
+					'tinvwl_request': true,
 				};
 
 				if (tinvwl_add_to_wishlist.wpml) {
@@ -428,13 +428,14 @@
 						e.each(function () {
 
 							var vid = $(this).data('tinv-wl-productvariation'),
+								vids = $(this).data('tinv-wl-productvariations') || [],
 								j = false;
 
 							for (var i in item) {
 
 								if (item[i].hasOwnProperty('in')
 									&& Array.isArray(item[i]['in'])
-									&& (-1 < (item[i]['in'] || []).indexOf(id) || -1 < (item[i]['in'] || []).indexOf(vid))) {
+									&& (-1 < (item[i]['in'] || []).indexOf(id) || -1 < (item[i]['in'] || []).indexOf(vid) || vids.some(r => (item[i]['in'] || []).indexOf(r) >= 0))) {
 									j = true;
 								}
 							}

@@ -460,10 +460,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                 e = $("a.tinvwl_add_to_wishlist_button[data-tinv-wl-product='" + id + "']");
             e.each(function () {
               var vid = $(this).data('tinv-wl-productvariation'),
+                  vids = $(this).data('tinv-wl-productvariations') || [],
                   j = false;
 
               for (var i in item) {
-                if (item[i].hasOwnProperty('in') && Array.isArray(item[i]['in']) && (-1 < (item[i]['in'] || []).indexOf(id) || -1 < (item[i]['in'] || []).indexOf(vid))) {
+                if (item[i].hasOwnProperty('in') && Array.isArray(item[i]['in']) && (-1 < (item[i]['in'] || []).indexOf(id) || -1 < (item[i]['in'] || []).indexOf(vid) || vids.some(function (r) {
+                  return (item[i]['in'] || []).indexOf(r) >= 0;
+                }))) {
                   j = true;
                 }
               }

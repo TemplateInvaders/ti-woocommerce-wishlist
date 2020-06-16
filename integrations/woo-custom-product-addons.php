@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Custom Product Addons
  *
- * @version 2.3.5
+ * @version 2.4.4
  *
  * @slug woo-custom-product-addons
  *
@@ -179,3 +179,65 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons' ) 
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_product_addons', 10, 3 );
 } // End if().
+
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons_text_button' ) ) {
+
+	/**
+	 * Change text for button add to cart
+	 *
+	 * @param string $text_add_to_cart Text "Add to cart".
+	 * @param array $wl_product Wishlist product.
+	 * @param object $product WooCommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_custom_product_addons_text_button( $text_add_to_cart, $wl_product, $product ) {
+
+		if ( function_exists( 'WCPA' ) ) {
+			$product_id = $product->get_id();
+			$form       = new WCPA_Form();
+			$post_ids   = $form->get_form_ids( $product_id );
+			$data       = array();
+			if ( wcpa_get_option( 'form_loading_order_by_date' ) === true ) {
+				if ( is_array( $post_ids ) && count( $post_ids ) ) {
+					$post_ids = get_posts( array(
+						'posts_per_page' => - 1,
+						'include'        => $post_ids,
+						'fields'         => 'ids',
+						'post_type'      => WCPA_POST_TYPE,
+						'posts_per_page' => - 1
+					) );
+				}
+			}
+			foreach ( $post_ids as $id ) {
+				if ( get_post_status( $id ) == 'publish' ) {
+					$json_string  = get_post_meta( $id, WCPA_FORM_META_KEY, true );
+					$json_encoded = json_decode( $json_string );
+					if ( $json_encoded && is_array( $json_encoded ) ) {
+						$data = array_merge( $data, $json_encoded );
+					}
+				}
+			}
+
+			$status = true;
+
+			foreach ( $data as $v ) {
+				if ( $v->type != 'file' && isset( $v->required ) && $v->required && ( ! isset( $wl_product['meta'][ $v->name ] ) || empty( $wl_product['meta'][ $v->name ] ) ) ) {
+					$status = false;
+				}
+			}
+
+			if ( ! $status ) {
+
+				$WCPA = new WCPA_Front_End();
+
+				return $WCPA->add_to_cart_text( $text_add_to_cart, $product );
+			}
+		}
+
+		return $text_add_to_cart;
+
+	}
+
+	add_filter( 'tinvwl_wishlist_item_add_to_cart', 'tinvwl_item_price_woocommerce_custom_product_addons_text_button', 10, 3 );
+}

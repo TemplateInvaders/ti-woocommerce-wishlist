@@ -387,6 +387,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     $(document).on('hide_variation', '.variations_form', function (a) {
       var e = $(this).find('.tinvwl_add_to_wishlist_button');
+      e.attr('data-tinv-wl-productvariation', 0);
+
+      if (e.length && e.attr('data-tinv-wl-list')) {
+        var f = JSON.parse(e.attr('data-tinv-wl-list')),
+            j = false,
+            g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
+
+        for (var i in f) {
+          if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(0)) {
+            j = true;
+          }
+        }
+
+        e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j && g).attr('data-tinv-wl-action', j && g ? 'remove' : 'addto');
+      }
 
       if (e.length && !tinvwl_add_to_wishlist.allow_parent_variable) {
         a.preventDefault();
@@ -395,6 +410,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     });
     $(document).on('show_variation', '.variations_form', function (a, b, d) {
       var e = $(this).find('.tinvwl_add_to_wishlist_button');
+      e.attr('data-tinv-wl-productvariation', b.variation_id);
 
       if (e.length && e.attr('data-tinv-wl-list')) {
         var f = JSON.parse(e.attr('data-tinv-wl-list')),

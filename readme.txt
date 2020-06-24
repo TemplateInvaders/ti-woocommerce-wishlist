@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.20.3
+Stable tag: 1.20.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.20.4 =
+*Release Date - 24 June 2020*
+
+* Fixed accessibility issue for add to wishlist button markup
+* Fixed an issue with file upload for the integration of WooCommerce TM Extra Product Options plugin
+* Fixed an issue with the wrong wishlist status for add to wishlist shortcode
+* Fixed an issue when wishlist status wrong on specific variation product page load
+* Improved security for Wishlist REST API methods
+* Enhanced integration with WooCommerce Custom Product Addons plugin
+* Updated integration with WP Fastest Cache plugin
+
 = 1.20.3 =
 *Release Date - 11 June 2020*
 
@@ -199,218 +210,5 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Fixed an issue when adding product variation that has an additional attribute(s) set as 'Any ...' to wishlist and from wishlist to cart
 * Fixed an issue with duplicated buttons for out of stock products and Divi theme
 * Fixed an issue with WP Rocket cache and WP REST API authorization for non-logged users
-
-= 1.19.0 =
-*Release Date - 24 April 2020*
-
-* Added integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
-* Added integration with [Hide Price and Add to Cart Button](https://woocommerce.com/products/hide-price-add-to-cart-button/?aff=3955) plugin
-* Added integration with [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
-* Added integration with WooCommerce Product Add-Ons Ultimate plugin
-* Added compatibility for wishlist products counter in Woostify theme
-* Fixed integration with WooCommerce Rental & Bookings System plugin
-* Fixed integration with Improved Product Options for WooCommerce plugin
-* Improved integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-* Fixed multiple REST API queries for dynamic buttons
-* Fixed wishlist product counter "hide zero value" issue
-
-= 1.18.4 =
-*Release Date - 22 April 2020*
-
-* Added {product_sku} placeholder for add to wishlist message text
-* Added filter `tinvwl_addtowishlist_message_placeholders` to override add to wishlist message placeholders from  a 3rd party code
-* Fixed an issue with multiple wishlist button requests for AJAX products filtering
-
-= 1.18.3 =
-*Release Date - 18 April 2020*
-
-* Fixed an issue with wishlist buttons for multilingual setups
-
-= 1.18.2 =
-*Release Date - 14 April 2020*
-
-* Fixed an issue with REST API requests error for plain permalinks structure
-
-= 1.18.1 =
-*Release Date - 14 April 2020*
-
-* Fixed a JavaScript error for variable products with a default variation
-
-= 1.18.0 =
-*Release Date - 14 April 2020*
-
-* Improved cache compatibility for 'add to wishlist' button states and wishlist products counter
-* Wishlist products counter updating moved from WooCommerce AJAX fragments to a custom solution
-* Added option to add wishlist products counter to multiple WordPress menus from plugin settings
-* Added filter 'tinvwl_add_to_menu' to allow disabling wishlist products counter from 3rd party code
-* Added filter 'tinvwl_addtowishlist_not_allowed' for validation of  product addition to wishlist from a 3rd party code
-
-= 1.17.1 =
-*Release Date - 02 April 2020*
-
-* Fixed PHP fatal error for WP Rocket integration
-
-= 1.17.0 =
-*Release Date - 29 March 2020*
-
-* WordPress 5.4 support
-* WooCommerce 4.0.x support
-* Added tool for export and import plugin settings
-* Added to share buttons translated title
-* REST API tweak: empty wishlist returns 200 response code and empty array now
-
-
-= 1.16.2 =
-*Release Date - 27 January 2020*
-
-* Fixed PHP error for WP Rocket old versions
-
-= 1.16.1 =
-*Release Date - 24 January 2020*
-
-* Fixed PHP Warning related to cart clearing in WooCommerce 3.9+
-* WP Rocket integration updated to use dynamic cookies for cache and fixed issue with cached wishlist products counter value
-
-= 1.16.0 =
-*Release Date - 30 December 2019*
-
-* WooCommerce 3.9.0 support
-* PHP 7.4 support
-* Added {product_name} placeholder support for options of add to wishlist notice text
-* Added filter `tinvwl_api_wishlist_get_products_response` to allow modify REST API response via 3rd party code
-* Fixed fatal error throws by add to wishlist shortcode
-* Fixed wishlist frontend issue when WooCommerce session doesn’t exists
-
-= 1.15.4 =
-*Release Date - 16 December 2019*
-
-* Added compatibility with Kallyas theme and guest issue when cart is hidden
-* Fixed product meta display on wishlist table
-* Improved compatibility with Divi builder
-
-= 1.15.3 =
-*Release Date - 12 December 2019*
-
-* Added compatibility for Divi builder to fix 'out of stock' issue
-* Enhanced compatibility with Improved Product Options for WooCommerce plugin
-
-= 1.15.2 =
-*Release Date - 6 December 2019*
-
-* Added compatibility with WooCommerce Variation Swatches - Pro plugin
-* Enhanced integration with WP Grid Builder plugin
-* Updated integration with WooCommerce TM Extra Product Options plugin
-* Updated integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955) plugin
-
-= 1.15.1 =
-*Release Date - 4 December 2019*
-
-* Added WP GridBuilder plugin custom block to show wishlist button
-* Fixed bulk-adding products from wishlist to cart for WooCommerce versions below 3.8
-* Fixed pricing issue for TM Extra Product Options plugin integration
-
-= 1.15.0 =
-*Release Date - 27 November 2019*
-
-* Added support for WordPress 5.3
-* Added support for WooCommerce 3.8
-* Added compatibility with Flatsome theme
-* Added AutomateWoo plugin integration with following triggers:
- * product added to wishlist;
- * wishlist reminder;
- * product from wishlist added to cart;
- * product from wishlist purchased;
- * product removed from wishlist;
-* Fixed issue related to 'Add All to cart' action
-* Fixed issue with removing products after adding to cart
-* Fixed issue with uppercase while wishlist share via copy to clipboard action
-
-= 1.14.6 =
-*Release Date - 1 October 2019*
-
-* Fixed PHP fatal error from product title method
-
-= 1.14.5 =
-*Release Date - 30 September 2019*
-
-* Added compatibility with Flatsome theme
-* Added compatibility with WooCommerce Variations Table - Grid plugin
-* Added compatibility with YITH WooCommerce Quick View plugin
-* Enhanced integration with WooCommerce Composite Products plugin
-* Enhanced integration with WooCommerce Product Bundles plugin
-* Enhanced integration with Improved Product Options for WooCommerce plugin
-* Updated title method to the name method for WooCommerce 3+
-* Fixed potential warning for conditional function is_page()
-* Fixed JavaScript issue with URL get parameters
-
-= 1.14.4 =
-*Release Date - 4 September 2019*
-
-* Fixed an issue with bundle products inside the composite product
-* Fixed Setup Wizard errors
-* Fixed WooCommerce 'My account' endpoint rewrites issue
-
-= 1.14.3 =
-*Release Date - 31 August 2019*
-
-* Added compatibility for hook 'woocommerce_before_cart_item_quantity_zero' that deprecated from WooCommerce 3.7.0
-* Fixed 'Add All to Cart' button issue
-* Fixed PHP Error when 'wc_clear_notices' method is not available
-* Improved stylesheets loading for plugin settings
-
-= 1.14.2 =
-*Release Date - 28 August 2019*
-
-* Added JavaScript event 'tinvwl_wishlist_added_status'
-* Added integration with WP Grid Builder plugin
-* Added integration with WooCommerce Show Single Variations by Iconic plugin
-* Fixed the option name 'Already In Wishlist'
-* Fixed PHP Error when 'wc_clear_notices' method is not available
-* Fixed integration with WooCommerce TM Extra Product Options plugin
-* Fixed WooCommerce.com affiliate code issue
-* Improved integration with WooCommerce Custom Product Addons (Pro) plugin
-
-= 1.14.1 =
-*Release Date - 15 August 2019*
-
-* Added feature to show 'Already on Wishlist' text on buttons
-
-= 1.14.0 =
-*Release Date - 12 August 2019*
-
-* Added support for WooCommerce 3.7
-* Added compatibility with [Variations Swatches and Photos](https://woocommerce.com/products/variation-swatches-and-photos/?aff=3955) plugin
-* Added compatibility with Clever Swatches plugin
-* Added compatibility with WooCommerce Custom Product Addons (Pro) plugin
-* Added compatibility with WooCommerce Rental & Bookings System plugin
-* Added compatibility with Booking & Appointment Plugin for WooCommerce
-* Refactored all 3rd party integrations code
-* Fixed an issue with properly load custom translation files
-
-= 1.13.2 =
-*Release Date - 30 July 2019*
-
-* Fixed a compatibility issue with WooCommerce Show Single Variations by Iconic plugin
-
-= 1.13.1 =
-*Release Date - 29 July 2019*
-
-* Fixed unclosed 'strong' tag in admin notification
-* Fixed empty URL issue for sharing buttons
-* Fixed performance for meta tags addition on the wishlist page
-* Fixed empty text issue for 'View Wishlist' button
-* Removed Google Plus (G+) sharing option since the service is closed
-* Added cleanup of deleted products from wishlist
-* Added parameters to the 'tinvwl_get_wishlist_products' to get a custom products query results
-
-= 1.13.0 =
-*Release Date - 15 July 2019*
-
-* Added wishlist [REST API](https://templateinvaders.com/api/wishlist/?utm_source=wordpressorg&utm_content=changelog)
-* Refactored filters and actions
-* Prevent plugin network-wide activation
-* Fixed an issue with deleted products in frontend templates
-* Fixed wishlist products query issue  on multilingual setup
-* TM Product Options plugin integration updated
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce TM Extra Product Options
  *
- * @version 4.9.11
+ * @version 5.0.12.1
  *
  * @slug woocommerce-tm-extra-product-options
  *
@@ -127,3 +127,44 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_tm_extra_product_options', 10, 3 );
 } // End if().
+
+add_filter( 'tinvwl_addtowishlist_prepare_form', 'tinvwl_meta_woocommerce_tm_extra_product_options', 10, 3 );
+
+function tinvwl_meta_woocommerce_tm_extra_product_options( $meta, $post, $files ) {
+
+	if ( defined( 'THEMECOMPLETE_EPO_VERSION' ) || defined( 'TM_EPO_VERSION' ) ) {
+		foreach ( $files as $name => $file ) {
+
+			if ( array_key_exists( $name, $meta ) ) {
+				$upload = THEMECOMPLETE_EPO()->upload_file( $file );
+				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
+					$meta[ $name ] = wc_clean( $upload['url'] );
+				}
+			}
+		}
+	}
+
+	return $meta;
+}
+
+add_filter( 'tinvwl_product_prepare_meta', 'tinvwl_cart_meta_woocommerce_tm_extra_product_options' );
+
+function tinvwl_cart_meta_woocommerce_tm_extra_product_options( $meta ) {
+
+	if ( defined( 'THEMECOMPLETE_EPO_VERSION' ) || defined( 'TM_EPO_VERSION' ) ) {
+
+		$files = $_FILES;
+
+		foreach ( $files as $name => $file ) {
+
+			if ( ! array_key_exists( $name, $meta ) ) {
+				$upload = THEMECOMPLETE_EPO()->upload_file( $file );
+				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
+					$meta[ $name ] = wc_clean( $upload['url'] );
+				}
+			}
+		}
+	}
+
+	return $meta;
+}

@@ -584,6 +584,35 @@ class TInvWL_Product {
 	}
 
 	/**
+	 * Get wishlist data by product from wishlist
+	 *
+	 * @param integer $product_id Product id.
+	 *
+	 * @return boolean
+	 * @global wpdb $wpdb
+	 *
+	 */
+	function get_wishlist_by_product_id( $product_id = 0 ) {
+		if ( empty( $product_id ) ) {
+			return false;
+		}
+
+		global $wpdb;
+		$sql    = "SELECT `wishlist_id` FROM `{$this->table}` WHERE `ID`={$product_id}";
+		$result = $wpdb->get_results( $sql, ARRAY_A );
+
+		if ( ! $result ) {
+			return false;
+		}
+
+		$wl = new TInvWL_Wishlist();
+
+		$wishlist = $wl->get_by_id( $result[0]['wishlist_id'] );
+
+		return $wishlist;
+	}
+
+	/**
 	 * Remove product by ID
 	 *
 	 * @param array $data Product data.

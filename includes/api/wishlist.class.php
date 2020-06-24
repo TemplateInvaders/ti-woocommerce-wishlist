@@ -174,7 +174,7 @@ class TInvWL_Includes_API_Wishlist {
 					$data['author'] = $request['user_id'];
 				}
 
-				if ( $data && current_user_can( 'tinvwl_general_settings' ) ) {
+				if ( $data && ( current_user_can( 'tinvwl_general_settings' || $wishlist['author'] === get_current_user_id() ) ) ) {
 					$update = $wl->update( $wishlist['ID'], $data );
 
 					if ( $update ) {
@@ -267,7 +267,7 @@ class TInvWL_Includes_API_Wishlist {
 					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_invalid_share_key', __( 'Invalid wishlist share key.', 'ti-woocommerce-wishlist' ), 400 );
 				}
 
-				if ( ! current_user_can( 'tinvwl_general_settings' ) ) {
+				if ( ! ( current_user_can( 'tinvwl_general_settings' ) || $wishlist['author'] === get_current_user_id() ) ) {
 					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_wishlist_forbidden', __( 'Add product to wishlist failed.', 'ti-woocommerce-wishlist' ), 403 );
 				}
 
@@ -283,6 +283,7 @@ class TInvWL_Includes_API_Wishlist {
 				if ( $request['variation_id'] ) {
 					$args['variation_id'] = $request['variation_id'];
 				}
+				$meta = array();
 				if ( $request['meta'] ) {
 					$meta = $request['meta'];
 				}
@@ -319,11 +320,16 @@ class TInvWL_Includes_API_Wishlist {
 
 			if ( ! empty( $item_id ) ) {
 
-				if ( ! current_user_can( 'tinvwl_general_settings' ) ) {
-					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_wishlist_forbidden', __( 'Product not found.', 'ti-woocommerce-wishlist' ), 403 );
+				$wlp      = new TInvWL_Product();
+				$wishlist = $wlp->get_wishlist_by_product_id( $item_id );
+
+				if ( ! $wishlist ) {
+					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_wishlist_product_not_found', __( 'Product not found.', 'ti-woocommerce-wishlist' ), 400 );
 				}
 
-				$wlp = new TInvWL_Product();
+				if ( ! ( current_user_can( 'tinvwl_general_settings' ) || $wishlist['author'] === get_current_user_id() ) ) {
+					throw new WC_REST_Exception( 'ti_woocommerce_wishlist_api_wishlist_forbidden', __( 'Remove product from wishlist failed.', 'ti-woocommerce-wishlist' ), 403 );
+				}
 
 				$args       = array();
 				$args['ID'] = $item_id;

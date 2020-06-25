@@ -178,7 +178,7 @@ gulp.task('Styles', (done) => {
 });
 
 gulp.task('StylesMin', (done) => {
-	return minifyStyle(gulp.src('./assets/css/*.css', {allowEmpty: true}),
+	return minifyStyle(gulp.src(['./assets/css/*.css','!./assets/css/*.min.css'], {allowEmpty: true}),
 		{styleDestination: './assets/css/'}).pipe(notify({
 		message: '\n\n✅  ===> STYLES MIN — completed!\n',
 		onLast: true

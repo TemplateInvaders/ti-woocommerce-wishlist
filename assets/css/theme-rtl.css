@@ -33,8 +33,8 @@
   padding: 7px 10px;
   background-image: url(../img/select_caret_t.png);
   background-repeat: no-repeat;
-  background-position: 96% center;
-  background-position: calc(100% - 15px) center; }
+  background-position: 4% center;
+  background-position: calc(100% - (100% - 15px)) center; }
 
 .tinv-wishlist button {
   text-align: center;
@@ -91,8 +91,8 @@
   padding: 11.5px 20px; }
 
 .woocommerce.tinv-wishlist .tinvwl-continue-shop {
-  padding-left: 17px;
-  padding-right: 17px; }
+  padding-right: 17px;
+  padding-left: 17px; }
 
 .tinv-wishlist input[type="text"], .tinv-wishlist input[type="email"], .tinv-wishlist input[type="url"], .tinv-wishlist input[type="password"], .tinv-wishlist input[type="search"], .tinv-wishlist input[type="tel"], .tinv-wishlist input[type="number"], .tinv-wishlist textarea, .tinv-wishlist select, .tinv-wishlist .product-quantity input[type="text"].qty {
   font-family: inherit;
@@ -115,7 +115,7 @@
   .tinv-wishlist table td {
     padding: 27px 12px; }
   .tinv-wishlist table .entry-date {
-    background: 0 0;
+    background: 100% 0;
     padding: 0;
     margin: 0;
     color: inherit; }
@@ -129,39 +129,39 @@
     font-size: 12px; }
     .tinv-wishlist .product-stock i.ftinvwl-times {
       font-size: 20px;
-      margin-right: 8px; }
+      margin-left: 8px; }
   .tinv-wishlist .tinvwl-table-manage-list td.product-quantity {
-    padding-left: 9px;
-    padding-right: 9px; }
+    padding-right: 9px;
+    padding-left: 9px; }
   .tinv-wishlist.woocommerce table .quantity .qty {
     padding: 8px 12px; }
   .tinv-wishlist table.tinvwl-table-manage-list .product-action {
-    padding-left: 11px;
-    padding-right: 11px; }
+    padding-right: 11px;
+    padding-left: 11px; }
   .tinv-wishlist .tinvwl-table-manage-list .product-action .tinvwl_move_product_button i, .tinv-wishlist .tinvwl-table-manage-list .product-action button[name=tinvwl-remove] i {
     font-size: 12px; }
   .tinv-wishlist .wishlist-cb {
-    padding-left: 10px;
-    padding-right: 10px; }
+    padding-right: 10px;
+    padding-left: 10px; }
   .tinv-wishlist .wishlist-name {
     min-width: 340px; }
   .tinv-wishlist .wishlist-privacy {
-    padding-left: 15px;
     padding-right: 15px;
+    padding-left: 15px;
     min-width: 130px; }
   .tinv-wishlist table:not(.tinvwl-public) .wishlist-date {
     min-width: 130px; }
   .tinv-wishlist .wishlist-action {
-    padding-left: 10px;
-    padding-right: 10px; }
+    padding-right: 10px;
+    padding-left: 10px; }
   .tinv-wishlist .tinv-login.tinv-wrapped-block {
     padding: 30px; }
   .tinv-wishlist .tinv-login form input[name=login] {
     min-width: 219px; }
   .tinv-wishlist .tinv-login input[name=username] {
-    padding-left: 40px; }
+    padding-right: 40px; }
   .tinv-wishlist .tinv-login input[name=password] {
-    padding-left: 36px; }
+    padding-right: 36px; }
   .tinv-wishlist .tinv-login .form-row {
     position: relative; }
   .tinv-wishlist .tinv-login .tinvwl-icon {
@@ -176,11 +176,11 @@
   .tinv-wishlist .tinvwl_added_to_wishlist .tinvwl_button_view, .tinv-wishlist .tinvwl_created_wishlist .tinvwl_button_view {
     padding: 11px 11px 14px 11px; }
   .tinv-wishlist .tinv-modal .tinvwl-buttons-group button.tinvwl_button_close, .tinv-wishlist .tinv-modal .tinvwl-buttons-group button.tinvwl_button_view {
-    float: left !important;
+    float: right !important;
     width: calc(50% - 5px);
     white-space: normal; }
   .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + a button, .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + button {
-    margin: 0 0 0 10px; }
+    margin: 0 10px 0 0; }
   .tinv-wishlist .tinv-header h2 {
     font-family: inherit;
     text-transform: none;
@@ -206,8 +206,8 @@
 
 @media only screen and (max-width: 1024px) and (min-width: 641px) {
   .tinv-wishlist table.tinvwl-table-manage-list td.product-thumbnail {
-    padding-left: 10px;
-    padding-right: 10px; }
+    padding-right: 10px;
+    padding-left: 10px; }
   .tinv-wishlist .product-action .button {
     padding: 11.5px 12px !important; } }
 
@@ -262,7 +262,7 @@
 
 @media only screen and (max-width: 1024px) {
   .tinv-wishlist .wishlist-action button[value=manage_remove] {
-    padding-left: 17px; } }
+    padding-right: 17px; } }
 
 @media only screen and (max-width: 1024px) and (min-width: 641px) {
   .tinv-wishlist tfoot .tinvwl-to-left select {
@@ -325,7 +325,7 @@
 .woocommerce.tinv-wishlist #respond input#submit, .woocommerce.tinv-wishlist a.button, .woocommerce.tinv-wishlist button.button, .woocommerce.tinv-wishlist input.button {
   font-family: inherit;
   font-size: 14px;
-  margin-right: 0;
+  margin-left: 0;
   color: #515151;
   background-color: #ebe9eb;
   border-radius: 3px;
@@ -375,17 +375,17 @@
 
 .tinv-wishlist table {
   border-style: solid;
-  border-width: 1px 0 0 1px;
+  border-width: 1px 1px 0 0;
   line-height: 16px; }
   .tinv-wishlist table th {
     border: 1px solid #d1d1d1; }
   .tinv-wishlist table td {
     border-style: solid;
-    border-width: 0 1px 1px 0;
+    border-width: 0 0 1px 1px;
     font-size: 14px;
     font-family: inherit; }
   .tinv-wishlist table th {
-    border-width: 0 1px 1px 0;
+    border-width: 0 0 1px 1px;
     font-size: 14px;
     font-family: inherit;
     font-weight: 700;
@@ -456,6 +456,6 @@
   .tinv-wishlist select {
     background-image: url(../img/select_caret_t@2x.png); } }
 
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJ0aGVtZS5jc3MiXSwiZmlsZSI6InRoZW1lLmNzcyJ9 */
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJ0aGVtZS1ydGwuY3NzIl0sImZpbGUiOiJ0aGVtZS1ydGwuY3NzIn0= */
 
-/*# sourceMappingURL=theme.css.map */
+/*# sourceMappingURL=theme-rtl.css.map */

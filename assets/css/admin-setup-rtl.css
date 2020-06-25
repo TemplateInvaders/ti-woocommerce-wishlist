@@ -19,7 +19,7 @@ html {
   vertical-align: middle; }
 
 .tinvwl-wizard .tinvwl-logo img + h2 {
-  margin-left: 15px; }
+  margin-right: 15px; }
 
 .tinvwl-wizard .tinvwl-logo h2 {
   font-size: 18px;
@@ -46,13 +46,13 @@ html {
   text-transform: uppercase;
   padding: 0 0 4px;
   margin-top: 20px;
-  margin-right: 40px;
+  margin-left: 40px;
   color: rgba(62, 62, 62, 0.4); }
 
 .tinvwl-wizard .tinvwl-progress li:before {
   content: '';
   position: absolute;
-  left: 0;
+  right: 0;
   bottom: -2px;
   width: calc(100% + 50px);
   height: 2px;
@@ -62,13 +62,13 @@ html {
   width: 100%; }
 
 .tinvwl-wizard .tinvwl-progress li.active {
-  padding-right: 40px;
-  margin-right: 0;
+  padding-left: 40px;
+  margin-left: 0;
   color: #3e3e3e; }
 
 .tinvwl-wizard .tinvwl-progress li.active.last {
-  padding-right: 0;
-  margin-right: 40px; }
+  padding-left: 0;
+  margin-left: 40px; }
 
 .tinvwl-wizard .tinvwl-progress li:last-child.last.active {
   color: #869a00; }
@@ -76,7 +76,7 @@ html {
 .tinvwl-wizard .tinvwl-progress li.active:after {
   content: '';
   position: absolute;
-  left: 0;
+  right: 0;
   bottom: -2px;
   width: calc(100% + 10px);
   height: 2px;
@@ -86,8 +86,8 @@ html {
   width: 100%; }
 
 .tinvwl-wizard .tinvwl-progress li:last-child {
-  padding-right: 0 !important;
-  margin-right: 0 !important; }
+  padding-left: 0 !important;
+  margin-left: 0 !important; }
 
 .tinvwl-wizard .tinvwl-content {
   font-family: Arial, sans-serif;
@@ -178,10 +178,10 @@ html {
   min-width: 147px; }
 
 .tinvwl-wizard .tinvwl-nav .tinvwl-next {
-  float: right; }
+  float: left; }
 
 .tinvwl-wizard .tinvwl-nav .tinvwl-skip + .tinvwl-btn {
-  margin-left: 26px; }
+  margin-right: 26px; }
 
 .tinvwl-wizard .tinwl-intro,
 .tinvwl-wizard .tinwl-finish {
@@ -224,11 +224,11 @@ html {
   color: #4b4b4b; }
 
 .tinvwl-wizard .tinwl-finish .tinvwl-btn {
-  margin-right: 14px;
+  margin-left: 14px;
   padding: 16px 26px; }
 
 .tinvwl-wizard .tinwl-finish .tinvwl-btn:last-child {
-  margin-right: 0; }
+  margin-left: 0; }
 
 .tinvwl-error .form-control {
   border: 2px solid #ff0000; }
@@ -236,7 +236,7 @@ html {
 .tinvwl-error .tinvwl-error-icon {
   position: absolute;
   top: 8px;
-  left: -10px;
+  right: -10px;
   color: #ff0000; }
 
 .tinvwl-error .tinvwl-error-desc {
@@ -262,14 +262,14 @@ html {
     margin: 0; }
   .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-intro,
   .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-finish {
-    padding-left: 50px;
-    padding-right: 50px; }
+    padding-right: 50px;
+    padding-left: 50px; }
   .tinvwl-wizard .tinvwl-nav {
     text-align: center; }
   .tinvwl-wizard .tinvwl-nav .tinvwl-next {
     float: none;
     text-align: center; } }
 
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJhZG1pbi1zZXR1cC5jc3MiXSwiZmlsZSI6ImFkbWluLXNldHVwLmNzcyJ9 */
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJhZG1pbi1zZXR1cC1ydGwuY3NzIl0sImZpbGUiOiJhZG1pbi1zZXR1cC1ydGwuY3NzIn0= */
 
-/*# sourceMappingURL=admin-setup.css.map */
+/*# sourceMappingURL=admin-setup-rtl.css.map */

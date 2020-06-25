@@ -173,7 +173,11 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'gfonts', ( is_ssl() ? 'https' : 'http' ) . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all' );
 		wp_enqueue_style( $this->_name, TINVWL_URL . 'assets/css/admin' . $suffix . '.css', array(), $this->_version, 'all' );
+		wp_style_add_data( $this->_name, 'rtl', 'replace' );
+		wp_style_add_data( $this->_name, 'suffix', $suffix );
 		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form' . $suffix . '.css', array(), $this->_version, 'all' );
+		wp_style_add_data( $this->_name . '-form', 'rtl', 'replace' );
+		wp_style_add_data( $this->_name . '-form', 'suffix', $suffix );
 	}
 
 	/**

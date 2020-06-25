@@ -398,8 +398,13 @@ class TInvWL_Public_TInvWL {
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'tinvwl', TINVWL_URL . 'assets/css/public.min.css', array(), $this->_version, 'all' );
+		wp_style_add_data( 'tinvwl', 'rtl', 'replace' );
+		wp_style_add_data( 'tinvwl', 'suffix', '.min' );
+
 		if ( ! tinv_get_option( 'style', 'customstyle' ) ) {
 			wp_enqueue_style( 'tinvwl-theme', TINVWL_URL . 'assets/css/theme.min.css', array(), $this->_version, 'all' );
+			wp_style_add_data( 'tinvwl-theme', 'rtl', 'replace' );
+			wp_style_add_data( 'tinvwl-theme', 'suffix', '.min' );
 		}
 		if ( ! tinv_get_option( 'style', 'customstyle' ) || ( tinv_get_option( 'style_plain', 'allow' ) && tinv_get_option( 'style_plain', 'css' ) ) ) {
 			$newcss = $this->dynaminc_css();

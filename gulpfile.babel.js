@@ -22,7 +22,6 @@
 /**
  * Load WPGulp Configuration.
  *
- * TODO: Customize your project in the wpgulp.js file.
  */
 const config = require('./wpgulp.config.js');
 
@@ -98,7 +97,7 @@ function processStyle(gulpStream, processOptions = {}) {
 
 	return gulpStream
 		.pipe(plumber(errorHandler))
-		.pipe(sourcemaps.init())
+		// .pipe(sourcemaps.init())
 		.pipe(
 			sass({
 				errLogToConsole: config.errLogToConsole,
@@ -107,15 +106,35 @@ function processStyle(gulpStream, processOptions = {}) {
 			})
 		)
 		.on('error', sass.logError)
+		// .pipe(sourcemaps.write({includeContent: false}))
+		// .pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(autoprefixer(config.BROWSERS_LIST))
+		// .pipe(sourcemaps.write('./'))
+		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
+		.pipe(gulp.dest(processOptions.styleDestination))
+		.pipe(filter('**/*.css')) // Filtering stream to only css files.
+		.pipe(rtlcss())                     // Convert to RTL
+		.pipe(rename({suffix: '-rtl'}))
+		.pipe(gulp.dest(processOptions.styleDestination))
+		.pipe(filter('**/*.css')) // Filtering stream to only css files.
+		;
+}
+
+function minifyStyle(gulpStream, processOptions = {}) {
+	processOptions = defaults(processOptions, {
+		styleDestination: config.styleDestination,
+	});
+
+	return gulpStream
+		.pipe(filter('**/*.css')) // Filtering stream to only css files.
+		.pipe(sourcemaps.init())
 		.pipe(sourcemaps.write({includeContent: false}))
 		.pipe(sourcemaps.init({loadMaps: true}))
-		.pipe(autoprefixer(config.BROWSERS_LIST))
 		.pipe(sourcemaps.write('./'))
 		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
 		.pipe(gulp.dest(processOptions.styleDestination))
 		.pipe(filter('**/*.css')) // Filtering stream to only css files.
 		.pipe(mmq({log: true})) // Merge Media Queries only for .min.css version.
-		.pipe(browserSync.stream()) // Reloads .css if that is enqueued.
 		.pipe(rename({suffix: '.min'}))
 		.pipe(minifycss({maxLineLen: 10}))
 		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
@@ -156,6 +175,14 @@ gulp.task('Styles', (done) => {
 	});
 
 	return merge(tasks);
+});
+
+gulp.task('StylesMin', (done) => {
+	return minifyStyle(gulp.src('./assets/css/*.css', {allowEmpty: true}),
+		{styleDestination: './assets/css/'}).pipe(notify({
+		message: '\n\n✅  ===> STYLES MIN — completed!\n',
+		onLast: true
+	}));
 });
 
 
@@ -423,5 +450,5 @@ gulp.task(
 
 gulp.task(
 	'release',
-	gulp.series('Styles', 'publicJS', 'adminJS', 'images', 'checktextdomain', 'translate', 'bump', 'readme', 'zip')
+	gulp.series('Styles', 'StylesMin', 'publicJS', 'adminJS', 'images', 'checktextdomain', 'translate', 'bump', 'readme', 'zip')
 );

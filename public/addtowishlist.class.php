@@ -569,7 +569,7 @@ class TInvWL_Public_AddToWishlist {
 
 			$this->variation_ids = apply_filters( 'tinvwl_wishlist_addtowishlist_button_variation_ids', $this->variation_ids, $this );
 
-			$this->variation_id = null;
+			$this->variation_id = 0;
 			$match_attributes   = array();
 
 			foreach ( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->get_variation_default_attributes() : $this->product->get_default_attributes() ) as $attribute_name => $value ) {

@@ -367,8 +367,9 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   text-align: center; }
 
 .tinv-wishlist .tinvwl-table-manage-list .product-remove {
-  width: 46px;
-  text-align: center; }
+  width: 35px;
+  text-align: center;
+  padding: 1em .5em; }
 
 .tinv-wishlist .product-remove button {
   display: -webkit-box;
@@ -390,7 +391,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   background-color: #f7f7f7;
   color: #000000;
   font-size: 20px;
-  padding-right: 3px; }
+  padding-right: 1px;
+  padding-top: 3px; }
 
 .tinv-wishlist .product-thumbnail {
   min-width: 100px;

@@ -88,8 +88,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist table input[type=checkbox]{margin-right:0}
 .tinv-wishlist table td,.tinv-wishlist table th{padding:1em;vertical-align:middle}
 .tinv-wishlist .tinvwl-table-manage-list .product-cb{width:35px;text-align:center}
-.tinv-wishlist .tinvwl-table-manage-list .product-remove{width:46px;text-align:center}
-.tinv-wishlist .product-remove button{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:center;align-content:center;margin:0 auto;width:27px;height:27px;border-radius:50%;padding:0;-webkit-box-shadow:none;box-shadow:none;border:0;background-color:#f7f7f7;color:#000;font-size:20px;padding-left:3px}
+.tinv-wishlist .tinvwl-table-manage-list .product-remove{width:35px;text-align:center;padding:1em .5em}
+.tinv-wishlist .product-remove button{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:center;align-content:center;margin:0 auto;width:27px;height:27px;border-radius:50%;padding:0;-webkit-box-shadow:none;box-shadow:none;border:0;background-color:#f7f7f7;color:#000;font-size:20px;padding-left:1px;padding-top:3px}
 .tinv-wishlist .product-thumbnail{min-width:100px;width:100px}
 .tinv-wishlist .product-thumbnail .wp-post-image{margin-bottom:0}
 .tinv-wishlist td.product-name a+.variation{margin-top:2px}

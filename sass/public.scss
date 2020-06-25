@@ -287,8 +287,9 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	}
 
 	.product-remove {
-	  width: 46px;
+	  width: 35px;
 	  text-align: center;
+	  padding: 1em .5em;
 	}
   }
 
@@ -306,7 +307,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 	background-color: #f7f7f7;
 	color: #000000;
 	font-size: 20px;
-	padding-left: 3px;
+	padding-left: 1px;
+	padding-top: 3px;
   }
 
   .product-thumbnail {

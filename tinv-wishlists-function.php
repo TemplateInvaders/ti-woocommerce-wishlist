@@ -902,3 +902,15 @@ if ( ! function_exists( 'tinvwl_get_wishlist_products' ) ) {
 		return $products;
 	}
 }
+
+add_action( 'init', function () {
+	if ( ! is_user_logged_in() ) {
+		add_filter( 'nonce_user_logged_out', function ( $uid, $action = - 1 ) {
+			if ( $action === 'wp_rest' ) {
+				return get_current_user_id();
+			}
+
+			return $uid;
+		}, 99, 2 );
+	}
+} );

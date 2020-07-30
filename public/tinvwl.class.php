@@ -82,6 +82,8 @@ class TInvWL_Public_TInvWL {
 
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
+		add_filter( 'tinvwl_update_wishlists_data', array( $this, 'update_local_wishlists_data' ) );
+
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
 		add_action( 'wp', array( $this, 'analytics_referer' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
@@ -97,6 +99,16 @@ class TInvWL_Public_TInvWL {
 		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_name );
 		$this->cart        = TInvWL_Public_Cart::instance( $this->_name );
 		$this->topwishlist = TInvWL_Public_WishlistCounter::instance( $this->_name );
+	}
+
+	function update_local_wishlists_data( $state ) {
+		if ( get_transient( '_tinvwl_update_wishlists_data' ) ) {
+			delete_transient( '_tinvwl_update_wishlists_data' );
+
+			return true;
+		}
+
+		return $state;
 	}
 
 	/**
@@ -128,6 +140,7 @@ class TInvWL_Public_TInvWL {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_header' ) );
 		add_action( 'wp_login', array( $this, 'transfert_local_to_user' ), 10, 2 );
+		add_action( 'wp_logout', array( $this, 'logout' ), 10, 2 );
 		add_action( 'user_register', array( $this, 'transfert_local_to_user_register' ) );
 		add_action( 'init', array( $this, 'legacy_transfer' ), 90 );
 		add_action( 'clear_auth_cookie', array( $this, 'set_user_sharekey' ) );
@@ -490,9 +503,12 @@ class TInvWL_Public_TInvWL {
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
 			'allow_parent_variable'      => apply_filters( 'tinvwl_allow_add_parent_variable_product', false ),
-			'hash_key'                   => 'ti_hash_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ),
+			'block_ajax_wishlists_data'  => apply_filters( 'tinvwl_block_ajax_wishlists_data', false ),
+			'update_wishlists_data'      => apply_filters( 'tinvwl_update_wishlists_data', false ),
+			'hash_key'                   => 'ti_wishlist_data_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ),
 			'nonce'                      => wp_create_nonce( 'wp_rest' ),
 			'rest_root'                  => esc_url_raw( get_rest_url() ),
+			'plugin_url'                 => esc_url_raw( TINVWL_URL ),
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {
@@ -525,12 +541,19 @@ class TInvWL_Public_TInvWL {
 		return $this->transfert_local_to_user_register( $user->ID );
 	}
 
+	function logout( $user_id ) {
+		set_transient( '_tinvwl_update_wishlists_data', '1' );
+	}
+
 	/**
 	 * Transfer Cookie Wishlist when register user
 	 *
 	 * @param integer $user_id New user id.
 	 */
 	function transfert_local_to_user_register( $user_id ) {
+
+		set_transient( '_tinvwl_update_wishlists_data', '1' );
+
 		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_sharekey_default();
 		if ( ! empty( $wishlist ) ) {

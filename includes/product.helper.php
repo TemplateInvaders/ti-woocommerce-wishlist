@@ -555,6 +555,7 @@ class TInvWL_Product {
 		$result = false !== $wpdb->delete( $this->table, $data ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
 			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
+			set_transient( '_tinvwl_update_wishlists_data', '1' );
 		}
 
 		return $result;
@@ -578,6 +579,7 @@ class TInvWL_Product {
 		$result = false !== $wpdb->delete( $this->table, array( 'product_id' => $product_id ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
 			do_action( 'tinvwl_wishlist_product_removed_by_product', $product_id );
+			set_transient( '_tinvwl_update_wishlists_data', '1' );
 		}
 
 		return $result;
@@ -634,6 +636,7 @@ class TInvWL_Product {
 			 * @param array $data product data including author and wishlist IDs.
 			 * */
 			do_action( 'tinvwl_product_removed', $data );
+			set_transient( '_tinvwl_update_wishlists_data', '1' );
 		}
 
 		return $result;

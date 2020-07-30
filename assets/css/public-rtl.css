@@ -305,10 +305,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   transition: opacity 1s;
   opacity: 1;
   visibility: visible; }
-  .tinvwl_add_to_wishlist_button.tinvwl-add-hide {
-    visibility: hidden;
-    opacity: 0.5;
-    pointer-events: none; }
 
 .tinv-wishlist.woocommerce .stock.in-stock:before {
   content: none; }

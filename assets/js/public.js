@@ -448,7 +448,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     $(window).on('storage onstorage', function (e) {
       if (hash_key === e.originalEvent.key && localStorage.getItem(hash_key) !== sessionStorage.getItem(hash_key)) {
-        set_hash(localStorage.getItem(hash_key));
+        if (localStorage.getItem(hash_key)) {
+          var data = $.parseJSON(localStorage.getItem(hash_key));
+
+          if (_typeof(data) === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
+            set_hash(localStorage.getItem(hash_key));
+          }
+        }
       }
     }); // Get wishlist data from REST API.
 

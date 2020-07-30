@@ -416,7 +416,16 @@
 		// Refresh when storage changes in another tab
 		$(window).on('storage onstorage', function (e) {
 			if (hash_key === e.originalEvent.key && localStorage.getItem(hash_key) !== sessionStorage.getItem(hash_key)) {
-				set_hash(localStorage.getItem(hash_key));
+
+				if (localStorage.getItem(hash_key)) {
+
+					var data = $.parseJSON(localStorage.getItem(hash_key));
+
+					if (typeof data === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
+						set_hash(localStorage.getItem(hash_key));
+					}
+				}
+
 			}
 		});
 

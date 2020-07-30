@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 1.20.5
+ * @version 1.21.0
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 @font-face{font-family:'tinvwl-webfont';src:url("../fonts/tinvwl-webfont.eot?xu2uyi");src:url("../fonts/tinvwl-webfont.eot?xu2uyi#iefix") format("embedded-opentype"),url("../fonts/tinvwl-webfont.ttf?xu2uyi") format("truetype"),url("../fonts/tinvwl-webfont.woff?xu2uyi") format("woff"),url("../fonts/tinvwl-webfont.svg?xu2uyi#tinvwl-webfont") format("svg");font-weight:normal;font-style:normal}
@@ -73,7 +73,6 @@ a.wishlist_products_counter.top_wishlist-custom.no-txt,span.wishlist_products_co
 .single-product div.product form.cart .tinvwl-button.tinvwl_add_to_wishlist_button,div.product form.cart .tinvwl_add_to_wishlist_button{float:none}
 ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer;-webkit-transition:opacity 1s;transition:opacity 1s;opacity:1;visibility:visible}
-.tinvwl_add_to_wishlist_button.tinvwl-add-hide{visibility:hidden;opacity:.5;pointer-events:none}
 .tinv-wishlist.woocommerce .stock.in-stock:before{content:none}
 .tinv-wraper.tinv-wishlist{font-size:100%}
 .tinv-create-list li input[type=radio]{margin-right:10px}

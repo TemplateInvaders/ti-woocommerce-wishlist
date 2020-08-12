@@ -637,6 +637,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function update_product_counter(counter) {
+    if ('1' == window.tinvwl_add_to_wishlist['hide_zero_counter'] && 0 === counter) {
+      counter = 'false';
+    }
+
     if ('false' !== counter) {
       jQuery('.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count').html(counter);
     } else {

@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.0 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -756,39 +756,39 @@ msgstr ""
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
-#: includes/api/frontend.class.php:56
+#: includes/api/frontend.class.php:57
 msgid "Limit result set to specific ids."
 msgstr ""
 
-#: includes/api/frontend.class.php:66
+#: includes/api/frontend.class.php:67
 msgid "Return wishlist products counter."
 msgstr ""
 
-#: includes/api/wishlist.class.php:102, includes/api/wishlist.class.php:165, includes/api/wishlist.class.php:215, includes/api/wishlist.class.php:267
+#: includes/api/wishlist.class.php:108, includes/api/wishlist.class.php:171, includes/api/wishlist.class.php:221, includes/api/wishlist.class.php:273
 msgid "Invalid wishlist share key."
 msgstr ""
 
-#: includes/api/wishlist.class.php:132
+#: includes/api/wishlist.class.php:138
 msgid "No wishlists found for this user."
 msgstr ""
 
-#: includes/api/wishlist.class.php:189, includes/api/wishlist.class.php:186
+#: includes/api/wishlist.class.php:195, includes/api/wishlist.class.php:192
 msgid "Update wishlist data failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:271, includes/api/wishlist.class.php:294
+#: includes/api/wishlist.class.php:277, includes/api/wishlist.class.php:300
 msgid "Add product to wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:327, includes/api/wishlist.class.php:340
+#: includes/api/wishlist.class.php:333, includes/api/wishlist.class.php:346
 msgid "Product not found."
 msgstr ""
 
-#: includes/api/wishlist.class.php:331
+#: includes/api/wishlist.class.php:337
 msgid "Remove product from wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:343
+#: includes/api/wishlist.class.php:349
 msgid "Product removed from a wishlist."
 msgstr ""
 
@@ -908,7 +908,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:295, includes/wizard.class.php:326, public/tinvwl.class.php:620
+#: includes/wizard.class.php:295, includes/wizard.class.php:326, public/tinvwl.class.php:621
 msgid "Wishlist"
 msgstr ""
 
@@ -1088,15 +1088,15 @@ msgstr ""
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:502
+#: public/tinvwl.class.php:503
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:503
+#: public/tinvwl.class.php:504
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:504
+#: public/tinvwl.class.php:505
 msgid "Copied!"
 msgstr ""
 

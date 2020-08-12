@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title><?php echo sprintf( __( 'TI Wishlist &rsaquo; %s', 'ti-woocommerce-wishlist' ), $title ); // WPCS: xss ok. ?></title>
 		<?php do_action( 'admin_print_styles' ); ?>
-		<?php do_action( 'admin_head' ); ?>
+		<?php //do_action( 'admin_head' ); ?>
 	</head>
 	<body class="tinvwl-wizard wp-core-ui">
 		<div class="tinvwl-logo">

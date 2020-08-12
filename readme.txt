@@ -2,8 +2,8 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
-Tested up to: 5.4
-Stable tag: 1.21.0
+Tested up to: 5.5
+Stable tag: 1.21.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.21.1 =
+*Release Date - 12 August 2020*
+
+* WordPress 5.5.x support
+* Added compatibility with WooCommerce 4.3.x
+* Added argument to register_rest_route method required from WordPress 5.5.0
+* Fixed an issue with "Hide Zero Value" feature for wishlist products counter
+* Fixed an issue with variable product status update when "Remove product from wishlist on second click" feature is enabled
+
 = 1.21.0 =
 *Release Date - 30 July 2020*
 

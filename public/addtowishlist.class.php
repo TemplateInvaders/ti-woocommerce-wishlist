@@ -702,8 +702,11 @@ class TInvWL_Public_AddToWishlist {
 
 			$this->variation_ids = array();
 
-			foreach ( $this->product->get_children() as $oid ) {
-				$this->variation_ids[] = apply_filters( 'wpml_object_id', $oid, 'product', true );
+
+			if ( ! tinv_get_option( 'general', 'simple_flow' ) ) {
+				foreach ( $this->product->get_children() as $oid ) {
+					$this->variation_ids[] = apply_filters( 'wpml_object_id', $oid, 'product', true );
+				}
 			}
 
 			$this->variation_ids[] = 0;

@@ -115,32 +115,6 @@
 					window.location.href = url;
 				},
 				wishlists: function (wishlist) {
-
-					var id = $(this).data('tinv-wl-product'),
-						e = $("a.tinvwl_add_to_wishlist_button[data-tinv-wl-product='" + id + "']"),
-						g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
-
-					e.each(function () {
-						var vid = parseInt($(this).attr('data-tinv-wl-productvariation')),
-							vids = $(this).data('tinv-wl-productvariations') || [],
-							j = false,
-							data = [];
-
-						if (wishlist) {
-							data = $.parseJSON(wishlist)
-						}
-
-						for (var i in data) {
-							if (data[i].hasOwnProperty('in')
-								&& Array.isArray(data[i]['in'])
-								&& (-1 < (data[i]['in'] || []).indexOf(id) || -1 < (data[i]['in'] || []).indexOf(vid) || vids.some(r => (data[i]['in'] || []).indexOf(r) >= 0))) {
-								j = true;
-							}
-						}
-
-						$(this).attr('data-tinv-wl-list', wishlist).toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('data-tinv-wl-action', ((j && g) ? 'remove' : 'addto'));
-
-					});
 				},
 				msg: function (html) {
 					if (!html) {
@@ -592,7 +566,7 @@
 
 			e.each(function () {
 
-				var vid = $(this).data('tinv-wl-productvariation'),
+				var vid = parseInt($(this).attr('data-tinv-wl-productvariation')),
 					vids = $(this).data('tinv-wl-productvariations') || [],
 					j = false;
 

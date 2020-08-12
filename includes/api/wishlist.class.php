@@ -39,48 +39,54 @@ class TInvWL_Includes_API_Wishlist {
 		// Get wishlist data by share key.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/get_by_share_key/(?P<share_key>[A-Fa-f0-9]{6})', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'wishlist_get_by_share_key' ),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'wishlist_get_by_share_key' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 
 		// Get wishlist(s) data by user ID.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/get_by_user/(?P<user_id>[\d]+)', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'wishlist_get_by_user' ),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'wishlist_get_by_user' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 
 		// Update wishlist data by share key.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/update/(?P<share_key>[A-Fa-f0-9]{6})', array(
 			array(
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => array( $this, 'wishlist_update' ),
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'wishlist_update' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 
 		// Get wishlist products by share key.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<share_key>[A-Fa-f0-9]{6})/get_products', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'wishlist_get_products' ),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'wishlist_get_products' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 
 		// Add product to wishlist by share key.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<share_key>[A-Fa-f0-9]{6})/add_product', array(
 			array(
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => array( $this, 'wishlist_add_product' ),
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'wishlist_add_product' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 
 		// Remove product by item ID.
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/remove_product/(?P<item_id>[\d]+)', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'wishlist_remove_product' ),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'wishlist_remove_product' ),
+				'permission_callback' => '__return_true',
 			),
 		) );
 	}

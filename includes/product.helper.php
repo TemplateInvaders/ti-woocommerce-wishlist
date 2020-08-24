@@ -416,7 +416,7 @@ class TInvWL_Product {
 			// remove deleted products from database
 			if ( $default['external'] ) {
 				foreach ( $products as $key => $product ) {
-					if ( empty( $product['data'] ) ) {
+					if ( empty( $product['data'] ) && ! wc_get_product( $product['product_id'] ) ) {
 						unset( $products[ $key ] );
 						$this->remove( $product );
 					}

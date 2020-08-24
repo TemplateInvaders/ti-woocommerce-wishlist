@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields (Product Options) for WooCommerce
  *
- * @version 1.1.7
+ * @version 1.3.1
  *
  * @slug advanced-product-fields-for-woocommerce
  *
@@ -144,3 +144,27 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wapf', 10, 3 );
 } // End if().
+
+if ( ! function_exists( 'tinv_wishlist_metaprepare_wapf' ) ) {
+
+	/**
+	 * Prepare save meta for Advanced Product Fields (Product Options) for WooCommerce
+	 *
+	 * @param array $meta Meta array.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_metaprepare_wapf( $meta ) {
+
+		foreach ( $meta as $key => $value ) {
+			if ( 'wapf' === $key && ! is_array( $value ) ) {
+
+				$meta[ $key ] = json_decode( $value );
+			}
+		}
+
+		return $meta;
+	}
+
+	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_wapf' );
+}

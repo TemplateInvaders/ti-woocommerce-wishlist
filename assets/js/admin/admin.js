@@ -195,7 +195,7 @@ function TInvWL($, h) {
 				a.prop('disabled', false);
 			}
 			d1.toggleClass('checked', a.is(':checked'));
-			a.attr('type', 'checkbox').hide().removeAttr('class').wrap(d1).before(b1);
+			a.hide().removeAttr('class').wrap(d1).before(b1);
 			d1 = a.parent();
 			a.on('change', function (e) {
 				if (d1.hasClass('disabled')) {

@@ -94,6 +94,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist td.product-name a+.variation{margin-top:2px}
 .tinv-wishlist .product-stock i{margin-left:15px}
 .tinv-wishlist .product-stock p{display:table}
+.tinv-wishlist .product-stock p.stock::before{display:none}
 .tinv-wishlist .product-stock span{display:table-cell;vertical-align:middle}
 .tinv-wishlist .product-action>.button>i,.tinv-wishlist .tinvwl-table-manage-list .product-action button[name=tinvwl-remove],.tinv-wishlist table thead th .tinvwl-mobile{display:none}
 .tinv-wishlist.woocommerce .product-quantity{width:80px;text-align:center}

@@ -325,6 +325,10 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 	p {
 	  display: table;
+
+	  &.stock::before {
+		display: none;
+	  }
 	}
 
 	span {

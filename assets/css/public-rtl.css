@@ -404,6 +404,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 .tinv-wishlist .product-stock p {
   display: table; }
+  .tinv-wishlist .product-stock p.stock::before {
+    display: none; }
 
 .tinv-wishlist .product-stock span {
   display: table-cell;

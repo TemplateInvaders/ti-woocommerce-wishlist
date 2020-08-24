@@ -8,7 +8,7 @@
  * Requires at least: 4.7
  * Tested up to: 5.5
  * WC requires at least: 2.6
- * WC tested up to: 4.3.2
+ * WC tested up to: 4.4
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+

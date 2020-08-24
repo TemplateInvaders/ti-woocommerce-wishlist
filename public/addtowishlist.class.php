@@ -255,6 +255,9 @@ class TInvWL_Public_AddToWishlist {
 					} else {
 						$variation_id = absint( array_key_exists( 'variation_id', $form ) ? filter_var( $form['variation_id'], FILTER_VALIDATE_INT ) : 0 );
 					}
+
+					$post['original_product_id'] = $variation_id;
+
 					$quantity       = 1;
 					$allowed_adding = ! count( $wlp->get_wishlist( array(
 						'product_id'   => $post['product_id'],

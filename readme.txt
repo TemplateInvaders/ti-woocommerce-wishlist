@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.1
+Stable tag: 1.21.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.21.2 =
+*Release Date - 24 August 2020*
+
+* Added compatibility with WooCommerce 4.4.x
+* Fixed critical issue when WPML deleted all products from other languages for current wishlist
+* Added empty option for products counter menu multi-select form element
+* Fixed product name in messages for variable products
+* Fixed issue with [Enable jQuery Migrate Helper](https://wordpress.org/plugins/enable-jquery-migrate-helper/) plugin
+* Fixed integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Fixed integration with [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+
 = 1.21.1 =
 *Release Date - 12 August 2020*
 

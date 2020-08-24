@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.1 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.2
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.2 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -46,6 +46,10 @@ msgstr ""
 
 #: admin/settings/general.class.php:69, admin/settings/general.class.php:107
 msgid "General Settings"
+msgstr ""
+
+#: admin/settings/general.class.php:82, admin/settings/general.class.php:340, admin/settings/general.class.php:481, admin/settings/general.class.php:754
+msgid "None"
 msgstr ""
 
 #: admin/settings/general.class.php:108
@@ -222,10 +226,6 @@ msgstr ""
 
 #: admin/settings/general.class.php:337, admin/settings/general.class.php:759
 msgid "You can choose from our predefined icons or upload your custom icon. Custom icon size is limited to 16x16 px."
-msgstr ""
-
-#: admin/settings/general.class.php:340, admin/settings/general.class.php:481, admin/settings/general.class.php:754
-msgid "None"
 msgstr ""
 
 #: admin/settings/general.class.php:341, admin/settings/general.class.php:482, admin/settings/general.class.php:755

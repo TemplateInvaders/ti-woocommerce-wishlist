@@ -79,7 +79,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * @return array
 	 */
 	public function get_wp_menus() {
-		$menus     = array();
+		$menus     = array( '' => __( 'None', 'ti-woocommerce-wishlist' ) );
 		$get_menus = get_terms( 'nav_menu', array( 'hide_empty' => true ) );
 		foreach ( $get_menus as $menu ) {
 			$menus[ $menu->term_id ] = $menu->name;

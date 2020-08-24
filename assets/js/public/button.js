@@ -224,6 +224,11 @@
 			$.each(data, function (key, value) {
 				if ('form' === key) {
 					$.each(value, function (k, v) {
+
+						if ('object' === typeof (v)) {
+							v = JSON.stringify(v);
+						}
+
 						formData.append(key + '[' + k + ']', v);
 					});
 				} else {

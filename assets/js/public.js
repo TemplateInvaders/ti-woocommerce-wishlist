@@ -240,6 +240,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       $.each(data, function (key, value) {
         if ('form' === key) {
           $.each(value, function (k, v) {
+            if ('object' === _typeof(v)) {
+              v = JSON.stringify(v);
+            }
+
             formData.append(key + '[' + k + ']', v);
           });
         } else {

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Composite Products
  *
- * @version 6.2.1
+ * @version 7.0.5
  *
  * @slug woocommerce-composite-products
  *
@@ -93,7 +93,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 							$product_price = '';
 						} elseif ( false === $component_option->get_component()->is_subtotal_visible( 'cart' ) ) {
 							$product_price = '';
-						} elseif ( apply_filters( 'woocommerce_add_composited_cart_item_prices', true ) ) {
+						} elseif ( apply_filters( 'woocommerce_add_composited_cart_item_prices', true, false, false ) ) {
 							if ( $product_price ) {
 								$product_price = '<span class="component_table_item_price">' . $product_price . '</span>';
 							}
@@ -237,3 +237,27 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_composite_products', 10, 3 );
 } // End if().
+
+if ( ! function_exists( 'tinv_wishlist_metaprepare_woocommerce_composite_products' ) ) {
+
+	/**
+	 * Prepare save meta for WooCommerce Composite Products
+	 *
+	 * @param array $meta Meta array.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_metaprepare_woocommerce_composite_products( $meta ) {
+
+		foreach ( $meta as $key => $value ) {
+			if ( strpos( $key, 'wccp_component_' ) === 0 && ! is_array( $value ) ) {
+
+				$meta[ $key ] = json_decode( $value );
+			}
+		}
+
+		return $meta;
+	}
+
+	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_woocommerce_composite_products' );
+}

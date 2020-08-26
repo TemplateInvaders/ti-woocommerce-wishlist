@@ -175,8 +175,14 @@ class TInvWL_Product {
 
 		$data             = apply_filters( 'tinvwl_wishlist_product_add', $data );
 		$data['in_stock'] = $product_data->is_in_stock();
-		$data['price']    = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+
 		$data['formdata'] = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
+
+		if ( $product_data->is_type( 'variable' ) ) {
+			$data['price'] = filter_var( $product_data->get_variation_price( 'max', false ), FILTER_VALIDATE_FLOAT );
+		} else {
+			$data['price'] = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+		}
 
 		global $wpdb;
 		if ( $wpdb->insert( $this->table, $data ) ) { // @codingStandardsIgnoreLine WordPress.VIP.DirectDatabaseQuery.DirectQuery
@@ -496,7 +502,12 @@ class TInvWL_Product {
 
 		$data             = apply_filters( 'tinvwl_wishlist_product_update', $data );
 		$data['in_stock'] = $product_data->is_in_stock();
-		$data['price']    = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+
+		if ( $product_data->is_type( 'variable' ) ) {
+			$data['price'] = filter_var( $product_data->get_variation_price( 'max', false ), FILTER_VALIDATE_FLOAT );
+		} else {
+			$data['price'] = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+		}
 
 		global $wpdb;
 

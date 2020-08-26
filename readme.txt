@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.2
+Stable tag: 1.21.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.21.3 =
+*Release Date - 26 August 2020*
+
+* Fixed issue for Flywheel Cloud sites
+* Fixed price value for variable parent product in wishlist
+* Fixed PHP error for variable products on add to wishlist event
+
 = 1.21.2 =
 *Release Date - 24 August 2020*
 

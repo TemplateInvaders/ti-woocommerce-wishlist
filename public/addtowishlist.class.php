@@ -333,7 +333,7 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 
-		if ( $post['product_id'] !== $post['original_product_id'] ) {
+		if ($post['original_product_id'] && $post['product_id'] !== $post['original_product_id'] ) {
 			$original_product = wc_get_product( $post['original_product_id'] );
 		}
 

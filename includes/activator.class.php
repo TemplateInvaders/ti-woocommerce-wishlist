@@ -65,6 +65,18 @@ class TInvWL_Activator {
 		self::database();
 		self::load_data();
 		TInvWL_Public_TInvWL::update_rewrite_rules();
+
+		if ( ! file_exists( $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' ) ) {
+			$root_wpload = $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
+			$handle = fopen( $root_wpload, 'w' ) or die( 'Could not create wp-load.php' );
+			$data =
+				"<?php //Added for Flywheel Cloud wp-load Fix \n"
+				. 'if ( file_exists( $_SERVER[\'DOCUMENT_ROOT\'] . \'/wp-config.php\' ) ) {' . "\n"
+				. '    require_once( $_SERVER[\'DOCUMENT_ROOT\'] . \'/wp-config.php\' );' . "\n"
+				. '    require_once( ABSPATH . \'/wp-load.php\' );'
+				. "} ?>";
+			file_put_contents( $root_wpload, $data );
+		}
 	}
 
 	/**

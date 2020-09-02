@@ -7,28 +7,30 @@ define( 'SHORTINIT', true );
 
 // WP Load
 // -----------------------------------------------------------------------
+require( dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-config.php' );
+require( ABSPATH . '/wp-load.php' );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-define( 'TINV_WP_ROOT', '../../../../../' );
-
-require( '../../../../../wp-load.php' );
 wp_plugin_directory_constants();
-require_once( TINV_WP_ROOT . WPINC . '/class-wp-user.php' );
-require_once( TINV_WP_ROOT . WPINC . '/class-wp-roles.php' );
-require_once( TINV_WP_ROOT . WPINC . '/class-wp-role.php' );
-require_once( TINV_WP_ROOT . WPINC . '/class-wp-session-tokens.php' );
-require_once( TINV_WP_ROOT . WPINC . '/class-wp-user-meta-session-tokens.php' );
-require_once( TINV_WP_ROOT . WPINC . '/formatting.php' );
-require_once( TINV_WP_ROOT . WPINC . '/capabilities.php' );
-//require_once ( TINV_WP_ROOT . WPINC . '/query.php' ); // - might be useful
-require_once( TINV_WP_ROOT . WPINC . '/user.php' );
-require_once( TINV_WP_ROOT . WPINC . '/meta.php' );
+require_once( ABSPATH . WPINC . '/class-wp-user.php' );
+require_once( ABSPATH . WPINC . '/class-wp-roles.php' );
+require_once( ABSPATH . WPINC . '/class-wp-role.php' );
+require_once( ABSPATH . WPINC . '/class-wp-session-tokens.php' );
+require_once( ABSPATH . WPINC . '/class-wp-user-meta-session-tokens.php' );
+require_once( ABSPATH . WPINC . '/formatting.php' );
+require_once( ABSPATH . WPINC . '/capabilities.php' );
+//require_once ( ABSPATH . WPINC . '/query.php' ); // - might be useful
+require_once( ABSPATH . WPINC . '/user.php' );
+require_once( ABSPATH . WPINC . '/meta.php' );
 
 wp_cookie_constants();
 
-require_once( TINV_WP_ROOT . WPINC . '/vars.php' );
-require_once( TINV_WP_ROOT . WPINC . '/kses.php' );
-require_once( TINV_WP_ROOT . WPINC . '/rest-api.php' );
-require_once( TINV_WP_ROOT . WPINC . '/pluggable.php' );
+require_once( ABSPATH . WPINC . '/vars.php' );
+require_once( ABSPATH . WPINC . '/kses.php' );
+require_once( ABSPATH . WPINC . '/rest-api.php' );
+require_once( ABSPATH . WPINC . '/pluggable.php' );
 
 // Get the nonce.
 if ( isset( $_SERVER['HTTP_X_WP_NONCE'] ) ) {

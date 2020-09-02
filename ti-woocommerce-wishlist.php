@@ -141,17 +141,6 @@ if ( ! function_exists( 'deactivation_tinv_wishlist' ) ) {
 	 * Deactivation plugin
 	 */
 	function deactivation_tinv_wishlist() {
-		$root_wpload = $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
-		if ( file_exists( $root_wpload ) ) {
-			$file = $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
-			$f    = fopen( $file, 'r' );
-			$line = fgets( $f );
-			fclose( $f );
-
-			if ( strpos( esc_html( $line ), 'Added for Flywheel Cloud wp-load Fix' ) !== false ) {
-				unlink( $root_wpload );
-			}
-		}
 		flush_rewrite_rules();
 	}
 }
@@ -166,18 +155,6 @@ if ( ! function_exists( 'uninstall_tinv_wishlist' ) ) {
 			TInvWL_Activator::uninstall();
 			flush_rewrite_rules();
 			wp_clear_scheduled_hook( 'tinvwl_remove_without_author_wishlist' );
-		}
-
-		$root_wpload = $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
-		if ( file_exists( $root_wpload ) ) {
-			$file = $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
-			$f    = fopen( $file, 'r' );
-			$line = fgets( $f );
-			fclose( $f );
-
-			if ( strpos( esc_html( $line ), 'Added for Flywheel Cloud wp-load Fix' ) !== false ) {
-				unlink( $root_wpload );
-			}
 		}
 	}
 }

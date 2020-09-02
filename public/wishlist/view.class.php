@@ -52,6 +52,13 @@ class TInvWL_Public_Wishlist_View {
 	public $social_image;
 
 	/**
+	 * Total pages
+	 *
+	 * @var int
+	 */
+	public $pages;
+
+	/**
 	 * Wishlist full URL
 	 *
 	 * @var string
@@ -671,8 +678,13 @@ class TInvWL_Public_Wishlist_View {
 		}
 
 		if ( empty( $products ) ) {
+
+			$this->pages = 0;
+
 			return $this->wishlist_empty( $products, $wishlist );
 		}
+
+		$this->pages = 1;
 
 		$wishlist_table_row                     = tinv_get_option( 'product_table' );
 		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl_add_to_cart_text', tinv_get_option( 'product_table', 'text_add_to_cart' ) );

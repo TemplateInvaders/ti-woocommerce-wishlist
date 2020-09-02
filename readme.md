@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.3
+Stable tag: 1.21.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.21.4 ###
+*Release Date - 2 September 2020*
+
+* Fixed issue with custom AJAX endpoint loading
+* Updated integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+* Updated integration with [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin
+
 ### 1.21.3 ###
 *Release Date - 26 August 2020*
 

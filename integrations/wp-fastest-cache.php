@@ -4,7 +4,7 @@
  *
  * @name WP Fastest Cache
  *
- * @version 0.9.0.7
+ * @version 0.9.1.0
  *
  * @slug wp-fastest-cache
  *
@@ -53,6 +53,7 @@ if ( ! function_exists( 'tinvwl_wp_fastest_cache_reject' ) ) {
 
 			$rules_std = json_decode( $rules_json, true );
 			$ex_pages  = array();
+			$rules_std = is_array( $rules_std ) ? $rules_std : array();
 			foreach ( $rules_std as $value ) {
 				$value['type'] = isset( $value['type'] ) ? $value['type'] : 'page';
 				if ( 'page' === $value['type'] ) {

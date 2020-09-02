@@ -4,7 +4,7 @@
  *
  * @name WPC Product Bundles for WooCommerce
  *
- * @version 5.2.2
+ * @version 5.3.1
  *
  * @slug woo-product-bundle
  *
@@ -58,6 +58,10 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 					$bundled_item = new stdClass();
 
 					$bundled_item->product = wc_get_product( $data['id'] );
+
+					if ( ! $bundled_item->product ) {
+						continue;
+					}
 
 					$bundled_product_qty = $data['qty'];
 					$product_url         = ( get_option( '_woosb_bundled_link', 'yes' ) !== 'no' ) ? $product->get_permalink() : $bundled_item->product->get_permalink();

@@ -2,7 +2,7 @@
 /**
  * The Template for displaying add to wishlist product button.
  *
- * @version             1.13.0
+ * @version             1.21.5
  * @package           TInvWishlist\Template
  */
 
@@ -14,5 +14,5 @@ wp_enqueue_script( 'tinvwl' );
 <div class="tinv-wraper woocommerce tinv-wishlist <?php echo esc_attr( $class_postion ) ?>">
 	<?php do_action( 'tinvwl_wishlist_addtowishlist_button', $product, $loop ); ?>
 	<?php do_action( 'tinvwl_wishlist_addtowishlist_dialogbox' ); ?>
-	<div class="tinvwl-tooltip"><?php echo esc_html( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
+	<div class="tinvwl-tooltip"><?php echo wp_kses_post( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
 </div>

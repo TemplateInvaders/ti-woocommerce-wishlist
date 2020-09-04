@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.4
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.4 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.5
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.5 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.4\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.5\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1052,7 +1052,7 @@ msgstr ""
 msgid "Flat rate cost"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:90, integrations/woocommerce-composite-products.php:116, integrations/woocommerce-mix-and-match-products.php:86, integrations/woocommerce-product-bundles.php:110, integrations/yith-woocommerce-product-bundles.php:138, templates/ti-wishlist-user.php:143, templates/ti-wishlist.php:151
+#: integrations/woo-product-bundle.php:89, integrations/woocommerce-composite-products.php:116, integrations/woocommerce-mix-and-match-products.php:86, integrations/woocommerce-product-bundles.php:110, integrations/yith-woocommerce-product-bundles.php:138, templates/ti-wishlist-user.php:143, templates/ti-wishlist.php:151
 msgid "In stock"
 msgstr ""
 
@@ -1203,10 +1203,6 @@ msgstr ""
 
 #: public/wishlist/view.class.php:807
 msgid "Next Page"
-msgstr ""
-
-#: templates/ti-addedtowishlist-dialogbox.php:32
-msgid "Close"
 msgstr ""
 
 #: templates/ti-wishlist-empty.php:23

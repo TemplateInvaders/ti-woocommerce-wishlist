@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.4
+Stable tag: 1.21.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.21.5 ###
+*Release Date - 4 September 2020*
+
+* Fixed HTML markup validation for integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+* Use wp_kses_post instead of esc_html for sanitizing template strings to allow minimal HTML
+
 ### 1.21.4 ###
 *Release Date - 2 September 2020*
 

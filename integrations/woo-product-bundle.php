@@ -32,9 +32,8 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 
 			$ids_str = WPCleverWoosb_Helper::woosb_clean_ids( $ids_str );
 			?>
-			<input type="hidden" id="woosb_ids" class="woosb_ids" name="woosb_ids"
-				   value="<?php echo esc_attr( $ids_str ); ?>"
-				   readonly/>
+			<input name="woosb_ids" class="woosb_ids woosb-ids" type="hidden"
+				   value="<?php echo esc_attr( $ids_str ); ?>"/>
 			<?php
 		}
 	}

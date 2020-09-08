@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Multilingual
  *
- * @version 4.6.5
+ * @version 4.10.2
  *
  * @slug woocommerce-multilingual
  *
@@ -36,6 +36,9 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 			} else {
 				global $wpml_post_translations;
+				if ( ! ( $woocommerce_wpml instanceof woocommerce_wpml ) || ! ( $sitepress instanceof SitePress ) || ! ( $wpml_post_translations instanceof WPML_Post_Translation ) ) {
+					return $post_data;
+				}
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 
@@ -73,6 +76,9 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_check_product' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 			} else {
 				global $wpml_post_translations;
+				if ( ! ( $woocommerce_wpml instanceof woocommerce_wpml ) || ! ( $sitepress instanceof SitePress ) || ! ( $wpml_post_translations instanceof WPML_Post_Translation ) ) {
+					return $product;
+				}
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 
@@ -108,6 +114,10 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 			} else {
 				global $wpml_post_translations;
+				if ( ! ( $woocommerce_wpml instanceof woocommerce_wpml ) || ! ( $sitepress instanceof SitePress ) || ! ( $wpml_post_translations instanceof WPML_Post_Translation ) ) {
+					return $attr;
+				}
+
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 
@@ -145,6 +155,9 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare_product' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 			} else {
 				global $wpml_post_translations;
+				if ( ! ( $woocommerce_wpml instanceof woocommerce_wpml ) || ! ( $sitepress instanceof SitePress ) || ! ( $wpml_post_translations instanceof WPML_Post_Translation ) ) {
+					return $product;
+				}
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 
@@ -188,6 +201,9 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_prepare_form' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpdb );
 			} else {
 				global $wpml_post_translations;
+				if ( ! ( $woocommerce_wpml instanceof woocommerce_wpml ) || ! ( $sitepress instanceof SitePress ) || ! ( $wpml_post_translations instanceof WPML_Post_Translation ) ) {
+					return $post_data;
+				}
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 

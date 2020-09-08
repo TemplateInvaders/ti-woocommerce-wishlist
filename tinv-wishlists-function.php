@@ -254,7 +254,10 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 						$label = $name;
 					}
 				}
-				if ( '' === $value ) {
+				if ( '' === $value || wc_is_attribute_in_product_name( $value, is_callable( array(
+						$product,
+						'get_name'
+					) ) ? $product->get_name() : $product->get_title() ) ) {
 					continue;
 				}
 				$item_data[] = array(

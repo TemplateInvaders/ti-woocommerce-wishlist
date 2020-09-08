@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.5
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.5 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.6
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.6 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.5\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.6\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1052,7 +1052,7 @@ msgstr ""
 msgid "Flat rate cost"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:89, integrations/woocommerce-composite-products.php:116, integrations/woocommerce-mix-and-match-products.php:86, integrations/woocommerce-product-bundles.php:110, integrations/yith-woocommerce-product-bundles.php:138, templates/ti-wishlist-user.php:143, templates/ti-wishlist.php:151
+#: integrations/woo-product-bundle.php:89, integrations/woocommerce-composite-products.php:116, integrations/woocommerce-mix-and-match-products.php:86, integrations/woocommerce-product-bundles.php:110, integrations/yith-woocommerce-product-bundles.php:138, templates/ti-wishlist-user.php:145, templates/ti-wishlist.php:153
 msgid "In stock"
 msgstr ""
 
@@ -1143,7 +1143,7 @@ msgstr[1] ""
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:359, templates/ti-wishlist.php:93
+#: public/wishlist/buttons.class.php:359, templates/ti-wishlist.php:95
 msgid "Remove"
 msgstr ""
 
@@ -1205,47 +1205,51 @@ msgstr ""
 msgid "Next Page"
 msgstr ""
 
-#: templates/ti-wishlist-empty.php:23
+#: templates/ti-addedtowishlist-dialogbox.php:36
+msgid "Close"
+msgstr ""
+
+#: templates/ti-wishlist-empty.php:25
 msgid "Wishlist is currently empty."
 msgstr ""
 
-#: templates/ti-wishlist-empty.php:21
+#: templates/ti-wishlist-empty.php:23
 msgid "Your Wishlist is currently empty."
 msgstr ""
 
-#: templates/ti-wishlist-empty.php:31, templates/ti-wishlist-null.php:21
+#: templates/ti-wishlist-empty.php:33, templates/ti-wishlist-null.php:23
 msgid "Return To Shop"
 msgstr ""
 
-#: templates/ti-wishlist-null.php:15
+#: templates/ti-wishlist-null.php:17
 msgid "Wishlist is not found!"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:30, templates/ti-wishlist.php:30
+#: templates/ti-wishlist-user.php:32, templates/ti-wishlist.php:32
 msgid "Select all for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:35, templates/ti-wishlist.php:36
+#: templates/ti-wishlist-user.php:37, templates/ti-wishlist.php:38
 msgid "Product Name"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:36, templates/ti-wishlist.php:37
+#: templates/ti-wishlist-user.php:38, templates/ti-wishlist.php:39
 msgid "Product"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:39, templates/ti-wishlist.php:40
+#: templates/ti-wishlist-user.php:41, templates/ti-wishlist.php:42
 msgid "Unit Price"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:42, templates/ti-wishlist.php:43
+#: templates/ti-wishlist-user.php:44, templates/ti-wishlist.php:45
 msgid "Date Added"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:45, templates/ti-wishlist.php:46
+#: templates/ti-wishlist-user.php:47, templates/ti-wishlist.php:48
 msgid "Stock Status"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:84, templates/ti-wishlist.php:85
+#: templates/ti-wishlist-user.php:86, templates/ti-wishlist.php:87
 msgid "Select for bulk action"
 msgstr ""
 

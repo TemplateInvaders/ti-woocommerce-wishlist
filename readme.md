@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.5
+Stable tag: 1.21.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.21.6 ###
+*Release Date - 8 September 2020*
+
+* Added integration with [Check Pincode/Zipcode for Shipping Woocommerce](https://wordpress.org/plugins/check-pincodezipcode-for-shipping-woocommerce/) plugin
+* Added integration for [WPC Variations Radio Buttons for WooCommerce](https://wordpress.org/plugins/wpc-variations-radio-buttons/) plugin
+* Updated integration with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
+* Fixed attributes display for variation on wishlist table
+* Fixed translation for template strings
+
 ### 1.21.5 ###
 *Release Date - 4 September 2020*
 

@@ -2,6 +2,8 @@
 /**
  * The Template for displaying dialog for message added to wishlist product.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-addedtowishlist-dialogbox.php.
+ *
  * @version             1.21.6
  * @package           TInvWishlist\Template
  */

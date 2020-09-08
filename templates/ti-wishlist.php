@@ -2,6 +2,8 @@
 /**
  * The Template for displaying wishlist if a current user is owner.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist.php.
+ *
  * @version             1.21.5
  * @package           TInvWishlist\Template
  */

@@ -2,6 +2,8 @@
 /**
  * The Template for displaying add to wishlist product button.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-addtowishlist.php.
+ *
  * @version             1.21.5
  * @package           TInvWishlist\Template
  */

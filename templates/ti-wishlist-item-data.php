@@ -2,6 +2,8 @@
 /**
  * The Template for displaying variation product data.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-item-data.php.
+ *
  * @version             1.10.1
  * @package           TInvWishlist\Template
  */

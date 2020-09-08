@@ -2,6 +2,8 @@
 /**
  * The Template for displaying empty wishlist.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-empty.php.
+ *
  * @version             1.15.5
  * @package           TInvWishlist\Template
  */

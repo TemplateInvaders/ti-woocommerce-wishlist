@@ -2,6 +2,8 @@
 /**
  * The Template for displaying not found wishlist.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-null.php.
+ *
  * @version             1.0.0
  * @package           TInvWishlist\Template
  */

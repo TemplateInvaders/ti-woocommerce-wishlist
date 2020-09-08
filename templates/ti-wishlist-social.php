@@ -2,6 +2,8 @@
 /**
  * The Template for displaying social buttons.
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-social.php.
+ *
  * @version             1.21.5
  * @package           TInvWishlist\Template
  */

@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.6
+Stable tag: 1.21.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.21.7 ###
+*Release Date - 17 September 2020*
+
+* WooCommerce 4.5.x compatibility
+* Fixed empty wishlist issue after adding a product to cart from paginated page
+* Fixed wishlist products counter widget issue with Avada builder
+* Fixed wishlist products counter issue with quantity
+
 ### 1.21.6 ###
 *Release Date - 8 September 2020*
 

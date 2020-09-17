@@ -56,6 +56,13 @@ class TInvWL_Public_Widget_WishlistCounter extends WC_Widget {
 		if ( $this->get_cached_widget( $args ) ) {
 			return;
 		}
+
+		foreach ( $instance as $key => $value ) {
+			if ( 'on' === $value ) {
+				$instance[ $key ] = 1;
+			}
+		}
+
 		$this->widget_start( $args, $instance );
 		$content = tinvwl_shortcode_products_counter( array(
 			'show_icon' => isset( $instance['show_icon'] ) ? absint( $instance['show_icon'] ) : $this->settings['show_icon']['std'],

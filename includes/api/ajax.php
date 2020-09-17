@@ -187,7 +187,7 @@ if ( ( isset( $data['author'] ) && $data['author'] ) || $share_key ) {
 
 }
 
-$count = is_array( $results ) ? count( $results ) : 0;
+$count = is_array( $results ) ? array_sum( array_column( $results, 'quantity' ) ) : 0;
 
 $response = array(
 	'products' => $products,

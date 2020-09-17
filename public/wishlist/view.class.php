@@ -293,8 +293,13 @@ class TInvWL_Public_Wishlist_View {
 			return array();
 		}
 
-		$paged = get_query_var( 'wl_paged', 1 );
-		$paged = 1 < $paged ? $paged : 1;
+		$paged       = get_query_var( 'wl_paged', 1 );
+		$this->pages = ceil( absint( $wlp->get_wishlist( array(
+				'count'    => 9999999,
+				'external' => false,
+			), true ) ) / absint( $lists_per_page ) );
+
+		$paged = $this->pages < $paged ? $this->pages : $paged;
 
 		$product_data = array(
 			'count'    => $lists_per_page,
@@ -684,8 +689,6 @@ class TInvWL_Public_Wishlist_View {
 			return $this->wishlist_empty( $products, $wishlist );
 		}
 
-		$this->pages = 1;
-
 		$wishlist_table_row                     = tinv_get_option( 'product_table' );
 		$wishlist_table_row['text_add_to_cart'] = apply_filters( 'tinvwl_add_to_cart_text', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 
@@ -697,21 +700,16 @@ class TInvWL_Public_Wishlist_View {
 		);
 
 		$paged = get_query_var( 'wl_paged', 1 );
-		$paged = 1 < $paged ? $paged : 1;
+		$paged = $this->pages < $paged ? $this->pages : $paged;
 
 		if ( 1 < $paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_prev' ) );
 		}
-		$pages = ceil( absint( $this->wishlist_products_helper->get_wishlist( array(
-				'count'    => 9999999,
-				'external' => false,
-			), true ) ) / absint( $this->lists_per_page ) );
 
-		if ( 1 < $pages ) {
-			$this->pages = $pages;
+		if ( 1 < $this->pages ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'pages' ) );
 		}
-		if ( $pages > $paged ) {
+		if ( $this->pages > $paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_next' ) );
 		}
 
@@ -777,6 +775,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function page_prev() {
 		$paged = get_query_var( 'wl_paged', 1 );
+		$paged = $this->pages < $paged ? $this->pages : $paged;
 		$paged = 1 < $paged ? $paged - 1 : 0;
 		$this->page( $paged, sprintf( '<i class="ftinvwl ftinvwl-chevron-left"></i><span>%s</span>', __( 'Previous Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-prev' ) );
 	}
@@ -787,6 +786,7 @@ class TInvWL_Public_Wishlist_View {
 	function pages() {
 
 		$paged = get_query_var( 'wl_paged', 1 );
+		$paged = $this->pages < $paged ? $this->pages : $paged;
 		if ( 1 === (int) $paged ) {
 			echo '<span></span>';
 		}
@@ -803,6 +803,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function page_next() {
 		$paged = get_query_var( 'wl_paged', 1 );
+		$paged = $this->pages < $paged ? $this->pages : $paged;
 		$paged = 1 < $paged ? $paged + 1 : 2;
 		$this->page( $paged, sprintf( '<span>%s</span><i class="ftinvwl ftinvwl-chevron-right"></i>', __( 'Next Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-next' ) );
 	}

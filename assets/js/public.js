@@ -493,7 +493,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }).done(function (response) {
           set_hash(JSON.stringify(response));
           mark_products(response);
-        }).fail(function (response) {
+        }).fail(function () {
           rest_request();
         });
       }
@@ -509,8 +509,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           var data = $.parseJSON(localStorage.getItem(hash_key));
 
           if (_typeof(data) === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
-            mark_products(data);
-            return;
+            if (!data.hasOwnProperty('lang') && !tinvwl_add_to_wishlist.wpml || tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml) {
+              mark_products(data);
+              return;
+            }
           }
         }
       }

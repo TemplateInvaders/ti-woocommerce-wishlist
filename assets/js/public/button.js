@@ -445,7 +445,7 @@
 					mark_products(response);
 				});
 			}
-		}
+		};
 
 
 		var custom_ajax = function () {
@@ -468,11 +468,11 @@
 					set_hash(JSON.stringify(response));
 					mark_products(response);
 
-				}).fail(function (response) {
+				}).fail(function () {
 					rest_request();
 				});
 			}
-		}
+		};
 
 		var get_wishlist_data = function () {
 			if ($supports_html5_storage) {
@@ -486,8 +486,10 @@
 					var data = $.parseJSON(localStorage.getItem(hash_key));
 
 					if (typeof data === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
-						mark_products(data);
-						return;
+						if ((!data.hasOwnProperty('lang') && !tinvwl_add_to_wishlist.wpml) || (tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml)) {
+							mark_products(data);
+							return;
+						}
 					}
 
 				}
@@ -498,7 +500,7 @@
 			}
 
 			custom_ajax();
-		}
+		};
 
 		get_wishlist_data();
 

@@ -278,7 +278,7 @@ class TInvWL_Public_TInvWL {
 				$page      = get_post( $page );
 				$page_slug = $page->post_name;
 
-				if ( $language_codes && defined( 'POLYLANG_VERSION' ) ) {
+				if ( $language_codes && ( defined( 'POLYLANG_VERSION' ) || defined( 'ICL_PLUGIN_PATH' ) ) ) {
 					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
 					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
 					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
@@ -499,7 +499,7 @@ class TInvWL_Public_TInvWL {
 			'text_create'                => __( 'Create New', 'ti-woocommerce-wishlist' ),
 			'text_already_in'            => apply_filters( 'tinvwl_already_in_wishlist_text', tinv_get_option( 'general', 'text_already_in' ) ),
 			'simple_flow'                => tinv_get_option( 'general', 'simple_flow' ),
-			'hide_zero_counter'                => tinv_get_option( 'topline', 'hide_zero_counter' ),
+			'hide_zero_counter'          => tinv_get_option( 'topline', 'hide_zero_counter' ),
 			'i18n_make_a_selection_text' => esc_attr__( 'Please select some product options before adding this product to your wishlist.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
@@ -513,7 +513,7 @@ class TInvWL_Public_TInvWL {
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {
-			$args['wpml'] = wpml_get_current_language();
+			$args['wpml']     = wpml_get_current_language();
 		}
 
 		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', $args );

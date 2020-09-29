@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Custom Product Addons
  *
- * @version 2.4.4
+ * @version 2.4.8
  *
  * @slug woo-custom-product-addons
  *
@@ -30,7 +30,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_custom_product_addo
 	 */
 
 	function tinv_wishlist_item_meta_woocommerce_custom_product_addons( $item_data, $product_id, $variation_id ) {
-		if ( function_exists( 'WCPA' ) ) {
+		if ( defined( 'WCPA_POST_TYPE' ) && class_exists( 'WCPA_Form' ) && class_exists( 'WCPA_Front_End' ) ) {
 			$form     = new WCPA_Form();
 			$frontend = new WCPA_Front_End();
 			$data     = array();
@@ -116,7 +116,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons' ) 
 	 * @return string
 	 */
 	function tinvwl_item_price_woocommerce_custom_product_addons( $price, $wl_product, $product ) {
-		if ( defined( 'WCPA_ITEM_ID' ) ) {
+		if ( defined( 'WCPA_ITEM_ID' ) && class_exists( 'WCPA_Form' ) && class_exists( 'WCPA_MC' ) ) {
 
 			$price    = 0;
 			$form     = new WCPA_Form();
@@ -193,7 +193,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons_tex
 	 */
 	function tinvwl_item_price_woocommerce_custom_product_addons_text_button( $text_add_to_cart, $wl_product, $product ) {
 
-		if ( function_exists( 'WCPA' ) ) {
+		if ( defined( 'WCPA_POST_TYPE' ) && class_exists( 'WCPA_Form' ) && class_exists( 'WCPA_Front_End' ) ) {
 			$product_id = $product->get_id();
 			$form       = new WCPA_Form();
 			$post_ids   = $form->get_form_ids( $product_id );

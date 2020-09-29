@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.8
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.8 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.9
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.9 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.8\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.9\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

@@ -106,10 +106,14 @@ if ( ( isset( $data['author'] ) && $data['author'] ) || $share_key ) {
 		$sql .= " AND `{$table_lists}`.`share_key` = '{$share_key}'";
 	}
 	if ( $lang ) {
-		$sql .= "LEFT JOIN {$table_translations} t ON
-    {$table}.product_id = t.trid AND t.element_type = 'post_product' AND t.language_code = '{$lang}'
+		$sql .= "LEFT JOIN {$table_translations} tr ON
+    {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
+LEFT JOIN {$table_translations} tr2 ON
+    {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
+		LEFT JOIN {$table_translations} t ON
+    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code = '{$lang}'
 LEFT JOIN {$table_translations} t2 ON
-    {$table}.variation_id != 0 AND {$table}.variation_id = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code = '{$lang}'
+    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code = '{$lang}'
 JOIN {$table_languages} l ON
     (
         t.language_code = l.code OR t2.language_code = l.code

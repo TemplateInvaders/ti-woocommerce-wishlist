@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields (Product Options) for WooCommerce
  *
- * @version 1.3.1
+ * @version 1.3.3
  *
  * @slug advanced-product-fields-for-woocommerce
  *
@@ -47,18 +47,25 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 				return $x->fields;
 			} )->toArray();
 
-
 			foreach ( $item_data['wapf']['display'] as $key => $field ) {
-
+				if ( empty( $field ) ) {
+					continue;
+				}
 				$field_id = str_replace( 'field_', '', $key );
 
-				$field_obj = SW_WAPF\Includes\Classes\Enumerable::from( $fields )->firstOrDefault( function ( $x ) use ( $field_id ) {
+				$field_obj      = SW_WAPF\Includes\Classes\Enumerable::from( $fields )->firstOrDefault( function ( $x ) use ( $field_id ) {
 					return $x->id === $field_id;
 				} );
+				$product        = wc_get_product( $product_id );
+				$price_addition = array();
+
+				if ( $field_obj->pricing_enabled() ) {
+					$price_addition = SW_WAPF\Includes\Classes\Fields::pricing_value( $field_obj, $field );
+				}
 
 				$item_data[ $key ] = array(
 					'key'     => $field_obj->label,
-					'display' => $field,
+					'display' => SW_WAPF\Includes\Classes\Fields::value_to_string( $field_obj, $field, $price_addition > 0, $product, 'cart' ),
 				);
 			}
 
@@ -117,7 +124,7 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 				$price_addition = array();
 
 				if ( $field_obj->pricing_enabled() ) {
-					$price_addition = SW_WAPF\Includes\Classes\Fields::pricing_value( $field_obj, $key );
+					$price_addition = SW_WAPF\Includes\Classes\Fields::pricing_value( $field_obj, $field );
 				}
 
 				if ( ! empty( $price_addition ) ) {

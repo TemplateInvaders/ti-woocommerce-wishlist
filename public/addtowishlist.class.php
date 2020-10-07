@@ -333,7 +333,7 @@ class TInvWL_Public_AddToWishlist {
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 
-		if ($post['original_product_id'] && $post['product_id'] !== $post['original_product_id'] ) {
+		if ( $post['original_product_id'] && $post['product_id'] !== $post['original_product_id'] ) {
 			$original_product = wc_get_product( $post['original_product_id'] );
 		}
 
@@ -372,8 +372,11 @@ class TInvWL_Public_AddToWishlist {
 
 		global $wpdb;
 
-		$table       = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
-		$table_lists = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
+		$table              = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
+		$table_lists        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
+		$table_translations = sprintf( '%s%s', $wpdb->prefix, 'icl_translations' );
+		$table_languages    = sprintf( '%s%s', $wpdb->prefix, 'icl_languages' );
+		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_STRING );
 
 		$data = $products = $wishlists = $results = array();
 
@@ -403,21 +406,32 @@ class TInvWL_Public_AddToWishlist {
 			$default['offset'] = absint( $default['offset'] );
 			$default['count']  = absint( $default['count'] );
 
-			if ( is_array( $default['field'] ) ) {
-				$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
-			} elseif ( is_string( $default['field'] ) ) {
-				$default['field'] = array( 'ID', $default['field'] );
-				$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
+			if ( $lang ) {
+				$default['field'] = $table . '.ID, t.element_id AS product_id, t2.element_id AS variation_id, ' . $table . '.formdata,' . $table . '.author,' . $table . '.date,' . $table . '.quantity,' . $table . '.price,' . $table . '.in_stock,';
 			} else {
-				$default['field'] = $table . '.*, ' . $table_lists . '.ID as wishlist_id, ' . $table_lists . '.status as wishlist_status, ' . $table_lists . '.title as wishlist_title, ' . $table_lists . '.share_key as wishlist_share_key';
+				$default['field'] = $table . '.*, ';
 			}
+			$default['field'] .= $table_lists . '.ID as wishlist_id, ' . $table_lists . '.status as wishlist_status, ' . $table_lists . '.title as wishlist_title, ' . $table_lists . '.share_key as wishlist_share_key';
 
 			$sql = "SELECT {$default[ 'field' ]} FROM `{$table}` INNER JOIN `{$table_lists}` ON `{$table}`.`wishlist_id` = `{$table_lists}`.`ID` AND `{$table_lists}`.`type` = 'default'";
 
 			if ( $share_key ) {
 				$sql .= " AND `{$table_lists}`.`share_key` = '{$share_key}'";
 			}
-
+			if ( $lang ) {
+				$sql .= "LEFT JOIN {$table_translations} tr ON
+    {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
+LEFT JOIN {$table_translations} tr2 ON
+    {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
+		LEFT JOIN {$table_translations} t ON
+    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code = '{$lang}'
+LEFT JOIN {$table_translations} t2 ON
+    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code = '{$lang}'
+JOIN {$table_languages} l ON
+    (
+        t.language_code = l.code OR t2.language_code = l.code
+    ) AND l.active = 1";
+			}
 			$where = '1';
 
 			if ( ! empty( $data ) && is_array( $data ) ) {
@@ -507,6 +521,10 @@ class TInvWL_Public_AddToWishlist {
 			'products' => $products,
 			'counter'  => $count,
 		);
+
+		if ( $lang ) {
+			$response['lang'] = $lang;
+		}
 
 		return $response;
 	}

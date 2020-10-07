@@ -158,6 +158,11 @@
 				},
 				a = this,
 				formData = new FormData();
+
+			if (tinvwl_add_to_wishlist.wpml) {
+				data['lang'] = tinvwl_add_to_wishlist.wpml;
+			}
+
 			$(a).closest('form.cart[method=post], form.vtajaxform[method=post], .tinvwl-loop-button-wrapper').find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
 				var name_elm = $(this).attr('name'),
 					type_elm = $(this).attr('type'),

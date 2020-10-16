@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.11
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.11 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.12
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.12 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.11\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.12\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -812,32 +812,36 @@ msgstr ""
 msgid "Register now &raquo;"
 msgstr ""
 
-#: includes/export.class.php:251
-msgid "Please upload the TI WooCommerce Wishlist setting file or copy the content."
-msgstr ""
-
-#: includes/export.class.php:264
-msgid "The settings json is not valid."
-msgstr ""
-
-#: includes/export.class.php:214
-msgid "The file you are uploading is too big."
-msgstr ""
-
-#: includes/export.class.php:224
-msgid "There was an error uploading the file."
-msgstr ""
-
-#: includes/export.class.php:236
+#: includes/export.class.php:158, includes/export.class.php:249
 msgid "There was an error importing your settings, please try again."
 msgstr ""
 
-#: includes/export.class.php:178
-msgid "The settings file is empty."
+#: includes/export.class.php:264
+msgid "Please upload the TI WooCommerce Wishlist setting file or copy the content."
+msgstr ""
+
+#: includes/export.class.php:277
+msgid "The settings json is not valid."
+msgstr ""
+
+#: includes/export.class.php:227
+msgid "The file you are uploading is too big."
+msgstr ""
+
+#: includes/export.class.php:237
+msgid "There was an error uploading the file."
 msgstr ""
 
 #: includes/export.class.php:191
+msgid "The settings file is empty."
+msgstr ""
+
+#: includes/export.class.php:204
 msgid "The settings file is not valid."
+msgstr ""
+
+#: includes/export.class.php:303
+msgid "There was an error exporting your settings, please try again."
 msgstr ""
 
 #: includes/form.helper.php:512
@@ -1265,35 +1269,35 @@ msgstr ""
 msgid "Import settings"
 msgstr ""
 
-#: views/admin/export-import-settings.php:47
+#: views/admin/export-import-settings.php:48
 msgid "Please upload the exported json file or"
 msgstr ""
 
-#: views/admin/export-import-settings.php:49
+#: views/admin/export-import-settings.php:50
 msgid "paste the entire json"
 msgstr ""
 
-#: views/admin/export-import-settings.php:54
+#: views/admin/export-import-settings.php:55
 msgid "Please paste the exported json file or"
 msgstr ""
 
-#: views/admin/export-import-settings.php:56
+#: views/admin/export-import-settings.php:57
 msgid "upload the exported file"
 msgstr ""
 
-#: views/admin/export-import-settings.php:64
+#: views/admin/export-import-settings.php:65
 msgid "Import"
 msgstr ""
 
-#: views/admin/export-import-settings.php:78
+#: views/admin/export-import-settings.php:79
 msgid "Export settings"
 msgstr ""
 
-#: views/admin/export-import-settings.php:82
+#: views/admin/export-import-settings.php:84
 msgid "Download the entire plugin configuration."
 msgstr ""
 
-#: views/admin/export-import-settings.php:86
+#: views/admin/export-import-settings.php:88
 msgid "Export"
 msgstr ""
 

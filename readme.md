@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.11
+Stable tag: 1.21.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.21.12 ###
+*Release Date - 16 October 2020*
+
+* Fixed security issue related to import/export plugin settings.
+
 ### 1.21.11 ###
 *Release Date - 7 October 2020*
 
@@ -306,3 +311,8 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Fixed an issue with WP Rocket cache and WP REST API authorization for non-logged users
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
+
+## Upgrade Notice ##
+
+### 1.21.12 ###
+URGENT UPDATE! Fixed zero day vulnerability issue related to export/import plugin settings.

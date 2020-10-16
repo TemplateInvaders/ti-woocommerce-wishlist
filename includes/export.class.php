@@ -148,6 +148,19 @@ class TInvWL_Export {
 	 */
 	public function import_settings() {
 
+		$nonce_value = isset( $_REQUEST['tinvwl_import_nonce'] ) ? $_REQUEST['tinvwl_import_nonce'] : '';
+
+		if ( ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! in_array( 'administrator', (array) wp_get_current_user()->roles ) ) {
+			exit(
+			wp_redirect(
+				admin_url(
+					'admin.php?page=tinvwl-export-import-settings&error=' .
+					rawurlencode( __( 'There was an error importing your settings, please try again.', 'ti-woocommerce-wishlist' ) )
+				)
+			)
+			);
+		}
+
 		if ( ! function_exists( 'wp_handle_upload' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
@@ -279,6 +292,20 @@ class TInvWL_Export {
 	 * Handle settings export in a JSON file.
 	 */
 	public function export_settings() {
+
+		$nonce_value = isset( $_REQUEST['tinvwl_import_nonce'] ) ? $_REQUEST['tinvwl_import_nonce'] : '';
+
+		if ( ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! in_array( 'administrator', (array) wp_get_current_user()->roles ) ) {
+			exit(
+			wp_redirect(
+				admin_url(
+					'admin.php?page=tinvwl-export-import-settings&error=' .
+					rawurlencode( __( 'There was an error exporting your settings, please try again.', 'ti-woocommerce-wishlist' ) )
+				)
+			)
+			);
+		}
+
 		header( 'Content-Type: application/json' );
 		$name = urlencode( $this->blog_name() );
 		header( "Content-Disposition: attachment; filename=ti_woocommerce_wishlist_settings-$name.json" );

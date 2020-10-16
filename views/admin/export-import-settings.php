@@ -42,7 +42,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</script>
 				<form action="options.php" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="tinvwl_import_settings"/>
-
+					<input type="hidden" name="tinvwl_import_nonce"
+						   value="<?php echo esc_attr( wp_create_nonce( 'tinvwl_import' ) ); ?>"/>
 					<div id="js-tinvwl-upload-file">
 						<p><?php _e( 'Please upload the exported json file or', 'ti-woocommerce-wishlist' ); ?>
 							<span style="cursor: pointer;color: #ff5739;text-decoration: underline;"
@@ -78,7 +79,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     border-bottom: 2px solid rgba(219,219,219,0.522);"><?php _e( 'Export settings', 'ti-woocommerce-wishlist' ); ?></h2>
 				<form action="options.php" method="post">
 					<input type="hidden" name="action" value="tinvwl_export_settings"/>
-
+					<input type="hidden" name="tinvwl_import_nonce"
+						   value="<?php echo esc_attr( wp_create_nonce( 'tinvwl_import' ) ); ?>"/>
 					<p><?php _e( 'Download the entire plugin configuration.', 'ti-woocommerce-wishlist' ); ?></p>
 
 					<div>

@@ -814,6 +814,8 @@ JOIN {$table_languages} l ON
 
 		$icon .= ( tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'show_preloader' ) ) ? ' ftinvwl-animated' : '';
 
+		$icon .= $this->is_loop ? ' tinvwl-loop' : '';
+
 		$content .= sprintf( '<a role="button" aria-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
 			$button_text,
 			$icon,

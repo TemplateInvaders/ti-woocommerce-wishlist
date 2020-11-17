@@ -387,7 +387,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }); // Disable add to wishlist button if variations not selected
 
     $(document).on('hide_variation', '.variations_form', function (a) {
-      var e = $(this).find('.tinvwl_add_to_wishlist_button');
+      var e = $('body').find('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
       e.attr('data-tinv-wl-productvariation', 0);
 
       if (e.length && e.attr('data-tinv-wl-list')) {
@@ -410,7 +410,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     });
     $(document).on('show_variation', '.variations_form', function (a, b, d) {
-      var e = $(this).find('.tinvwl_add_to_wishlist_button');
+      var e = $('body').find('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
       e.attr('data-tinv-wl-productvariation', b.variation_id);
 
       if (e.length && e.attr('data-tinv-wl-list')) {

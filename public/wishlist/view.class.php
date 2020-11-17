@@ -303,7 +303,7 @@ class TInvWL_Public_Wishlist_View {
 
 		$product_data = array(
 			'count'    => $lists_per_page,
-			'offset'   => $lists_per_page * ( $paged - 1 ),
+			'offset'   => absint( $lists_per_page ) * ( absint( $paged ) - 1 ),
 			'external' => $external,
 			'order_by' => 'date',
 			'order'    => 'DESC',

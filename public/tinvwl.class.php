@@ -275,7 +275,12 @@ class TInvWL_Public_TInvWL {
 		$pages = array_filter( $pages );
 		if ( ! empty( $pages ) ) {
 			foreach ( $pages as $page ) {
-				$page      = get_post( $page );
+				$page = get_post( $page );
+
+				if ( ! $page ) {
+					continue;
+				}
+
 				$page_slug = $page->post_name;
 
 				if ( $language_codes && ( defined( 'POLYLANG_VERSION' ) || defined( 'ICL_PLUGIN_PATH' ) ) ) {
@@ -513,7 +518,7 @@ class TInvWL_Public_TInvWL {
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {
-			$args['wpml']     = wpml_get_current_language();
+			$args['wpml'] = wpml_get_current_language();
 		}
 
 		wp_localize_script( $this->_name, 'tinvwl_add_to_wishlist', $args );

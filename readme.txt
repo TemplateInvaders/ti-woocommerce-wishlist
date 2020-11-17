@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.5
-Stable tag: 1.21.13
+Stable tag: 1.21.14
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.21.14 =
+*Release Date - 17 November 2020*
+
+* Improved add to wishlist button behavior for variable product type
+* Fixed PHP notice in case of wrong pagination value for wishlist page
+* Fixed PHP notices in case wishlist ID page is not valid WP_Post object
+
 = 1.21.13 =
 *Release Date - 11 November 2020*
 

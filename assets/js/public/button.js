@@ -157,13 +157,24 @@
 					redirect: window.location.href
 				},
 				a = this,
+				formEl,
 				formData = new FormData();
 
 			if (tinvwl_add_to_wishlist.wpml) {
 				data['lang'] = tinvwl_add_to_wishlist.wpml;
 			}
 
-			$(a).closest('form.cart[method=post], form.vtajaxform[method=post], .tinvwl-loop-button-wrapper').find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
+			formEl = $('form.cart[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], form.vtajaxform[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], .tinvwl-loop-button-wrapper[data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]');
+
+			if (!formEl.length) {
+				formEl = $(a).closest('form.cart[method=post], form.vtajaxform[method=post], .tinvwl-loop-button-wrapper');
+				if (!formEl.length) {
+					formEl = $('form.cart[method=post]');
+				}
+			}
+
+
+			formEl.find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
 				var name_elm = $(this).attr('name'),
 					type_elm = $(this).attr('type'),
 					value_elm = $(this).val(),
@@ -358,7 +369,7 @@
 
 		// Disable add to wishlist button if variations not selected
 		$(document).on('hide_variation', '.variations_form', function (a) {
-			var e = $('body').find('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
+			var e = $('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
 			e.attr('data-tinv-wl-productvariation', 0);
 
 			if (e.length && e.attr('data-tinv-wl-list')) {
@@ -380,7 +391,7 @@
 		});
 
 		$(document).on('show_variation', '.variations_form', function (a, b, d) {
-			var e = $('body').find('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
+			var e = $('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
 			e.attr('data-tinv-wl-productvariation', b.variation_id);
 			if (e.length && e.attr('data-tinv-wl-list')) {
 				var f = JSON.parse(e.attr('data-tinv-wl-list')),

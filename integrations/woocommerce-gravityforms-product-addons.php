@@ -38,7 +38,7 @@ if ( ! function_exists( 'tinvwl_gf_productaddon_support' ) ) {
 			 * @return string
 			 */
 			function gf_productaddon_text_button( $text_add_to_cart, $wl_product, $product ) {
-				$gravity_form_data = get_post_meta( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
+				$gravity_form_data = get_post_meta( ( ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
 
 				return ( $gravity_form_data ) ? __( 'Select options', 'ti-woocommerce-wishlist' ) : $text_add_to_cart;
 			}
@@ -57,7 +57,7 @@ if ( ! function_exists( 'tinvwl_gf_productaddon_support' ) ) {
 			 * @return boolean
 			 */
 			function gf_productaddon_run_action_button( $need, $product ) {
-				$gravity_form_data = get_post_meta( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
+				$gravity_form_data = get_post_meta( ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ), '_gravity_form_data', true );
 
 				return ( $gravity_form_data ) ? true : $need;
 			}
@@ -76,7 +76,7 @@ if ( ! function_exists( 'tinvwl_gf_productaddon_support' ) ) {
 			 * @return string
 			 */
 			function gf_productaddon_action_button( $url, $product ) {
-				$gravity_form_data = get_post_meta( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ), '_gravity_form_data', true );
+				$gravity_form_data = get_post_meta( ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ), '_gravity_form_data', true );
 
 				return ( $gravity_form_data ) ? $product->get_permalink() : $url;
 			}

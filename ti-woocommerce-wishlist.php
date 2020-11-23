@@ -7,7 +7,7 @@
  * Version:           1.21.14
  * Requires at least: 4.7
  * Tested up to: 5.5
- * WC requires at least: 2.6
+ * WC requires at least: 3.0
  * WC tested up to: 4.7
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/

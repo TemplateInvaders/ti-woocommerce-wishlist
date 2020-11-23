@@ -219,8 +219,8 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 	 */
 	function tinv_wishlist_get_item_data( $product, $wl_product = array(), $flat = false ) {
 		$item_data      = array();
-		$variation_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
-		$variation_data = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_data : ( $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array() );
+		$variation_id   = $product->is_type( 'variation' ) ? $product->get_id() : 0;
+		$variation_data = $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array();
 		if ( ! empty( $variation_id ) && is_array( $variation_data ) && is_array( $wl_product ) ) {
 			foreach ( $variation_data as $name => $value ) {
 				if ( '' === $value ) {
@@ -248,7 +248,6 @@ if ( ! function_exists( 'tinv_wishlist_get_item_data' ) ) {
 					$product_attributes = $product->get_attributes();
 					$_name              = str_replace( 'attribute_', '', $name );
 					if ( isset( $product_attributes[ $_name ] ) ) {
-						$_name = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_attributes[ $_name ]['name'] : $_name;
 						$label = wc_attribute_label( $_name, $product );
 					} else {
 						$label = $name;
@@ -615,16 +614,16 @@ if ( ! function_exists( 'tinvwl_add_to_cart_need_redirect' ) ) {
 			return true;
 		}
 
-		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->product_type : $_product->get_type() ) ) {
+		if ( 'external' === $_product->get_type() ) {
 			return true;
 		}
 
 		$need_url_data = array_merge( array(
-			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->variation_id : ( $_product->is_type( 'variation' ) ? $_product->get_id() : 0 ) ),
-			'add-to-cart'  => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $_product->id : ( $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id() ) ),
-		), array_map( 'urlencode', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? ( is_array( $_product->variation_data ) ? $_product->variation_data : array() ) : array() ) ) );
+			'variation_id' => $_product->is_type( 'variation' ) ? $_product->get_id() : 0,
+			'add-to-cart'  => $_product->is_type( 'variation' ) ? $_product->get_parent_id() : $_product->get_id(),
+		), array_map( 'urlencode', array() ) );
 
-		$need_url_data = version_compare( WC_VERSION, '3.0.0', '<' ) ? $need_url_data : array_filter( $need_url_data );
+		$need_url_data = array_filter( $need_url_data );
 
 		$need_url      = apply_filters( 'tinvwl_product_add_to_cart_redirect_slug_original', remove_query_arg( 'added-to-cart', ( version_compare( WC_VERSION, '3.8.0', '<' ) ? add_query_arg( $need_url_data ) : add_query_arg( $need_url_data, '' ) ) ), $_product );
 		$need_url_full = apply_filters( 'tinvwl_product_add_to_cart_redirect_url_original', remove_query_arg( 'added-to-cart', add_query_arg( $need_url_data, $_product->get_permalink() ) ), $_product );
@@ -675,8 +674,8 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 			$product_id        = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $wl_product['product_id'] ) );
 			$quantity          = empty( $wl_product['quantity'] ) ? 1 : wc_stock_amount( $wl_product['quantity'] );
 			$variation_id      = $wl_product['variation_id'];
-			$variations        = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_data : ( $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array() ) );
-			$passed_validation = $product->is_purchasable() && ( $product->is_in_stock() || $product->backorders_allowed() ) && 'external' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() );
+			$variations        = $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : array();
+			$passed_validation = $product->is_purchasable() && ( $product->is_in_stock() || $product->backorders_allowed() ) && 'external' !== $product->get_type();
 			ob_start();
 			if ( function_exists( 'wc_clear_notices' ) ) {
 				wc_clear_notices();

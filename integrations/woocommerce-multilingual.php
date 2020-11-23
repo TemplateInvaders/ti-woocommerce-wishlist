@@ -161,8 +161,8 @@ if ( ! function_exists( 'tinvwl_wpml_addtowishlist_out_prepare_product' ) ) {
 				$woocommerce_wpml->products = new WCML_Products( $woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb );
 			}
 
-			$product_id   = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->get_id() : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() );
-			$variation_id = version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 );
+			$product_id   = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+			$variation_id = $product->is_type( 'variation' ) ? $product->get_id() : 0;
 
 			if ( ! empty( $product_id ) ) {
 				$product_id = $woocommerce_wpml->products->get_original_product_id( $product_id );

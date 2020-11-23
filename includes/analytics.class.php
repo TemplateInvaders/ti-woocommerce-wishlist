@@ -254,8 +254,8 @@ class TInvWL_Analytics {
 			foreach ( $product_id as $key => $id ) {
 				$product_data = $this->product_data( $id, $variation_id[ $key ] );
 				if ( $product_data ) {
-					$ids['product_id'][ $key ]   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-					$ids['variation_id'][ $key ] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+					$ids['product_id'][ $key ]   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+					$ids['variation_id'][ $key ] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 				}
 			}
 			if ( empty( $ids ) ) {
@@ -438,8 +438,8 @@ class TInvWL_Analytics {
 			foreach ( $products as $k => $product ) {
 				$product_data = $this->product_data( $product['variation_id'], $product['product_id'] );
 				if ( $product_data ) {
-					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+					$product['product_id']   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+					$product['variation_id'] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 				}
 				$product['data'] = $product_data;
 				$products[ $k ]  = $product;
@@ -504,8 +504,8 @@ class TInvWL_Analytics {
 		if ( ! empty( $product_id ) || ! empty( $variation_id ) ) {
 			$product_data = $this->product_data( $product_id, $variation_id );
 			if ( $product_data ) {
-				$product_id   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-				$variation_id = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+				$product_id   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+				$variation_id = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 			} else {
 				$product_id   = 0;
 				$variation_id = 0;

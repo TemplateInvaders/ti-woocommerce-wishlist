@@ -181,7 +181,7 @@ class TInvWL_Product {
 		if ( $product_data->is_type( 'variable' ) ) {
 			$data['price'] = filter_var( $product_data->get_variation_price( 'max', false ), FILTER_VALIDATE_FLOAT );
 		} else {
-			$data['price'] = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+			$data['price'] = filter_var( ( $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
 		}
 
 		global $wpdb;
@@ -246,8 +246,8 @@ class TInvWL_Product {
 			return false;
 		}
 
-		$product_id   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-		$variation_id = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+		$product_id   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+		$variation_id = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 
 		$products = $this->get( array(
 			'product_id'   => $product_id,
@@ -447,11 +447,11 @@ class TInvWL_Product {
 
 		$product_data = apply_filters( 'tinvwl_product_data', wc_get_product( $variation_id ? $variation_id : $product_id ), $product_id, $variation_id );
 
-		if ( ! $product_data || 'trash' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->post->post_status : get_post( $product_data->get_id() )->post_status ) ) {
+		if ( ! $product_data || 'trash' === get_post( $product_data->get_id() )->post_status ) {
 			return null;
 		}
 
-		$product_data->variation_id = absint( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) );
+		$product_data->variation_id = absint( ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 
 		return $product_data;
 	}
@@ -506,7 +506,7 @@ class TInvWL_Product {
 		if ( $product_data->is_type( 'variable' ) ) {
 			$data['price'] = filter_var( $product_data->get_variation_price( 'max', false ), FILTER_VALIDATE_FLOAT );
 		} else {
-			$data['price'] = filter_var( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->price : $product_data->get_price() ), FILTER_VALIDATE_FLOAT );
+			$data['price'] = filter_var( $product_data->get_price(), FILTER_VALIDATE_FLOAT );
 		}
 
 		global $wpdb;

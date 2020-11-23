@@ -213,8 +213,8 @@ class TInvWL_Product_Legacy {
 		}
 
 		$data                 = apply_filters( 'tinvwl_wishlist_product_add', $data );
-		$data['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-		$data['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+		$data['product_id']   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+		$data['variation_id'] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 
 		$this->add_cookies( $data );
 
@@ -251,8 +251,8 @@ class TInvWL_Product_Legacy {
 		}
 
 		$products = $this->get( array(
-			'product_id'   => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ),
-			'variation_id' => ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ),
+			'product_id'   => $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id(),
+			'variation_id' => $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0,
 			'count'        => 1,
 			'external'     => false,
 		) );
@@ -330,8 +330,8 @@ class TInvWL_Product_Legacy {
 			if ( $default['external'] ) {
 				$product_data = $this->product_data( $product['variation_id'], $product['product_id'] );
 				if ( $product_data ) {
-					$product['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-					$product['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+					$product['product_id']   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+					$product['variation_id'] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 				}
 				$product['data'] = $product_data;
 			}
@@ -360,11 +360,11 @@ class TInvWL_Product_Legacy {
 
 		$product_data = wc_get_product( $variation_id ? $variation_id : $product_id );
 
-		if ( ! $product_data || 'trash' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->post->post_status : get_post( $product_data->get_id() )->post_status ) ) {
+		if ( ! $product_data || 'trash' === get_post( $product_data->get_id() )->post_status ) {
 			return null;
 		}
 
-		$product_data->variation_id = absint( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) );
+		$product_data->variation_id = absint( ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 
 		return $product_data;
 	}
@@ -401,8 +401,8 @@ class TInvWL_Product_Legacy {
 		}
 
 		$data                 = apply_filters( 'tinvwl_wishlist_product_update', $data );
-		$data['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) );
-		$data['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
+		$data['product_id']   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
+		$data['variation_id'] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
 
 		return $this->update_cookies( $data, array(
 			'product_id'   => $data['product_id'],
@@ -431,7 +431,7 @@ class TInvWL_Product_Legacy {
 		}
 
 		foreach ( $this->products as $key => $product ) {
-			if ( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ) == $product['product_id'] && ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) == $product['variation_id'] ) { // WPCS: loose comparison ok.
+			if ( ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) == $product['product_id'] && ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) == $product['variation_id'] ) { // WPCS: loose comparison ok.
 				$this->products[ $key ] = null;
 			}
 		}
@@ -442,7 +442,7 @@ class TInvWL_Product_Legacy {
 
 		if ( count( $this->products ) < $c ) {
 			$this->update_cookie();
-			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->id : ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ) ), ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->variation_id : ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) ) );
+			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, ( $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id() ), ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
 		}
 
 		return true;

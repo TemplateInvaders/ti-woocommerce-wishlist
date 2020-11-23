@@ -175,7 +175,7 @@ class TInvWL_Public_Wishlist_View {
 		// override global product data.
 		$product = $_product;
 
-		if ( 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+		if ( 'external' === ( $product->get_type() ) ) {
 
 			$text = $product->single_add_to_cart_text();
 
@@ -202,7 +202,7 @@ class TInvWL_Public_Wishlist_View {
 		// override global product data.
 		$product = $_product;
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
-		     && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+		     && in_array( $product->get_type(), array(
 				'variable',
 				'variable-subscription',
 			) ) ) {
@@ -334,7 +334,7 @@ class TInvWL_Public_Wishlist_View {
 			return false;
 		}
 
-		return ( $product->is_purchasable() || 'external' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) && ( $product->is_in_stock() || $product->backorders_allowed() );
+		return ( $product->is_purchasable() || 'external' === $product->get_type() ) && ( $product->is_in_stock() || $product->backorders_allowed() );
 	}
 
 	/**

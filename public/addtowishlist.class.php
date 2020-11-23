@@ -577,7 +577,7 @@ JOIN {$table_languages} l ON
 		$product = apply_filters( 'tinvwl_addtowishlist_check_product', $product );
 
 		$this->wishlist = array();
-		$vproduct       = in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+		$vproduct       = in_array( $product->get_type(), array(
 			'variable',
 			'variation',
 			'variable-subscription',
@@ -604,7 +604,7 @@ JOIN {$table_languages} l ON
 
 		$products = array();
 		foreach ( $this->all_products as $_product ) {
-			if ( $_product['product_id'] === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) ) ) {
+			if ( $_product['product_id'] === $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) {
 				$products[] = $_product;
 			}
 		}
@@ -657,11 +657,11 @@ JOIN {$table_languages} l ON
 
 		if ( $product ) {
 			$allow = false;
-			if ( 'simple' === ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ) ) {
+			if ( 'simple' === $product->get_type() ) {
 				$allow = ( ( ! $product->is_purchasable() && '' == $product->get_price() ) || ( $product->is_purchasable() && ! $product->is_in_stock() ) );
 			}
 
-			if ( in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->product_type : $product->get_type() ), array(
+			if ( in_array( $product->get_type(), array(
 				'variable',
 				'variable-subscription'
 			) ) ) {
@@ -704,7 +704,7 @@ JOIN {$table_languages} l ON
 
 			$product_data = wc_get_product( $variation_id ? $variation_id : $product_id );
 
-			if ( $product_data && 'trash' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product_data->post->post_status : get_post( $product_data->get_id() )->post_status ) ) {
+			if ( $product_data && 'trash' !== get_post( $product_data->get_id() )->post_status ) {
 				$this->product = apply_filters( 'tinvwl_addtowishlist_out_prepare_product', $product_data );
 			} else {
 				return '';
@@ -716,7 +716,7 @@ JOIN {$table_languages} l ON
 
 		add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
-		if ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+		if ( $this->is_loop && in_array( $this->product->get_type(), array(
 				'variable',
 				'variable-subscription',
 			) ) ) {
@@ -737,27 +737,23 @@ JOIN {$table_languages} l ON
 			$this->variation_id = 0;
 			$match_attributes   = array();
 
-			foreach ( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->get_variation_default_attributes() : $this->product->get_default_attributes() ) as $attribute_name => $value ) {
+			foreach ( $this->product->get_default_attributes() as $attribute_name => $value ) {
 				$match_attributes[ 'attribute_' . sanitize_title( $attribute_name ) ] = $value;
 			}
 
 			if ( $match_attributes ) {
-				if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
-					$this->variation_id = $this->product->get_matching_variation( $match_attributes );
-				} else {
-					$data_store         = WC_Data_Store::load( 'product' );
-					$this->variation_id = $data_store->find_matching_product_variation( $this->product, $match_attributes );
-				}
+				$data_store         = WC_Data_Store::load( 'product' );
+				$this->variation_id = $data_store->find_matching_product_variation( $this->product, $match_attributes );
 			}
 		}
 
 		$data = array(
 			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ),
 			'product'             => $this->product,
-			'variation_id'        => ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+			'variation_id'        => ( $this->is_loop && in_array( ( $this->product->get_type() ), array(
 					'variable',
 					'variable-subscription',
-				) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ),
+				) ) ) ? $this->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ),
 			'button_icon'         => tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon' ),
 			'add_to_wishlist'     => apply_filters( 'tinvwl_added_to_wishlist_text_loop', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ),
 			'browse_in_wishlist'  => apply_filters( 'tinvwl_view_wishlist_text', tinv_get_option( 'general', 'text_browse' ) ),
@@ -819,16 +815,16 @@ JOIN {$table_languages} l ON
 		$content .= sprintf( '<a role="button" aria-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
 			$button_text,
 			$icon,
-			apply_filters( 'wpml_object_id', ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->id : ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ) ), 'product', true ),
-			apply_filters( 'wpml_object_id', ( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+			apply_filters( 'wpml_object_id', ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ), 'product', true ),
+			apply_filters( 'wpml_object_id', ( ( $this->is_loop && in_array( $this->product->get_type(), array(
 					'variable',
 					'variable-subscription',
-				) ) ) ? $this->variation_id : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ) ), 'product', true ),
-			json_encode( ( $this->is_loop && in_array( ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ), array(
+				) ) ) ? $this->variation_id : ( $this->product->is_type( 'variation' ) ? $this->product->get_id() : 0 ) ), 'product', true ),
+			json_encode( ( $this->is_loop && in_array( $this->product->get_type(), array(
 					'variable',
 					'variable-subscription',
-				) ) ) ? $this->variation_ids : ( version_compare( WC_VERSION, '3.0.0', '<' ) ? array( $this->product->variation_id ) : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array( 0 ) ) ) ),
-			( version_compare( WC_VERSION, '3.0.0', '<' ) ? $this->product->product_type : $this->product->get_type() ),
+				) ) ) ? $this->variation_ids : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array( 0 ) ) ),
+			$this->product->get_type(),
 			$text );
 		$content .= apply_filters( 'tinvwl_wishlist_button_after', '' );
 
@@ -857,8 +853,8 @@ JOIN {$table_languages} l ON
 			'loop'         => 'no',
 		);
 		if ( $product && is_a( $product, 'WC_Product' ) ) {
-			$default['product_id']   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->id : ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
-			$default['variation_id'] = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product->variation_id : ( $product->is_type( 'variation' ) ? $product->get_id() : 0 ) );
+			$default['product_id']   = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+			$default['variation_id'] = $product->is_type( 'variation' ) ? $product->get_id() : 0;
 		}
 		$atts = shortcode_atts( $default, $atts );
 

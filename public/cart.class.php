@@ -82,11 +82,9 @@ class TInvWL_Public_Cart {
 		} else {
 			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data_cart_session' ) );
 		}
-		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
-			add_action( 'woocommerce_add_order_item_meta', array( $this, 'add_order_item_meta' ), 10, 3 );
-		} else {
-			add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta_v3' ) );
-		}
+
+		add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta' ) );
+
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'purchased_items' ) );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
 	}
@@ -125,7 +123,7 @@ class TInvWL_Public_Cart {
 		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $product['product_id'] ) );
 		$quantity     = empty( $wl_quantity ) ? 1 : wc_stock_amount( $wl_quantity );
 		$variation_id = $product['variation_id'];
-		$variations   = ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product['data']->variation_data : ( $product['data']->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product['data']->get_id() ) : array() ) );
+		$variations   = $product['data']->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product['data']->get_id() ) : array();
 
 		if ( ! empty( $variation_id ) && is_array( $variations ) ) {
 			foreach ( $variations as $name => $value ) {
@@ -140,7 +138,7 @@ class TInvWL_Public_Cart {
 			}
 		}
 
-		$passed_validation = $product['data']->is_purchasable() && ( $product['data']->is_in_stock() || $product['data']->backorders_allowed() ) && 'external' !== ( version_compare( WC_VERSION, '3.0.0', '<' ) ? $product['data']->product_type : $product['data']->get_type() );
+		$passed_validation = $product['data']->is_purchasable() && ( $product['data']->is_in_stock() || $product['data']->backorders_allowed() ) && 'external' !== $product['data']->get_type();
 		$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 		if ( $passed_validation ) {
 			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations );
@@ -316,28 +314,12 @@ class TInvWL_Public_Cart {
 		}
 	}
 
-
-	/**
-	 * Add meta data for product when created order
-	 *
-	 * @param string $item_id Order item id.
-	 * @param array $values order item data.
-	 * @param string $cart_item_key Cart product key.
-	 */
-	public function add_order_item_meta( $item_id, $values, $cart_item_key ) {
-		$data = self::get_item_data( $cart_item_key );
-		$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $cart_item_key, $values );
-		if ( ! empty( $data ) ) {
-			wc_add_order_item_meta( $item_id, '_tinvwl_wishlist_cart', $data );
-		}
-	}
-
 	/**
 	 * Add meta data for product when created order
 	 *
 	 * @param \WC_Order $order Order object.
 	 */
-	public function add_order_item_meta_v3( $order ) {
+	public function add_order_item_meta( $order ) {
 		foreach ( $order->get_items() as $item ) {
 			$data = self::get_item_data( $item->legacy_cart_item_key );
 			$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $item->legacy_cart_item_key, $item->legacy_values );
@@ -509,18 +491,9 @@ class TInvWL_Public_Cart {
 	 * @return mixed
 	 */
 	public static function get_order_item_meta( $item, $key ) {
-		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
-			//WooCommerce before 3.0
 
-			if ( array_key_exists( $key, (array) $item ) ) {
-				$value = maybe_unserialize( $item[ $key ] );
-			}
-		} else {
-			// WooCommerce 3.0
-
-			// Check if wishlist meta exists for current item order.
-			$value = $item->get_meta( $key );
-		}
+		// Check if wishlist meta exists for current item order.
+		$value = $item->get_meta( $key );
 
 		return $value;
 	}

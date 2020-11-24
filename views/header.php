@@ -34,9 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="col-lg-5">
 			<div class="tinvwl-status-panel status-panel"><?php
-			foreach ( $status_panel as $item ) {
-				echo $item; // WPCS: xss ok.
-			}
+				foreach ( $status_panel as $item ) {
+					echo $item; // WPCS: xss ok.
+				}
 				?></div>
 		</div>
 	</div>

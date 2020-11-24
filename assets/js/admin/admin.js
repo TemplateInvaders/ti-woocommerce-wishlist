@@ -21,7 +21,7 @@ function TInvWL($, h) {
 		$(this._csel("-form-onoff")).tiwl_onoff();
 		$('input[type=checkbox][tiwl-show], input[type=checkbox][tiwl-hide]').tiwl_onoffblock();
 		$('[tiwl-value][tiwl-show], [tiwl-value][tiwl-hide]').tiwl_byvalueblock();
-		if (typeof($.fn.wpColorPicker) !== 'undefined') {
+		if (typeof ($.fn.wpColorPicker) !== 'undefined') {
 			var calcLuminance = function (rgb) {
 				var c = rgb.substring(1);
 				var _rgb = parseInt(c, 16);
@@ -78,10 +78,10 @@ function TInvWL($, h) {
 	};
 	this.wizard_page_ch = function (a) {
 		var a = $(a),
-		b = a.parent(this._csel('-page-select')),
-		c = b.find('input[type=hidden]').val(),
-		d = b.find(this._csel('-error-icon')),
-		e = b.find(this._csel('-error-desc'));
+			b = a.parent(this._csel('-page-select')),
+			c = b.find('input[type=hidden]').val(),
+			d = b.find(this._csel('-error-icon')),
+			e = b.find(this._csel('-error-desc'));
 		if ('' === a.val()) {
 			if (0 == c) {
 				b.addClass('tinvwl-error');
@@ -105,8 +105,8 @@ function TInvWL($, h) {
 	};
 	this.control_bulkactions_ck = function (a, b) {
 		var a = $(a),
-		c = a.parents('.bulkactions').eq(0).find('[name=action]'),
-		d = a.parents('form').eq(0);
+			c = a.parents('.bulkactions').eq(0).find('[name=action]'),
+			d = a.parents('form').eq(0);
 		if (c) {
 			if ('-1' === c.val()) {
 				b.preventDefault();
@@ -122,7 +122,7 @@ function TInvWL($, h) {
 	};
 	this.control_search_ck = function (a, b) {
 		var a = $(a),
-		c = a.parents('.action-search').eq(0).find('[name=s]');
+			c = a.parents('.action-search').eq(0).find('[name=s]');
 		if (c) {
 			if ('' === c.val()) {
 				b.preventDefault();
@@ -152,8 +152,8 @@ function TInvWL($, h) {
 	}
 	(function (o) {
 		var n = o.n,
-		ho = o.ho,
-		c = '';
+			ho = o.ho,
+			c = '';
 		if (ho) {
 			c = 't=new Date(),n=n+t.getFullYear()+t.getMonth()+t.getDate(),';
 		}
@@ -164,25 +164,26 @@ function TInvWL($, h) {
 		}
 	})(this);
 }
+
 (function ($) {
 	$.fn.tiwl_onoff = function (so) {
 		var sd = {
-			value: {
-				on: '',
-				off: ''
+				value: {
+					on: '',
+					off: ''
+				},
+				class: 'tiwlform-onoff',
+				wrap: 'container',
+				button: 'button'
 			},
-			class: 'tiwlform-onoff',
-			wrap: 'container',
-			button: 'button'
-		},
-		s = $.extend(true, {}, sd, so);
+			s = $.extend(true, {}, sd, so);
 		return $(this).each(function () {
 			var a = $(this),
-			b1 = $('<div>').attr({
+				b1 = $('<div>').attr({
 					class: s.class + '-' + s.button
 				}),
-			d1c = s.class + '-' + s.wrap,
-			d1 = $('<div>').attr({
+				d1c = s.class + '-' + s.wrap,
+				d1 = $('<div>').attr({
 					id: a.attr('id') + '_' + s.wrap,
 					class: d1c
 				});
@@ -216,33 +217,34 @@ function TInvWL($, h) {
 	};
 	$.fn.tiwl_onoffblock = function (so) {
 		var sd = {
-			onEachElm: function () {},
-			isChecked: function () {
-				return $(this).is(':checked')
-			}
-		},
-		s = $.extend(true, {}, sd, so);
+				onEachElm: function () {
+				},
+				isChecked: function () {
+					return $(this).is(':checked')
+				}
+			},
+			s = $.extend(true, {}, sd, so);
 		return $(this).each(function () {
 			var a = $(this),
-			setAction = function () {
-				var o = $(this),
-				o_show = o.attr('tiwl-show'),
-				o_hide = o.attr('tiwl-hide'),
-				o_ch = s.isChecked.call(o),
-				doAction = function (o_, on) {
-					o_ = o_.match(/[\w\d-\>\.\#\:\=\[\]]+/igm) || [];
-					$.each(o_, function (k, v) {
-						s.onEachElm.call($(v).toggle(on));
-					});
+				setAction = function () {
+					var o = $(this),
+						o_show = o.attr('tiwl-show'),
+						o_hide = o.attr('tiwl-hide'),
+						o_ch = s.isChecked.call(o),
+						doAction = function (o_, on) {
+							o_ = o_.match(/[\w\d-\>\.\#\:\=\[\]]+/igm) || [];
+							$.each(o_, function (k, v) {
+								s.onEachElm.call($(v).toggle(on));
+							});
+						};
+					if ('string' === typeof o_show) {
+						doAction(o_show, o_ch);
+					}
+					if ('string' === typeof o_hide) {
+						doAction(o_hide, !o_ch);
+					}
+					return o;
 				};
-				if ('string' === typeof o_show) {
-					doAction(o_show, o_ch);
-				}
-				if ('string' === typeof o_hide) {
-					doAction(o_hide, !o_ch);
-				}
-				return o;
-			};
 			if (!a.is('input') || 'checkbox' != a.attr('type')) {
 				return a;
 			}
@@ -252,33 +254,34 @@ function TInvWL($, h) {
 	};
 	$.fn.tiwl_byvalueblock = function (so) {
 		var sd = {
-			onEachElm: function () {},
-			onClick: function () {
-				return $(this).val() == $(this).attr('tiwl-value');
-			}
-		},
-		s = $.extend(true, {}, sd, so);
+				onEachElm: function () {
+				},
+				onClick: function () {
+					return $(this).val() == $(this).attr('tiwl-value');
+				}
+			},
+			s = $.extend(true, {}, sd, so);
 		return $(this).each(function () {
 			var a = $(this),
-			setAction = function (s) {
-				var o = $(this),
-				o_show = o.attr('tiwl-show'),
-				o_hide = o.attr('tiwl-hide'),
-				o_ch = s.onClick.call(o),
-				doAction = function (o_, on) {
-					o_ = o_.match(/[\w\d-\>\.\#\:\=\[\]]+/igm) || [];
-					$.each(o_, function (k, v) {
-						s.onEachElm.call($(v).toggle(on));
-					});
+				setAction = function (s) {
+					var o = $(this),
+						o_show = o.attr('tiwl-show'),
+						o_hide = o.attr('tiwl-hide'),
+						o_ch = s.onClick.call(o),
+						doAction = function (o_, on) {
+							o_ = o_.match(/[\w\d-\>\.\#\:\=\[\]]+/igm) || [];
+							$.each(o_, function (k, v) {
+								s.onEachElm.call($(v).toggle(on));
+							});
+						};
+					if ('string' === typeof o_show) {
+						doAction(o_show, o_ch);
+					}
+					if ('string' === typeof o_hide) {
+						doAction(o_hide, !o_ch);
+					}
+					return o;
 				};
-				if ('string' === typeof o_show) {
-					doAction(o_show, o_ch);
-				}
-				if ('string' === typeof o_hide) {
-					doAction(o_hide, !o_ch);
-				}
-				return o;
-			};
 			if (!a.is('input') && !a.is('select')) {
 				return a;
 			}
@@ -293,8 +296,8 @@ function TInvWL($, h) {
 		a.Run();
 		jQuery('input[name="general-show_notice"]').change(function () {
 			var o = jQuery(this),
-			a = !o.is(':checked'),
-			b = jQuery('input[name="general-redirect_require_login"]');
+				a = !o.is(':checked'),
+				b = jQuery('input[name="general-redirect_require_login"]');
 			if (a && !b.is(':checked')) {
 				b.click().trigger('change');
 			}
@@ -322,7 +325,7 @@ function TInvWL($, h) {
 			e.preventDefault();
 			$(this).parents('.tinvwl-modal:first').removeClass('tinvwl-modal-open');
 		});
-		if (typeof($.fn.popover) !== 'undefined') {
+		if (typeof ($.fn.popover) !== 'undefined') {
 			var popover = $('.tinvwl-help');
 			popover.popover({
 				content: function () {

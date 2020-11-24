@@ -44,12 +44,14 @@ class TInvWL_Includes_API_Yoasti18n {
 	 *
 	 * @param string $plugin_name Plugin name.
 	 * @param string $version Plugin version.
+	 *
 	 * @return /TInvWL_Includes_API_Yoasti18n
 	 */
 	public static function instance( $plugin_name = '', $version = '' ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name, $version );
 		}
+
 		return self::$_instance;
 	}
 
@@ -68,11 +70,12 @@ class TInvWL_Includes_API_Yoasti18n {
 	public function load_i18n() {
 		if ( empty( $this->i18n ) ) {
 			$this->i18n = new TInvWL_Yoast_I18n_WordPressOrg_V2( array(
-				'textdomain'	 => 'ti-woocommerce-wishlist',
-				'plugin_name'	 => 'WooCommerce Wishlist Plugin',
-				'hook'			 => 'tinvwl_view_header',
+				'textdomain'  => 'ti-woocommerce-wishlist',
+				'plugin_name' => 'WooCommerce Wishlist Plugin',
+				'hook'        => 'tinvwl_view_header',
 			) );
 		}
+
 		return $this->i18n;
 	}
 }

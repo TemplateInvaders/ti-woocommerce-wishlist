@@ -26,12 +26,14 @@ class TInvWL_Product_Local extends TInvWL_Product {
 	 * Get this class object
 	 *
 	 * @param string $plugin_name Plugin name.
+	 *
 	 * @return \TInvWL_Product_Local
 	 */
 	public static function instance( $plugin_name = TINVWL_PREFIX ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name );
 		}
+
 		return self::$_instance;
 	}
 
@@ -41,8 +43,8 @@ class TInvWL_Product_Local extends TInvWL_Product {
 	 * @param string $plugin_name Plugin name.
 	 */
 	function __construct( $plugin_name = TINVWL_PREFIX ) {
-		$wl			 = new TInvWL_Wishlist( $plugin_name );
-		$wishlist	 = $wl->add_sharekey_default();
+		$wl       = new TInvWL_Wishlist( $plugin_name );
+		$wishlist = $wl->add_sharekey_default();
 		parent::__construct( $wishlist, $plugin_name );
 	}
 }

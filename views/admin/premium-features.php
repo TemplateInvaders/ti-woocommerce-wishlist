@@ -40,15 +40,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<!-- Begin MailChimp Signup Form -->
 					<div id="mc_embed_signup">
 						<form
-							action="https://templateinvaders.us14.list-manage.com/subscribe/post?u=e41c4138bfe744af05e6e3e4c&amp;id=7ef8ec2b94"
-							method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
-							class="validate" target="_blank" novalidate>
+								action="https://templateinvaders.us14.list-manage.com/subscribe/post?u=e41c4138bfe744af05e6e3e4c&amp;id=7ef8ec2b94"
+								method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
+								class="validate" target="_blank" novalidate>
 							<div id="mc_embed_signup_scroll">
 
 								<div class="mc-field-group">
 									<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
 									<input type="submit" value="Subscribe" name="subscribe"
-									       id="mc-embedded-subscribe" class="tinvwl-btn">
+										   id="mc-embedded-subscribe" class="tinvwl-btn">
 								</div>
 								<div id="mce-responses" class="clear">
 									<div class="response" id="mce-error-response" style="display:none"></div>
@@ -56,9 +56,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</div>
 								<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
 								<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text"
-								                                                                          name="b_e41c4138bfe744af05e6e3e4c_7ef8ec2b94"
-								                                                                          tabindex="-1"
-								                                                                          value="">
+																										  name="b_e41c4138bfe744af05e6e3e4c_7ef8ec2b94"
+																										  tabindex="-1"
+																										  value="">
 								</div>
 
 							</div>

@@ -105,8 +105,8 @@ class TInvWL_PluginExtend {
 			foreach ( array_keys( $plugins ) as $plugin ) {
 				add_filter( 'plugin_action_links_' . $plugin, array( $this, 'plugin_action_links_maybe_deactivate' ) );
 				add_filter( 'network_admin_plugin_action_links_' . $plugin, array(
-					$this,
-					'plugin_action_links_maybe_deactivate',
+						$this,
+						'plugin_action_links_maybe_deactivate',
 				) );
 			}
 
@@ -305,7 +305,7 @@ class TInvWL_PluginExtend {
 	 * @return boolean
 	 */
 	private function is_plugin_at_min_version( $plugin ) {
-		return $this->is_plugin_at_version( 0, $plugin );
+		return $this->is_plugin_at_version( $plugin, 0 );
 	}
 
 	/**
@@ -316,7 +316,7 @@ class TInvWL_PluginExtend {
 	 * @return boolean
 	 */
 	private function is_plugin_at_max_version( $plugin ) {
-		return $this->is_plugin_at_version( 1, $plugin );
+		return $this->is_plugin_at_version( $plugin, 1 );
 	}
 
 	/**
@@ -327,7 +327,7 @@ class TInvWL_PluginExtend {
 	 * @return boolean
 	 */
 	private function is_plugin_at_need_version( $plugin ) {
-		return $this->is_plugin_at_version( 2, $plugin );
+		return $this->is_plugin_at_version( $plugin, 2 );
 	}
 
 	/**
@@ -338,22 +338,23 @@ class TInvWL_PluginExtend {
 	 * @return boolean
 	 */
 	private function is_plugin_at_conflict_version( $plugin ) {
-		return $this->is_plugin_at_version( 3, $plugin );
+		return $this->is_plugin_at_version( $plugin, 3 );
 	}
 
 	/**
 	 * Check plugin version dependency.
+	 *
+	 * @param string $plugin Plugin transient name.
 	 *
 	 * @param integer $i Index rules.
 	 *                    0 Min version.
 	 *                    1 Max version.
 	 *                    2 Need plugin verion.
 	 *                    3 Conflict plugin verion.
-	 * @param string $plugin Plugin transient name.
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_version( $i = 0, $plugin ) {
+	private function is_plugin_at_version( $plugin, $i = 0 ) {
 
 		switch ( $i ) {
 			case 3:
@@ -465,7 +466,7 @@ class TInvWL_PluginExtend {
 			?>
 			<tr class="plugin-update-tr installer-plugin-update-tr">
 				<td colspan="<?php echo $wp_list_table->get_column_count(); // WPCS: xss ok. ?>"
-				    class="plugin-update colspanchange">
+					class="plugin-update colspanchange">
 					<div class="notice inline notice-warning notice-alt">
 						<p class="installer-q-icon">
 							<?php echo $this->get_messages( true ); // WPCS: xss ok. ?>

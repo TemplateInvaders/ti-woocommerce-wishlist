@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <h1><?php esc_html_e( 'Error 404', 'ti-woocommerce-wishlist' ); // WPCS: xss ok. ?></h1>
 <h2><?php
-	$path	 = array( @$_type, @$_template_name ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
-	$path	 = implode( DIRECTORY_SEPARATOR, $path );
+	$path = array( @$_type, @$_template_name ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+	$path = implode( DIRECTORY_SEPARATOR, $path );
 	printf( __( 'Template "%s" not found!', 'ti-woocommerce-wishlist' ), $path ); // WPCS: xss ok.
 	?></h2>
 <!-- <?php echo self::file( @$_template_name, @$_type ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged ?> -->

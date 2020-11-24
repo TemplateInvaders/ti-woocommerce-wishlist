@@ -23,5 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?></div>
 	<?php echo TInvWL_Form::_button_submit( 'continue', '<i class="ftinvwl ftinvwl-magic"></i>' . __( 'let’s go', 'ti-woocommerce-wishlist' ), array( 'class' => 'tinvwl-btn red w-icon xl-icon round' ) ); // WPCS: xss ok. ?>
 	<div class="tinv-wishlist-clear"></div>
-	<a class="tinvwl-skip" href="<?php echo esc_url( admin_url() ); ?>" ><?php esc_html_e( 'Not Right Now', 'ti-woocommerce-wishlist' ); ?></a>
+	<a class="tinvwl-skip"
+	   href="<?php echo esc_url( admin_url() ); ?>"><?php esc_html_e( 'Not Right Now', 'ti-woocommerce-wishlist' ); ?></a>
 </div>

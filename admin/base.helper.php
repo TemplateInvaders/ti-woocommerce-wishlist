@@ -36,7 +36,7 @@ abstract class TInvWL_Admin_Base {
 	 * @param string $version Plugin version.
 	 */
 	function __construct( $plugin_name, $version ) {
-		$this->_name = $plugin_name;
+		$this->_name    = $plugin_name;
 		$this->_version = $version;
 		$this->load_function();
 	}
@@ -53,7 +53,7 @@ abstract class TInvWL_Admin_Base {
 	 *
 	 * @param string $page Page title.
 	 * @param string $cat Category title.
-	 * @param array  $arg Arguments array.
+	 * @param array $arg Arguments array.
 	 *
 	 * @return string
 	 */

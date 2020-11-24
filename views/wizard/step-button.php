@@ -18,10 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<div class="tinvwl-desc">
-		<?php esc_html_e( 'Choose where to place “Add to Wishlist” button on the product page: before or after “Add to Cart” button.', 'ti-woocommerce-wishlist' ); ?><br/>
+		<?php esc_html_e( 'Choose where to place “Add to Wishlist” button on the product page: before or after “Add to Cart” button.', 'ti-woocommerce-wishlist' ); ?>
+		<br/>
 		<?php
 		$links = array(
-			sprintf( '<a target="_blank" href="%s">%s</a>', esc_url( self::admin_url( 'style-settings' ) ), __( 'TI  Wishlists > Style Options', 'ti-woocommerce-wishlist' ) ),
+				sprintf( '<a target="_blank" href="%s">%s</a>', esc_url( self::admin_url( 'style-settings' ) ), __( 'TI  Wishlists > Style Options', 'ti-woocommerce-wishlist' ) ),
 		);
 		printf( __( 'And set button text. You can add an icon, change button appearance and other settings in %s.', 'ti-woocommerce-wishlist' ), implode( __( ' and ', 'ti-woocommerce-wishlist' ), $links ) ); // WPCS: xss ok.
 		?>
@@ -73,7 +74,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="tinvwl-nav tinv-wishlist-clearfix">
 		<div class="tinvwl-next">
-			<a class="tinvwl-skip" href="<?php echo esc_url( add_query_arg( 'step', absint( filter_input( INPUT_GET, 'step' ) ) + 1, set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) ) ); // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected ?>" ><?php esc_html_e( 'Skip this step', 'ti-woocommerce-wishlist' ); ?></a>
+			<a class="tinvwl-skip"
+			   href="<?php echo esc_url( add_query_arg( 'step', absint( filter_input( INPUT_GET, 'step' ) ) + 1, set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) ) ); // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected ?>"><?php esc_html_e( 'Skip this step', 'ti-woocommerce-wishlist' ); ?></a>
 			<?php echo TInvWL_Form::_button_submit( 'nextstep', __( 'continue', 'ti-woocommerce-wishlist' ), array( 'class' => 'tinvwl-btn red w-icon round' ) ); // WPCS: xss ok. ?>
 		</div>
 	</div>

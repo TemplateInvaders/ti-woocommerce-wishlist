@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( class_exists( 'Addify_Woo_Hide_Price_Front' ) ) {
 
-	function tinvwl_check_class_action( $tag, $class = '', $method ) {
+	function tinvwl_check_class_action( $tag, $class, $method ) {
 		global $wp_filter;
 		if ( isset( $wp_filter[ $tag ] ) ) {
 			$len = strlen( $method );

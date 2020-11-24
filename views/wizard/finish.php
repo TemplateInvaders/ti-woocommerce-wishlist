@@ -22,11 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<a class="tinvwl-btn grey w-icon xl-icon round"
 	   href="<?php echo 'https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=wizard_documentation&partner=' . TINVWL_UTM_SOURCE; // WPCS: xss ok.
-	   ?>"><i class="ftinvwl ftinvwl-graduation-cap"></i><?php esc_html_e( 'Documentation', 'ti-woocommerce-wishlist' ); ?></a>
+	   ?>"><i class="ftinvwl ftinvwl-graduation-cap"></i><?php esc_html_e( 'Documentation', 'ti-woocommerce-wishlist' ); ?>
+	</a>
 	<a class="tinvwl-btn grey w-icon xl-icon round" href="<?php echo esc_url( self::admin_url( '' ) ); ?>"><i
-			class="ftinvwl ftinvwl-wrench"></i><?php esc_html_e( 'Wishlist Settings', 'ti-woocommerce-wishlist' ); ?></a>
+				class="ftinvwl ftinvwl-wrench"></i><?php esc_html_e( 'Wishlist Settings', 'ti-woocommerce-wishlist' ); ?>
+	</a>
 	<div class="tinv-wishlist-clear" style="padding: 20px 0"></div>
 	<a class="tinvwl-btn red w-icon smaller-txt"
 	   href="https://templateinvaders.com/?utm_source=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>&utm_campaign=<?php echo TINVWL_UTM_CAMPAIGN; // WPCS: xss ok. ?>&utm_medium=<?php echo TINVWL_UTM_MEDIUM; // WPCS: xss ok. ?>&utm_content=wizard_upgrade&partner=<?php echo TINVWL_UTM_SOURCE; // WPCS: xss ok. ?>"><i
-			class="ftinvwl ftinvwl-star"></i><?php esc_html_e( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ); ?></a>
+				class="ftinvwl ftinvwl-star"></i><?php esc_html_e( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ); ?>
+	</a>
 </div>

@@ -17,7 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</td>
 	<?php if ( $show_helper && $show_field_desc ) : ?>
 		<td class="tinvwl-info w-bg-grey">
-			<?php if ( ! empty( $desc ) ) { self::view( 'section-infoblock', array( 'desc' => $desc ), '' ); } ?>
+			<?php if ( ! empty( $desc ) ) {
+				self::view( 'section-infoblock', array( 'desc' => $desc ), '' );
+			} ?>
 		</td>
 	<?php endif; ?>
 </tr>

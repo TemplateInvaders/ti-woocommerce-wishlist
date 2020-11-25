@@ -7,8 +7,16 @@ define( 'SHORTINIT', true );
 
 // WP Load
 // -----------------------------------------------------------------------
-require( dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-config.php' );
-require( ABSPATH . '/wp-load.php' );
+
+$config_file = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-config.php';
+$load_file   = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-load.php';
+
+if ( file_exists( $config_file ) ) {
+	require( $config_file );
+	require( ABSPATH . '/wp-load.php' );
+} elseif ( file_exists( $load_file ) ) {
+	require( $load_file );
+}
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

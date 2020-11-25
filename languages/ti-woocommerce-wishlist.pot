@@ -1,8 +1,8 @@
-# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.21.14
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.21.14 package.
+# Copyright (C) 2020 TI WooCommerce Wishlist Plugin - 1.22.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.22.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.21.14\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.22.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -56,7 +56,7 @@ msgstr ""
 msgid "Wishlist page needs to be selected so the plugin knows where it is. This page should be created upon installation of the plugin, if not you will need to create it manually."
 msgstr ""
 
-#: admin/settings/general.class.php:114, views/wizard/step-page.php:27
+#: admin/settings/general.class.php:114, views/wizard/step-page.php:28
 msgid "Default Wishlist Name"
 msgstr ""
 
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Product page \"Add to Wishlist\" Button Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:314, admin/settings/general.class.php:455, views/wizard/step-button.php:32
+#: admin/settings/general.class.php:314, admin/settings/general.class.php:455, views/wizard/step-button.php:33
 msgid "Button position"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Note: if \"Custom position with code\" option is applied, the \"Add to Wishlist\" button should be added into template using <code>do_shortcode()</code> function like this:<br /><code>do_shortcode(\"[ti_wishlists_addtowishlist loop=yes]\")</code>"
 msgstr ""
 
-#: admin/settings/general.class.php:542, views/wizard/step-button.php:41
+#: admin/settings/general.class.php:542, views/wizard/step-button.php:42
 msgid "\"Add to Wishlist\" Text"
 msgstr ""
 
@@ -692,7 +692,7 @@ msgstr ""
 msgid "Normal Buttons Text Hover Color"
 msgstr ""
 
-#: admin/settings/upgrade.class.php:56, admin/tinvwl.class.php:278, views/wizard/finish.php:31
+#: admin/settings/upgrade.class.php:56, admin/tinvwl.class.php:278, views/wizard/finish.php:33
 msgid "Upgrade to Premium"
 msgstr ""
 
@@ -848,31 +848,31 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: includes/pluginextend.helper.php:511
+#: includes/pluginextend.helper.php:512
 msgid "%2$s %3$s is required for %1$s. Deactivating %1$s."
 msgstr ""
 
-#: includes/pluginextend.helper.php:520
+#: includes/pluginextend.helper.php:521
 msgid "%1$s is confilcted with %2$s %3$s. Deactivating %1$s."
 msgstr ""
 
-#: includes/pluginextend.helper.php:529
+#: includes/pluginextend.helper.php:530
 msgid "%2$s %3$s is required. Please update it before activating this plugin."
 msgstr ""
 
-#: includes/pluginextend.helper.php:534
+#: includes/pluginextend.helper.php:535
 msgid "%2$s %3$s is required. Please downgrade it before activating this plugin."
 msgstr ""
 
-#: includes/pluginextend.helper.php:538
+#: includes/pluginextend.helper.php:539
 msgid "%2$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
-#: includes/pluginextend.helper.php:542
+#: includes/pluginextend.helper.php:543
 msgid "%1$s is conflicted with %2$s %3$s. Please disable it before activating this plugin."
 msgstr ""
 
-#: includes/pluginextend.helper.php:546
+#: includes/pluginextend.helper.php:547
 msgid "%1$s %3$s is required. Please activate it before activating this plugin."
 msgstr ""
 
@@ -1221,7 +1221,7 @@ msgstr ""
 msgid "Your Wishlist is currently empty."
 msgstr ""
 
-#: templates/ti-wishlist-empty.php:33, templates/ti-wishlist-null.php:23
+#: templates/ti-wishlist-empty.php:33, templates/ti-wishlist-null.php:24
 msgid "Return To Shop"
 msgstr ""
 
@@ -1349,15 +1349,15 @@ msgstr ""
 msgid "get started now"
 msgstr ""
 
-#: views/admin/templates-status.php:16, views/admin/templates-status.php:16
+#: views/admin/templates-status.php:17, views/admin/templates-status.php:18
 msgid "TI WooCommerce Wishlist Templates"
 msgstr ""
 
-#: views/admin/templates-status.php:16
+#: views/admin/templates-status.php:18
 msgid "This section shows the files that are overriding the default TI WooCommerce Wishlist templates."
 msgstr ""
 
-#: views/admin/templates-status.php:31, views/admin/templates-status.php:31, views/admin/templates-status.php:24, views/admin/templates-status.php:24
+#: views/admin/templates-status.php:34, views/admin/templates-status.php:34, views/admin/templates-status.php:27, views/admin/templates-status.php:27
 msgid "Overrides"
 msgstr ""
 
@@ -1397,11 +1397,11 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: views/wizard/finish.php:27
+#: views/wizard/finish.php:28
 msgid "Wishlist Settings"
 msgstr ""
 
-#: views/wizard/footer.php:17
+#: views/wizard/footer.php:18
 msgid "Return to the WordPress Dashboard"
 msgstr ""
 
@@ -1429,7 +1429,7 @@ msgstr ""
 msgid "let’s go"
 msgstr ""
 
-#: views/wizard/intro.php:26
+#: views/wizard/intro.php:27
 msgid "Not Right Now"
 msgstr ""
 
@@ -1441,39 +1441,39 @@ msgstr ""
 msgid "Choose where to place “Add to Wishlist” button on the product page: before or after “Add to Cart” button."
 msgstr ""
 
-#: views/wizard/step-button.php:24
+#: views/wizard/step-button.php:25
 msgid "TI  Wishlists > Style Options"
 msgstr ""
 
-#: views/wizard/step-button.php:26
+#: views/wizard/step-button.php:27
 msgid "And set button text. You can add an icon, change button appearance and other settings in %s."
 msgstr ""
 
-#: views/wizard/step-button.php:26
+#: views/wizard/step-button.php:27
 msgid " and "
 msgstr ""
 
-#: views/wizard/step-button.php:51
+#: views/wizard/step-button.php:52
 msgid "You can also show “Add to Wishlist” button in Product listing. More options in %s."
 msgstr ""
 
-#: views/wizard/step-button.php:56
+#: views/wizard/step-button.php:57
 msgid "Show in Product listing"
 msgstr ""
 
-#: views/wizard/step-button.php:65
+#: views/wizard/step-button.php:66
 msgid "\"Add to Wishlist\" Text in Product listing"
 msgstr ""
 
-#: views/wizard/step-button.php:76, views/wizard/step-page.php:53, views/wizard/step-processing.php:35, views/wizard/step-social.php:84
+#: views/wizard/step-button.php:78, views/wizard/step-page.php:61, views/wizard/step-processing.php:39, views/wizard/step-social.php:85
 msgid "Skip this step"
 msgstr ""
 
-#: views/wizard/step-button.php:77, views/wizard/step-page.php:54, views/wizard/step-processing.php:36, views/wizard/step-social.php:85
+#: views/wizard/step-button.php:79, views/wizard/step-page.php:62, views/wizard/step-processing.php:40, views/wizard/step-social.php:86
 msgid "continue"
 msgstr ""
 
-#: views/wizard/step-page-field.php:34
+#: views/wizard/step-page-field.php:36
 msgid "Page with name “%s” aready exist! Please choose another page or create a new one"
 msgstr ""
 
@@ -1481,11 +1481,11 @@ msgstr ""
 msgid "The following page needs to be applied so the “Wishlist” knows where it is. "
 msgstr ""
 
-#: views/wizard/step-page.php:19
+#: views/wizard/step-page.php:20
 msgid "Choose from existing pages or leave this field empty and the Wishlist page will be created automatically:"
 msgstr ""
 
-#: views/wizard/step-page.php:48
+#: views/wizard/step-page.php:54
 msgid "Once created, this page can be managed from WordPress dashboard."
 msgstr ""
 

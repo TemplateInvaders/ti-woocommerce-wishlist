@@ -43,6 +43,6 @@
     "merge-stream": "^2.0.0"
   },
   "dependencies": {
-    "npm": "^7.0.13"
+    "npm": "^7.0.14"
   }
 }

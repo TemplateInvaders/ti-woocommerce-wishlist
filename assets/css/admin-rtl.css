@@ -1994,7 +1994,7 @@ textarea[name="style_plain-css"] {
 .tinvwl-premium-feat .col-lg-4 {
   padding: 0;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0px;
+      -ms-flex: 1 1 0;
           flex: 1 1 0; }
   .tinvwl-premium-feat .col-lg-4 .half-containers {
     -webkit-box-flex: 1;
@@ -2024,7 +2024,7 @@ textarea[name="style_plain-css"] {
         font-size: 16px; }
     .tinvwl-premium-feat .col-lg-4 .half-containers.customization {
       text-align: center;
-      background: #333333 url("../img/customization.png") no-repeat 0% 100%; }
+      background: #333333 url("../img/customization.png") no-repeat 0 100%; }
       .tinvwl-premium-feat .col-lg-4 .half-containers.customization h2 {
         margin: 30px auto 20px; }
       .tinvwl-premium-feat .col-lg-4 .half-containers.customization p {

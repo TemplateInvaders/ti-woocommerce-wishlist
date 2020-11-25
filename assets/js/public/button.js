@@ -316,7 +316,7 @@
 				}
 				if ('function' !== typeof this.tinvwl_dialog.show_list) {
 					this.tinvwl_dialog.show_list = function () {
-						var WList = $.parseJSON($(this).attr('data-tinv-wl-list')) || [];
+						var WList = JSON.parse($(this).attr('data-tinv-wl-list')) || [];
 						if (WList.length) {
 							WList = s.onPrepareList.call(WList) || WList;
 							this.tinvwl_dialog.update_list(WList);
@@ -414,7 +414,7 @@
 
 				if (localStorage.getItem(hash_key)) {
 
-					var data = $.parseJSON(localStorage.getItem(hash_key));
+					var data = JSON.parse(localStorage.getItem(hash_key));
 
 					if (typeof data === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
 						set_hash(localStorage.getItem(hash_key));
@@ -499,7 +499,7 @@
 
 				if (localStorage.getItem(hash_key)) {
 
-					var data = $.parseJSON(localStorage.getItem(hash_key));
+					var data = JSON.parse(localStorage.getItem(hash_key));
 
 					if (typeof data === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
 						if ((!data.hasOwnProperty('lang') && !tinvwl_add_to_wishlist.wpml) || (tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml)) {
@@ -615,7 +615,7 @@
 		if ($supports_html5_storage) {
 			localStorage.setItem(hash_key, hash);
 			sessionStorage.setItem(hash_key, hash);
-			mark_products($.parseJSON(hash));
+			mark_products(JSON.parse(hash));
 		}
 	}
 

@@ -5,7 +5,7 @@
 		$('#tinvwl_manage_actions, #tinvwl_product_actions').addClass('form-control').parent().wrapInner('<div class="tinvwl-input-group tinvwl-no-full">').find('button').wrap('<span class="tinvwl-input-group-btn">');
 
 		$('.tinv-lists-nav').each(function () {
-			if (!$.trim($(this).html()).length) {
+			if (!$(this).html().trim().length) {
 				$(this).remove();
 			}
 		});
@@ -63,7 +63,7 @@
 			});
 		}
 
-		$('.tinv-login .showlogin').unbind("click").on('click', function (e) {
+		$('.tinv-login .showlogin').off("click").on('click', function (e) {
 			e.preventDefault();
 			$(this).closest('.tinv-login').find('.login').toggle();
 		});

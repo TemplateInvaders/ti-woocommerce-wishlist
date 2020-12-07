@@ -47,11 +47,13 @@ if ( isset( $_SERVER['HTTP_X_WP_NONCE'] ) ) {
 	wp_send_json( array( 'error' => 'Forbidden: unauthorized request.' ), 403 );
 }
 
+if ( is_user_logged_in() ) {
 // Check the nonce.
-$result = wp_verify_nonce( $nonce, 'wp_rest' );
+	$result = wp_verify_nonce( $nonce, 'wp_rest' );
 
-if ( ! $result ) {
-	wp_send_json( array( 'error' => 'Forbidden: wrong nonce.' ), 403 );
+	if ( ! $result ) {
+		wp_send_json( array( 'error' => 'Forbidden: wrong nonce.' ), 403 );
+	}
 }
 
 // Response headers

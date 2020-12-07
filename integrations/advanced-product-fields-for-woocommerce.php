@@ -2,7 +2,7 @@
 /**
  * TI WooCommerce Wishlist integration with:
  *
- * @name Advanced Product Fields (Product Options) for WooCommerce
+ * @name Advanced Product Fields (Product Addons) for WooCommerce
  *
  * @version 1.3.3
  *
@@ -13,14 +13,15 @@
  */
 
 // If this file is called directly, abort.
-use SW_WAPF\Includes\Classes\Enumerable;
-use SW_WAPF\Includes\Classes\Field_Groups;
-use SW_WAPF\Includes\Classes\Fields;
-use SW_WAPF\Includes\Classes\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+
+use SW_WAPF\Includes\Classes\Enumerable;
+use SW_WAPF\Includes\Classes\Field_Groups;
+use SW_WAPF\Includes\Classes\Fields;
+use SW_WAPF\Includes\Classes\Helper;
 
 if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 

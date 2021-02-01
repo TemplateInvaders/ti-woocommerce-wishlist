@@ -582,10 +582,11 @@
 			});
 
 		}
+		$('body').trigger('tinvwl_wishlist_mark_products', [data]);
 
 		$.each(data.products, function (i, item) {
 			var id = i,
-				e = $("a.tinvwl_add_to_wishlist_button[data-tinv-wl-product='" + id + "']");
+				e = $('a.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]');
 
 			e.each(function () {
 
@@ -601,6 +602,7 @@
 						j = true;
 					}
 				}
+				$('body').trigger('tinvwl_wishlist_product_marked', [this, j]);
 
 				$(this).attr('data-tinv-wl-list', JSON.stringify(item)).toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', (j && g)).attr('data-tinv-wl-action', ((j && g) ? 'remove' : 'addto'));
 			});
@@ -623,15 +625,21 @@
 		if ('1' == window.tinvwl_add_to_wishlist['hide_zero_counter'] && 0 === counter) {
 			counter = 'false';
 		}
-
+		jQuery('i.wishlist-icon').addClass('added');
 		if ('false' !== counter) {
 			jQuery('.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count').html(counter);
+			jQuery('i.wishlist-icon').attr('data-icon-label', counter);
 		} else {
 			jQuery('.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count').html('').closest('span.wishlist-counter-with-products').removeClass('wishlist-counter-with-products');
+			jQuery('i.wishlist-icon').removeAttr('data-icon-label');
 		}
 
 		var has_products = !('0' == counter || 'false' == counter);
 		jQuery('.wishlist_products_counter').toggleClass('wishlist-counter-with-products', has_products);
+
+		setTimeout(function () {
+			jQuery('i.wishlist-icon').removeClass('added');
+		}, 500);
 	}
 
 })(jQuery);

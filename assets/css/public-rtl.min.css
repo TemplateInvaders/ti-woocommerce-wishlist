@@ -67,6 +67,8 @@ a.wishlist_products_counter.top_wishlist-heart-plus.no-txt,span.wishlist_product
 .tinv-wishlist.tinvwl-before-add-to-cart .tinvwl_add_to_wishlist_button{margin-bottom:15px}
 .tinv-wishlist.tinvwl-after-add-to-cart .tinvwl_add_to_wishlist_button{margin-top:15px}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt{padding:10px 11px;line-height:1}
+.wishlist-popup .tinv-wishlist .tinvwl_add_to_wishlist_button{margin:0}
+.wishlist-popup .tinv-wishlist .tinvwl_add_to_wishlist_button::before{display:none}
 a.wishlist_products_counter.top_wishlist-custom.no-txt,span.wishlist_products_counter.top_wishlist-custom.no-txt{padding:10px 11px;line-height:1}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom img,a.wishlist_products_counter.top_wishlist-custom img,span.wishlist_products_counter.top_wishlist-custom img{display:inline-block !important;vertical-align:baseline;width:auto !important;max-width:16px;max-height:16px;margin-bottom:0;margin:0 0 0 6px !important}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt img,a.wishlist_products_counter.top_wishlist-custom.no-txt img,span.wishlist_products_counter.top_wishlist-custom.no-txt img{margin-left:0 !important}
@@ -88,7 +90,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist table td,.tinv-wishlist table th{padding:1em;vertical-align:middle}
 .tinv-wishlist .tinvwl-table-manage-list .product-cb{width:35px;text-align:center}
 .tinv-wishlist .tinvwl-table-manage-list .product-remove{width:35px;text-align:center;padding:1em .5em}
-.tinv-wishlist .product-remove button{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:center;align-content:center;margin:0 auto;width:27px;height:27px;border-radius:50%;padding:0;-webkit-box-shadow:none;box-shadow:none;border:0;background-color:#f7f7f7;color:#000;font-size:20px;padding-right:1px;padding-top:3px}
+.tinv-wishlist .product-remove button{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:center;align-content:center;margin:0 auto;width:27px;height:27px;border-radius:50%;padding:0;-webkit-box-shadow:none;box-shadow:none;border:0;background-color:#f7f7f7;color:#000;font-size:20px;padding-right:1px;padding-top:3px;min-height:0}
 .tinv-wishlist .product-thumbnail{min-width:100px;width:100px}
 .tinv-wishlist .product-thumbnail .wp-post-image{margin-bottom:0}
 .tinv-wishlist td.product-name a+.variation{margin-top:2px}
@@ -129,7 +131,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist .social-buttons{text-align:left}
 .tinv-wishlist .social-buttons>span,.tinv-wishlist .social-buttons>ul{display:inline-block;vertical-align:middle}
 .tinv-wishlist .social-buttons>span{margin-left:27px}
-.tinv-wishlist .social-buttons li{float:right;margin-left:5px;list-style:none}
+.tinv-wishlist .social-buttons li{float:right;margin:0 0 0 5px;list-style:none}
 .tinv-wishlist .social-buttons li:last-child{margin-left:0}
 .tinv-wishlist .social-buttons li a.social{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:2em;height:2em;border-radius:50%;text-align:center;-webkit-box-shadow:none;box-shadow:none;border:0;font-size:20px;text-decoration:none;text-transform:none !important}
 .tinv-wishlist .social-buttons li a.social.white{color:#fff}
@@ -175,7 +177,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist .tinvwl-buttons-group button{width:100%}
 .tinv-wishlist .tinvwl-buttons-group button+button{margin-top:7px}
 .tinv-wishlist .tinvwl-buttons-group button i{position:relative}
-.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times{font-size:20px}
+.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times{font-size:20px;top:0;vertical-align:initial}
 .tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-heart-o::before,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-key::before,.tinv-wishlist .tinvwl-buttons-group button i.ftinvwl-times::before{position:relative;top:3px}
 .tinv-wishlist .tinvwl-buttons-group+button{width:100%;margin-top:7px}
 .tinv-wishlist .tinv-modal h2{text-align:center;margin:0 0 35px}
@@ -185,7 +187,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-wishlist .tinvwl-has-error+.tinvwl-error{padding:5px 5px 0 0;color:red}
 .tinvwl-tooltip{display:none}
 .tinvwl-input-group{position:relative;display:table;border-collapse:separate}
-.tinvwl-input-group .form-control{position:relative;z-index:1;float:right;height:38px;width:100%;margin-bottom:0}
+.tinvwl-input-group .form-control{position:relative;z-index:1;float:right;height:38px;width:100%;margin:0}
 .tinvwl-input-group .form-control+.tinvwl-input-group-btn{padding-right:15px}
 .tinv-wishlist .tinvwl-to-left .tinvwl-input-group .form-control+.tinvwl-input-group-btn{padding-right:10px}
 .tinv-wishlist .tinv-search-form .tinvwl-input-group .form-control+.tinvwl-input-group-btn{padding-right:9px}
@@ -236,6 +238,15 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tooltipped-sticky::before,.tooltipped-sticky::after{display:inline-block}
 .tooltipped-sticky.tooltipped-multiline::after{display:table-cell}
 .tinvwl-table-manage-list .component_table_item_price:before{font-family:'FontAwesomeCP';font-size:1rem;display:inline-block;-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";-webkit-transform:rotate(-90deg);transform:rotate(-90deg);content:"\e811";margin:0 3px 0 12px;opacity:.25}
+.wishlist-icon{position:relative}
+.wishlist-popup{opacity:0;max-height:0;position:absolute;overflow:hidden;padding:5px;margin-top:-10px;border-radius:5px;line-height:1.3;text-align:center;font-size:.9em;top:100%;background-color:rgba(0,0,0,0.8);left:0;color:#FFF;-webkit-transition:opacity .3s,max-height .3s;transition:opacity .3s,max-height .3s;-webkit-transition-delay:.3s;transition-delay:.3s}
+.wishlist-popup:after{bottom:100%;left:10px;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none;border-color:rgba(136,183,213,0);border-bottom-color:rgba(0,0,0,0.8);border-width:10px;margin-right:-10px}
+.wishlist-icon:hover .wishlist-popup{opacity:1;max-height:200px;overflow-y:auto}
+.wishlist-popup a{color:#ccc;display:block}
+.wishlist-popup a:hover{color:#FFF}
+.wishlist-icon.added:after{background-color:red;-webkit-transform:translateY(-3px);transform:translateY(-3px)}
+.wishlist-popup .ajax-loading,.wishlist-popup .feedback{display:none !important}
+.wishlist-title{margin-bottom:20px}
 @media screen and (min-width:0 \0){.tooltipped-multiline::after{width:250px}
 }@media only screen and (max-width:1024px) and (min-width:641px){.tinv-wishlist .tinvwl-table-manage-list td.product-stock p{display:block;text-align:center}
 .tinv-wishlist .product-stock span{display:block}

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Add-ons
  *
- * @version 3.0.14
+ * @version 3.2.0
  *
  * @slug woocommerce-product-addons
  *
@@ -22,9 +22,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 	/**
 	 * Set description for meta  WooCommerce Product Addons
 	 *
-	 * @param array $meta Meta array.
-	 * @param array $wl_product Wishlist Product.
-	 * @param \WC_Product $product Woocommerce Product.
+	 * @param array $item_data Meta array.
+	 * @param int $product_id Wishlist Product.
+	 * @param int $variation_id Woocommerce Product.
 	 *
 	 * @return array
 	 */
@@ -41,6 +41,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 			}
 
 			if ( $product_addons ) {
+
+				$field = null;
 
 				foreach ( $product_addons as $addon ) {
 					foreach ( $addon['options'] as $option ) {
@@ -96,20 +98,23 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 								break;
 						}
 
-						$data = $field->get_cart_item_data();
+						if ( $field ) {
 
-						unset( $item_data[ $original_data ] );
-						foreach ( $data as $option ) {
-							$name = $option['name'];
+							$data = $field->get_cart_item_data();
 
-							if ( $option['price'] && apply_filters( 'woocommerce_addons_add_price_to_name', '__return_true' ) ) {
-								$name .= ' (' . wc_price( get_product_addon_price_for_display( $option['price'] ) ) . ')';
+							unset( $item_data[ $original_data ] );
+							foreach ( $data as $opt ) {
+								$name = $opt['name'];
+
+								if ( $opt['price'] && apply_filters( 'woocommerce_addons_add_price_to_name', '__return_true' ) ) {
+									$name .= ' (' . wc_price( WC_Product_Addons_Helper::get_product_addon_price_for_display( $opt['price'] ) ) . ')';
+								}
+
+								$item_data[] = array(
+									'key'     => $name,
+									'display' => $opt['value'],
+								);
 							}
-
-							$item_data[] = array(
-								'key'     => $name,
-								'display' => $option['value'],
-							);
 						}
 					}
 				}
@@ -129,7 +134,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 	 *
 	 * @param string $price Returned price.
 	 * @param array $wl_product Wishlist Product.
-	 * @param \WC_Product $product Woocommerce Product.
+	 * @param WC_Product $product Woocommerce Product.
 	 *
 	 * @return string
 	 */
@@ -146,6 +151,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 			if ( $product_addons ) {
 
 				$price = 0;
+				$field = null;
 
 				foreach ( $product_addons as $addon ) {
 
@@ -196,16 +202,18 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 							break;
 					}
 
-					$data = $field->get_cart_item_data();
-					foreach ( $data as $option ) {
-						if ( $option['price'] ) {
-							$price += (float) $option['price'];
+					if ( $field ) {
+						$data = $field->get_cart_item_data();
+						foreach ( $data as $option ) {
+							if ( $option['price'] ) {
+								$price += (float) $option['price'];
+							}
 						}
 					}
 
 				}
 
-				$price = wc_price( $product->get_price() + $price );
+				$price = wc_price( (float) $product->get_price() + (float) $price );
 			}
 		}
 

@@ -77,6 +77,8 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer;-webkit-transition:opacity 1s;transition:opacity 1s;opacity:1;visibility:visible}
 .tinv-wishlist.woocommerce .stock.in-stock:before{content:none}
 .tinv-wraper.tinv-wishlist{font-size:100%}
+.tinv-wraper.tinv-wishlist.tinvwl-above_thumb-add-to-cart{position:absolute;z-index:10;margin:0;top:10px;left:10px}
+.tinv-wraper.tinv-wishlist.tinvwl-above_thumb-add-to-cart a.tinvwl_add_to_wishlist_button{margin-top:0}
 .tinv-create-list li input[type=radio]{margin-right:10px}
 .tinv-create-list li+li{margin-top:15px}
 .tinv-create-list .tinvwl-input-group+ul{margin-top:25px}

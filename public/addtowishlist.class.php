@@ -109,6 +109,14 @@ class TInvWL_Public_AddToWishlist {
 				add_action( 'woocommerce_single_product_summary', 'tinvwl_view_addto_htmlout', 31 );
 				add_action( 'catalog_visibility_after_alternate_add_to_cart_button', 'tinvwl_view_addto_html' );
 				break;
+			case 'thumbnails':
+				add_action( 'tinvwl_after_thumbnails', 'tinvwl_view_addto_html' );
+				add_action( 'woocommerce_product_thumbnails', 'tinvwl_view_addto_html', 21 );
+				break;
+			case 'summary':
+				add_action( 'tinvwl_after_summary', 'tinvwl_view_addto_html' );
+				add_action( 'woocommerce_after_single_product_summary', 'tinvwl_view_addto_html', 11 );
+				break;
 		}
 		if ( tinv_get_option( 'add_to_wishlist_catalog', 'show_in_loop' ) ) {
 			switch ( tinv_get_option( 'add_to_wishlist_catalog', 'position' ) ) {

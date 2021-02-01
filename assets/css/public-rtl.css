@@ -316,6 +316,14 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 .tinv-wraper.tinv-wishlist {
   font-size: 100%; }
+  .tinv-wraper.tinv-wishlist.tinvwl-above_thumb-add-to-cart {
+    position: absolute;
+    z-index: 10;
+    margin: 0;
+    top: 10px;
+    right: 10px; }
+    .tinv-wraper.tinv-wishlist.tinvwl-above_thumb-add-to-cart a.tinvwl_add_to_wishlist_button {
+      margin-top: 0; }
 
 .tinv-create-list li input[type=radio] {
   margin-left: 10px; }

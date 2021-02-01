@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.6
-Stable tag: 1.22.1
+Stable tag: 1.23.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.23.0 ###
+*Release Date - 1 February 2021*
+
+* Added support of WooCommerce 4.9.x
+* Added add to wishlist button position state "After Thumbnails" for product page
+* Added add to wishlist button position state "After Summary" for product page
+* Updated add to wishlist button position state "Above Thumbnail" for catalog pages to display the button on top of the image
+* Updated integration with [PPOM for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
+* Updated integration with Flatsome theme
+* Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+
 ### 1.22.1 ###
 *Release Date - 7 December 2020*
 

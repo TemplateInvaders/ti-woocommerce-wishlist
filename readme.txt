@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.6
-Stable tag: 1.22.1
+Stable tag: 1.23.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.23.0 =
+*Release Date - 1 February 2021*
+
+* Added support of WooCommerce 4.9.x
+* Added add to wishlist button position state "After Thumbnails" for product page
+* Added add to wishlist button position state "After Summary" for product page
+* Updated add to wishlist button position state "Above Thumbnail" for catalog pages to display the button on top of the image
+* Updated integration with [PPOM for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
+* Updated integration with Flatsome theme
+* Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+
 = 1.22.1 =
 *Release Date - 7 December 2020*
 
@@ -281,61 +292,6 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Wishlist user-side data completely refactored
 * Great performance improvements
 * Fixed integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955) plugin
-
-= 1.20.5 =
-*Release Date - 25 June 2020*
-
-* Added RTL support
-* Added integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
-* Fixed wishlist status issue for variations
-
-= 1.20.4 =
-*Release Date - 24 June 2020*
-
-* Fixed accessibility issue for add to wishlist button markup
-* Fixed an issue with file upload for the integration of WooCommerce TM Extra Product Options plugin
-* Fixed an issue with the wrong wishlist status for add to wishlist shortcode
-* Fixed an issue when wishlist status wrong on specific variation product page load
-* Improved security for Wishlist REST API methods
-* Enhanced integration with WooCommerce Custom Product Addons plugin
-* Updated integration with WP Fastest Cache plugin
-
-= 1.20.3 =
-*Release Date - 11 June 2020*
-
-* Fixed WooCommerce Product Table integration to use proper wishlist button shortcode
-* Fixed an issue with "Already in wishlist" text for variable products
-
-= 1.20.2 =
-*Release Date - 4 June 2020*
-
-* Added compatibility with WooCommerce 4.2.x
-* Added integration with WooCommerce Product Table plugin as a custom table column 'wishlist'
-* Improved integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
-* Fixed PHP Fatal error in case wishlist page doesn't set and forced permalinks option is active
-* Fixed an issue when custom button icon didn't save in settings
-
-
-= 1.20.1 =
-*Release Date - 14 May 2020*
-
-* Fixed Wishlist REST API get_by_user method issue when an extra wishlist always created on each request
-* The href attribute removed from add to wishlist button tag
-* Wishlist REST API frontend request changed to POST method
-
-= 1.20.0 =
-*Release Date - 12 May 2020*
-
-* Added integration with [ELEX WooCommerce Catalog Mode](https://wordpress.org/plugins/elex-woocommerce-catalog-mode/) plugin
-* Added integration with [WooCommerce Product Retailers](https://woocommerce.com/products/product-retailers/?aff=3955) plugin
-* Added integration with [Braintree For WooCommerce](https://wordpress.org/plugins/woo-payment-gateway/) plugin
-* Improved integration with WPML plugin
-* Improved integration with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
-* Improved security for Wishlist REST API
-* Fixed 'add to wishlist' button shortcode issue when product variation ID does not count for saved products
-* Fixed an issue when adding product variation that has an additional attribute(s) set as 'Any ...' to wishlist and from wishlist to cart
-* Fixed an issue with duplicated buttons for out of stock products and Divi theme
-* Fixed an issue with WP Rocket cache and WP REST API authorization for non-logged users
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

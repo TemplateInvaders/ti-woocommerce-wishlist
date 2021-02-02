@@ -31,6 +31,7 @@ require_once( ABSPATH . WPINC . '/formatting.php' );
 require_once( ABSPATH . WPINC . '/capabilities.php' );
 //require_once ( ABSPATH . WPINC . '/query.php' ); // - might be useful
 require_once( ABSPATH . WPINC . '/user.php' );
+require_once( ABSPATH . WPINC . '/class-wp-application-passwords.php' );
 require_once( ABSPATH . WPINC . '/meta.php' );
 
 wp_cookie_constants();

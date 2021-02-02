@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.6
-Stable tag: 1.23.0
+Stable tag: 1.23.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.23.1 =
+*Release Date - 2 February 2021*
+
+* Fixed PHP warning in customizer for Flatsome theme integration
+* Fixed potential PHP error for custom AJAX endpoint
+
 = 1.23.0 =
 *Release Date - 1 February 2021*
 

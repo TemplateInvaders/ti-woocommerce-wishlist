@@ -184,7 +184,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Load javascript
 	 */
 	function add_inline_scripts() {
-		wp_add_inline_script( 'jquery-blockui', 'jQuery(function(c){c("body").on("click.woo",\'a[href*="//woocommerce.com"]\',function(o){var e=(((o||{}).originalEvent||{}).target||{}).href||!1,r=((o||{}).currentTarget||{}).href||!1,t="&";e&&r&&(o.currentTarget.href=e.split("?")[0]+"?utm_source=dashboard"+t+"aff=3955"+t+"utm_campaign=promo"+t+"cid=2034496"+t+"utm_medium=free",setTimeout(function(){o.originalEvent.target.href=e},1)),c("body").off("click.woo",\'a[href*="woocommerce.com"]\')})});' );
+		wp_add_inline_script( 'jquery-blockui', 'jQuery(function(c){c("body").on("click.woo",\'a[href*="//woocommerce.com"]\',function(o){var e=(((o||{}).originalEvent||{}).target||{}).href||!1,r=((o||{}).currentTarget||{}).href||!1,t="&";e&&r&&(o.currentTarget.href=e.split("?")[0]+"?aff=3955",setTimeout(function(){o.originalEvent.target.href=e},1)),c("body").off("click.woo",\'a[href*="woocommerce.com"]\')})});' );
 	}
 
 	/**

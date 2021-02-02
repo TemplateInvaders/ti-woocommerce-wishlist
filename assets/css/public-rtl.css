@@ -622,7 +622,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist .product-action {
     width: 60px; } }
 
-@media only screen and (max-width: 1024px) and (min-width: 641px) {
+@media only screen and (max-width: 1024px) and (min-width: 769px) {
   .tinv-wishlist .tinvwl-table-manage-list td.product-stock p {
     display: block;
     text-align: center; }
@@ -647,7 +647,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist .tinv-lists-nav a.tinv-prev > span, .tinv-wishlist .tinv-lists-nav a.tinv-next > span {
     display: none; } }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .tinv-wishlist table.tinvwl-table-manage-list tbody td.product-remove, .tinv-wishlist table.tinvwl-table-manage-list thead th:not(.product-name) {
     display: none; }
   .tinv-wishlist table.tinvwl-table-manage-lists thead th:not(.wishlist-name) {
@@ -705,7 +705,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
     width: auto;
     text-align: right; } }
 
-@media only screen and (max-width: 1024px) and (min-width: 641px) {
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
   .tinv-wishlist .wishlist-action button[value="manage_remove"] span {
     display: none; }
   .tinv-wishlist .wishlist-action button[value="manage_remove"] > i {
@@ -713,7 +713,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist tfoot .tinvwl-to-left + .tinvwl-to-right {
     margin-top: 0; } }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .tinv-wishlist button[value="manage_apply"] .tinvwl-mobile, .tinv-wishlist button[value="product_apply"] .tinvwl-mobile {
     display: none; }
   .tinv-wishlist tfoot .tinvwl-to-right .tinv-create-list {
@@ -742,7 +742,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist .tinv-login form input[name=login] {
     min-width: auto; } }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .tinv-wishlist .social-buttons {
     text-align: center; }
   .tinv-wishlist .navigation-button > li {
@@ -780,7 +780,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
     margin-left: 0;
     margin-bottom: 5px; } }
 
-@media only screen and (max-width: 667px) {
+@media only screen and (max-width: 768px) {
   .tinv-wishlist.woocommerce .tinv-login form .form-row-first, .tinv-wishlist.woocommerce .tinv-login form .form-row-last {
     float: none;
     width: 100%; }
@@ -894,7 +894,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   margin-top: 12px;
   width: 100%; }
 
-@media screen and (max-width: 782px) {
+@media screen and (max-width: 768px) {
   .admin-bar .tinv-wishlist .tinv-modal {
     padding-top: 46px !important; } }
 
@@ -972,7 +972,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   padding: 5px 5px 0 0;
   color: #FF0000; }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .navigation-button, .social-buttons, .tinv-lists-nav {
     margin-right: 12px;
     margin-left: 12px; } }
@@ -1008,11 +1008,11 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   white-space: nowrap;
   vertical-align: top; }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .tinvwl-input-group {
     width: 100%; } }
 
-@media only screen and (max-width: 667px) {
+@media only screen and (max-width: 768px) {
   .tinvwl-input-group:not(.tinvwl-no-full) {
     display: block; }
     .tinvwl-input-group:not(.tinvwl-no-full) .form-control, .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-addon, .tinvwl-input-group:not(.tinvwl-no-full) .tinvwl-input-group-btn {
@@ -1118,7 +1118,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist .tinvwl-table-manage-list .product-remove {
     display: table-cell; } }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 768px) {
   .tinv-wishlist table.tinvwl-table-manage-list tbody td.product-remove {
     display: block; } }
 

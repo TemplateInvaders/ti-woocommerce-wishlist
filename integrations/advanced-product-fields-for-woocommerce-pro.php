@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields for WooCommerce Pro
  *
- * @version 1.5.2
+ * @version 1.5.4
  *
  * @slug advanced-product-fields-for-woocommerce-pro
  *
@@ -86,7 +86,11 @@ if ( class_exists( 'SW_WAPF_PRO\WAPF' ) ) {
 			$options_total = 0;
 
 			$quantity = empty( $wl_product['quantity'] ) ? 1 : wc_stock_amount( $wl_product['quantity'] );
-			$base     = Helper::get_product_base_price( $product, $quantity );
+			if(wc_prices_include_tax())
+				$price = wc_get_price_including_tax($product);
+			else $price = wc_get_price_excluding_tax($product);
+
+			$base = apply_filters('wapf/pricing/base', $price, $product, $quantity);
 
 			if ( ! empty( $wapf_ti_cartfield_cache ) ) {
 				foreach ( $wapf_ti_cartfield_cache as $cart_field ) {

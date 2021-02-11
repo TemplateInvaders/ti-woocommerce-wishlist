@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.6
-Stable tag: 1.23.3
+Stable tag: 1.23.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -63,7 +63,7 @@ TI WooCommerce Wishlist Premium version is a powerful marketing tool on top of a
 💰 <strong>[100% Money Back Guarantee](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=money_back)</strong>
 
 = COMPATIBILITY WITH MOST USED PLUGINS/ADDONS  =
-We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each other. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619?ref=olegnax), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
+We understand that our plugin is not the only one that you are going to use for your WooCommerce store and how it is important for different plugins to work well with each other. That is why we have added compatibility with the most used WooCommerce add-ons: [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955), [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/?aff=3955), [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955), [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955), [WooCommerce Mix and Match](https://woocommerce.com/products/woocommerce-mix-and-match-products/?aff=3955), [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955), [WooCommerce Gift Cards](https://wordpress.org/plugins/gift-cards-for-woocommerce/), [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619), [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955).
 It is also very important for any WordPress website to use cache plugins, so we make sure that our WooCommerce Wishlist works well with [WP Rocket](https://wp-rocket.me/), [WP Super Cache](https://wordpress.org/plugins/wp-super-cache/) and [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) plugins.
 
 = Add to Wishlist button =
@@ -163,6 +163,16 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.23.4 =
+*Release Date - 11 February 2021*
+
+* Added support of WooCommerce 5.0
+* Added integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+* Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
+* Updated integration with [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619) plugin
+* Fixed PHP fatal error for WordPress less than 5.6.0 versions
+* Remove deleted products OR products with invalid product type from a wishlist
+
 = 1.23.3 =
 *Release Date - 5 February 2021*
 

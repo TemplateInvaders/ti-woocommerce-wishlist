@@ -668,9 +668,10 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 	function tinvwl_meta_validate_cart_add( $redirect, $product, $redirect_url, $wl_product ) {
 		if ( $redirect && array_key_exists( 'meta', $wl_product ) && ! empty( $wl_product['meta'] ) ) {
 
+			$wl_product        = apply_filters( 'tinvwl_addproduct_tocart', $wl_product );
+
 			TInvWL_Public_Cart::prepare_post( $wl_product );
 
-			$wl_product        = apply_filters( 'tinvwl_addproduct_tocart', $wl_product );
 			$product_id        = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $wl_product['product_id'] ) );
 			$quantity          = empty( $wl_product['quantity'] ) ? 1 : wc_stock_amount( $wl_product['quantity'] );
 			$variation_id      = $wl_product['variation_id'];

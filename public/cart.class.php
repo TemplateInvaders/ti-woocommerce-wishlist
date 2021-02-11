@@ -117,9 +117,9 @@ class TInvWL_Public_Cart {
 			return false;
 		}
 
+		$product      = apply_filters( 'tinvwl_addproduct_tocart', $product );
 		self::prepare_post( $product );
 
-		$product      = apply_filters( 'tinvwl_addproduct_tocart', $product );
 		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $product['product_id'] ) );
 		$quantity     = empty( $wl_quantity ) ? 1 : wc_stock_amount( $wl_quantity );
 		$variation_id = $product['variation_id'];

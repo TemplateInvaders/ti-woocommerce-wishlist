@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Add-ons
  *
- * @version 3.2.0
+ * @version 3.3.1
  *
  * @slug woocommerce-product-addons
  *
@@ -48,10 +48,6 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 					foreach ( $addon['options'] as $option ) {
 						$original_data = 'addon-' . $addon['field_name'];
 
-						if ( 'file_upload' === $addon['type'] ) {
-							$original_data = 'addon-' . $addon['field_name'] . '-' . sanitize_title( $option['label'] );
-						}
-
 						$value = isset( $item_data[ $original_data ] ) ? $item_data[ $original_data ]['display'] : '';
 
 						if ( $value == '' ) {
@@ -66,12 +62,14 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 						include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
 						switch ( $addon['type'] ) {
 							case 'checkbox':
+								$value = json_decode( $value, true );
 								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
 								$field = new WC_Product_Addons_Field_List( $addon, $value );
 								break;
 							case 'multiple_choice':
 								switch ( $addon['display'] ) {
 									case 'radiobutton':
+										$value = json_decode( $value, true );
 										include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
 										$field = new WC_Product_Addons_Field_List( $addon, $value );
 										break;
@@ -92,6 +90,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 							case 'file_upload':
 								include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php' );
 								$field = new WC_Product_Addons_Field_File_Upload( $addon, $value );
+								if ( $field && isset( $field->value ) ) {
+									$field->value = basename( $field->value );
+								}
 								break;
 							default:
 								// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
@@ -99,9 +100,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_addons' ) )
 						}
 
 						if ( $field ) {
-
 							$data = $field->get_cart_item_data();
-
 							unset( $item_data[ $original_data ] );
 							foreach ( $data as $opt ) {
 								$name = $opt['name'];
@@ -170,12 +169,14 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 					include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
 					switch ( $addon['type'] ) {
 						case 'checkbox':
+							$value = json_decode( $value, true );
 							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
 							$field = new WC_Product_Addons_Field_List( $addon, $value );
 							break;
 						case 'multiple_choice':
 							switch ( $addon['display'] ) {
 								case 'radiobutton':
+									$value = json_decode( $value, true );
 									include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php' );
 									$field = new WC_Product_Addons_Field_List( $addon, $value );
 									break;
@@ -222,3 +223,111 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_addons' ) ) {
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_addons', 10, 3 );
 } // End if().
+
+add_filter( 'tinvwl_addtowishlist_prepare_form', 'tinvwl_meta_woocommerce_product_addons', 10, 3 );
+
+function tinvwl_meta_woocommerce_product_addons( $meta, $post, $files ) {
+
+	if ( class_exists( 'WC_Product_Addons' ) && ! empty( $files ) ) {
+		include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
+		include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php' );
+		$field = new WC_Product_Addons_Field_File_Upload( array() );
+		foreach ( $files as $name => $file ) {
+
+			if ( array_key_exists( $name, $meta ) ) {
+				$upload = $field->handle_upload( $file );
+				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
+					$meta[ $name ] = wc_clean( $upload['url'] );
+				}
+			}
+		}
+	}
+
+	return $meta;
+}
+
+add_filter( 'tinvwl_product_prepare_meta', 'tinvwl_cart_meta_woocommerce_product_addons' );
+
+function tinvwl_cart_meta_woocommerce_product_addons( $meta ) {
+
+	if ( class_exists( 'WC_Product_Addons' ) && ! empty( $files ) ) {
+		include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
+		include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php' );
+		$field = new WC_Product_Addons_Field_File_Upload( array() );
+
+		$files = $_FILES;
+
+		foreach ( $files as $name => $file ) {
+
+			if ( ! array_key_exists( $name, $meta ) ) {
+				$upload = $field->handle_upload( $file );
+				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
+					$meta[ $name ] = wc_clean( $upload['url'] );
+				}
+			}
+		}
+	}
+
+	return $meta;
+}
+
+
+add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_woocommerce_product_addons' );
+
+function tinvwl_add_to_cart_meta_woocommerce_product_addons( $wl_product ) {
+	if ( class_exists( 'WC_Product_Addons' ) ) {
+
+		$id = ( $wl_product['variation_id'] ) ? $wl_product['variation_id'] : $wl_product['product_id'];
+
+		if ( function_exists( 'get_product_addons' ) ) {
+			$product_addons = get_product_addons( $id );
+		} else {
+			$product_addons = WC_Product_Addons_Helper::get_product_addons( $id );
+		}
+
+		if ( $product_addons ) {
+
+			$field = null;
+
+			foreach ( $product_addons as $addon ) {
+				foreach ( $addon['options'] as $option ) {
+					$original_data = 'addon-' . $addon['field_name'];
+
+					$value = isset( $wl_product['meta'][ $original_data ] ) ? $wl_product['meta'][ $original_data ] : '';
+
+					if ( $value == '' ) {
+						continue;
+					}
+
+					if ( is_array( $value ) ) {
+						$value = array_map( 'stripslashes', $value );
+					} else {
+						$value = stripslashes( $value );
+					}
+					include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php' );
+					switch ( $addon['type'] ) {
+						case 'checkbox':
+							if ( ! is_array( $value ) ) {
+								$wl_product['meta'][ $original_data ] = json_decode( $value, true );
+							}
+							break;
+						case 'multiple_choice':
+							switch ( $addon['display'] ) {
+								case 'radiobutton':
+									if ( ! is_array( $value ) ) {
+										$wl_product['meta'][ $original_data ] = json_decode( $value, true );
+									}
+									break;
+							}
+							break;
+						default:
+
+							break;
+					}
+				}
+			}
+		}
+	}
+
+	return $wl_product;
+}

@@ -33,7 +33,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 			$api     = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_API() : TM_EPO_API();
 			$core    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
 			$version = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_VERSION : TM_EPO_VERSION;
-			$cart    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_CART() : TM_EPO();
+			$cart    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? new THEMECOMPLETE_EPO_Cart() : TM_EPO();
 
 			$has_epo = $api->has_options( $product_id );
 			if ( $api->is_valid_options( $has_epo ) ) {
@@ -41,6 +41,12 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 				foreach ( $meta as $key => $value ) {
 					$post_data[ $key ] = $value['display'];
 				}
+				$post_data['add-to-cart'] = $meta['tcaddtocart']['display'];
+				$post_data['product_id']  = $product_id;
+				if ( $variation_id ) {
+					$post_data['variation_id'] = $variation_id;
+				}
+				$post_data['quantity'] = 1;
 
 				$cart_class = version_compare( $version, '4.8.0', '<' ) ? $core : $cart;
 
@@ -92,7 +98,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 			$api     = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_API() : TM_EPO_API();
 			$core    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
 			$version = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_VERSION : TM_EPO_VERSION;
-			$cart    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_CART() : TM_EPO();
+			$cart    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? new THEMECOMPLETE_EPO_Cart() : TM_EPO();
 			if ( $core->tm_epo_hide_options_in_cart == 'normal' ) {
 				$product_id = $wl_product['product_id'];
 				$has_epo    = $api->has_options( $product_id );

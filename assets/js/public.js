@@ -166,91 +166,100 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         redirect: window.location.href
       },
           a = this,
-          formEl,
+          formEl = [],
           formData = new FormData();
 
       if (tinvwl_add_to_wishlist.wpml) {
         data['lang'] = tinvwl_add_to_wishlist.wpml;
       }
 
-      formEl = $('form.cart[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], form.vtajaxform[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], .tinvwl-loop-button-wrapper[data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]');
+      $('form.cart[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], form.vtajaxform[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
+        formEl.push($(this));
+      });
 
       if (!formEl.length) {
-        formEl = $(a).closest('form.cart[method=post], form.vtajaxform[method=post], .tinvwl-loop-button-wrapper');
+        $(a).closest('form.cart[method=post], form.vtajaxform[method=post]').each(function () {
+          formEl.push($(this));
+        });
 
         if (!formEl.length) {
-          formEl = $('form.cart[method=post]');
+          formEl.push($('form.cart[method=post]'));
         }
       }
 
-      formEl.find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
-        var name_elm = $(this).attr('name'),
-            type_elm = $(this).attr('type'),
-            value_elm = $(this).val(),
-            count = 10,
-            ti_merge_value = function ti_merge_value(o1, o2) {
-          if ('object' === _typeof(o2)) {
-            if ('undefined' === typeof o1) {
-              o1 = {};
-            }
-
-            for (var i in o2) {
-              if ('' === i) {
-                var j = -1;
-
-                for (j in o1) {
-                  j = j;
-                }
-
-                j = parseInt(j) + 1;
-                o1[j] = ti_merge_value(o1[i], o2[i]);
-              } else {
-                o1[i] = ti_merge_value(o1[i], o2[i]);
+      $('.tinv-wraper[data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
+        formEl.push($(this));
+      });
+      $.each(formEl, function (index, element) {
+        $(element).find('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)').each(function () {
+          var name_elm = $(this).attr('name'),
+              type_elm = $(this).attr('type'),
+              value_elm = $(this).val(),
+              count = 10,
+              ti_merge_value = function ti_merge_value(o1, o2) {
+            if ('object' === _typeof(o2)) {
+              if ('undefined' === typeof o1) {
+                o1 = {};
               }
+
+              for (var i in o2) {
+                if ('' === i) {
+                  var j = -1;
+
+                  for (j in o1) {
+                    j = j;
+                  }
+
+                  j = parseInt(j) + 1;
+                  o1[j] = ti_merge_value(o1[i], o2[i]);
+                } else {
+                  o1[i] = ti_merge_value(o1[i], o2[i]);
+                }
+              }
+
+              return o1;
+            } else {
+              return o2;
+            }
+          };
+
+          if ('button' === type_elm || 'undefined' == typeof name_elm) {
+            return;
+          }
+
+          while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {
+            var n_name = name_elm.match(/^(.+)\[([^\[\]]*?)\]$/);
+
+            if (3 === n_name.length) {
+              var _value_elm = {};
+              _value_elm[n_name[2]] = value_elm;
+              value_elm = _value_elm;
             }
 
-            return o1;
+            name_elm = n_name[1];
+            count--;
+          }
+
+          if ('file' === type_elm) {
+            var file_data = $(this)[0].files;
+
+            if (file_data) {
+              formData.append(name_elm, file_data[0]);
+            }
+          }
+
+          if ('checkbox' === type_elm || 'radio' === type_elm) {
+            if ($(this).is(':checked')) {
+              if (!value_elm.length && 'object' !== _typeof(value_elm)) {
+                value_elm = true;
+              }
+
+              data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
+            }
           } else {
-            return o2;
-          }
-        };
-
-        if ('button' === type_elm || 'undefined' == typeof name_elm) {
-          return;
-        }
-
-        while (/^(.+)\[([^\[\]]*?)\]$/.test(name_elm) && 0 < count) {
-          var n_name = name_elm.match(/^(.+)\[([^\[\]]*?)\]$/);
-
-          if (3 === n_name.length) {
-            var _value_elm = {};
-            _value_elm[n_name[2]] = value_elm;
-            value_elm = _value_elm;
-          }
-
-          name_elm = n_name[1];
-          count--;
-        }
-
-        if ('file' === type_elm) {
-          var file_data = $(this)[0].files;
-
-          if (file_data) {
-            formData.append(name_elm, file_data[0]);
-          }
-        }
-
-        if ('checkbox' === type_elm || 'radio' === type_elm) {
-          if ($(this).is(':checked')) {
-            if (!value_elm.length && 'object' !== _typeof(value_elm)) {
-              value_elm = true;
-            }
-
             data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
           }
-        } else {
-          data.form[name_elm] = ti_merge_value(data.form[name_elm], value_elm);
-        }
+        });
       });
       data = s.onPrepareDataAction.call(a, a, data) || data;
       $.each(data, function (key, value) {

@@ -271,7 +271,7 @@ function tinvwl_flatsome() {
 						});
 					});
 
-					jQuery('body').on('tinvwl_wishlist_mark_products', function(e, data){
+					jQuery('body').on('tinvwl_wishlist_mark_products tinvwl_modal_closed', function(e, data){
 						jQuery('.wishlist-button').removeClass('wishlist-added loading');
 					});
 

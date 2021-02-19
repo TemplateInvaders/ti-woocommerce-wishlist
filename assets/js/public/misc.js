@@ -43,6 +43,7 @@
 		$('body').on('click', '.tinv-wishlist .tinv-overlay, .tinv-wishlist .tinv-close-modal, .tinv-wishlist .tinvwl_button_close', function (e) {
 			e.preventDefault();
 			$(this).parents('.tinv-modal:first').removeClass('tinv-modal-open');
+			$('body').trigger('tinvwl_modal_closed', [this]);
 		});
 
 		$('body').on('click', '.tinv-wishlist .tinvwl-btn-onclick', function (e) {

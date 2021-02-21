@@ -437,6 +437,11 @@ class TInvWL_Public_TInvWL
 	 */
 	function enqueue_styles()
 	{
+		if (apply_filters('tinvwl_load_webfont', true)) {
+			wp_enqueue_style($this->_name . '-webfont', TINVWL_URL . 'assets/css/webfont.min.css', array(), $this->_version, 'all');
+			wp_style_add_data($this->_name . '-webfont', 'rtl', 'replace');
+			wp_style_add_data($this->_name . '-webfont', 'suffix', '.min');
+		}
 		wp_enqueue_style('tinvwl', TINVWL_URL . 'assets/css/public.min.css', array(), $this->_version, 'all');
 		wp_style_add_data('tinvwl', 'rtl', 'replace');
 		wp_style_add_data('tinvwl', 'suffix', '.min');

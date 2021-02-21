@@ -32,6 +32,10 @@ module.exports = {
 			styleSRC: './sass/theme.scss', // Path to .scss file.
 			styleDestination: './assets/css/', // Path to place the compiled CSS file.
 		},
+		{
+			styleSRC: './sass/webfont.scss', // Path to .scss file.
+			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+		},
 	],
 
 	// JS Public options.

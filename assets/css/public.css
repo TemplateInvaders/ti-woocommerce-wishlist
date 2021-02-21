@@ -406,6 +406,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 .tinv-wishlist .product-thumbnail {
   min-width: 100px;
+  max-width: 100%;
   width: 100px; }
   .tinv-wishlist .product-thumbnail .wp-post-image {
     margin-bottom: 0; }
@@ -745,35 +746,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 @media only screen and (max-width: 768px) {
   .tinv-wishlist .social-buttons {
     text-align: center; }
-  .tinv-wishlist .navigation-button > li {
-    width: 20%;
-    text-align: center; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-1 > li {
-    width: 100%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-2 > li {
-    width: 50%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-3 > li {
-    width: 33%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-4 > li {
-    width: 25%; }
-  .tinv-wishlist .navigation-button > li + li {
-    width: 20%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-1 > li + li {
-    width: 100%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-2 > li + li {
-    width: 50%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-3 > li + li {
-    width: 33%; }
-  .tinv-wishlist .navigation-button.tinvwl-btns-count-4 > li + li {
-    width: 25%; }
-  .tinv-wishlist .navigation-button > li > .tinv-create-list > a, .tinv-wishlist .navigation-button > li > a {
-    width: calc(100% - 10px);
-    margin-right: 0; }
-  .tinv-wishlist .navigation-button .tinv-create-list > a .tinvwl-txt, .tinv-wishlist .navigation-button li > a .tinvwl-txt {
-    display: none; }
-  .tinv-wishlist .navigation-button .tinv-create-list > a > i, .tinv-wishlist .navigation-button li > a > i {
-    display: inline-block !important;
-    margin-right: 0; }
   .tinv-wishlist .social-buttons > span {
     display: block;
     margin-top: 0;

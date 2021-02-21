@@ -328,6 +328,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
   .product-thumbnail {
 	min-width: 100px;
+	max-width: 100%;
 	width: 100px;
 
 	.wp-post-image {
@@ -886,65 +887,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinv-wishlist {
 	.social-buttons {
 	  text-align: center;
-	}
-
-	.navigation-button {
-	  > li {
-		width: 20%;
-		text-align: center;
-	  }
-
-	  &.tinvwl-btns-count-1 > li {
-		width: 100%;
-	  }
-
-	  &.tinvwl-btns-count-2 > li {
-		width: 50%;
-	  }
-
-	  &.tinvwl-btns-count-3 > li {
-		width: 33%;
-	  }
-
-	  &.tinvwl-btns-count-4 > li {
-		width: 25%;
-	  }
-
-	  > li + li {
-		width: 20%;
-	  }
-
-	  &.tinvwl-btns-count-1 > li + li {
-		width: 100%;
-	  }
-
-	  &.tinvwl-btns-count-2 > li + li {
-		width: 50%;
-	  }
-
-	  &.tinvwl-btns-count-3 > li + li {
-		width: 33%;
-	  }
-
-	  &.tinvwl-btns-count-4 > li + li {
-		width: 25%;
-	  }
-
-	  > li > {
-		.tinv-create-list > a, a {
-		  width: calc(100% - 10px);
-		  margin-right: 0;
-		}
-	  }
-
-	  .tinv-create-list > a .tinvwl-txt, li > a .tinvwl-txt {
-		display: none;
-	  }
-
-	  .tinv-create-list > a > i, li > a > i {
-		display: inline-block !important;
-		margin-right: 0;
-	  }
 	}
 
 	.social-buttons > span {

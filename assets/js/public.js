@@ -388,6 +388,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   $(document).ready(function () {
     // Add to wishlist button click
     $('body').on('click', '.tinvwl_add_to_wishlist_button', function (e) {
+      $('body').trigger('tinvwl_add_to_wishlist_button_click', [this]);
+
       if ($(this).is('.disabled-add-wishlist')) {
         e.preventDefault();
         window.alert(tinvwl_add_to_wishlist.i18n_make_a_selection_text);

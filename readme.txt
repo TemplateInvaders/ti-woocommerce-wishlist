@@ -163,6 +163,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.23.6 =
+*Release Date - 21 February 2021*
+
+* Added filter `tinvwl_load_webfont` to allow disable to load webfont from 3rd party code
+* Updated integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+* Updated integration with the Flatsome theme
+* Fixed issue when products doesn't add to wishlist while [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) configured to show the default language as fallback
+
 = 1.23.5 =
 *Release Date - 19 February 2021*
 

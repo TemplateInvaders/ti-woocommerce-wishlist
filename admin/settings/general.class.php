@@ -216,7 +216,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection
 						'type'  => 'text',
 						'name'  => 'text_added_to',
 						'text'  => __('"Product added to Wishlist" Text', 'ti-woocommerce-wishlist'),
-						'std'   => '&quot;{product_name}&quot; added to Wishlist',
+						'std'   => '{product_name} added to Wishlist',
 						'desc'  => __('You can use next placeholder in this field to get current product name: <code>{product_name}</code>, <code>{product_sku}</code>', 'ti-woocommerce-wishlist'),
 						'class' => 'tiwl-button-show-notice',
 					),
@@ -225,7 +225,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection
 						'name'  => 'text_already_in',
 						'text'  => __('"Product already in Wishlist" Text', 'ti-woocommerce-wishlist'),
 						'desc'  => __('This notification will be shown if user will try to add a product that is already in the wishlist. ', 'ti-woocommerce-wishlist') . __('You can use next placeholder in this field to get current product name: <code>{product_name}</code>, <code>{product_sku}</code>', 'ti-woocommerce-wishlist'),
-						'std'   => '&quot;{product_name}&quot; already in Wishlist',
+						'std'   => '{product_name} already in Wishlist',
 						'class' => 'tiwl-button-show-notice tiwl-general-simple-flow-hide',
 					),
 					array(

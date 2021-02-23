@@ -139,7 +139,7 @@ class TInvWL_Public_WishlistCounter {
 						'target'                => '',
 						'attr_title'            => '',
 						'object'                => '',
-						'classes'               => '',
+						'classes'               => array(),
 						'post_content'          => '',
 						'post_excerpt'          => '',
 						'category_post'         => '',

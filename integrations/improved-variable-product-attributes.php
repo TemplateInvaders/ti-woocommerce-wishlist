@@ -4,7 +4,7 @@
  *
  * @name Improved Product Options for WooCommerce
  *
- * @version 4.9.8
+ * @version 5.1.0
  *
  * @slug improved-variable-product-attributes
  *
@@ -31,7 +31,7 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 
 		if ( class_exists( 'XforWC_Improved_Options' ) ) {
 
-			$curr_customizations = XforWC_Improved_Options_Frontend::get_custom();
+			$curr_customizations = XforWC_Improved_Options_Frontend::get_settings();
 
 			foreach ( $meta as $k => $v ) {
 

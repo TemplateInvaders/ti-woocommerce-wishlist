@@ -185,8 +185,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 .tinv-wishlist table {
   position: relative;
   table-layout: auto;
-  margin-bottom: 30px;
-  z-index: 2; }
+  margin-bottom: 30px; }
 
 .tinv-overlay {
   top: 0;

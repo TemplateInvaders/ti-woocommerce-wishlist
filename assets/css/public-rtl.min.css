@@ -45,7 +45,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .tinv-create-list .tinvwl-input-group+ul{margin-top:25px}
 .tinv-search-list{margin-bottom:36px}
 .tinv-wishlist .tinv-header{margin-bottom:30px}
-.tinv-wishlist table{position:relative;table-layout:auto;margin-bottom:30px;z-index:2}
+.tinv-wishlist table{position:relative;table-layout:auto;margin-bottom:30px}
 .tinv-overlay{top:0;right:0;position:fixed;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease}
 .tinv-wishlist .tinv-modal{top:0;right:0;position:fixed;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease}
 .tinv-wishlist table.tinvwl-table-manage-list{margin-bottom:27px;width:100%}

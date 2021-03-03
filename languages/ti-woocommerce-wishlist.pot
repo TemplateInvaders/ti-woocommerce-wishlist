@@ -1,8 +1,8 @@
-# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.23.8
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.23.8 package.
+# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.23.9
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.23.9 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.23.8\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.23.9\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -960,7 +960,7 @@ msgstr ""
 msgid "Customer Added Product From Wishlist To Cart (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:12, integrations/automatewoo/trigger-wishlist-item-added.php:12, integrations/automatewoo/trigger-wishlist-item-purchased.php:12, integrations/automatewoo/trigger-wishlist-item-removed.php:12, integrations/automatewoo/trigger-wishlist-reminder.php:17
+#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:12, integrations/automatewoo/trigger-wishlist-item-added.php:12, integrations/automatewoo/trigger-wishlist-item-purchased.php:12, integrations/automatewoo/trigger-wishlist-item-removed.php:12, integrations/automatewoo/trigger-wishlist-reminder.php:23
 msgid "Wishlists"
 msgstr ""
 
@@ -976,27 +976,27 @@ msgstr ""
 msgid "Customer Removed Product From Wishlist (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:16
+#: integrations/automatewoo/trigger-wishlist-reminder.php:22
 msgid "Wishlist Reminder (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:18
+#: integrations/automatewoo/trigger-wishlist-reminder.php:24
 msgid "Setting the 'Reminder Interval' field to 30 means this trigger will fire every 30 days for any users that have items in their wishlist. This trigger is checked daily. Please note this doesn't work for guests because their wishlist data only exists in their session data."
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:29
+#: integrations/automatewoo/trigger-wishlist-reminder.php:36
 msgid "Reminder interval (days)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:30
+#: integrations/automatewoo/trigger-wishlist-reminder.php:37
 msgid "E.g. Reminder any customers with items in a Wishlist every 30 days."
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:35
+#: integrations/automatewoo/trigger-wishlist-reminder.php:42
 msgid "Once per customer"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-reminder.php:36
+#: integrations/automatewoo/trigger-wishlist-reminder.php:43
 msgid "If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use the one wishlist so use with caution. Setting a high Reminder interval may be a better plan."
 msgstr ""
 

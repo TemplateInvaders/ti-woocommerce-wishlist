@@ -2,7 +2,7 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: 1.23.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html

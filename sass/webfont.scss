@@ -3,11 +3,12 @@ WooCommerce Wishlist Plugin custom webfont
 -------------------------------------------------------------------*/
 @font-face {
   font-family: 'tinvwl-webfont';
-  src: url('../fonts/tinvwl-webfont.eot?xu2uyi');
-  src: url('../fonts/tinvwl-webfont.eot?xu2uyi#iefix') format('embedded-opentype'),
-  url('../fonts/tinvwl-webfont.ttf?xu2uyi') format('truetype'),
-  url('../fonts/tinvwl-webfont.woff?xu2uyi') format('woff'),
-  url('../fonts/tinvwl-webfont.svg?xu2uyi#tinvwl-webfont') format('svg');
+  src: url('../fonts/tinvwl-webfont.eot?ver=xu2uyi');
+  src: url('../fonts/tinvwl-webfont.eot?ver=xu2uyi#iefix') format('embedded-opentype'),
+  url('../fonts/tinvwl-webfont.woff2?ver=xu2uyi') format('woff2'),
+  url('../fonts/tinvwl-webfont.woff?ver=xu2uyi') format('woff'),
+  url('../fonts/tinvwl-webfont.ttf?ver=xu2uyi') format('truetype'),
+  url('../fonts/tinvwl-webfont.svg?ver=xu2uyi#tinvwl-webfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }

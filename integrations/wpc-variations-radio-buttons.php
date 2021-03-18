@@ -13,11 +13,33 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( defined( 'WOOVR_VERSION' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "wpc-variations-radio-buttons";
+
+$name = "WPC Variations Radio Buttons for WooCommerce";
+
+$available = defined('WOOVR_VERSION');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (defined('WOOVR_VERSION')) {
 
 	/**
 	 * Set description for meta WPC Variations Radio Buttons for WooCommerce
@@ -29,11 +51,12 @@ if ( defined( 'WOOVR_VERSION' ) ) {
 	 * @return array
 	 */
 
-	function tinv_wishlist_item_meta_wpc_variations_radio_buttons( $item_data, $product_id, $variation_id ) {
+	function tinv_wishlist_item_meta_wpc_variations_radio_buttons($item_data, $product_id, $variation_id)
+	{
 
-		foreach ( array_keys( $item_data ) as $key ) {
-			if ( strpos( $key, 'woovr_' ) === 0 ) {
-				unset( $item_data[ $key ] );
+		foreach (array_keys($item_data) as $key) {
+			if (strpos($key, 'woovr_') === 0) {
+				unset($item_data[$key]);
 			}
 		}
 
@@ -41,5 +64,5 @@ if ( defined( 'WOOVR_VERSION' ) ) {
 		return $item_data;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_wpc_variations_radio_buttons', 10, 3 );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_wpc_variations_radio_buttons', 10, 3);
 }

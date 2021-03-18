@@ -13,11 +13,29 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! class_exists( 'Abstract_Product_Table_Data' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "woocommerce-product-table";
+
+$name = "WooCommerce Product Table";
+
+$available = class_exists('Barn2\Plugin\WC_Product_Table');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
 	return;
 }
 
@@ -26,14 +44,16 @@ if ( ! class_exists( 'Abstract_Product_Table_Data' ) ) {
  *
  * @license   GPL-3.0
  */
-class TINVWL_Product_Table_Data_Wishlist extends Abstract_Product_Table_Data {
+class TINVWL_Product_Table_Data_Wishlist extends Abstract_Product_Table_Data
+{
 
-	public function get_data() {
-		return apply_filters( 'wc_product_table_data_wishlist', do_shortcode( '[ti_wishlists_addtowishlist loop="yes"]' ), $this->product );
+	public function get_data()
+	{
+		return apply_filters('wc_product_table_data_wishlist', do_shortcode('[ti_wishlists_addtowishlist loop="yes"]'), $this->product);
 	}
 
 }
 
-add_filter( 'wc_product_table_custom_table_data_wishlist', function ( $data_obj, $product, $args ) {
-	return new TINVWL_Product_Table_Data_Wishlist( $product );
-}, 10, 3 );
+add_filter('wc_product_table_custom_table_data_wishlist', function ($data_obj, $product, $args) {
+	return new TINVWL_Product_Table_Data_Wishlist($product);
+}, 10, 3);

@@ -13,11 +13,33 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! function_exists( 'tinvwl_vartable_force_current_product' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "woo-variations-table-grid";
+
+$name = "Woocommerce Variations Table - Grid";
+
+$available = function_exists('vartable_activate');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (!function_exists('tinvwl_vartable_force_current_product')) {
 
 	/**
 	 * Force current variation as global product object
@@ -26,31 +48,33 @@ if ( ! function_exists( 'tinvwl_vartable_force_current_product' ) ) {
 	 * @param array $values array of vartable values
 	 *
 	 */
-	function tinvwl_vartable_force_current_product( $product_id, $values ) {
-		if ( ! empty( $values['variation_id'] ) ) {
-			$_product = wc_get_product( $values['variation_id'] );
-			if ( $_product ) {
+	function tinvwl_vartable_force_current_product($product_id, $values)
+	{
+		if (!empty($values['variation_id'])) {
+			$_product = wc_get_product($values['variation_id']);
+			if ($_product) {
 				global $vartable_product;
 				$vartable_product = $_product;
 
-				add_action( 'woocommerce_before_add_to_cart_button', 'tinvwl_vartable_set_product', 19 );
-				add_action( 'woocommerce_before_add_to_cart_button', 'tinvwl_vartable_reset_product', 21 );
+				add_action('woocommerce_before_add_to_cart_button', 'tinvwl_vartable_set_product', 19);
+				add_action('woocommerce_before_add_to_cart_button', 'tinvwl_vartable_reset_product', 21);
 
-				add_action( 'woocommerce_after_add_to_cart_button', 'tinvwl_vartable_set_product', - 1 );
-				add_action( 'woocommerce_after_add_to_cart_button', 'tinvwl_vartable_reset_product', 1 );
+				add_action('woocommerce_after_add_to_cart_button', 'tinvwl_vartable_set_product', -1);
+				add_action('woocommerce_after_add_to_cart_button', 'tinvwl_vartable_reset_product', 1);
 
 			}
 		}
 
 	}
 
-	add_action( 'vartable_inside_add_to_cart_form', 'tinvwl_vartable_force_current_product', 10, 2 );
+	add_action('vartable_inside_add_to_cart_form', 'tinvwl_vartable_force_current_product', 10, 2);
 }
 
 /**
  *
  */
-function tinvwl_vartable_set_product() {
+function tinvwl_vartable_set_product()
+{
 	global $product, $vartable_product, $_product_tmp;
 	// store global product data.
 	$_product_tmp = $product;
@@ -61,13 +85,14 @@ function tinvwl_vartable_set_product() {
 /**
  *
  */
-function tinvwl_vartable_reset_product() {
+function tinvwl_vartable_reset_product()
+{
 	global $product, $_product_tmp;
 	// store global post data.
 	$product = $_product_tmp;
 }
 
-if ( ! function_exists( 'tinv_wishlist_meta_support_vartable' ) ) {
+if (!function_exists('tinv_wishlist_meta_support_vartable')) {
 
 	/**
 	 * Clear custom meta
@@ -76,14 +101,15 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_vartable' ) ) {
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_meta_support_vartable( $meta ) {
+	function tinv_wishlist_meta_support_vartable($meta)
+	{
 
-		if ( function_exists( 'vartable_activate' ) ) {
+		if (function_exists('vartable_activate')) {
 
-			foreach ( $meta as $k => $v ) {
+			foreach ($meta as $k => $v) {
 				$prefix = 'form_vartable';
-				if ( 0 === strpos( $k, $prefix ) ) {
-					unset( $meta[ $k ] );
+				if (0 === strpos($k, $prefix)) {
+					unset($meta[$k]);
 				}
 			}
 		}
@@ -91,5 +117,5 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_vartable' ) ) {
 		return $meta;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_vartable' );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_vartable');
 } // End if().

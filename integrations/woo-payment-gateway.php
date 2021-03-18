@@ -13,11 +13,33 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! function_exists( 'tinv_wishlist_item_meta_woo_payment_gateway' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "woo-payment-gateway";
+
+$name = "Braintree For WooCommerce";
+
+$available = defined('WC_BRAINTREE_PLUGIN_NAME');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (!function_exists('tinv_wishlist_item_meta_woo_payment_gateway')) {
 
 	/**
 	 * Set description for meta Braintree For WooCommerce
@@ -29,17 +51,18 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woo_payment_gateway' ) ) {
 	 * @return array
 	 */
 
-	function tinv_wishlist_item_meta_woo_payment_gateway( $item_data, $product_id, $variation_id ) {
-		if ( defined( 'WC_BRAINTREE_PLUGIN_NAME' ) ) {
-			foreach ( array_keys( $item_data ) as $key ) {
-				if ( strpos( $key, 'billing_' ) === 0 ) {
-					unset( $item_data[ $key ] );
+	function tinv_wishlist_item_meta_woo_payment_gateway($item_data, $product_id, $variation_id)
+	{
+		if (defined('WC_BRAINTREE_PLUGIN_NAME')) {
+			foreach (array_keys($item_data) as $key) {
+				if (strpos($key, 'billing_') === 0) {
+					unset($item_data[$key]);
 				}
-				if ( strpos( $key, 'shipping_' ) === 0 ) {
-					unset( $item_data[ $key ] );
+				if (strpos($key, 'shipping_') === 0) {
+					unset($item_data[$key]);
 				}
-				if ( strpos( $key, 'wc_braintree_' ) === 0 ) {
-					unset( $item_data[ $key ] );
+				if (strpos($key, 'wc_braintree_') === 0) {
+					unset($item_data[$key]);
 				}
 			}
 		}
@@ -47,6 +70,6 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woo_payment_gateway' ) ) {
 		return $item_data;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woo_payment_gateway', 10, 3 );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woo_payment_gateway', 10, 3);
 }
 // End if().

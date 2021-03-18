@@ -13,11 +13,33 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "yith-woocommerce-product-add-ons";
+
+$name = "YITH WooCommerce Product Add-Ons";
+
+$available = class_exists('YITH_WAPO');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (!function_exists('tinv_wishlist_item_meta_yith_woocommerce_product_add_on')) {
 
 	/**
 	 * Set description for meta YITH WooCommerce Product Add-on
@@ -28,47 +50,48 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_item_meta_yith_woocommerce_product_add_on( $item_data, $product_id, $variation_id ) {
+	function tinv_wishlist_item_meta_yith_woocommerce_product_add_on($item_data, $product_id, $variation_id)
+	{
 
-		if ( isset( $item_data['yith_wapo_is_single'] ) && class_exists( 'YITH_WAPO' ) ) {
-			unset( $item_data['yith_wapo_is_single'] );
+		if (isset($item_data['yith_wapo_is_single']) && class_exists('YITH_WAPO')) {
+			unset($item_data['yith_wapo_is_single']);
 
-			$id = ( $variation_id ) ? $variation_id : $product_id;
+			$id = ($variation_id) ? $variation_id : $product_id;
 
-			$base_product = wc_get_product( $id );
+			$base_product = wc_get_product($id);
 
-			if ( ( is_object( $base_product ) && get_option( 'yith_wapo_settings_show_product_price_cart' ) == 'yes' ) ) {
+			if ((is_object($base_product) && get_option('yith_wapo_settings_show_product_price_cart') == 'yes')) {
 
-				$price = yit_get_display_price( $base_product );
+				$price = yit_get_display_price($base_product);
 
-				$price_html = wc_price( $price );
+				$price_html = wc_price($price);
 
 				$item_data[] = array(
-					'key'     => __( 'Base price', 'ti-woocommerce-wishlist' ),
+					'key' => __('Base price', 'ti-woocommerce-wishlist'),
 					'display' => $price_html,
 				);
 
 			}
-			$type_list = YITH_WAPO_Type::getAllowedGroupTypes( $id );
+			$type_list = YITH_WAPO_Type::getAllowedGroupTypes($id);
 
-			foreach ( $type_list as $single_type ) {
+			foreach ($type_list as $single_type) {
 
 				$original_data = 'ywapo_' . $single_type->type . '_' . $single_type->id;
 
-				$value = isset( $item_data[ $original_data ] ) ? $item_data[ $original_data ] : '';
+				$value = isset($item_data[$original_data]) ? $item_data[$original_data] : '';
 
-				if ( ! $value || ! is_array( $value ) || ! isset( $value['display'] ) ) {
+				if (!$value || !is_array($value) || !isset($value['display'])) {
 					$value = '';
-				} elseif ( is_array( $value ) && isset( $value['display'] ) && ! ctype_digit( strval( $value['display'][0] ) ) ) {
+				} elseif (is_array($value) && isset($value['display']) && !ctype_digit(strval($value['display'][0]))) {
 					$value = $value['display'][0];
 				} else {
-					$value = YITH_WAPO_Option::getOptionDataByValueKey( $single_type, $value['display'][0], 'label' );
+					$value = YITH_WAPO_Option::getOptionDataByValueKey($single_type, $value['display'][0], 'label');
 				}
 
-				unset( $item_data[ $original_data ] );
-				if ( $value ) {
+				unset($item_data[$original_data]);
+				if ($value) {
 					$item_data[] = array(
-						'key'     => $single_type->label,
+						'key' => $single_type->label,
 						'display' => $value,
 					);
 				}
@@ -80,10 +103,10 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 		return $item_data;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on', 10, 3 );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on', 10, 3);
 } // End if().
 
-if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) {
+if (!function_exists('tinvwl_item_price_yith_woocommerce_product_add_on')) {
 
 	/**
 	 * Modify price for YITH WooCommerce product Addons.
@@ -94,41 +117,42 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_yith_woocommerce_product_add_on( $price, $wl_product, $product ) {
+	function tinvwl_item_price_yith_woocommerce_product_add_on($price, $wl_product, $product)
+	{
 
-		if ( class_exists( 'YITH_WAPO' ) ) {
+		if (class_exists('YITH_WAPO')) {
 
-			$type_list = YITH_WAPO_Type::getAllowedGroupTypes( $product->get_id() );
+			$type_list = YITH_WAPO_Type::getAllowedGroupTypes($product->get_id());
 
-			if ( $type_list ) {
+			if ($type_list) {
 
 				$addons_total = 0;
 
-				foreach ( $type_list as $single_type ) {
+				foreach ($type_list as $single_type) {
 
 					$original_data = 'ywapo_' . $single_type->type . '_' . $single_type->id;
 
-					$value = isset( $wl_product['meta'][ $original_data ] ) ? $wl_product['meta'][ $original_data ] : '';
+					$value = isset($wl_product['meta'][$original_data]) ? $wl_product['meta'][$original_data] : '';
 
 
-					if ( ! is_array( $value ) || ! ctype_digit( strval( $value[0] ) ) ) {
+					if (!is_array($value) || !ctype_digit(strval($value[0]))) {
 						continue;
 					}
 
-					$addon_price = YITH_WAPO_Option::getOptionDataByValueKey( $single_type, $value[0], 'price' );
+					$addon_price = YITH_WAPO_Option::getOptionDataByValueKey($single_type, $value[0], 'price');
 
-					if ( is_numeric( $addon_price ) ) {
+					if (is_numeric($addon_price)) {
 						$addons_total += $addon_price;
 					}
 
 				}
 
-				$price = wc_price( $product->get_price() + $addons_total );
+				$price = wc_price($product->get_price() + $addons_total);
 			}
 		}
 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 3 );
+	add_filter('tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 3);
 } // End if().

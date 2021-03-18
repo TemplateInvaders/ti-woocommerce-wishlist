@@ -14,7 +14,29 @@
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-	die;
+	exit;
+}
+
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "woocommerce-square";
+
+$name = "WooCommerce Square";
+
+$available = class_exists('WooCommerce_Square_Loader');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
 }
 
 if (!function_exists('tinv_wishlist_metaprepare_woocommerce_square')) {

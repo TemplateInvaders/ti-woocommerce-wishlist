@@ -14,7 +14,29 @@
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-	die;
+	exit;
+}
+
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "pw-woocommerce-gift-cards";
+
+$name = "PW WooCommerce Gift Cards";
+
+$available = defined('PWGC_VERSION');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
 }
 
 if (defined('PWGC_VERSION')) {

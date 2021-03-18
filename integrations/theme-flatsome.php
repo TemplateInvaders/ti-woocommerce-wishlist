@@ -14,8 +14,31 @@
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-	die;
+	exit;
 }
+
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "flatsome";
+
+$name = "Flatsome Theme";
+
+$available = class_exists('Flatsome_Default');
+
+$integrations[$slug] = array(
+		'name' => $name,
+		'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
 add_action('after_setup_theme', 'tinvwl_flatsome');
 
 function tinvwl_flatsome()

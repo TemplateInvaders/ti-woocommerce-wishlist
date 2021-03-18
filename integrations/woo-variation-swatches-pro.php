@@ -13,27 +13,52 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( class_exists( 'Woo_Variation_Swatches_Pro' ) ) {
+// Load integration depends on current settings.
+global $integrations;
 
-	add_action( 'before_get_redirect_url', 'tinvwl_remove_custom_url_woo_variation_swatches_pro' );
+$slug = "woo-variation-swatches-pro";
 
-	function tinvwl_remove_custom_url_woo_variation_swatches_pro() {
-		remove_filter( 'woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2 );
+$name = "WooCommerce Variation Swatches - Pro";
+
+$available = class_exists('Woo_Variation_Swatches_Pro');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (class_exists('Woo_Variation_Swatches_Pro')) {
+
+	add_action('before_get_redirect_url', 'tinvwl_remove_custom_url_woo_variation_swatches_pro');
+
+	function tinvwl_remove_custom_url_woo_variation_swatches_pro()
+	{
+		remove_filter('woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2);
 	}
 
-	add_action( 'after_get_redirect_url', 'tinvwl_add_custom_url_woo_variation_swatches_pro' );
+	add_action('after_get_redirect_url', 'tinvwl_add_custom_url_woo_variation_swatches_pro');
 
-	function tinvwl_add_custom_url_woo_variation_swatches_pro() {
-		add_filter( 'woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2 );
+	function tinvwl_add_custom_url_woo_variation_swatches_pro()
+	{
+		add_filter('woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2);
 	}
 
-	function tinv_add_to_wishlist_woo_variation_swatches_pro() {
+	function tinv_add_to_wishlist_woo_variation_swatches_pro()
+	{
 
-		wp_add_inline_script( 'tinvwl', "
+		wp_add_inline_script('tinvwl', "
 		jQuery(document).ready(function($){
 			  $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
 			        var button = $(el);
@@ -50,8 +75,8 @@ if ( class_exists( 'Woo_Variation_Swatches_Pro' ) ) {
 			        }
 			  });
         });
-        " );
+        ");
 	}
 
-	add_action( 'wp_enqueue_scripts', 'tinv_add_to_wishlist_woo_variation_swatches_pro', 100, 1 );
+	add_action('wp_enqueue_scripts', 'tinv_add_to_wishlist_woo_variation_swatches_pro', 100, 1);
 }

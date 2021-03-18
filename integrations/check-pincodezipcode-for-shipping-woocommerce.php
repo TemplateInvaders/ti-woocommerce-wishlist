@@ -13,8 +13,30 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
+}
+
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "check-pincodezipcode-for-shipping-woocommerce";
+
+$name = "Check Pincode/Zipcode for Shipping Woocommerce";
+
+$available = defined( 'WCZP_PLUGIN_NAME' );
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
 }
 
 if ( defined( 'WCZP_PLUGIN_NAME' ) ) {

@@ -13,11 +13,33 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "improved-variable-product-attributes";
+
+$name = "Improved Product Options for WooCommerce";
+
+$available = class_exists('XforWC_Improved_Options');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (!function_exists('tinv_wishlist_meta_support_ivpa')) {
 
 	/**
 	 * Set description for meta Improved Product Options for WooCommerce
@@ -26,56 +48,57 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_meta_support_ivpa( $meta ) {
+	function tinv_wishlist_meta_support_ivpa($meta)
+	{
 		global $product;
 
-		if ( class_exists( 'XforWC_Improved_Options' ) ) {
+		if (class_exists('XforWC_Improved_Options')) {
 
 			$curr_customizations = XforWC_Improved_Options_Frontend::get_settings();
 
-			foreach ( $meta as $k => $v ) {
+			foreach ($meta as $k => $v) {
 
-				$prefix  = 'ivpac_';
-				$k_ivpac = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k;
+				$prefix = 'ivpac_';
+				$k_ivpac = (0 === strpos($k, $prefix)) ? substr($k, strlen($prefix)) : $k;
 
-				$prefix          = 'attribute_';
-				$k_ivpac         = ( 0 === strpos( $k, $prefix ) ) ? substr( $k, strlen( $prefix ) ) : $k_ivpac;
-				$local_attribute = ( 0 === strpos( $k, $prefix ) ) ? true : false;
-				$v               = is_array( $v['display'] ) ? implode( ', ', $v['display'] ) : $v['display'];
+				$prefix = 'attribute_';
+				$k_ivpac = (0 === strpos($k, $prefix)) ? substr($k, strlen($prefix)) : $k_ivpac;
+				$local_attribute = (0 === strpos($k, $prefix)) ? true : false;
+				$v = is_array($v['display']) ? implode(', ', $v['display']) : $v['display'];
 
-				if ( isset( $curr_customizations['ivpa_attr'][ $k_ivpac ] ) ) {
-					if ( $curr_customizations['ivpa_attr'][ $k_ivpac ] == 'ivpa_custom' ) {
-						$meta[ $k ] = array(
-							'key'     => $curr_customizations['ivpa_title'][ $k_ivpac ],
+				if (isset($curr_customizations['ivpa_attr'][$k_ivpac])) {
+					if ($curr_customizations['ivpa_attr'][$k_ivpac] == 'ivpa_custom') {
+						$meta[$k] = array(
+							'key' => $curr_customizations['ivpa_title'][$k_ivpac],
 							'display' => $v,
 						);
 					}
 				}
 
-				if ( in_array( $k_ivpac, $curr_customizations['ivpa_attr'] ) ) {
+				if (in_array($k_ivpac, $curr_customizations['ivpa_attr'])) {
 
 					$attributes = $product->get_attributes();
-					$attribute  = sanitize_title( $k_ivpac );
+					$attribute = sanitize_title($k_ivpac);
 
 					$term_slug = '';
 
-					if ( isset( $attributes[ $attribute ] ) ) {
-						$term_slug = $attributes[ $attribute ];
-					} elseif ( isset( $attributes[ 'pa_' . $attribute ] ) ) {
-						$term_slug = $attributes[ 'pa_' . $attribute ];
+					if (isset($attributes[$attribute])) {
+						$term_slug = $attributes[$attribute];
+					} elseif (isset($attributes['pa_' . $attribute])) {
+						$term_slug = $attributes['pa_' . $attribute];
 					}
 
-					if ( $product->is_type( 'variation' ) && $term_slug === $v ) {
-						unset( $meta[ $k ] );
+					if ($product->is_type('variation') && $term_slug === $v) {
+						unset($meta[$k]);
 					} else {
-						$meta[ $k ] = array(
-							'key'     => wc_attribute_label( $k_ivpac ),
+						$meta[$k] = array(
+							'key' => wc_attribute_label($k_ivpac),
 							'display' => $v,
 						);
 					}
-				} elseif ( wc_attribute_label( $k_ivpac ) && $local_attribute ) {
-					$meta[ $k ] = array(
-						'key'     => wc_attribute_label( $k_ivpac ),
+				} elseif (wc_attribute_label($k_ivpac) && $local_attribute) {
+					$meta[$k] = array(
+						'key' => wc_attribute_label($k_ivpac),
 						'display' => $v,
 					);
 				}
@@ -85,14 +108,15 @@ if ( ! function_exists( 'tinv_wishlist_meta_support_ivpa' ) ) {
 		return $meta;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_ivpa' );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_ivpa');
 } // End if().
 
 
-function tinv_add_to_wishlist_ivpa() {
-	if ( class_exists( 'XforWC_Improved_Options' ) ) {
+function tinv_add_to_wishlist_ivpa()
+{
+	if (class_exists('XforWC_Improved_Options')) {
 
-		wp_add_inline_script( 'tinvwl', "
+		wp_add_inline_script('tinvwl', "
 		jQuery(document).ready(function($){
 		    $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
 				if (typeof ivpa === 'undefined' || !ivpa) {
@@ -153,8 +177,8 @@ function tinv_add_to_wishlist_ivpa() {
 				}
 			});
         });
-        " );
+        ");
 	}
 }
 
-add_action( 'wp_enqueue_scripts', 'tinv_add_to_wishlist_ivpa', 100, 1 );
+add_action('wp_enqueue_scripts', 'tinv_add_to_wishlist_ivpa', 100, 1);

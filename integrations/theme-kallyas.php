@@ -13,26 +13,49 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 
-if ( ! function_exists( 'tinvwl_kallyas_init' ) ) {
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "kallyas";
+
+$name = "Kallyas Theme";
+
+$available = function_exists('zget_option');
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
+}
+
+if (!function_exists('tinvwl_kallyas_init')) {
 
 	/**
 	 * Run hooks after theme init.
 	 */
-	function tinvwl_kallyas_init() {
-		if ( function_exists( 'zget_option' ) ) {
+	function tinvwl_kallyas_init()
+	{
+		if (function_exists('zget_option')) {
 
-			$show_cart_to_visitors = zget_option( 'show_cart_to_visitors', 'zn_woocommerce_options', false, 'yes' );
-			if ( $show_cart_to_visitors == 'no' && ! is_user_logged_in() ) {
-				add_filter( 'tinvwl_allow_addtowishlist_single_product_summary', '__return_true' );
+			$show_cart_to_visitors = zget_option('show_cart_to_visitors', 'zn_woocommerce_options', false, 'yes');
+			if ($show_cart_to_visitors == 'no' && !is_user_logged_in()) {
+				add_filter('tinvwl_allow_addtowishlist_single_product_summary', '__return_true');
 			}
 
 
 		}
 	}
 
-	add_action( 'init', 'tinvwl_kallyas_init' );
+	add_action('init', 'tinvwl_kallyas_init');
 }

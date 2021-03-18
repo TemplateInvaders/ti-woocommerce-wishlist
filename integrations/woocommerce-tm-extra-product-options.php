@@ -14,7 +14,29 @@
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-	die;
+	exit;
+}
+
+// Load integration depends on current settings.
+global $integrations;
+
+$slug = "woocommerce-tm-extra-product-options";
+
+$name = "WooCommerce TM Extra Product Options";
+
+$available = (defined('THEMECOMPLETE_EPO_VERSION') || defined('TM_EPO_VERSION'));
+
+$integrations[$slug] = array(
+	'name' => $name,
+	'available' => $available,
+);
+
+if (!tinv_get_option('integrations', $slug)) {
+	return;
+}
+
+if (!$available) {
+	return;
 }
 
 if (!function_exists('tinv_wishlist_metasupport_woocommerce_tm_extra_product_options')) {

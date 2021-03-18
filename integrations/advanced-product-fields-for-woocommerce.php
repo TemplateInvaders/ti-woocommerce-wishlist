@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields (Product Addons) for WooCommerce
  *
- * @version 1.3.3
+ * @version 1.3.6
  *
  * @slug advanced-product-fields-for-woocommerce
  *
@@ -24,7 +24,7 @@ $slug = "advanced-product-fields-for-woocommerce";
 
 $name = "Advanced Product Fields (Product Addons) for WooCommerce";
 
-$available = class_exists('SW_WAPF');
+$available = class_exists('SW_WAPF\WAPF');
 
 $integrations[$slug] = array(
 	'name' => $name,

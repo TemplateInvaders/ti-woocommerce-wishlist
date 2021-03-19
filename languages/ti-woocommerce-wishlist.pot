@@ -1,8 +1,8 @@
-# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.24.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.24.1 package.
+# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.24.2
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.24.2 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.24.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.24.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Template Custom CSS"
 msgstr ""
 
-#: admin/basestyle.helper.php:115, admin/settings/general.class.php:885, admin/settings/integrations.class.php:113
+#: admin/basestyle.helper.php:115, admin/settings/general.class.php:885, admin/settings/integrations.class.php:115
 msgid "Save Settings"
 msgstr ""
 
@@ -40,7 +40,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: admin/basestyle.helper.php:127, admin/settings/general.class.php:897, admin/settings/integrations.class.php:119
+#: admin/basestyle.helper.php:127, admin/settings/general.class.php:897, admin/settings/integrations.class.php:121
 msgid "Save"
 msgstr ""
 
@@ -500,11 +500,11 @@ msgstr ""
 msgid "Wishlist Integrations with 3rd party plugins and themes"
 msgstr ""
 
-#: admin/settings/integrations.class.php:95
+#: admin/settings/integrations.class.php:97
 msgid "Available Integrations"
 msgstr ""
 
-#: admin/settings/integrations.class.php:98
+#: admin/settings/integrations.class.php:100
 msgid "You can disable built-in integrations with 3rd party plugins and themes."
 msgstr ""
 
@@ -936,7 +936,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:295, includes/wizard.class.php:326, integrations/theme-flatsome.php:122, public/tinvwl.class.php:683
+#: includes/wizard.class.php:295, includes/wizard.class.php:326, integrations/theme-flatsome.php:124, public/tinvwl.class.php:683
 msgid "Wishlist"
 msgstr ""
 
@@ -1016,87 +1016,87 @@ msgstr ""
 msgid "If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use the one wishlist so use with caution. Setting a high Reminder interval may be a better plan."
 msgstr ""
 
-#: integrations/gift-cards-for-woocommerce.php:117
+#: integrations/gift-cards-for-woocommerce.php:119
 msgid "Note"
 msgstr ""
 
-#: integrations/gift-cards-for-woocommerce.php:120
+#: integrations/gift-cards-for-woocommerce.php:122
 msgid "To"
 msgstr ""
 
-#: integrations/gift-cards-for-woocommerce.php:123
+#: integrations/gift-cards-for-woocommerce.php:125
 msgid "To Email"
 msgstr ""
 
-#: integrations/gift-cards-for-woocommerce.php:126
+#: integrations/gift-cards-for-woocommerce.php:128
 msgid "Address"
 msgstr ""
 
-#: integrations/gift-cards-for-woocommerce.php:129
+#: integrations/gift-cards-for-woocommerce.php:131
 msgid "Reload existing Gift Card"
 msgstr ""
 
-#: integrations/mycred.php:53
+#: integrations/mycred.php:55
 msgid "WooCommerce Wishlist"
 msgstr ""
 
-#: integrations/mycred.php:54
+#: integrations/mycred.php:56
 msgid "Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist."
 msgstr ""
 
-#: integrations/mycred.php:207
+#: integrations/mycred.php:209
 msgid "Adding Product to Wishlist"
 msgstr ""
 
-#: integrations/mycred.php:212, integrations/mycred.php:257
+#: integrations/mycred.php:214, integrations/mycred.php:259
 msgid "Points"
 msgstr ""
 
-#: integrations/mycred.php:225, integrations/mycred.php:270
+#: integrations/mycred.php:227, integrations/mycred.php:272
 msgid "Limit"
 msgstr ""
 
-#: integrations/mycred.php:238, integrations/mycred.php:283
+#: integrations/mycred.php:240, integrations/mycred.php:285
 msgid "Log Template"
 msgstr ""
 
-#: integrations/mycred.php:242, integrations/mycred.php:287
+#: integrations/mycred.php:244, integrations/mycred.php:289
 msgid "required"
 msgstr ""
 
-#: integrations/mycred.php:252
+#: integrations/mycred.php:254
 msgid "Purchasing Product from Wishlist"
 msgstr ""
 
-#: integrations/mycred.php:340
+#: integrations/mycred.php:342
 msgid "Purchased From Wishlist"
 msgstr ""
 
-#: integrations/mycred.php:341
+#: integrations/mycred.php:343
 msgid "Added To Wishlist"
 msgstr ""
 
-#: integrations/product-extras-for-woocommerce.php:92
+#: integrations/product-extras-for-woocommerce.php:94
 msgid "Flat rate cost"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:113, integrations/woocommerce-composite-products.php:140, integrations/woocommerce-mix-and-match-products.php:110, integrations/woocommerce-product-bundles.php:134, integrations/yith-woocommerce-product-bundles.php:163, templates/ti-wishlist-user.php:145, templates/ti-wishlist.php:153
+#: integrations/woo-product-bundle.php:115, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:136, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:145, templates/ti-wishlist.php:153
 msgid "In stock"
 msgstr ""
 
-#: integrations/woocommerce-gravityforms-product-addons.php:67
+#: integrations/woocommerce-gravityforms-product-addons.php:69
 msgid "Select options"
 msgstr ""
 
-#: integrations/wp-grid-builder.php:98
+#: integrations/wp-grid-builder.php:100
 msgid "Wishlist Button"
 msgstr ""
 
-#: integrations/yith-woocommerce-product-add-ons.php:70
+#: integrations/yith-woocommerce-product-add-ons.php:72
 msgid "Base price"
 msgstr ""
 
-#: integrations/yith-woocommerce-product-bundles.php:98
+#: integrations/yith-woocommerce-product-bundles.php:100
 msgid "Out of stock"
 msgstr ""
 

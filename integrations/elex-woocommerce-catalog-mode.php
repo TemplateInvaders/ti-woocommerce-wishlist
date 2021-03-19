@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "elex-woocommerce-catalog-mode";
 
@@ -26,7 +26,9 @@ $name = "ELEX WooCommerce Catalog Mode";
 
 $available = class_exists('Elex_CM_Price_Discount_Admin');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

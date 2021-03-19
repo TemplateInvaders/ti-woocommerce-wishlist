@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "gift-cards-for-woocommerce";
 
@@ -26,7 +26,9 @@ $name = "WooCommerce – Gift Cards";
 
 $available = class_exists('KODIAK_GIFTCARDS');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

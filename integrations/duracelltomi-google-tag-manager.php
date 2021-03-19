@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "duracelltomi-google-tag-manager";
 
@@ -26,7 +26,9 @@ $name = "Google Tag Manager for WordPress";
 
 $available = defined('GTM4WP_PATH');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

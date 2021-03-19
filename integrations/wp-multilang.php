@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "wp-multilang";
 
@@ -26,7 +26,9 @@ $name = "WP Multilang";
 
 $available = function_exists('wpm_translate_string');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

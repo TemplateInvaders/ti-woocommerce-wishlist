@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "woocommerce-mix-and-match-products";
 
@@ -26,7 +26,9 @@ $name = "WooCommerce Mix and Match";
 
 $available = class_exists('WC_Mix_and_Match');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

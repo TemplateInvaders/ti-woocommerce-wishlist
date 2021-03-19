@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "hide-price-add-to-cart-button";
 
@@ -26,7 +26,9 @@ $name = "Hide Price and Add to Cart Button";
 
 $available = class_exists('Addify_Woo_Hide_Price_Front');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 		'name' => $name,
 		'available' => $available,
 );

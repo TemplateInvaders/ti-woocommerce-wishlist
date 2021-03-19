@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "woo-variation-swatches-pro";
 
@@ -26,7 +26,9 @@ $name = "WooCommerce Variation Swatches - Pro";
 
 $available = class_exists('Woo_Variation_Swatches_Pro');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

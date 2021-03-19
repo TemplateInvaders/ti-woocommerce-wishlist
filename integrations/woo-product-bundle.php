@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "woo-product-bundle";
 
@@ -26,7 +26,9 @@ $name = "WPC Product Bundles for WooCommerce";
 
 $available = defined('WOOSB_VERSION');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 		'name' => $name,
 		'available' => $available,
 );

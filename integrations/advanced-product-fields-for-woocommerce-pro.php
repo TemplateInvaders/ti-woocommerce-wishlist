@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Load integration depends on current settings.
-global $integrations;
+global $tinvwl_integrations;
 
 $slug = "advanced-product-fields-for-woocommerce-pro";
 
@@ -26,7 +26,9 @@ $name = "Advanced Product Fields for WooCommerce Pro";
 
 $available = class_exists('SW_WAPF_PRO\WAPF');
 
-$integrations[$slug] = array(
+$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+
+$tinvwl_integrations[$slug] = array(
 	'name' => $name,
 	'available' => $available,
 );

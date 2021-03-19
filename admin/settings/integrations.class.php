@@ -72,21 +72,23 @@ class TInvWL_Admin_Settings_Integrations extends TInvWL_Admin_BaseSection
 	function constructor_data()
 	{
 
-		global $integrations;
+		global $tinvwl_integrations;
 		$fields = array();
-		foreach ($integrations as $slug => $settings) {
 
-			$disabled = ($settings['available']) ? array() : array('disabled' => 'disabled');
+		if (is_array($tinvwl_integrations)) {
+			foreach ($tinvwl_integrations as $slug => $settings) {
 
-			$fields[] = array(
-				'type' => 'checkboxonoff',
-				'name' => $slug,
-				'text' => $settings['name'],
-				'std' => true,
-				'extra' => $disabled,
-			);
+				$disabled = ($settings['available']) ? array() : array('disabled' => 'disabled');
+
+				$fields[] = array(
+					'type' => 'checkboxonoff',
+					'name' => $slug,
+					'text' => $settings['name'],
+					'std' => true,
+					'extra' => $disabled,
+				);
+			}
 		}
-
 
 		$settings = array(
 

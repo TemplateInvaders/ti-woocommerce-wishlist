@@ -237,9 +237,9 @@ if (!function_exists('run_tinv_wishlist')) {
 	 */
 	function run_tinv_wishlist()
 	{
-		global $integrations;
+		global $tinvwl_integrations;
 
-		$integrations = array();
+		$tinvwl_integrations = array();
 
 		require_once TINVWL_PATH . 'tinv-wishlists-function.php';
 

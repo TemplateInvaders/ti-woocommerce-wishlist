@@ -24,7 +24,7 @@ $slug = "kallyas";
 
 $name = "Kallyas Theme";
 
-$available = function_exists('zget_option');
+$available = true;
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 

@@ -24,7 +24,7 @@ $slug = "flatsome";
 
 $name = "Flatsome Theme";
 
-$available = class_exists('Flatsome_Default');
+$available = true;
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 

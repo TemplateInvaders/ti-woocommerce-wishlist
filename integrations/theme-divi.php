@@ -24,7 +24,7 @@ $slug = "divi";
 
 $name = "Divi Theme";
 
-$available = class_exists('ET_Builder_Element');
+$available = true;
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 

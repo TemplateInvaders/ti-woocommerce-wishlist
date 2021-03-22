@@ -24,7 +24,7 @@ $slug = "oceanwp";
 
 $name = "OceanWP Theme";
 
-$available = class_exists('OceanWP_WooCommerce_Config');
+$available = true;
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 

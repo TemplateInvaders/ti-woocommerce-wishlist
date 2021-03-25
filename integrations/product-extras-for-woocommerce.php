@@ -60,6 +60,13 @@ if (!function_exists('tinv_wishlist_item_meta_pewc')) {
 			// Check for product_extra groups
 			$product_extra_groups = pewc_get_extra_fields($product_id);
 			$hidden_group_types = apply_filters('pewc_hidden_field_types_in_cart', array());
+
+			$posted_data = array();
+
+			foreach ($item_data as $values) {
+				$posted_data[$values['key']] = $values['display'];
+			}
+
 			if ($product_extra_groups) {
 
 				foreach ($product_extra_groups as $group) {
@@ -68,9 +75,14 @@ if (!function_exists('tinv_wishlist_item_meta_pewc')) {
 
 						foreach ($group['items'] as $item) {
 
-
 							if (in_array($item['field_type'], $hidden_group_types)) {
 								// Don't add this to the cart if it's a hidden field type
+								continue;
+							}
+
+							$is_visible = pewc_get_conditional_field_visibility($item['id'], $item, $group['items'], $product_id, $posted_data, $variation_id);
+
+							if (!$is_visible) {
 								continue;
 							}
 

@@ -24,9 +24,9 @@ $slug = "check-pincodezipcode-for-shipping-woocommerce";
 
 $name = "Check Pincode/Zipcode for Shipping Woocommerce";
 
-$available = defined( 'WCZP_PLUGIN_NAME' );
+$available = defined('WCZP_PLUGIN_NAME');
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,
@@ -41,7 +41,7 @@ if (!$available) {
 	return;
 }
 
-if ( defined( 'WCZP_PLUGIN_NAME' ) ) {
+if (defined('WCZP_PLUGIN_NAME')) {
 
 	/**
 	 * Set description for meta Check Pincode/Zipcode for Shipping Woocommerce
@@ -53,11 +53,12 @@ if ( defined( 'WCZP_PLUGIN_NAME' ) ) {
 	 * @return array
 	 */
 
-	function tinv_wishlist_item_meta_wczp( $item_data, $product_id, $variation_id ) {
+	function tinv_wishlist_item_meta_wczp($item_data, $product_id, $variation_id)
+	{
 
-		foreach ( array_keys( $item_data ) as $key ) {
-			if ( strpos( $key, 'wczp' ) === 0 ) {
-				unset( $item_data[ $key ] );
+		foreach (array_keys($item_data) as $key) {
+			if (strpos($key, 'wczp') === 0) {
+				unset($item_data[$key]);
 			}
 		}
 
@@ -65,5 +66,5 @@ if ( defined( 'WCZP_PLUGIN_NAME' ) ) {
 		return $item_data;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_wczp', 10, 3 );
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_wczp', 10, 3);
 }

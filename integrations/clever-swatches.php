@@ -26,7 +26,7 @@ $name = "Clever Swatches";
 
 $available = class_exists('Zoo_Clever_Swatch_Install');
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,

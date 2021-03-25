@@ -1,24 +1,28 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
-class TINVWL_Trigger_Wishlist_Item_Removed extends AutomateWoo\Trigger {
+class TINVWL_Trigger_Wishlist_Item_Removed extends AutomateWoo\Trigger
+{
 
-	public $supplied_data_items = array( 'customer', 'product', 'wishlist' );
+	public $supplied_data_items = array('customer', 'product', 'wishlist');
 
-	function load_admin_details() {
-		$this->title = __( 'Customer Removed Product From Wishlist (TI WooCommerce Wishlist)', 'ti-woocommerce-wishlist' );
-		$this->group = __( 'Wishlists', 'ti-woocommerce-wishlist' );
+	function load_admin_details()
+	{
+		$this->title = __('Customer Removed Product From Wishlist (TI WooCommerce Wishlist)', 'ti-woocommerce-wishlist');
+		$this->group = __('Wishlists', 'ti-woocommerce-wishlist');
 	}
 
-	function load_fields() {
+	function load_fields()
+	{
 		$this->add_field_user_pause_period();
 	}
 
-	function register_hooks() {
+	function register_hooks()
+	{
 		//TODO: add support for bulk remove action.
-		add_action( 'tinvwl_product_removed', array( $this, 'catch_hooks' ) );
+		add_action('tinvwl_product_removed', array($this, 'catch_hooks'));
 	}
 
 	/**
@@ -26,21 +30,22 @@ class TINVWL_Trigger_Wishlist_Item_Removed extends AutomateWoo\Trigger {
 	 *
 	 * @param array $data
 	 */
-	function catch_hooks( $data ) {
+	function catch_hooks($data)
+	{
 
-		if ( ! $this->has_workflows() ) {
+		if (!$this->has_workflows()) {
 			return;
 		}
 
-		$wishlist           = new TINVWL_AutomateWoo_Wishlist();
-		$wishlist->id       = $data['wishlist_id'];
+		$wishlist = new TINVWL_AutomateWoo_Wishlist();
+		$wishlist->id = $data['wishlist_id'];
 		$wishlist->owner_id = $data['author'];
 
-		$this->maybe_run( array(
-			'customer' => AutomateWoo\Customer_Factory::get_by_user_id( $data['author'] ),
+		$this->maybe_run(array(
+			'customer' => AutomateWoo\Customer_Factory::get_by_user_id($data['author']),
 			'wishlist' => $wishlist,
-			'product'  => wc_get_product( $data['product_id'] ),
-		) );
+			'product' => wc_get_product($data['product_id']),
+		));
 
 	}
 
@@ -49,8 +54,9 @@ class TINVWL_Trigger_Wishlist_Item_Removed extends AutomateWoo\Trigger {
 	 *
 	 * @return bool
 	 */
-	function validate_workflow( $workflow ) {
-		if ( ! $this->validate_field_user_pause_period( $workflow ) ) {
+	function validate_workflow($workflow)
+	{
+		if (!$this->validate_field_user_pause_period($workflow)) {
 			return false;
 		}
 
@@ -63,10 +69,11 @@ class TINVWL_Trigger_Wishlist_Item_Removed extends AutomateWoo\Trigger {
 	 *
 	 * @return bool
 	 */
-	function validate_before_queued_event( $workflow ) {
+	function validate_before_queued_event($workflow)
+	{
 		$product = $workflow->data_layer()->get_product();
 
-		if ( ! $product ) {
+		if (!$product) {
 			return false;
 		}
 

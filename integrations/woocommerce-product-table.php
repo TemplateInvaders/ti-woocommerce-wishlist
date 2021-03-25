@@ -26,7 +26,7 @@ $name = "WooCommerce Product Table";
 
 $available = class_exists('Barn2\Plugin\WC_Product_Table');
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,

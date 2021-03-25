@@ -120,7 +120,6 @@ if (!function_exists('tinvwl_wpml_addtowishlist_check_product')) {
 	add_filter('tinvwl_addtowishlist_check_product', 'tinvwl_wpml_addtowishlist_check_product');
 }
 
-
 if (!function_exists('tinvwl_wpml_addtowishlist_out_prepare')) {
 
 	/**
@@ -144,7 +143,6 @@ if (!function_exists('tinvwl_wpml_addtowishlist_out_prepare')) {
 				if (!($woocommerce_wpml instanceof woocommerce_wpml) || !($sitepress instanceof SitePress) || !($wpml_post_translations instanceof WPML_Post_Translation)) {
 					return $attr;
 				}
-
 				$woocommerce_wpml->products = new WCML_Products($woocommerce_wpml, $sitepress, $wpml_post_translations, $wpdb);
 			}
 

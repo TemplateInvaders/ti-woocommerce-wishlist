@@ -51,7 +51,7 @@ if (!function_exists('tinvwl_gf_productaddon_support')) {
 		if (!class_exists('woocommerce_gravityforms')) {
 			return false;
 		}
-		if (!function_exists('gf_productaddon_text_button')) {
+		if (!function_exists('tinvwl_gf_productaddon_text_button')) {
 
 			/**
 			 * Change text for button add to cart
@@ -62,17 +62,17 @@ if (!function_exists('tinvwl_gf_productaddon_support')) {
 			 *
 			 * @return string
 			 */
-			function gf_productaddon_text_button($text_add_to_cart, $wl_product, $product)
+			function tinvwl_gf_productaddon_text_button($text_add_to_cart, $wl_product, $product)
 			{
 				$gravity_form_data = get_post_meta((($product->is_type('variation') ? $product->get_parent_id() : $product->get_id())), '_gravity_form_data', true);
 
 				return ($gravity_form_data) ? __('Select options', 'ti-woocommerce-wishlist') : $text_add_to_cart;
 			}
 
-			add_filter('tinvwl_wishlist_item_add_to_cart', 'gf_productaddon_text_button', 10, 3);
+			add_filter('tinvwl_wishlist_item_add_to_cart', 'tinvwl_gf_productaddon_text_button', 10, 3);
 		}
 
-		if (!function_exists('gf_productaddon_run_action_button')) {
+		if (!function_exists('tinvwl_gf_productaddon_run_action_button')) {
 
 			/**
 			 * Check for make redirect to url
@@ -82,14 +82,14 @@ if (!function_exists('tinvwl_gf_productaddon_support')) {
 			 *
 			 * @return boolean
 			 */
-			function gf_productaddon_run_action_button($need, $product)
+			function tinvwl_gf_productaddon_run_action_button($need, $product)
 			{
 				$gravity_form_data = get_post_meta(($product->is_type('variation') ? $product->get_parent_id() : $product->get_id()), '_gravity_form_data', true);
 
 				return ($gravity_form_data) ? true : $need;
 			}
 
-			add_filter('tinvwl_product_add_to_cart_need_redirect', 'gf_productaddon_run_action_button', 10, 2);
+			add_filter('tinvwl_product_add_to_cart_need_redirect', 'tinvwl_gf_productaddon_run_action_button', 10, 2);
 		}
 
 		if (!function_exists('gf_productaddon_action_button')) {

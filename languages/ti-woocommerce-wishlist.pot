@@ -1,8 +1,8 @@
-# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.24.3
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.24.3 package.
+# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.24.4
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.24.4 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.24.3\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.24.4\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -868,7 +868,7 @@ msgstr ""
 msgid "There was an error exporting your settings, please try again."
 msgstr ""
 
-#: includes/form.helper.php:512
+#: includes/form.helper.php:527
 msgid "Preview"
 msgstr ""
 
@@ -972,23 +972,23 @@ msgstr ""
 msgid "Ready!"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:11
+#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:13
 msgid "Customer Added Product From Wishlist To Cart (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:12, integrations/automatewoo/trigger-wishlist-item-added.php:12, integrations/automatewoo/trigger-wishlist-item-purchased.php:12, integrations/automatewoo/trigger-wishlist-item-removed.php:12, integrations/automatewoo/trigger-wishlist-reminder.php:23
+#: integrations/automatewoo/trigger-wishlist-item-added-to-cart.php:14, integrations/automatewoo/trigger-wishlist-item-added.php:14, integrations/automatewoo/trigger-wishlist-item-purchased.php:14, integrations/automatewoo/trigger-wishlist-item-removed.php:14, integrations/automatewoo/trigger-wishlist-reminder.php:23
 msgid "Wishlists"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-added.php:11
+#: integrations/automatewoo/trigger-wishlist-item-added.php:13
 msgid "Customer Added Product To Wishlist (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-purchased.php:11
+#: integrations/automatewoo/trigger-wishlist-item-purchased.php:13
 msgid "Product Purchased From Wishlist (TI WooCommerce Wishlist)"
 msgstr ""
 
-#: integrations/automatewoo/trigger-wishlist-item-removed.php:11
+#: integrations/automatewoo/trigger-wishlist-item-removed.php:13
 msgid "Customer Removed Product From Wishlist (TI WooCommerce Wishlist)"
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgstr ""
 msgid "Added To Wishlist"
 msgstr ""
 
-#: integrations/product-extras-for-woocommerce.php:94
+#: integrations/product-extras-for-woocommerce.php:106
 msgid "Flat rate cost"
 msgstr ""
 

@@ -49,7 +49,6 @@ if (!function_exists('tinvwl_wp_fastest_cache_reject')) {
 	{
 		if (defined('WPFC_WP_PLUGIN_DIR')) {
 			$rules_json = get_option('WpFastestCacheExclude');
-
 			$ids = array(
 				tinv_get_option('page', 'wishlist'),
 				tinv_get_option('page', 'manage'),
@@ -105,7 +104,6 @@ if (!function_exists('tinvwl_wp_fastest_cache_reject')) {
 				$data = json_encode($rules_std);
 				update_option('WpFastestCacheExclude', $data);
 			}
-
 		} // End if().
 	}
 

@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.7
-Stable tag: 1.24.4
+Stable tag: 1.24.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.24.5 ###
+*Release Date - 30 March 2021*
+
+* Fixed FOIT for the custom icon webfont
+* Security tweak
+* Forced uppercase removed from a wishlist unique share key
+* Updated integration with WooCommerce TM Extra Product Options plugin
+* Updated integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
+
 ### 1.24.4 ###
 *Release Date - 25 March 2021*
 
@@ -272,128 +281,9 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Updated integration with Flatsome theme
 * Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
 
-### 1.22.1 ###
-*Release Date - 7 December 2020*
-
-* Added compatibility with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/) plugin
-* Added compatibility with [Advanced Product Fields for WooCommerce Pro](https://www.studiowombat.com/plugin/advanced-product-fields-for-woocommerce/) plugin
-
-### 1.22.0 ###
-*Release Date - 25 November 2020*
-
-* WordPress 5.6 support
-* Discontinued support for WooCommerce 2.x, minimum requirements are WooCommerce 3.0.0
-* PHP 8 support
-* Improved add to wishlist button behavior when it inserted outside add to cart form
-* Improved WP SHORTINIT loading for the custom AJAX endpoint
-
-### 1.21.14 ###
-*Release Date - 17 November 2020*
-
-* Improved add to wishlist button behavior for variable product type
-* Fixed PHP notice in case of wrong pagination value for wishlist page
-* Fixed PHP notices in case wishlist ID page is not valid WP_Post object
-
-### 1.21.13 ###
-*Release Date - 11 November 2020*
-
-* WooCommerce 4.7.x compatibility
-
-### 1.21.12 ###
-*Release Date - 16 October 2020*
-
-* Fixed security issue related to import/export plugin settings.
-
-### 1.21.11 ###
-*Release Date - 7 October 2020*
-
-* WooCommerce 4.6.x compatibility
-* Added `woocommerce_return_to_shop_text` filter introduced in WooCommerce 4.6.0
-* Fixed issue with add to wishlist button incorrect response for WPML additional languages
-
-### 1.21.10 ###
-*Release Date - 2 October 2020*
-
-* Fixed WPML additional languages issue with wishlist products
-* Updated integration for [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
-
-### 1.21.9 ###
-*Release Date - 29 September 2020*
-
-* Fixed integration with [WooCommerce Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin
-
-### 1.21.8 ###
-*Release Date - 28 September 2020*
-
-* Fixed an issue with WPML products data
-
-### 1.21.7 ###
-*Release Date - 17 September 2020*
-
-* WooCommerce 4.5.x compatibility
-* Fixed empty wishlist issue after adding a product to cart from paginated page
-* Fixed wishlist products counter widget issue with Avada builder
-* Fixed wishlist products counter issue with quantity
-
-### 1.21.6 ###
-*Release Date - 8 September 2020*
-
-* Added integration with [Check Pincode/Zipcode for Shipping Woocommerce](https://wordpress.org/plugins/check-pincodezipcode-for-shipping-woocommerce/) plugin
-* Added integration for [WPC Variations Radio Buttons for WooCommerce](https://wordpress.org/plugins/wpc-variations-radio-buttons/) plugin
-* Updated integration with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
-* Fixed attributes display for variation on wishlist table
-* Fixed translation for template strings
-
-### 1.21.5 ###
-*Release Date - 4 September 2020*
-
-* Fixed HTML markup validation for integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
-* Use wp_kses_post instead of esc_html for sanitizing template strings to allow minimal HTML
-
-### 1.21.4 ###
-*Release Date - 2 September 2020*
-
-* Fixed issue with custom AJAX endpoint loading
-* Updated integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
-* Updated integration with [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin
-
-### 1.21.3 ###
-*Release Date - 26 August 2020*
-
-* Fixed issue for Flywheel Cloud sites
-* Fixed price value for variable parent product in wishlist
-* Fixed PHP error for variable products on add to wishlist event
-
-### 1.21.2 ###
-*Release Date - 24 August 2020*
-
-* Added compatibility with WooCommerce 4.4.x
-* Fixed critical issue when WPML deleted all products from other languages for current wishlist
-* Added empty option for products counter menu multi-select form element
-* Fixed product name in messages for variable products
-* Fixed issue with [Enable jQuery Migrate Helper](https://wordpress.org/plugins/enable-jquery-migrate-helper/) plugin
-* Fixed integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-* Fixed integration with [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
-
-### 1.21.1 ###
-*Release Date - 12 August 2020*
-
-* WordPress 5.5.x support
-* Added compatibility with WooCommerce 4.3.x
-* Added argument to register_rest_route method required from WordPress 5.5.0
-* Fixed an issue with "Hide Zero Value" feature for wishlist products counter
-* Fixed an issue with variable product status update when "Remove product from wishlist on second click" feature is enabled
-
-### 1.21.0 ###
-*Release Date - 30 July 2020*
-
-* Wishlist user-side data completely refactored
-* Great performance improvements
-* Fixed integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/?aff=3955) plugin
-
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 
 ## Upgrade Notice ##
 
-### 1.21.12 ###
-URGENT UPDATE! Fixed zero day vulnerability issue related to export/import plugin settings.
+### 1.24.5 ###
+URGENT UPDATE! Fixed zero day cross site scripting vulnerability.

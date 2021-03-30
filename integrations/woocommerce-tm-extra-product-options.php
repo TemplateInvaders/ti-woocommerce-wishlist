@@ -26,7 +26,7 @@ $name = "WooCommerce TM Extra Product Options";
 
 $available = (defined('THEMECOMPLETE_EPO_VERSION') || defined('TM_EPO_VERSION'));
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,
@@ -320,3 +320,20 @@ function tinvwl_cart_meta_woocommerce_tm_extra_product_options($meta)
 
 	return $meta;
 }
+
+function tinvwl_add_to_wishlist_tm_extra_product_options()
+{
+	wp_add_inline_script('tinvwl', "
+					jQuery('body').on('tinvwl_add_to_wishlist_button_click', function(e, el){
+							jQuery(el).closest('form.cart').each(function(){
+								if (!jQuery(this)[0].checkValidity()){
+									jQuery(el).addClass('disabled-add-wishlist');
+									jQuery(this)[0].reportValidity();
+								} else {
+									jQuery(el).removeClass('disabled-add-wishlist');}
+							});
+					});
+			");
+}
+
+add_action('wp_enqueue_scripts', 'tinvwl_add_to_wishlist_tm_extra_product_options', 100, 1);

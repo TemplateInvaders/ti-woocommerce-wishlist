@@ -326,11 +326,13 @@ function tinvwl_add_to_wishlist_tm_extra_product_options()
 	wp_add_inline_script('tinvwl', "
 					jQuery('body').on('tinvwl_add_to_wishlist_button_click', function(e, el){
 							jQuery(el).closest('form.cart').each(function(){
-								if (!jQuery(this)[0].checkValidity()){
-									jQuery(el).addClass('disabled-add-wishlist');
-									jQuery(this)[0].reportValidity();
-								} else {
-									jQuery(el).removeClass('disabled-add-wishlist');}
+								if (jQuery(this).find('#tm-extra-product-options').length) {
+									if (!jQuery(this)[0].checkValidity()){
+										jQuery(el).addClass('disabled-add-wishlist');
+										jQuery(this)[0].reportValidity();
+									} else {
+										jQuery(el).removeClass('disabled-add-wishlist');}
+								}
 							});
 					});
 			");

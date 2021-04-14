@@ -39,6 +39,7 @@ class TINVWL_Trigger_Wishlist_Item_Added extends AutomateWoo\Trigger
 		$wishlist = new TINVWL_AutomateWoo_Wishlist();
 		$wishlist->id = $data['wishlist_id'];
 		$wishlist->owner_id = $data['author'];
+		$wishlist->get_items();
 
 		$this->maybe_run(array(
 			'customer' => AutomateWoo\Customer_Factory::get_by_user_id($data['author']),

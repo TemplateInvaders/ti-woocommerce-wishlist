@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatchedDailyTrigger
 {
 
-	public $supplied_data_items = ['customer', 'wishlist'];
+	public $supplied_data_items = ['customer', 'wishlist', 'product'];
 
 	const SUPPORTS_QUEUING = false;
 
@@ -68,10 +68,7 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 
 		foreach ($wishlists as $wishlist) {
 			$tasks[] = array(
-				'workflow_id' => $workflow->get_id(),
-				'workflow_data' => array(
-					'wishlist' => $wishlist,
-				)
+				'wishlist' => $wishlist,
 			);
 		}
 
@@ -93,24 +90,25 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 			throw InvalidArgument::missing_required('wishlist');
 		}
 
-		$wishlist = isset($data['wishlist']) && !empty($data['wishlist']['author']) ? $data['wishlist'] : false;
+		$wishlist = isset($item['wishlist']) && !empty($item['wishlist']['author']) ? $item['wishlist'] : false;
 
 		if (!$wishlist) {
 			throw new RuntimeException('Wishlist not found.');
 		}
 
-		if (empty($data['wishlist']['author'])) {
+		if (empty($item['wishlist']['author'])) {
 			throw new RuntimeException('Wishlist customer not found.');
 		}
 
 		$normalized_wishlist = new TINVWL_AutomateWoo_Wishlist();
-		$normalized_wishlist->id = $data['wishlist']['ID'];
-		$normalized_wishlist->owner_id = $data['wishlist']['author'];
-		$normalized_wishlist->date = DateTime::createFromFormat("Y-m-d H:i:s", $data['wishlist']['date']);
+		$normalized_wishlist->id = $item['wishlist']['ID'];
+		$normalized_wishlist->owner_id = $item['wishlist']['author'];
+		$normalized_wishlist->date = DateTime::createFromFormat("Y-m-d H:i:s", $item['wishlist']['date']);
+		$normalized_wishlist->get_items();
 
 		$workflow->maybe_run(
 			[
-				'customer' => AutomateWoo\Customer_Factory::get_by_user_id($data['wishlist']['author']),
+				'customer' => AutomateWoo\Customer_Factory::get_by_user_id($item['wishlist']['author']),
 				'wishlist' => $normalized_wishlist,
 			]
 		);
@@ -180,5 +178,4 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 
 		return $date_created->getTimestamp() < $min_interval_date->getTimestamp();
 	}
-
 }

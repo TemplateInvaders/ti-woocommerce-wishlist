@@ -170,7 +170,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           formData = new FormData();
 
       if (tinvwl_add_to_wishlist.wpml) {
-        data['lang'] = tinvwl_add_to_wishlist.wpml;
+        data.lang = tinvwl_add_to_wishlist.wpml;
       }
 
       $('form.cart[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], form.vtajaxform[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
@@ -291,8 +291,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             }
           }
         } else {
-          if ('function' === typeof s.onAction['msg']) {
-            s.onAction['msg'].call(a, body);
+          if ('function' === typeof s.onAction.msg) {
+            s.onAction.msg.call(a, body);
           }
         }
       });
@@ -418,7 +418,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 
         for (var i in f) {
-          if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(0)) {
+          if (f[i].hasOwnProperty('in') && Array.isArray(f[i].in) && -1 < (f[i].in || []).indexOf(0)) {
             j = true;
           }
         }
@@ -441,7 +441,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 
         for (var i in f) {
-          if (f[i].hasOwnProperty('in') && Array.isArray(f[i]['in']) && -1 < (f[i]['in'] || []).indexOf(b.variation_id)) {
+          if (f[i].hasOwnProperty('in') && Array.isArray(f[i].in) && -1 < (f[i].in || []).indexOf(b.variation_id)) {
             j = true;
           }
         }
@@ -458,7 +458,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         if (localStorage.getItem(hash_key)) {
           var data = JSON.parse(localStorage.getItem(hash_key));
 
-          if (_typeof(data) === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
+          if ('object' === _typeof(data) && null !== data && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
             set_hash(localStorage.getItem(hash_key));
           }
         }
@@ -468,7 +468,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var tinvwl_products = [],
         tinvwl_counter = false;
     $('a.tinvwl_add_to_wishlist_button').each(function () {
-      if ($(this).data('tinv-wl-product') !== 'undefined' && $(this).data('tinv-wl-product')) {
+      if ('undefined' !== $(this).data('tinv-wl-product') && $(this).data('tinv-wl-product')) {
         tinvwl_products.push($(this).data('tinv-wl-product'));
       }
     });
@@ -485,7 +485,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         };
 
         if (tinvwl_add_to_wishlist.wpml) {
-          params['lang'] = tinvwl_add_to_wishlist.wpml;
+          params.lang = tinvwl_add_to_wishlist.wpml;
         }
 
         $.ajax({
@@ -507,7 +507,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var params = {};
 
         if (tinvwl_add_to_wishlist.wpml) {
-          params['lang'] = tinvwl_add_to_wishlist.wpml;
+          params.lang = tinvwl_add_to_wishlist.wpml;
         }
 
         $.ajax({
@@ -535,7 +535,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         if (localStorage.getItem(hash_key)) {
           var data = JSON.parse(localStorage.getItem(hash_key));
 
-          if (_typeof(data) === 'object' && data !== null && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
+          if ('object' === _typeof(data) && null !== data && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
             if (!data.hasOwnProperty('lang') && !tinvwl_add_to_wishlist.wpml || tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml) {
               mark_products(data);
               return;
@@ -560,15 +560,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       mutations.forEach(function (mutation) {
         var newNodes = mutation.addedNodes; // If there are new nodes added
 
-        if (newNodes !== null) {
+        if (null !== newNodes) {
           var $nodes = $(newNodes);
           $nodes.each(function () {
             var $node = $(this),
-                els = $node.find(".tinvwl_add_to_wishlist_button");
+                els = $node.find('.tinvwl_add_to_wishlist_button');
 
             if (els.length) {
               els.each(function () {
-                if ($(this).data('tinv-wl-product') !== 'undefined' && $(this).data('tinv-wl-product')) {
+                if ('undefined' !== $(this).data('tinv-wl-product') && $(this).data('tinv-wl-product')) {
                   tinvwl_products.push($(this).data('tinv-wl-product'));
                 }
               });
@@ -595,7 +595,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       hash_key = tinvwl_add_to_wishlist.hash_key;
 
   try {
-    $supports_html5_storage = 'sessionStorage' in window && window.sessionStorage !== null;
+    $supports_html5_storage = 'sessionStorage' in window && null !== window.sessionStorage;
     window.sessionStorage.setItem('ti', 'test');
     window.sessionStorage.removeItem('ti');
     window.localStorage.setItem('ti', 'test');
@@ -608,7 +608,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 
     if (g) {
-      $("a.tinvwl_add_to_wishlist_button").each(function () {
+      $('a.tinvwl_add_to_wishlist_button').each(function () {
         $(this).removeClass('tinvwl-product-make-remove').removeClass('tinvwl-product-already-on-wishlist').removeClass('tinvwl-product-in-list').attr('data-tinv-wl-action', 'addto').attr('data-tinv-wl-list', '[]');
       });
     }
@@ -623,8 +623,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             j = false;
 
         for (var i in item) {
-          if (item[i].hasOwnProperty('in') && Array.isArray(item[i]['in']) && (-1 < (item[i]['in'] || []).indexOf(id) || -1 < (item[i]['in'] || []).indexOf(vid) || vids.some(function (r) {
-            return (item[i]['in'] || []).indexOf(r) >= 0;
+          if (item[i].hasOwnProperty('in') && Array.isArray(item[i].in) && (-1 < (item[i].in || []).indexOf(id) || -1 < (item[i].in || []).indexOf(vid) || vids.some(function (r) {
+            return 0 <= (item[i].in || []).indexOf(r);
           }))) {
             j = true;
           }
@@ -681,7 +681,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     });
     $('body').on('click', '.social-buttons .social:not(.social-email,.social-whatsapp,.social-clipboard)', function (e) {
-      var newWind = window.open($(this).attr('href'), $(this).attr('title'), "width=420,height=320,resizable=yes,scrollbars=yes,status=yes");
+      var newWind = window.open($(this).attr('href'), $(this).attr('title'), 'width=420,height=320,resizable=yes,scrollbars=yes,status=yes');
 
       if (newWind) {
         newWind.focus();
@@ -689,7 +689,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     });
 
-    if (typeof ClipboardJS !== 'undefined') {
+    if ('undefined' !== typeof ClipboardJS) {
       var clipboard = new ClipboardJS('.social-buttons .social.social-clipboard', {
         text: function text(trigger) {
           return trigger.getAttribute('href');
@@ -728,13 +728,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       navigationButton.each(function () {
         var navigationButtons = $(this).find('> li');
 
-        if (navigationButtons.length < 5) {
+        if (5 > navigationButtons.length) {
           navigationButtons.parent().addClass('tinvwl-btns-count-' + navigationButtons.length);
         }
       });
     }
 
-    $('.tinv-login .showlogin').off("click").on('click', function (e) {
+    $('.tinv-login .showlogin').off('click').on('click', function (e) {
       e.preventDefault();
       $(this).closest('.tinv-login').find('.login').toggle();
     });
@@ -787,9 +787,26 @@ function clearTooltip(e) {
     var s = $.extend(true, {}, sd, so);
     return $(this).each(function () {
       $(this).on('click', function (event) {
-        if (!s.rule.call($(this))) {
+        var ss = [];
+
+        if ('undefined' !== typeof $(this).attr('tinvwl_break_submit')) {
+          ss = $(this).attr('tinvwl_break_submit').split(',');
+        }
+
+        if (-1 !== jQuery.inArray(s.selector, ss)) {
+          ss = [];
+        }
+
+        if (!s.rule.call($(this)) && 0 === ss.length) {
           alert(window.tinvwl_add_to_wishlist['tinvwl_break_submit']);
           event.preventDefault();
+        }
+
+        ss.push(s.selector);
+        $(this).attr('tinvwl_break_submit', ss);
+
+        if (s.rule.call($(this))) {
+          $(this).removeAttr('tinvwl_break_submit');
         }
       });
     });

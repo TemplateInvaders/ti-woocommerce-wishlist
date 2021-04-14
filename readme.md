@@ -141,8 +141,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.25.1 ###
+*Release Date - 16 April 2021*
+
+* Fixed PHP error for PHP versions below 7.3
+
 ### 1.25.0 ###
-*Release Date - 30 March 2021*
+*Release Date - 15 April 2021*
 
 * WooCommerce 5.2 support
 * Added opt-in options for the support chat

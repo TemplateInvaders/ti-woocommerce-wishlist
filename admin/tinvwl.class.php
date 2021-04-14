@@ -137,7 +137,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 		printf('<div class="notice notice-warning"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a></p></div>',
 			__('The Support Chat is disabled by default for the plugin setting pages. Enable it to get the most from our service!', 'ti-woocommerce-wishlist'), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
 			esc_url(admin_url('admin.php?page=tinvwl#chat')),
-			esc_html__('Enable Support Chat', 'ti-woocommerce-wishlist'),
+			esc_html__('Enable Support Chat', 'ti-woocommerce-wishlist')
 		);
 	}
 

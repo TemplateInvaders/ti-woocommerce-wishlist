@@ -1,12 +1,4 @@
 # TI WooCommerce Wishlist #
-Contributors: templateinvaders
-Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
-Requires at least: 4.7
-Tested up to: 5.7
-Stable tag: 1.24.5
-License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
 
 Add WooCommerce Wishlist functionality to your store for free.
 Allow your store guests and customers to add products to Wishlist.
@@ -148,21 +140,16 @@ You can find the documentation of our [TI WooCommerce Wishlist REST API Docs](ht
 Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInvaders/ti-woocommerce-wishlist)
 
 
-
-1. TI WooCommerce Wishlist Settings page
-2. TI WooCommerce Wishlist Appearance Options
-3. The look of "Add to Wishlist" button on the frontend with different settings
-4. Wishlist page with all columns, desktop view
-5. Wishlist page with turned off date of addition, checkboxes and bulk actions.
-6. When you click Add to Wishlist button a popup with success or error message appears.
-7. Wishlist page, Tablet view
-8. Wishlist page, Mobile view
-9. Simplified Wishlist page, Mobile view
-10. TI WooCommerce Wishlist comes with a setup wizard to help you configure the settings.
-
-
-
 ## Changelog ##
+### 1.25.0 ###
+*Release Date - 30 March 2021*
+
+* WooCommerce 5.2 support
+* Added opt-in options for the support chat
+* Updated integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/?aff=3955) plugin
+* Updated integration with WooCommerce TM Extra Product Options plugin
+* Fixed extra JavaScript alert on wishlist table bulk events
+
 ### 1.24.5 ###
 *Release Date - 30 March 2021*
 
@@ -202,88 +189,9 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Added integration with [WooCommerce Square](https://woocommerce.com/products/square/?aff=3955) plugin
 * Updated integration with WooCommerce TM Extra Product Options plugin
 
-### 1.23.10 ###
-*Release Date - 10 March 2021*
-
-* WordPress 5.7 support
-* WooCommerce 5.1 support
-
-
-### 1.23.9 ###
-*Release Date - 3 March 2021*
-
-* Updated integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/?aff=3955) plugin
-
-### 1.23.8 ###
-*Release Date - 1 March 2021*
-
-* Updated integration with Improved Product Options for WooCommerce plugin
-* Minor CSS fixes
-
-
-### 1.23.7 ###
-*Release Date - 23 February 2021*
-
-* Fixed PHP error in the Dashboard->Appearance->Menus page
-* Fixed the issue with WPML string translations for some admin text
-
-### 1.23.6 ###
-*Release Date - 21 February 2021*
-
-* Added filter `tinvwl_load_webfont` to allow disable to load webfont from 3rd party code
-* Updated integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
-* Updated integration with the Flatsome theme
-* Fixed issue when products don't add to wishlist while [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) configured to show the default language as a fallback
-
-### 1.23.5 ###
-*Release Date - 19 February 2021*
-
-* Updated integration with Flatsome theme
-* Fixed issue related to passing extra data on add to wishlist event
-* Fixed Kinsta cache issue for the custom AJAX endpoint
-
-### 1.23.4 ###
-*Release Date - 11 February 2021*
-
-* Added support of WooCommerce 5.0
-* Added integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
-* Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
-* Updated integration with [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619) plugin
-* Fixed PHP fatal error for WordPress less than 5.6.0 versions
-* Remove deleted products OR products with invalid product type from a wishlist
-
-### 1.23.3 ###
-*Release Date - 5 February 2021*
-
-* Updated integration with "Advanced Product Fields for WooCommerce Pro" plugin
-
-### 1.23.2 ###
-*Release Date - 4 February 2021*
-
-* Fixed translation issue for wishlist table buttons
-* Fixed PHP warning in rare cases of custom AJAX endpoint response
-* Minor CSS fixes
-
-### 1.23.1 ###
-*Release Date - 2 February 2021*
-
-* Fixed PHP warning in customizer for Flatsome theme integration
-* Fixed potential PHP error for custom AJAX endpoint
-
-### 1.23.0 ###
-*Release Date - 1 February 2021*
-
-* Added support of WooCommerce 4.9.x
-* Added add to wishlist button position state "After Thumbnails" for product page
-* Added add to wishlist button position state "After Summary" for product page
-* Updated add to wishlist button position state "Above Thumbnail" for catalog pages to display the button on top of the image
-* Updated integration with [PPOM for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
-* Updated integration with Flatsome theme
-* Updated integration with [WooCommerce Product Add-ons](https://woocommerce.com/products/product-add-ons/?aff=3955) plugin
-
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 
 ## Upgrade Notice ##
 
-### 1.24.5 ###
-URGENT UPDATE! Fixed zero day cross site scripting vulnerability.
+### 1.25.0 ###
+Added opt-in options for the support chat in plugin settings.

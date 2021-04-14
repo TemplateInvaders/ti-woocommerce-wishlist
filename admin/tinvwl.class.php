@@ -80,6 +80,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 		} elseif (!tinv_get_option('page', 'wishlist')) {
 			add_action('admin_notices', array($this, 'empty_page_admin_notice'));
 		}
+		if (!tinv_get_option('chat', 'enabled')) {
+			add_action('admin_notices', array($this, 'enable_chat_admin_notice'));
+		}
 		add_action('woocommerce_system_status_report', array($this, 'system_report_templates'));
 
 		add_action('switch_theme', array($this, 'admin_notice_outdated_templates'));
@@ -125,6 +128,19 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 			esc_html__('Run the Setup Wizard', 'ti-woocommerce-wishlist')
 		);
 	}
+
+	/**
+	 * Notice to enable support chat.
+	 */
+	function enable_chat_admin_notice()
+	{
+		printf('<div class="notice notice-warning"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a></p></div>',
+			__('The Support Chat is disabled by default for the plugin setting pages. Enable it to get the most from our service!', 'ti-woocommerce-wishlist'), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
+			esc_url(admin_url('admin.php?page=tinvwl#chat')),
+			esc_html__('Enable Support Chat', 'ti-woocommerce-wishlist'),
+		);
+	}
+
 
 	/**
 	 * Creation mune and sub-menu
@@ -221,7 +237,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 		));
 		wp_enqueue_script($this->_name);
 
-		if (!tinv_get_option('chat', 'disabled')) {
+		if (tinv_get_option('chat', 'enabled')) {
 
 			$geo = new WC_Geolocation(); // Get WC_Geolocation instance object
 			$user_ip = $geo->get_ip_address(); // Get user IP

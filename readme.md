@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.25.2 ###
+*Release Date - 16 April 2021*
+
+* Dismiss button added to admin notice
+
 ### 1.25.1 ###
 *Release Date - 16 April 2021*
 

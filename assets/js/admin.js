@@ -16,7 +16,7 @@ function TInvWL($, h) {
   };
 
   this._tm = function (a) {
-    var c = $("script#{0}[type='text/template']".format(a));
+    var c = $('script#{0}[type=\'text/template\']'.format(a));
 
     if (c.length) {
       return c.html();
@@ -26,11 +26,11 @@ function TInvWL($, h) {
   };
 
   this.formElm = function () {
-    $(this._csel("-form-onoff")).tiwl_onoff();
+    $(this._csel('-form-onoff')).tiwl_onoff();
     $('input[type=checkbox][tiwl-show], input[type=checkbox][tiwl-hide]').tiwl_onoffblock();
     $('[tiwl-value][tiwl-show], [tiwl-value][tiwl-hide]').tiwl_byvalueblock();
 
-    if (typeof $.fn.wpColorPicker !== 'undefined') {
+    if ('undefined' !== typeof $.fn.wpColorPicker) {
       var calcLuminance = function calcLuminance(rgb) {
         var c = rgb.substring(1);
 
@@ -42,7 +42,7 @@ function TInvWL($, h) {
         return 0.2126 * r + 0.7152 * g + 0.0722 * b;
       };
 
-      var formColor = this._csel("-form-color");
+      var formColor = this._csel('-form-color');
 
       $(formColor).each(function () {
         var picker = $(this);
@@ -50,7 +50,7 @@ function TInvWL($, h) {
         var eyedropper = pickerWrap.find('.tinvwl-eyedropper');
         picker.css('background-color', picker.val());
 
-        if (calcLuminance(picker.val()) > 175) {
+        if (175 < calcLuminance(picker.val())) {
           picker.css('color', '#000000');
         }
 
@@ -58,7 +58,7 @@ function TInvWL($, h) {
           mode: 'hsv',
           target: $(this).parent().parent(),
           change: function change(event, ui) {
-            if (calcLuminance(ui.color.toCSS()) > 175) {
+            if (175 < calcLuminance(ui.color.toCSS())) {
               $(this).css('color', '#000000');
             } else {
               $(this).css('color', '');
@@ -180,7 +180,7 @@ function TInvWL($, h) {
     String.prototype.format = function () {
       var args = arguments;
       return this.replace(/{(\d+)}/g, function (match, number) {
-        return typeof args[number] !== 'undefined' ? args[number] : match;
+        return 'undefined' !== typeof args[number] ? args[number] : match;
       });
     };
   }
@@ -196,7 +196,7 @@ function TInvWL($, h) {
 
     for (var i in o) {
       if ('function' === typeof o[i] && '_' !== i[0] && !o.hasOwnProperty('_' + i)) {
-        eval("o._" + i + "=function(a,b,c,d){var n='" + n + "'," + c + "o=window[n]||null;if (o) {return o." + i + "(this,a,b,c,d);};};");
+        eval('o._' + i + '=function(a,b,c,d){var n=\'' + n + '\',' + c + 'o=window[n]||null;if (o) {return o.' + i + '(this,a,b,c,d);};};');
       }
     }
   })(this);
@@ -385,7 +385,7 @@ function TInvWL($, h) {
       $(this).parents('.tinvwl-modal:first').removeClass('tinvwl-modal-open');
     });
 
-    if (typeof $.fn.popover !== 'undefined') {
+    if ('undefined' !== typeof $.fn.popover) {
       var popover = $('.tinvwl-help');
       popover.popover({
         content: function content() {
@@ -410,6 +410,11 @@ function TInvWL($, h) {
       if (a) {
         $(this).removeClass('tinvwl-confirm-reset').trigger('click');
       }
+    });
+  });
+  $(document).on('click', '.tinvwl-chat-notice .notice-dismiss', function (e) {
+    $.post(tinvwl_comfirm.ajax_url, {
+      action: 'tinvwl_admin_chat_notice'
     });
   });
 })(jQuery);

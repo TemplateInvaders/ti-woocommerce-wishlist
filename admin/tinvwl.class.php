@@ -83,6 +83,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 		if (!tinv_get_option('chat', 'enabled')) {
 			add_action('admin_notices', array($this, 'enable_chat_admin_notice'));
 		}
+		add_action('wp_ajax_tinvwl_admin_chat_notice', array($this, 'tinvwl_admin_chat_notice'));
 		add_action('woocommerce_system_status_report', array($this, 'system_report_templates'));
 
 		add_action('switch_theme', array($this, 'admin_notice_outdated_templates'));
@@ -134,13 +135,27 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 	 */
 	function enable_chat_admin_notice()
 	{
-		printf('<div class="notice notice-warning"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a></p></div>',
+		if (!isset($_GET['page']) || substr($_GET['page'], 0, 6) !== 'tinvwl') {
+			return;
+		}
+
+		$hide_notice = get_option('tinvwl_hide_chat_notice');
+
+		if ($hide_notice) {
+			return;
+		}
+
+		printf('<div class="notice notice-warning  is-dismissible tinvwl-chat-notice"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a></p></div>',
 			__('The Support Chat is disabled by default for the plugin setting pages. Enable it to get the most from our service!', 'ti-woocommerce-wishlist'), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
 			esc_url(admin_url('admin.php?page=tinvwl#chat')),
 			esc_html__('Enable Support Chat', 'ti-woocommerce-wishlist')
 		);
 	}
 
+	function tinvwl_admin_chat_notice()
+	{
+		update_option('tinvwl_hide_chat_notice', '1');
+	}
 
 	/**
 	 * Creation mune and sub-menu
@@ -234,6 +249,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 		), $this->_version, 'all');
 		wp_localize_script($this->_name, 'tinvwl_comfirm', array(
 			'text_comfirm_reset' => __('Are you sure you want to reset the settings?', 'ti-woocommerce-wishlist'),
+			'ajax_url' => WC()->ajax_url(),
 		));
 		wp_enqueue_script($this->_name);
 

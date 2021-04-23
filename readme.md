@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.25.3 ###
+*Release Date - 23 April 2021*
+
+* Fixed PHP fatal error related to WP CLI
+
 ### 1.25.2 ###
 *Release Date - 16 April 2021*
 

@@ -1,6 +1,6 @@
 {
   "name": "ti-woocommerce-wishlist",
-  "version": "1.25.2",
+  "version": "1.25.3",
   "title": "TI WooCommerce Wishlist Plugin",
   "description": "Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.",
   "author": "TemplateInvaders (https://templateinvaders.com/)",
@@ -43,6 +43,6 @@
     "merge-stream": "^2.0.0"
   },
   "dependencies": {
-    "npm": "^7.9.0"
+    "npm": "^7.10.0"
   }
 }

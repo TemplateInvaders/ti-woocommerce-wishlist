@@ -7,14 +7,15 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	die;
 }
 
 /**
  * Dependency plugin class
  */
-class TInvWL_PluginExtend {
+class TInvWL_PluginExtend
+{
 
 	/**
 	 * Plugin name
@@ -79,41 +80,43 @@ class TInvWL_PluginExtend {
 	 * @param string $root_file Plugin root file, or can use Plugin transient name.
 	 * @param string $plugin_name Plugin name.
 	 */
-	public function __construct( $plugin, $root_file = null, $plugin_name = TINVWL_PREFIX ) {
+	public function __construct($plugin, $root_file = null, $plugin_name = TINVWL_PREFIX)
+	{
 		$this->_name = $plugin_name;
-		if ( empty( $plugin ) ) {
-			$this->transient   = plugin_basename( $root_file );
-			$this->plugin_path = trailingslashit( plugin_dir_path( dirname( $root_file ) ) );
+		if (empty($plugin)) {
+			$this->transient = plugin_basename($root_file);
+			$this->plugin_path = trailingslashit(plugin_dir_path(dirname($root_file)));
 		} else {
-			$this->transient   = $plugin;
-			$this->plugin_path = trailingslashit( dirname( TINVWL_PATH ) );
+			$this->transient = $plugin;
+			$this->plugin_path = trailingslashit(dirname(TINVWL_PATH));
 		}
-		$this->dependency  = array();
+		$this->dependency = array();
 		$this->plugin_data = array();
-		$this->message     = array();
+		$this->message = array();
 	}
 
 	/**
 	 * Run hooks dependency
 	 */
-	public function run() {
-		if ( 'plugins.php' === basename( $_SERVER['PHP_SELF'] ) && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) { // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+	public function run()
+	{
+		if ('plugins.php' === basename($_SERVER['PHP_SELF']) && !(defined('WP_CLI') && WP_CLI)) { // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+			add_action('admin_notices', array($this, 'admin_notices'));
 
 			$plugins = $this->get_dependency_plugins();
 
-			foreach ( array_keys( $plugins ) as $plugin ) {
-				add_filter( 'plugin_action_links_' . $plugin, array( $this, 'plugin_action_links_maybe_deactivate' ) );
-				add_filter( 'network_admin_plugin_action_links_' . $plugin, array(
-						$this,
-						'plugin_action_links_maybe_deactivate',
-				) );
+			foreach (array_keys($plugins) as $plugin) {
+				add_filter('plugin_action_links_' . $plugin, array($this, 'plugin_action_links_maybe_deactivate'));
+				add_filter('network_admin_plugin_action_links_' . $plugin, array(
+					$this,
+					'plugin_action_links_maybe_deactivate',
+				));
 			}
 
-			add_action( 'after_plugin_row_' . $this->transient, array( $this, 'plugin_row' ), 10 );
+			add_action('after_plugin_row_' . $this->transient, array($this, 'plugin_row'), 10);
 		} else {
-			add_action( 'update_option_active_sitewide_plugins', array( $this, 'maybe_deactivate' ), 10, 2 );
-			add_action( 'update_option_active_plugins', array( $this, 'maybe_deactivate' ), 10, 2 );
+			add_action('update_option_active_sitewide_plugins', array($this, 'maybe_deactivate'), 10, 2);
+			add_action('update_option_active_plugins', array($this, 'maybe_deactivate'), 10, 2);
 		}
 	}
 
@@ -125,8 +128,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function set_dependency( $plugin, $nice_name ) {
-		$this->dependency_current           = $plugin;
+	public function set_dependency($plugin, $nice_name)
+	{
+		$this->dependency_current = $plugin;
 		$this->dependency_current_nice_name = $nice_name;
 
 		return $this;
@@ -137,7 +141,8 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function reset_dependency() {
+	public function reset_dependency()
+	{
 		$this->dependency_current = null;
 
 		return $this;
@@ -155,16 +160,17 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function set_dependency_version( $index, $version = '1.0.0' ) {
-		if ( empty( $this->dependency_current ) ) {
+	private function set_dependency_version($index, $version = '1.0.0')
+	{
+		if (empty($this->dependency_current)) {
 			return false;
 		}
-		if ( empty( $version ) ) {
-			$this->dependency[ $this->dependency_current ][ $index ] = null;
+		if (empty($version)) {
+			$this->dependency[$this->dependency_current][$index] = null;
 		} else {
-			$this->dependency[ $this->dependency_current ][ $index ] = $version;
+			$this->dependency[$this->dependency_current][$index] = $version;
 		}
-		$this->dependency[ $this->dependency_current ]['nice_name'] = $this->dependency_current_nice_name;
+		$this->dependency[$this->dependency_current]['nice_name'] = $this->dependency_current_nice_name;
 	}
 
 	/**
@@ -174,11 +180,12 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function min( $version = '1.0.0' ) {
-		if ( '*' === $version ) {
+	public function min($version = '1.0.0')
+	{
+		if ('*' === $version) {
 			$version = '';
 		}
-		$this->set_dependency_version( 0, $version );
+		$this->set_dependency_version(0, $version);
 
 		return $this;
 	}
@@ -190,11 +197,12 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function max( $version = '1.0.0' ) {
-		if ( '*' === $version ) {
+	public function max($version = '1.0.0')
+	{
+		if ('*' === $version) {
 			$version = '';
 		}
-		$this->set_dependency_version( 1, $version );
+		$this->set_dependency_version(1, $version);
 
 		return $this;
 	}
@@ -206,8 +214,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function need( $version = '*' ) {
-		$this->set_dependency_version( 2, $version );
+	public function need($version = '*')
+	{
+		$this->set_dependency_version(2, $version);
 
 		return $this;
 	}
@@ -219,8 +228,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return \TInvWL_PluginExtend
 	 */
-	public function conflict( $version = '*' ) {
-		$this->set_dependency_version( 3, $version );
+	public function conflict($version = '*')
+	{
+		$this->set_dependency_version(3, $version);
 
 		return $this;
 	}
@@ -232,9 +242,10 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return array
 	 */
-	private function get_dependency( $plugin ) {
-		if ( array_key_exists( $plugin, $this->dependency ) ) {
-			return $this->dependency[ $plugin ];
+	private function get_dependency($plugin)
+	{
+		if (array_key_exists($plugin, $this->dependency)) {
+			return $this->dependency[$plugin];
 		}
 
 		return array();
@@ -252,10 +263,11 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return array
 	 */
-	private function get_dep_ver( $plugin, $index ) {
-		$dependency = $this->get_dependency( $plugin );
-		if ( array_key_exists( $index, $dependency ) ) {
-			return $dependency[ $index ];
+	private function get_dep_ver($plugin, $index)
+	{
+		$dependency = $this->get_dependency($plugin);
+		if (array_key_exists($index, $dependency)) {
+			return $dependency[$index];
 		}
 
 		return null;
@@ -266,7 +278,8 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return array
 	 */
-	private function get_dependency_plugins() {
+	private function get_dependency_plugins()
+	{
 		return $this->dependency;
 	}
 
@@ -275,22 +288,23 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	public function status_dependency() {
+	public function status_dependency()
+	{
 		$this->message = array();
-		$plugins       = $this->get_dependency_plugins();
-		$status        = true;
+		$plugins = $this->get_dependency_plugins();
+		$status = true;
 
-		foreach ( $plugins as $plugin => $data ) {
-			if ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_conflict_version( $plugin ) ) {
-				$status = $this->set_message( 'conflict', $data['nice_name'] );
-			} elseif ( ! is_plugin_active( $plugin ) || ! $this->is_plugin_at_need_version( $plugin ) ) {
-				$status = $this->set_message( 'need', $data['nice_name'] );
-			} elseif ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_min_version( $plugin ) ) {
-				$status = $this->set_message( 'upgrade', $data['nice_name'] );
-			} elseif ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_max_version( $plugin ) ) {
-				$status = $this->set_message( 'downgrade', $plugin );
-			} elseif ( ! is_plugin_active( $plugin ) ) {
-				$status = $this->set_message( 'activate', $data['nice_name'] );
+		foreach ($plugins as $plugin => $data) {
+			if (is_plugin_active($plugin) && !$this->is_plugin_at_conflict_version($plugin)) {
+				$status = $this->set_message('conflict', $data['nice_name']);
+			} elseif (!is_plugin_active($plugin) || !$this->is_plugin_at_need_version($plugin)) {
+				$status = $this->set_message('need', $data['nice_name']);
+			} elseif (is_plugin_active($plugin) && !$this->is_plugin_at_min_version($plugin)) {
+				$status = $this->set_message('upgrade', $data['nice_name']);
+			} elseif (is_plugin_active($plugin) && !$this->is_plugin_at_max_version($plugin)) {
+				$status = $this->set_message('downgrade', $plugin);
+			} elseif (!is_plugin_active($plugin)) {
+				$status = $this->set_message('activate', $data['nice_name']);
 			}
 		}
 
@@ -304,8 +318,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_min_version( $plugin ) {
-		return $this->is_plugin_at_version( $plugin, 0 );
+	private function is_plugin_at_min_version($plugin)
+	{
+		return $this->is_plugin_at_version($plugin, 0);
 	}
 
 	/**
@@ -315,8 +330,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_max_version( $plugin ) {
-		return $this->is_plugin_at_version( $plugin, 1 );
+	private function is_plugin_at_max_version($plugin)
+	{
+		return $this->is_plugin_at_version($plugin, 1);
 	}
 
 	/**
@@ -326,8 +342,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_need_version( $plugin ) {
-		return $this->is_plugin_at_version( $plugin, 2 );
+	private function is_plugin_at_need_version($plugin)
+	{
+		return $this->is_plugin_at_version($plugin, 2);
 	}
 
 	/**
@@ -337,8 +354,9 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_conflict_version( $plugin ) {
-		return $this->is_plugin_at_version( $plugin, 3 );
+	private function is_plugin_at_conflict_version($plugin)
+	{
+		return $this->is_plugin_at_version($plugin, 3);
 	}
 
 	/**
@@ -354,40 +372,41 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function is_plugin_at_version( $plugin, $i = 0 ) {
+	private function is_plugin_at_version($plugin, $i = 0)
+	{
 
-		switch ( $i ) {
+		switch ($i) {
 			case 3:
 				$type = 'ne';
-				$i    = 3;
+				$i = 3;
 				break;
 			case 2:
 				$type = 'eq';
-				$i    = 2;
+				$i = 2;
 				break;
 			case 1:
 				$type = 'le';
-				$i    = 1;
+				$i = 1;
 				break;
 			case 0:
 			default:
 				$type = 'ge';
-				$i    = 0;
+				$i = 0;
 		}
-		$version = $this->get_dep_ver( $plugin, $i );
-		if ( is_null( $version ) ) {
+		$version = $this->get_dep_ver($plugin, $i);
+		if (is_null($version)) {
 			return true;
 		}
-		$version_plugin = $this->get_plugin_data( $plugin, 'Version' );
-		if ( '*' === $version ) {
-			if ( 3 === $i ) {
-				return empty( $version_plugin );
+		$version_plugin = $this->get_plugin_data($plugin, 'Version');
+		if ('*' === $version) {
+			if (3 === $i) {
+				return empty($version_plugin);
 			} else {
-				return ! empty( $version_plugin );
+				return !empty($version_plugin);
 			}
 		}
 
-		return version_compare( $version_plugin, $version, $type );
+		return version_compare($version_plugin, $version, $type);
 	}
 
 	/**
@@ -397,15 +416,16 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return string
 	 */
-	public function get_messages( $first = false ) {
-		if ( $first ) {
-			$message       = array_shift( $this->message );
+	public function get_messages($first = false)
+	{
+		if ($first) {
+			$message = array_shift($this->message);
 			$this->message = array();
 
 			return $message;
 		}
 
-		$message       = '<p>' . implode( '</p><p>', $this->message ) . '</p>';
+		$message = '<p>' . implode('</p><p>', $this->message) . '</p>';
 		$this->message = array();
 
 		return $message;
@@ -419,21 +439,22 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return string
 	 */
-	public function maybe_deactivate( $old_value, $value ) {
-		if ( ! $this->status_dependency() ) {
-			self::deactivate_self( $this->transient );
+	public function maybe_deactivate($old_value, $value)
+	{
+		if (!$this->status_dependency()) {
+			self::deactivate_self($this->transient);
 
-			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			if (defined('WP_CLI') && WP_CLI) {
 				$plugins = $this->get_dependency_plugins();
 				$this->get_messages();
 
-				foreach ( $plugins as $plugin => $data ) {
-					if ( ! is_plugin_active( $plugin ) || ! $this->is_plugin_at_need_version( $plugin ) ) {
-						return WP_CLI::error( $this->get_message( 'deactivate', $data['nice_name'] ) );
-					} elseif ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_min_version( $plugin ) ) {
-						return WP_CLI::error( $this->get_message( 'deactivate', $data['nice_name'] ) );
-					} elseif ( is_plugin_active( $plugin ) && ! $this->is_plugin_at_max_version( $plugin ) ) {
-						return WP_CLI::error( $this->get_message( 'deactivate', $data['nice_name'] ) );
+				foreach ($plugins as $plugin => $data) {
+					if (!is_plugin_active($plugin) || !$this->is_plugin_at_need_version($plugin)) {
+						return WP_CLI::error($this->get_message('deactivate', $data['nice_name']));
+					} elseif (is_plugin_active($plugin) && !$this->is_plugin_at_min_version($plugin)) {
+						return WP_CLI::error($this->get_message('deactivate', $data['nice_name']));
+					} elseif (is_plugin_active($plugin) && !$this->is_plugin_at_max_version($plugin)) {
+						return WP_CLI::error($this->get_message('deactivate', $data['nice_name']));
 					}
 				}
 			}
@@ -447,9 +468,10 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return string
 	 */
-	public function plugin_action_links_maybe_deactivate( $actions ) {
-		if ( ! $this->status_dependency() ) {
-			self::deactivate_self( $this->transient );
+	public function plugin_action_links_maybe_deactivate($actions)
+	{
+		if (!$this->status_dependency()) {
+			self::deactivate_self($this->transient);
 		}
 
 		return $actions;
@@ -460,16 +482,17 @@ class TInvWL_PluginExtend {
 	 *
 	 * @param string $file Plugin file path.
 	 */
-	public function plugin_row( $file ) {
-		if ( ! $this->status_dependency() ) {
-			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+	public function plugin_row($file)
+	{
+		if (!$this->status_dependency()) {
+			$wp_list_table = _get_list_table('WP_Plugins_List_Table');
 			?>
 			<tr class="plugin-update-tr installer-plugin-update-tr">
 				<td colspan="<?php echo $wp_list_table->get_column_count(); // WPCS: xss ok. ?>"
 					class="plugin-update colspanchange">
 					<div class="notice inline notice-warning notice-alt">
 						<p class="installer-q-icon">
-							<?php echo $this->get_messages( true ); // WPCS: xss ok. ?>
+							<?php echo $this->get_messages(true); // WPCS: xss ok. ?>
 						</p>
 					</div>
 				</td>
@@ -484,12 +507,13 @@ class TInvWL_PluginExtend {
 	 * @param string $file Plugin file path.
 	 * @param boolean $network_wide Network wide.
 	 */
-	public static function deactivate_self( $file, $network_wide = false ) {
-		if ( is_multisite() ) {
-			$network_wide = is_plugin_active_for_network( $file );
+	public static function deactivate_self($file, $network_wide = false)
+	{
+		if (is_multisite()) {
+			$network_wide = is_plugin_active_for_network($file);
 		}
 
-		deactivate_plugins( $file, true, $network_wide );
+		deactivate_plugins($file, true, $network_wide);
 	}
 
 	/**
@@ -500,60 +524,61 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return boolean
 	 */
-	private function set_message( $type, $plugin ) {
-		$current  = $this->get_plugin_data( 'current', 'Name' ) ? $this->get_plugin_data( 'current', 'Name' ) : $this->transient;
-		$version  = $this->get_plugin_data( 'current', 'Version' );
-		$plugname = $this->get_plugin_data( $plugin, 'Name' ) ? $this->get_plugin_data( $plugin, 'Name' ) : $plugin;
+	private function set_message($type, $plugin)
+	{
+		$current = $this->get_plugin_data('current', 'Name') ? $this->get_plugin_data('current', 'Name') : $this->transient;
+		$version = $this->get_plugin_data('current', 'Version');
+		$plugname = $this->get_plugin_data($plugin, 'Name') ? $this->get_plugin_data($plugin, 'Name') : $plugin;
 
 		$message = '';
-		switch ( $type ) {
+		switch ($type) {
 			case 'deactivate':
-				$version = $this->get_dep_ver( $plugin, 0 );
-				$message = __( '%2$s %3$s is required for %1$s. Deactivating %1$s.', 'ti-woocommerce-wishlist' );
-				if ( empty( $version ) ) {
-					$version = $this->get_dep_ver( $plugin, 1 );
+				$version = $this->get_dep_ver($plugin, 0);
+				$message = __('%2$s %3$s is required for %1$s. Deactivating %1$s.', 'ti-woocommerce-wishlist');
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 1);
 				}
-				if ( empty( $version ) ) {
-					$version = $this->get_dep_ver( $plugin, 2 );
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 2);
 				}
-				if ( empty( $version ) ) {
-					$version = $this->get_dep_ver( $plugin, 3 );
-					$message = __( '%1$s is confilcted with %2$s %3$s. Deactivating %1$s.', 'ti-woocommerce-wishlist' );
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 3);
+					$message = __('%1$s is confilcted with %2$s %3$s. Deactivating %1$s.', 'ti-woocommerce-wishlist');
 				}
-				if ( '*' === $version ) {
-					$version = $this->get_plugin_data( $plugin, 'Version' );
+				if ('*' === $version) {
+					$version = $this->get_plugin_data($plugin, 'Version');
 				}
 				break;
 			case 'upgrade':
 			case 'update':
-				$version = $this->get_dep_ver( $plugin, 0 );
-				$message = __( '%2$s %3$s is required. Please update it before activating this plugin.', 'ti-woocommerce-wishlist' );
+				$version = $this->get_dep_ver($plugin, 0);
+				$message = __('%2$s %3$s is required. Please update it before activating this plugin.', 'ti-woocommerce-wishlist');
 				break;
 			case 'downgrade':
 			case 'downdate':
-				$version = $this->get_dep_ver( $plugin, 1 );
-				$message = __( '%2$s %3$s is required. Please downgrade it before activating this plugin.', 'ti-woocommerce-wishlist' );
+				$version = $this->get_dep_ver($plugin, 1);
+				$message = __('%2$s %3$s is required. Please downgrade it before activating this plugin.', 'ti-woocommerce-wishlist');
 				break;
 			case 'need':
-				$version = '*' === $this->get_dep_ver( $plugin, 2 ) ? $this->get_plugin_data( $plugin, 'Version' ) : $this->get_dep_ver( $plugin, 2 );
-				$message = __( '%2$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist' );
+				$version = '*' === $this->get_dep_ver($plugin, 2) ? $this->get_plugin_data($plugin, 'Version') : $this->get_dep_ver($plugin, 2);
+				$message = __('%2$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist');
 				break;
 			case 'conflict':
-				$version = '*' === $this->get_dep_ver( $plugin, 3 ) ? $this->get_plugin_data( $plugin, 'Version' ) : $this->get_dep_ver( $plugin, 3 );
-				$message = __( '%1$s is conflicted with %2$s %3$s. Please disable it before activating this plugin.', 'ti-woocommerce-wishlist' );
+				$version = '*' === $this->get_dep_ver($plugin, 3) ? $this->get_plugin_data($plugin, 'Version') : $this->get_dep_ver($plugin, 3);
+				$message = __('%1$s is conflicted with %2$s %3$s. Please disable it before activating this plugin.', 'ti-woocommerce-wishlist');
 				break;
 			case 'activate':
-				$version = $this->get_dep_ver( $plugin, 1 );
-				$message = __( '%1$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist' );
+				$version = $this->get_dep_ver($plugin, 1);
+				$message = __('%1$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist');
 				break;
 		} // End switch().
-		if ( empty( $message ) ) {
+		if (empty($message)) {
 			return true;
 		}
-		if ( ! empty( $version ) ) {
+		if (!empty($version)) {
 			$version = '(v' . $version . ')';
 		}
-		$message = sprintf( $message, $current, $plugname, $version );
+		$message = sprintf($message, $current, $plugname, $version);
 
 		$this->message[] = $message;
 
@@ -561,11 +586,76 @@ class TInvWL_PluginExtend {
 	}
 
 	/**
+	 * Get message
+	 *
+	 * @param string $type Type error message.
+	 * @param string $plugin Plugin transient name.
+	 *
+	 * @return boolean
+	 */
+	private function get_message($type, $plugin)
+	{
+		$current = $this->get_plugin_data('current', 'Name') ? $this->get_plugin_data('current', 'Name') : $this->transient;
+		$version = $this->get_plugin_data('current', 'Version');
+		$plugname = $this->get_plugin_data($plugin, 'Name') ? $this->get_plugin_data($plugin, 'Name') : $plugin;
+
+		$message = '';
+		switch ($type) {
+			case 'deactivate':
+				$version = $this->get_dep_ver($plugin, 0);
+				$message = __('%2$s %3$s is required for %1$s. Deactivating %1$s.', 'ti-woocommerce-wishlist');
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 1);
+				}
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 2);
+				}
+				if (empty($version)) {
+					$version = $this->get_dep_ver($plugin, 3);
+					$message = __('%1$s is conflicted with %2$s %3$s. Deactivating %1$s.', 'ti-woocommerce-wishlist');
+				}
+				if ('*' === $version) {
+					$version = $this->get_plugin_data($plugin, 'Version');
+				}
+				break;
+			case 'upgrade':
+			case 'update':
+				$version = $this->get_dep_ver($plugin, 0);
+				$message = __('%2$s %3$s is required. Please update it before activating this plugin.', 'ti-woocommerce-wishlist');
+				break;
+			case 'downgrade':
+			case 'downdate':
+				$version = $this->get_dep_ver($plugin, 1);
+				$message = __('%2$s %3$s is required. Please downgrade it before activating this plugin.', 'ti-woocommerce-wishlist');
+				break;
+			case 'need':
+				$version = '*' === $this->get_dep_ver($plugin, 2) ? $this->get_plugin_data($plugin, 'Version') : $this->get_dep_ver($plugin, 2);
+				$message = __('%2$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist');
+				break;
+			case 'conflict':
+				$version = '*' === $this->get_dep_ver($plugin, 3) ? $this->get_plugin_data($plugin, 'Version') : $this->get_dep_ver($plugin, 3);
+				$message = __('%1$s is conflicted with %2$s %3$s. Please disable it before activating this plugin.', 'ti-woocommerce-wishlist');
+				break;
+			case 'activate':
+				$version = $this->get_dep_ver($plugin, 1);
+				$message = __('%1$s %3$s is required. Please activate it before activating this plugin.', 'ti-woocommerce-wishlist');
+				break;
+		} // End switch().
+
+		if (!empty($version)) {
+			$version = '(v' . $version . ')';
+		}
+
+		return sprintf($message, $current, $plugname, $version);
+	}
+
+	/**
 	 * Add error admin notice
 	 */
-	public function admin_notices() {
-		if ( ! $this->status_dependency() ) {
-			printf( '<div class="error is-dismissible">%s</div>', $this->get_messages() ); // WPCS: xss ok.
+	public function admin_notices()
+	{
+		if (!$this->status_dependency()) {
+			printf('<div class="error is-dismissible">%s</div>', $this->get_messages()); // WPCS: xss ok.
 		}
 	}
 
@@ -577,27 +667,28 @@ class TInvWL_PluginExtend {
 	 *
 	 * @return mixed
 	 */
-	public function get_plugin_data( $plugin, $attr = null ) {
-		if ( 'current' === $plugin ) {
+	public function get_plugin_data($plugin, $attr = null)
+	{
+		if ('current' === $plugin) {
 			$plugin = $this->transient;
 		}
 
 		$plugin_path = $this->plugin_path . $plugin;
 
-		if ( ! array_key_exists( $plugin, $this->plugin_data ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			$plugin_data = array_filter( @get_plugin_data( $plugin_path, false, false ) ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
-			if ( empty( $plugin_data ) ) {
+		if (!array_key_exists($plugin, $this->plugin_data)) {
+			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+			$plugin_data = array_filter(@get_plugin_data($plugin_path, false, false)); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+			if (empty($plugin_data)) {
 				$plugin_data = null;
 			}
-			$this->plugin_data[ $plugin ] = $plugin_data;
+			$this->plugin_data[$plugin] = $plugin_data;
 		}
 
-		if ( empty( $attr ) ) {
-			return $this->plugin_data[ $plugin ];
+		if (empty($attr)) {
+			return $this->plugin_data[$plugin];
 		}
-		if ( array_key_exists( $attr, (array) $this->plugin_data[ $plugin ] ) ) {
-			return $this->plugin_data[ $plugin ][ $attr ];
+		if (array_key_exists($attr, (array)$this->plugin_data[$plugin])) {
+			return $this->plugin_data[$plugin][$attr];
 		}
 
 		return null;

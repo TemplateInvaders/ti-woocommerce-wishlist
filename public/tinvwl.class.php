@@ -442,7 +442,7 @@ class TInvWL_Public_TInvWL
 			wp_enqueue_style($this->_name . '-webfont', TINVWL_URL . 'assets/css/webfont.min.css', array(), $this->_version, 'all');
 			wp_style_add_data($this->_name . '-webfont', 'rtl', 'replace');
 			wp_style_add_data($this->_name . '-webfont', 'suffix', '.min');
-			add_filter('style_loader_tag', array($this, 'font_loader_tag_filter'), 10, 2);
+			add_filter('style_loader_tag', array($this, 'font_loader_tag_filter'), 100, 2);
 		}
 		wp_enqueue_style('tinvwl', TINVWL_URL . 'assets/css/public.min.css', array(), $this->_version, 'all');
 		wp_style_add_data('tinvwl', 'rtl', 'replace');
@@ -466,6 +466,7 @@ class TInvWL_Public_TInvWL
 	function font_loader_tag_filter($html, $handle)
 	{
 		if ($handle === $this->_name . '-webfont-font') {
+			$html = str_replace("type='text/css'", '', $html);
 			return str_replace("rel='stylesheet'", "rel='preload' as='font' type='font/woff2' crossorigin='anonymous'", $html);
 		}
 

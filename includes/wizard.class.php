@@ -183,7 +183,7 @@ class TInvWL_Wizard
 	{
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
-		if (apply_filters('tinvwl_load_webfont', true)) {
+		if (apply_filters('tinvwl_load_webfont_admin', true)) {
 			wp_enqueue_style($this->_name . '-gfonts', (is_ssl() ? 'https' : 'http') . '://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800', '', null, 'all');
 			wp_enqueue_style($this->_name . '-webfont', TINVWL_URL . 'assets/css/webfont' . $suffix . '.css', array(), $this->_version, 'all');
 			wp_style_add_data($this->_name . '-webfont', 'rtl', 'replace');

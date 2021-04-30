@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.25.4 ###
+*Release Date - 30 April 2021*
+
+* Fixed W3C HTML Validate issue
+* Fixed an issue for integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+
 ### 1.25.3 ###
 *Release Date - 23 April 2021*
 

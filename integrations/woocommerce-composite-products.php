@@ -26,7 +26,7 @@ $name = "WooCommerce Composite Products";
 
 $available = class_exists('WC_Composite_Products');
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,
@@ -211,6 +211,10 @@ if (!function_exists('tinvwl_item_price_woocommerce_composite_products')) {
 			$components = $product->get_components();
 			$_price = $product->get_price();
 			$regular_price = $product->get_regular_price();
+
+			/**
+			 * @var WC_CP_Component $component
+			 */
 			foreach ($components as $component_id => $component) {
 				$composited_product_id = !empty($wl_product['meta']['wccp_component_selection'][$component_id]) ? absint($wl_product['meta']['wccp_component_selection'][$component_id]) : '';
 				$composited_product_quantity = isset($wl_product['meta']['wccp_component_quantity'][$component_id]) ? absint($wl_product['meta']['wccp_component_quantity'][$component_id]) : $component->get_quantity('min');
@@ -219,6 +223,9 @@ if (!function_exists('tinvwl_item_price_woocommerce_composite_products')) {
 
 				if ($composited_product_id) {
 					$composited_product_wrapper = $component->get_option($composited_variation_id ? $composited_variation_id : $composited_product_id);
+					if (!$composited_product_wrapper) {
+						continue;
+					}
 					if ($component->is_priced_individually()) {
 
 						$composited_product = $composited_product_wrapper->get_product();

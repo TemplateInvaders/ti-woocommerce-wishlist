@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.25.5 ###
+*Release Date - 18 May 2021*
+
+* WooCommerce 5.3 support
+* Tweaked HTML markup for the empty wishlist template
+
 ### 1.25.4 ###
 *Release Date - 30 April 2021*
 

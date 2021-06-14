@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.7
-Stable tag: 1.25.5
+Stable tag: 1.26.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.26.0 =
+*Release Date - 14 June 2021*
+
+* WooCommerce 5.4 support
+* Fixed text domain
+
 = 1.25.5 =
 *Release Date - 18 May 2021*
 
@@ -198,45 +204,6 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 * Updated integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/?aff=3955) plugin
 * Updated integration with WooCommerce TM Extra Product Options plugin
 * Fixed extra JavaScript alert on wishlist table bulk events
-
-= 1.24.5 =
-*Release Date - 30 March 2021*
-
-* Fixed FOIT for the custom icon webfont
-* Security tweak
-* Forced uppercase removed from a wishlist unique share key
-* Updated integration with WooCommerce TM Extra Product Options plugin
-* Updated integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
-
-= 1.24.4 =
-*Release Date - 25 March 2021*
-
-* Security update
-
-= 1.24.3 =
-*Release Date - 22 March 2021*
-
-* Fixed conditional options of themes integration
-* Fixed WPML issue for variations name
-
-= 1.24.2 =
-*Release Date - 19 March 2021*
-
-* Fixed PHP warning for 3rd party integrations
-
-= 1.24.1 =
-*Release Date - 18 March 2021*
-
-* Updated integration for [Advanced Product Fields (Product Options) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
-* Updated integration with "Advanced Product Fields for WooCommerce Pro" plugin
-
-= 1.24.0 =
-*Release Date - 18 March 2021*
-
-* Added plugin settings to allow disabling built-in integrations with 3rd party plugins and themes
-* Added preload for the plugin custom webfont
-* Added integration with [WooCommerce Square](https://woocommerce.com/products/square/?aff=3955) plugin
-* Updated integration with WooCommerce TM Extra Product Options plugin
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

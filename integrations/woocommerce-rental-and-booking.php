@@ -54,7 +54,7 @@ if (!function_exists('tinvwl_woocommerce_rental_and_booking_product_type')) {
 	{
 
 		if (class_exists('RedQ_Rental_And_Bookings')) {
-			$product_types['redq_rental'] = __('Rental Product', 'redq-rental');
+			$product_types['redq_rental'] = __('Rental Product', 'ti-woocommerce-wishlist');
 		}
 
 		return $product_types;
@@ -111,7 +111,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 
 			if (isset($meta['quote_id'])) {
 				$custom_data[] = array(
-					'key' => $options_data['quote_id'] ? $options_data['quote_id'] : __('Quote Request', 'redq-rental'),
+					'key' => $options_data['quote_id'] ? $options_data['quote_id'] : __('Quote Request', 'ti-woocommerce-wishlist'),
 					'display' => '#' . $meta['quote_id']['display'],
 
 				);
@@ -127,7 +127,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 
 			if (isset($meta['pickup_location']) && !empty($meta['pickup_location']['cost'])) {
 				$custom_data[] = array(
-					'key' => $labels['pickup_location'] . __(' Cost', 'redq-rental'),
+					'key' => $labels['pickup_location'] . __(' Cost', 'ti-woocommerce-wishlist'),
 					'display' => wc_price($meta['pickup_location']['display']['cost']),
 
 				);
@@ -143,7 +143,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 
 			if (isset($meta['dropoff_location']) && !empty($meta['dropoff_location']['cost'])) {
 				$custom_data[] = array(
-					'key' => $labels['return_location'] . __(' Cost', 'redq-rental'),
+					'key' => $labels['return_location'] . __(' Cost', 'ti-woocommerce-wishlist'),
 					'display' => wc_price($meta['dropoff_location']['display']['cost']),
 
 				);
@@ -151,7 +151,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 
 			if (isset($meta['location_cost'])) {
 				$custom_data[] = array(
-					'key' => esc_html__('Location Cost', 'redq-rental'),
+					'key' => esc_html__('Location Cost', 'ti-woocommerce-wishlist'),
 					'display' => wc_price($meta['location_cost']['display']),
 
 				);
@@ -161,9 +161,9 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 				$cat_name = '';
 				foreach ($meta['payable_cat']['display'] as $key => $value) {
 					if ($value['multiply'] === 'per_day') {
-						$cat_name .= $value['key'] . '×' . $value['quantity'] . ' ( ' . wc_price($value['cost']) . ' - ' . __('Per Day', 'redq-rental') . ' )' . ' , <br> ';
+						$cat_name .= $value['key'] . '×' . $value['quantity'] . ' ( ' . wc_price($value['cost']) . ' - ' . __('Per Day', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					} else {
-						$cat_name .= $value['key'] . '×' . $value['quantity'] . ' ( ' . wc_price($value['cost']) . ' - ' . __('One Time', 'redq-rental') . ' )' . ' , <br> ';
+						$cat_name .= $value['key'] . '×' . $value['quantity'] . ' ( ' . wc_price($value['cost']) . ' - ' . __('One Time', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					}
 				}
 				$custom_data[] = array(
@@ -177,9 +177,9 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 				$resource_name = '';
 				foreach ($meta['payable_resource']['display'] as $key => $value) {
 					if ($value['cost_multiply'] === 'per_day') {
-						$resource_name .= $value['resource_name'] . ' ( ' . wc_price($value['resource_cost']) . ' - ' . __('Per Day', 'redq-rental') . ' )' . ' , <br> ';
+						$resource_name .= $value['resource_name'] . ' ( ' . wc_price($value['resource_cost']) . ' - ' . __('Per Day', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					} else {
-						$resource_name .= $value['resource_name'] . ' ( ' . wc_price($value['resource_cost']) . ' - ' . __('One Time', 'redq-rental') . ' )' . ' , <br> ';
+						$resource_name .= $value['resource_name'] . ' ( ' . wc_price($value['resource_cost']) . ' - ' . __('One Time', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					}
 				}
 				$custom_data[] = array(
@@ -193,9 +193,9 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 				$security_deposite_name = '';
 				foreach ($meta['payable_security_deposites']['display'] as $key => $value) {
 					if ($value['cost_multiply'] === 'per_day') {
-						$security_deposite_name .= $value['security_deposite_name'] . ' ( ' . wc_price($value['security_deposite_cost']) . ' - ' . __('Per Day', 'redq-rental') . ' )' . ' , <br> ';
+						$security_deposite_name .= $value['security_deposite_name'] . ' ( ' . wc_price($value['security_deposite_cost']) . ' - ' . __('Per Day', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					} else {
-						$security_deposite_name .= $value['security_deposite_name'] . ' ( ' . wc_price($value['security_deposite_cost']) . ' - ' . __('One Time', 'redq-rental') . ' )' . ' , <br> ';
+						$security_deposite_name .= $value['security_deposite_name'] . ' ( ' . wc_price($value['security_deposite_cost']) . ' - ' . __('One Time', 'ti-woocommerce-wishlist') . ' )' . ' , <br> ';
 					}
 				}
 				$custom_data[] = array(
@@ -227,7 +227,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 				$pickup_date_time = convert_to_output_format($meta['pickup_date']['display'], $conditional_data['date_format']);
 
 				if (isset($meta['pickup_time'])) {
-					$pickup_date_time = $pickup_date_time . ' ' . esc_html__('at', 'redq-rental') . ' ' . $meta['pickup_time']['display'];
+					$pickup_date_time = $pickup_date_time . ' ' . esc_html__('at', 'ti-woocommerce-wishlist') . ' ' . $meta['pickup_time']['display'];
 				}
 				$custom_data[] = array(
 					'key' => $labels['pickup_datetime'],
@@ -241,7 +241,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 				$return_date_time = convert_to_output_format($meta['dropoff_date']['display'], $conditional_data['date_format']);
 
 				if (isset($meta['dropoff_time'])) {
-					$return_date_time = $return_date_time . ' ' . esc_html__('at', 'redq-rental') . ' ' . $meta['dropoff_time']['display'];
+					$return_date_time = $return_date_time . ' ' . esc_html__('at', 'ti-woocommerce-wishlist') . ' ' . $meta['dropoff_time']['display'];
 				}
 
 				$custom_data[] = array(
@@ -254,13 +254,13 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 			if (isset($meta['rental_days_and_costs'])) {
 				if ($meta['rental_days_and_costs']['display']['days'] > 0) {
 					$custom_data[] = array(
-						'key' => $general_data['total_days'] ? $general_data['total_days'] : esc_html__('Total Days', 'redq-rental'),
+						'key' => $general_data['total_days'] ? $general_data['total_days'] : esc_html__('Total Days', 'ti-woocommerce-wishlist'),
 						'display' => $meta['rental_days_and_costs']['display']['days'],
 
 					);
 				} else {
 					$custom_data[] = array(
-						'key' => $general_data['total_hours'] ? $general_data['total_hours'] : esc_html__('Total Hours', 'redq-rental'),
+						'key' => $general_data['total_hours'] ? $general_data['total_hours'] : esc_html__('Total Hours', 'ti-woocommerce-wishlist'),
 						'display' => $meta['rental_days_and_costs']['display']['hours'],
 
 					);
@@ -268,7 +268,7 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_rental_and_booking')
 
 				if (!empty($meta['rental_days_and_costs']['due_payment'])) {
 					$custom_data[] = array(
-						'key' => $general_data['payment_due'] ? $general_data['payment_due'] : esc_html__('Due Payment', 'redq-rental'),
+						'key' => $general_data['payment_due'] ? $general_data['payment_due'] : esc_html__('Due Payment', 'ti-woocommerce-wishlist'),
 						'display' => wc_price($meta['rental_days_and_costs']['display']['due_payment']),
 
 					);

@@ -164,7 +164,7 @@ function tinvwl_flatsome()
 
 	$image_url = get_template_directory_uri() . '/inc/admin/customizer/img/';
 	Flatsome_Option::add_section('header_wishlist', array(
-			'title' => __('Wishlist', 'flatsome-admin'),
+			'title' => __('Wishlist', 'ti-woocommerce-wishlist'),
 			'panel' => 'header',
 			'priority' => 110,
 	));
@@ -172,7 +172,7 @@ function tinvwl_flatsome()
 	Flatsome_Option::add_field('option', array(
 			'type' => 'select',
 			'settings' => 'wishlist_icon',
-			'label' => __('Wishlist Icon', 'flatsome-admin'),
+			'label' => __('Wishlist Icon', 'ti-woocommerce-wishlist'),
 			'transport' => $transport,
 			'section' => 'header_wishlist',
 			'default' => 'heart',
@@ -191,7 +191,7 @@ function tinvwl_flatsome()
 	Flatsome_Option::add_field('option', array(
 			'type' => 'radio-image',
 			'settings' => 'wishlist_icon_style',
-			'label' => __('Wishlist Icon Style', 'flatsome-admin'),
+			'label' => __('Wishlist Icon Style', 'ti-woocommerce-wishlist'),
 			'section' => 'header_wishlist',
 			'transport' => $transport,
 			'default' => '',
@@ -208,9 +208,9 @@ function tinvwl_flatsome()
 	Flatsome_Option::add_field('option', array(
 			'type' => 'checkbox',
 			'settings' => 'wishlist_title',
-			'label' => __('Show Wishlist Title', 'flatsome-admin'),
-		//'description' => __( 'This is the control description', 'flatsome-admin' ),
-		//'help'        => __( 'This is some extra help. You can use this to add some additional instructions for users. The main description should go in the "description" of the field, this is only to be used for help tips.', 'flatsome-admin' ),
+			'label' => __('Show Wishlist Title', 'ti-woocommerce-wishlist'),
+		//'description' => __( 'This is the control description', 'ti-woocommerce-wishlist' ),
+		//'help'        => __( 'This is some extra help. You can use this to add some additional instructions for users. The main description should go in the "description" of the field, this is only to be used for help tips.', 'ti-woocommerce-wishlist' ),
 			'section' => 'header_wishlist',
 			'transport' => $transport,
 			'default' => 1,
@@ -219,7 +219,7 @@ function tinvwl_flatsome()
 	Flatsome_Option::add_field('option', array(
 			'type' => 'text',
 			'settings' => 'header_wishlist_label',
-			'label' => __('Custom Title', 'flatsome-admin'),
+			'label' => __('Custom Title', 'ti-woocommerce-wishlist'),
 			'section' => 'header_wishlist',
 			'transport' => $transport,
 			'default' => '',
@@ -242,7 +242,7 @@ function tinvwl_flatsome()
 						  <?php if (get_theme_mod('header_wishlist_label', flatsome_defaults('header_wishlist_label'))) {
 							  echo get_theme_mod('header_wishlist_label', flatsome_defaults('header_wishlist_label'));
 						  } else {
-							  _e('Wishlist', 'woocommerce');
+							  _e('Wishlist', 'ti-woocommerce-wishlist');
 						  } ?>
 						</span>
 					<?php } ?>
@@ -281,7 +281,7 @@ function tinvwl_flatsome()
 			?>
 			<div class="wishlist-icon">
 				<button class="wishlist-button button is-outline circle icon"
-						aria-label="<?php echo __('Wishlist', 'flatsome'); ?>">
+						aria-label="<?php echo __('Wishlist', 'ti-woocommerce-wishlist'); ?>">
 					<?php echo get_flatsome_icon('icon-' . $icon); ?>
 				</button>
 				<div class="wishlist-popup dark">

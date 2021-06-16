@@ -93,17 +93,14 @@ class TInvWL_Wishlist
 	{
 		global $wpdb;
 
-		$sharekeys = $wpdb->get_results("SELECT `share_key` FROM `{$this->table}`", ARRAY_A); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
-		$share_keys = array();
-		foreach ($sharekeys as $sharekey) {
-			$share_keys[] = $sharekey['share_key'];
+		$share_key = substr(md5(date('r') . mt_rand(0, 3000)), 0, 6);
+		$unique = false;
+		while ($unique === false) {
+			$unique = !$wpdb->get_var($wpdb->prepare("SELECT `ID` FROM `{$this->table}` WHERE `share_key` = %s", $share_key));
+			$share_key = substr(md5(date('r') . mt_rand(0, 3000)), 0, 6);
 		}
-		$new_key = '';
-		do {
-			$new_key = substr(md5(date('r') . mt_rand(0, 3000)), 0, 6);
-		} while (array_search($new_key, $share_keys)); // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 
-		return $new_key;
+		return $share_key;
 	}
 
 	/**

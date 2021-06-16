@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.26.1 ###
+*Release Date - 16 June 2021*
+
+* Improved DB queries performance
+
 ### 1.26.0 ###
 *Release Date - 14 June 2021*
 

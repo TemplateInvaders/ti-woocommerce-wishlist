@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.8
-Stable tag: 1.26.1
+Stable tag: 1.27.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.27.0 =
+*Release Date - 30 July 2021*
+
+* WordPress 5.8 support
+* WooCommerce 5.5 support
+* Remove user roles capabilities on the plugin uninstall
+* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
+* Fixed WP Menu dashboard error notification.
+
 = 1.26.1 =
 *Release Date - 16 June 2021*
 

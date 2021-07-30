@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 /*------------------------------------*
 	$WEBFONT
 *------------------------------------*/
@@ -1395,7 +1397,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 $spacer: 8px !default;
 $spacers: (
 		0,
-		round($spacer / 2),
+		math.div($spacer, 2),
 		$spacer,
 		$spacer * 2,
 		$spacer * 3,

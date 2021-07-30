@@ -1,9 +1,9 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 1.26.1
+ * @version 1.27.0
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
-.tinv-wishlist,.tinv-wishlist input,.tinv-wishlist select,.tinv-wishlist textarea,.tinv-wishlist button,.tinv-wishlist input[type="button"],.tinv-wishlist input[type="reset"],.tinv-wishlist input[type="submit"]{font-family:Georgia,serif;font-size:14px;font-weight:400;text-transform:none;line-height:1.75}
+.tinv-wishlist,.tinv-wishlist input,.tinv-wishlist select,.tinv-wishlist textarea,.tinv-wishlist button,.tinv-wishlist input[type=button],.tinv-wishlist input[type=reset],.tinv-wishlist input[type=submit]{font-family:Georgia,serif;font-size:14px;font-weight:400;text-transform:none;line-height:1.75}
 .tinv-wishlist .woocommerce form .form-row input.input-text{line-height:1;padding-top:9.5px;padding-bottom:9.5px}
 .tinv-wishlist label{font-weight:400}
 .tinv-wishlist :-moz-placeholder,.tinv-wishlist ::-webkit-input-placeholder{color:#1a1a1a;font-family:Georgia,serif}
@@ -20,7 +20,7 @@
 .woocommerce.tinv-wishlist #respond input#submit,.woocommerce.tinv-wishlist a.button,.woocommerce.tinv-wishlist button.button,.woocommerce.tinv-wishlist input.button{text-align:center;font-weight:400;letter-spacing:0;line-height:1;text-transform:none;padding:11.5px 17px;-webkit-transition:none;transition:none}
 .woocommerce.tinv-wishlist #respond input#submit.alt,.woocommerce.tinv-wishlist a.button.alt,.woocommerce.tinv-wishlist button.button.alt,.woocommerce.tinv-wishlist input.button.alt{padding:11.5px 20px}
 .woocommerce.tinv-wishlist .tinvwl-continue-shop{padding-left:17px;padding-right:17px}
-.tinv-wishlist input[type="text"],.tinv-wishlist input[type="email"],.tinv-wishlist input[type="url"],.tinv-wishlist input[type="password"],.tinv-wishlist input[type="search"],.tinv-wishlist input[type="tel"],.tinv-wishlist input[type="number"],.tinv-wishlist textarea,.tinv-wishlist select,.tinv-wishlist .product-quantity input[type="text"].qty{font-family:inherit;color:#686868;background-color:#f7f7f7;border-width:1px;border-style:solid;border-color:#d1d1d1;border-radius:2px;-webkit-box-shadow:none;box-shadow:none;font-size:14px}
+.tinv-wishlist input[type=text],.tinv-wishlist input[type=email],.tinv-wishlist input[type=url],.tinv-wishlist input[type=password],.tinv-wishlist input[type=search],.tinv-wishlist input[type=tel],.tinv-wishlist input[type=number],.tinv-wishlist textarea,.tinv-wishlist select,.tinv-wishlist .product-quantity input[type=text].qty{font-family:inherit;color:#686868;background-color:#f7f7f7;border-width:1px;border-style:solid;border-color:#d1d1d1;border-radius:2px;-webkit-box-shadow:none;box-shadow:none;font-size:14px}
 .tinv-wishlist{color:#1a1a1a}
 .tinv-wishlist a i.ftinvwl-chevron-left,.tinv-wishlist a i.ftinvwl-chevron-right{font-size:10px}
 .tinv-wishlist table th{padding:22px 12px}

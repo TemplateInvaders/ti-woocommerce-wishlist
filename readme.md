@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.27.1 ###
+*Release Date - 4 August 2021*
+
+* Updated integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+
 ### 1.27.0 ###
 *Release Date - 30 July 2021*
 

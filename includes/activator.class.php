@@ -123,7 +123,7 @@ class TInvWL_Activator
 	}
 
 	/**
-	 * Merge table wit upgrade attributes
+	 * Merge table with upgrade attributes
 	 *
 	 * @param array $tables1 Collecting tables.
 	 * @param string $method Method for get new tables.

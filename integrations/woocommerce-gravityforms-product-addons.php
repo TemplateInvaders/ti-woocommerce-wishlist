@@ -387,3 +387,28 @@ if (!function_exists('tinvwl_wc_gf_addons_edit_link')) {
 
 	add_filter('gform_pre_render', 'tinvwl_wc_gf_addons_edit_link', 99, 1);
 }
+
+if (!function_exists('tinv_wishlist_metaprepare_wc_gf_addons')) {
+
+	/**
+	 * Prepare save meta for WooCommerce - Gravity Forms Product Add-Ons
+	 *
+	 * @param array $meta Meta array.
+	 *
+	 * @return array
+	 */
+	function tinv_wishlist_metaprepare_wc_gf_addons($meta)
+	{
+		if (array_key_exists('wc_gforms_form_id', $meta) && class_exists('RGFormsModel')) {
+			foreach ($meta as $key => $value) {
+				if (strpos($key, 'input_') === 0) {
+					unset($meta[$key]);
+					$meta['input_' . str_replace('.', '_', substr($key, strlen('input_')))] = $value;
+				}
+			}
+		}
+		return $meta;
+	}
+
+	add_filter('tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_wc_gf_addons');
+}

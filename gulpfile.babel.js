@@ -302,7 +302,7 @@ gulp.task( 'images', () => {
 			cache(
 				imagemin([
 					imagemin.gifsicle({interlaced: true}),
-					imagemin.jpegtran({progressive: true}),
+					imagemin.mozjpeg({progressive: true}),
 					imagemin.optipng({optimizationLevel: 3}), // 0-7 low-high.
 					imagemin.svgo({
 						plugins: [ {removeViewBox: true}, {cleanupIDs: false} ]

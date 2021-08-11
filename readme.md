@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.27.2 ###
+*Release Date - 11 August 2021*
+
+* Fixed products in wishlist issue for WPML different languages
+* Fixed PHP fatal error
+
 ### 1.27.1 ###
 *Release Date - 4 August 2021*
 

@@ -567,7 +567,7 @@ class TInvWL_Public_TInvWL
 
 			if ($sitepress && $sitepress instanceof SitePress) {
 				$wpml_settings = $sitepress->get_settings();
-				if (isset($wpml_settings['custom_posts_sync_option']) && isset($wpml_settings['custom_posts_sync_option']['product']) && '1' === $wpml_settings['custom_posts_sync_option']['product']) {
+				if (isset($wpml_settings['custom_posts_sync_option']) && isset($wpml_settings['custom_posts_sync_option']['product']) && '1' == $wpml_settings['custom_posts_sync_option']['product']) {
 					$args['wpml'] = wpml_get_current_language();
 				}
 			}

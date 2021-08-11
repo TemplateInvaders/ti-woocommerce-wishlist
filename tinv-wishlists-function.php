@@ -682,7 +682,9 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 				wc_clear_notices();
 			}
 			$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
-			$wc_errors         = wc_get_notices( 'error' );
+			if ( function_exists( 'wc_get_notices' ) ) {
+				$wc_errors = wc_get_notices('error');
+			}
 			$wc_output         = ob_get_clean();
 			if ( $passed_validation && empty( $wc_errors ) && empty( $wc_output ) ) {
 				$redirect = false;

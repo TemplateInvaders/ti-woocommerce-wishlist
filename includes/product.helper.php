@@ -419,7 +419,13 @@ class TInvWL_Product
 
 					if ($_product->get_id() === absint((apply_filters('wpml_object_id', $wlproduct['product_id'], 'product', false)) ? apply_filters('wpml_object_id', $wlproduct['product_id'], 'product', false) : $wlproduct['product_id'])) {
 						if (in_array($_product->get_type(), array('variable', 'grouped'))) {
-							$products[$key]['data'] = $wlproduct['variation_id'] ? wc_get_product(apply_filters('wpml_object_id', $wlproduct['variation_id'], 'product_variation', false)) : $_product;
+							$use_original_id = false;
+
+							if (function_exists('pll_is_translated_post_type')) {
+								$use_original_id = true;
+							}
+
+							$products[$key]['data'] = $wlproduct['variation_id'] ? wc_get_product(apply_filters('wpml_object_id', $wlproduct['variation_id'], 'product_variation', $use_original_id)) : $_product;
 						} else {
 							$products[$key]['data'] = $_product;
 						}

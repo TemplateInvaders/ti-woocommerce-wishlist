@@ -118,6 +118,11 @@ class TInvWL_Wishlist
 		if (empty($user_id)) {
 			return $this->add_sharekey_default();
 		}
+
+		if (!current_user_can('tinvwl_general_settings') && ($user_id != get_current_user_id())) {
+			return false;
+		}
+
 		if ($wl = $this->get_by_user_default($user_id)) {
 			return array_shift($wl);
 		}
@@ -229,6 +234,7 @@ class TInvWL_Wishlist
 			'author' => $user_id,
 			'type' => 'default',
 		);
+
 		if (!current_user_can('tinvwl_general_settings') && (empty($this->user) || ($data['author'] != $this->user))) { // WPCS: loose comparison ok.
 			$data['status'] = 'public';
 		}

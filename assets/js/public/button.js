@@ -125,6 +125,9 @@
 						$( 'body' ).append( $( '<div>' ).addClass( 'tinv-wishlist' ) );
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
+
+					FocusTrap( 'body > .tinv-wishlist' );
+
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
 						$msg.remove();
@@ -359,7 +362,20 @@
 	$( document ).ready( function() {
 
 		// Add to wishlist button click
-		$( 'body' ).on( 'click', '.tinvwl_add_to_wishlist_button', function( e ) {
+		$( 'body' ).on( 'click keydown', '.tinvwl_add_to_wishlist_button', function( e ) {
+
+			if ( 'keydown' === e.type ) {
+				const keyD = e.key !== undefined ? e.key : e.keyCode;
+
+				// e.key && e.keycode have mixed support - keycode is deprecated but support is greater than e.key
+				// I tested within IE11, Firefox, Chrome, Edge (latest) & all had good support for e.key
+
+				if ( ! ( ( 'Enter' === keyD || 13 === keyD ) || ( 0 <= [ 'Spacebar', ' ' ].indexOf( keyD ) || 32 === keyD ) ) ) {
+					return;
+				}
+				e.preventDefault();
+			}
+
 			$( 'body' ).trigger( 'tinvwl_add_to_wishlist_button_click', [ this ]);
 			if ( $( this ).is( '.disabled-add-wishlist' ) ) {
 				e.preventDefault();
@@ -653,6 +669,35 @@
 		setTimeout( function() {
 			jQuery( 'i.wishlist-icon' ).removeClass( 'added' );
 		}, 500 );
+	}
+
+	function FocusTrap( el ) {
+
+		var inputs = $( el ).find( 'select, input, textarea, button, a' ).filter( ':visible' );
+
+		var firstInput = inputs.first();
+		var lastInput = inputs.last();
+
+		/*set focus on first input*/
+		firstInput.focus().blur();
+
+
+		/*redirect last tab to first input*/
+		lastInput.on( 'keydown', function( e ) {
+			if ( ( 9 === e.which && ! e.shiftKey ) ) {
+				e.preventDefault();
+				firstInput.focus();
+			}
+		});
+
+		/*redirect first shift+tab to last input*/
+		firstInput.on( 'keydown', function( e ) {
+			if ( ( 9 === e.which && e.shiftKey ) ) {
+				e.preventDefault();
+				lastInput.focus();
+			}
+		});
+
 	}
 
 }( jQuery ) );

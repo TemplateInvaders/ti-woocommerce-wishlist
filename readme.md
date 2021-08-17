@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.27.4 ###
+*Release Date - 17 August 2021*
+
+* Accessible Rich Internet Applications enhancements
+* Fixed issue for Wishlist REST API
+
 ### 1.27.3 ###
 *Release Date - 12 August 2021*
 

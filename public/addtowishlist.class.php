@@ -713,32 +713,41 @@ JOIN {$table_languages} l ON
 	 */
 	function htmloutput($attr = array(), $is_shortcode = false)
 	{
-		global $product;
+		global $product, $post;
 
 		$attr = apply_filters('tinvwl_addtowishlist_out_prepare_attr', $attr);
-		$this->product = apply_filters('tinvwl_addtowishlist_out_prepare_product', $product);
+		$_product = $product;
+		if (empty($product) && !empty($post) && 'product' === $post->post_type) {
+			$_product = wc_get_product($post->ID);
+		}
+
+		$this->product = apply_filters('tinvwl_addtowishlist_out_prepare_product', $_product);
+
+		if (empty($this->product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
+			return false;
+		}
+
 		$position = tinv_get_option('add_to_wishlist', 'position');
 		if ($is_shortcode) {
 			$position = 'shortcode';
-			$product_id = absint($attr['product_id']);
-			$variation_id = absint($attr['variation_id']);
+
+			$product_id = !empty($attr['product_id']) ? absint($attr['product_id']) : $this->product->get_id();
+			$variation_id = !empty($attr['variation_id']) ? absint($attr['variation_id']) : null;
 
 			if ('product_variation' == get_post_type($product_id)) { // WPCS: loose comparison ok.
 				$variation_id = $product_id;
 				$product_id = wp_get_post_parent_id($variation_id);
 			}
 
-			$product_data = wc_get_product($variation_id ? $variation_id : $product_id);
+			$product_data = ($product_id !== $this->product->get_id()) ? wc_get_product($variation_id ? $variation_id : $product_id) : $this->product;
 
 			if ($product_data && 'trash' !== get_post($product_data->get_id())->post_status) {
 				$this->product = apply_filters('tinvwl_addtowishlist_out_prepare_product', $product_data);
 			} else {
-				return '';
+				return false;
 			}
 		}
-		if (empty($this->product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
-			return;
-		}
+
 
 		add_action('tinvwl_wishlist_addtowishlist_button', array($this, 'button'));
 

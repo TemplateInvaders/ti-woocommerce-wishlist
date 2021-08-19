@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Composite Products
  *
- * @version 7.0.5
+ * @version 8.2.0
  *
  * @slug woocommerce-composite-products
  *
@@ -285,7 +285,7 @@ if (!function_exists('tinv_wishlist_metaprepare_woocommerce_composite_products')
 	{
 
 		foreach ($meta as $key => $value) {
-			if (strpos($key, 'wccp_component_') === 0 && !is_array($value)) {
+			if (strpos($key, 'wccp_') === 0 && !is_array($value)) {
 
 				$meta[$key] = json_decode($value);
 			}

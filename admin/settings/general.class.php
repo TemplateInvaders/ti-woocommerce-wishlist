@@ -161,16 +161,16 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection
 					),
 					array(
 						'type' => 'checkboxonoff',
-						'name' => 'processing_redirect_checkout',
-						'text' => __('Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist'),
-						'std' => false,
-					),
-					array(
-						'type' => 'checkboxonoff',
 						'name' => 'processing_autoremove_anyone',
 						'text' => __('Remove by anyone', 'ti-woocommerce-wishlist'),
 						'std' => false,
 						'class' => 'tiwl-processing-autoremove-anyone',
+					),
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'processing_redirect_checkout',
+						'text' => __('Redirect to the checkout page from Wishlist if added to cart', 'ti-woocommerce-wishlist'),
+						'std' => false,
 					),
 					array(
 						'type' => 'checkboxonoff',
@@ -252,6 +252,39 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection
 					),
 				),
 			),
+
+			array(
+				'id' => 'rename',
+				'title' => __('Rename wishlist Settings', 'ti-woocommerce-wishlist'),
+				'show_names' => false,
+				'fields' => array(
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'rename',
+						'text' => __('Rename wishlist word across the plugin', 'ti-woocommerce-wishlist'),
+						'desc' => __('These options allow changing word <code>wishlist</code> across all plugin instance', 'ti-woocommerce-wishlist'),
+						'std' => false,
+						'extra' => array('tiwl-show' => '.tiwl-rename-single, .tiwl-rename-plural'),
+					),
+					array(
+						'type' => 'text',
+						'name' => 'rename_single',
+						'text' => __('Single form', 'ti-woocommerce-wishlist'),
+						'desc' => __('This option allowing you to change a single form of the word. You need to write a new word in lowercase and the proper case will be applied automatically for all instances.', 'ti-woocommerce-wishlist'),
+						'std' => '',
+						'class' => 'tiwl-rename-single',
+					),
+					array(
+						'type' => 'text',
+						'name' => 'rename_plural',
+						'text' => __('Plural form', 'ti-woocommerce-wishlist'),
+						'desc' => __('This option allowing you to change a plural form of the word. Left it empty if you need to add just "s" suffix to the single form word that you set above.', 'ti-woocommerce-wishlist'),
+						'std' => '',
+						'class' => 'tiwl-rename-plural',
+					),
+				),
+			),
+
 			array(
 				'id' => 'page',
 				'title' => __('Wishlist Page Options', 'ti-woocommerce-wishlist'),

@@ -163,7 +163,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base
 	function action_menu()
 	{
 		global $wp_roles;
-		$page = add_menu_page('TI Wishlist', 'TI Wishlist', 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888');
+		$page = add_menu_page(__('TI Wishlist', 'ti-woocommerce-wishlist'), __('TI Wishlist', 'ti-woocommerce-wishlist'), 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888');
 		add_action("load-$page", array($this, 'onload'));
 		add_action('admin_enqueue_scripts', array($this, 'add_inline_scripts'));
 		$menu = apply_filters('tinvwl_admin_menu', array());

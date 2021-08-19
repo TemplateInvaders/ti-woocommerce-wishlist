@@ -4,7 +4,7 @@
  *
  * @name WooCommerce TM Extra Product Options
  *
- * @version 5.0.12.11
+ * @version 5.0.12.12
  *
  * @slug woocommerce-tm-extra-product-options
  *
@@ -327,11 +327,17 @@ function tinvwl_add_to_wishlist_tm_extra_product_options()
 					jQuery('body').on('tinvwl_add_to_wishlist_button_click', function(e, el){
 							jQuery(el).closest('form.cart').each(function(){
 								if (jQuery(this).find('#tm-extra-product-options').length) {
+
+									jQuery(this).find('.tc-hidden[required], input.use_images[required]').attr('disabled', true);
+
 									if (!jQuery(this)[0].checkValidity()){
 										jQuery(el).addClass('disabled-add-wishlist');
 										jQuery(this)[0].reportValidity();
 									} else {
-										jQuery(el).removeClass('disabled-add-wishlist');}
+										jQuery(el).removeClass('disabled-add-wishlist');
+									}
+
+									jQuery(this).find('.tc-hidden[required], input.use_images[required]').attr('disabled', false);
 								}
 							});
 					});

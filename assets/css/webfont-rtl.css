@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*------------------------------------------------------------------
 WooCommerce Wishlist Plugin custom webfont
 -------------------------------------------------------------------*/
@@ -25,147 +24,147 @@ WooCommerce Wishlist Plugin custom webfont
 }
 
 .ftinvwl-twitter:before {
-  content: "" !important;
+  content: \f099 !important;
 }
 
 .ftinvwl-facebook:before {
-  content: "" !important;
+  content: \f09a !important;
 }
 
 .ftinvwl-facebook-f:before {
-  content: "" !important;
+  content: \f09a !important;
 }
 
 .ftinvwl-google:before {
-  content: "" !important;
+  content: \f0d5 !important;
 }
 
 .ftinvwl-email:before {
-  content: "" !important;
+  content: \f0e0 !important;
 }
 
 .ftinvwl-pinterest:before {
-  content: "" !important;
+  content: \f231 !important;
 }
 
 .ftinvwl-whatsapp:before {
-  content: "" !important;
+  content: \f232 !important;
 }
 
 .ftinvwl-clipboard:before {
-  content: "" !important;
+  content: \e911 !important;
 }
 
 .ftinvwl-star:before {
-  content: "" !important;
+  content: \e912 !important;
 }
 
 .ftinvwl-shopping-cart:before {
-  content: "" !important;
+  content: \e913 !important;
 }
 
 .ftinvwl-magic:before {
-  content: "" !important;
+  content: \e914 !important;
 }
 
 .ftinvwl-info:before {
-  content: "" !important;
+  content: \e915 !important;
 }
 
 .ftinvwl-graduation-cap:before {
-  content: "" !important;
+  content: \e918 !important;
 }
 
 .ftinvwl-floppy-o:before {
-  content: "" !important;
+  content: \e919 !important;
 }
 
 .ftinvwl-eyedropper:before {
-  content: "" !important;
+  content: \e91a !important;
 }
 
 .ftinvwl-exclamation-triangle:before {
-  content: "" !important;
+  content: \e91b !important;
 }
 
 .ftinvwl-check:before {
-  content: "" !important;
+  content: \e91e !important;
 }
 
 .ftinvwl-arrow-left:before {
-  content: "" !important;
+  content: \e91f !important;
 }
 
 .ftinvwl-wrench:before {
-  content: "" !important;
+  content: \e920 !important;
 }
 
 .ftinvwl-chevron-down:before {
-  content: "" !important;
+  content: \e900 !important;
 }
 
 .ftinvwl-chevron-right:before {
-  content: "" !important;
+  content: \e901 !important;
 }
 
 .ftinvwl-chevron-left:before {
-  content: "" !important;
+  content: \e902 !important;
 }
 
 .ftinvwl-chevron-up:before {
-  content: "" !important;
+  content: \e903 !important;
 }
 
 .ftinvwl-cancel:before {
-  content: "" !important;
+  content: \e904 !important;
 }
 
 .ftinvwl-times:before {
-  content: "" !important;
+  content: \e905 !important;
 }
 
 .ftinvwl-heart-plus:before {
-  content: "" !important;
+  content: \e906 !important;
 }
 
 .ftinvwl-heart-mark-right:before {
-  content: "" !important;
+  content: \e907 !important;
 }
 
 .ftinvwl-heart2:before {
-  content: "" !important;
+  content: \e908 !important;
 }
 
 .ftinvwl-heart-o:before {
-  content: "" !important;
+  content: \e909 !important;
 }
 
 .ftinvwl-heart-mark-left:before {
-  content: "" !important;
+  content: \e90a !important;
 }
 
 .ftinvwl-heart-mail:before {
-  content: "" !important;
+  content: \e90b !important;
 }
 
 .ftinvwl-heart-tinv:before {
-  content: "" !important;
+  content: \e90c !important;
 }
 
 .ftinvwl-key:before {
-  content: "" !important;
+  content: \e90d !important;
 }
 
 .ftinvwl-lock:before {
-  content: "" !important;
+  content: \e90e !important;
 }
 
 .ftinvwl-hearts:before {
-  content: "" !important;
+  content: \e90f !important;
 }
 
 .ftinvwl-user:before {
-  content: "" !important;
+  content: \e910 !important;
 }
 
 /* PULSE */

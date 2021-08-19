@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 1.27.4
+ * @version 1.28.0
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 *{-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -39,9 +39,9 @@ h6{font-size:12px}
 #toplevel_page_tinvwl ul li:hover ul,#toplevel_page_tinvwl ul li.current ul{display:block;right:145px;margin-right:15px;position:absolute;top:0}
 .status-panel>div{display:inline-block;margin-right:21px}
 .status-panel .button-link{background-color:#ff5739;color:#FFF;text-decoration:none;text-transform:uppercase;line-height:10px;font-weight:600;height:48px;display:table-cell;border-radius:5px;padding:0 17px;vertical-align:middle}
-.status-panel .button-link span::before{color:#ffdc00;display:inline-block;font:normal 12px/1 "dashicons";vertical-align:bottom;-webkit-font-smoothing:antialiased;content:""}
+.status-panel .button-link span::before{color:#ffdc00;display:inline-block;font:normal 12px/1 "dashicons";vertical-align:bottom;-webkit-font-smoothing:antialiased;content:"\f155"}
 .status-panel .button-round{border:2px solid #f1f1f1;border-radius:50%;width:43px;padding-top:5px;padding-right:2px;height:40px;display:table-cell;text-align:center;vertical-align:middle}
-.status-panel .status-tutorial span::before{color:#515151;display:inline-block;font:normal 24px/1 "dashicons";vertical-align:middle;-webkit-font-smoothing:antialiased;content:""}
+.status-panel .status-tutorial span::before{color:#515151;display:inline-block;font:normal 24px/1 "dashicons";vertical-align:middle;-webkit-font-smoothing:antialiased;content:"\f118"}
 .tinvwl-status-message{font-family:Arial,sans-serif;font-size:14px;line-height:1.429;margin-top:40px;color:#6b625a;border-top:2px solid #f6f3ed}
 .tinvwl-status-message .tinvwl-title{padding:13px 20px;float:right;width:142px;font-weight:bold}
 .tinvwl-status-message.type-error .tinvwl-title,.tinvwl-status-message.type-tip .tinvwl-title{color:#fff}
@@ -50,9 +50,9 @@ h6{font-size:12px}
 .tinvwl-status-message.type-tip .tinvwl-title{background:#30aec4}
 .tinvwl-status-message.type-attention .tinvwl-title{background:#ffe900}
 .tinvwl-status-message .tinvwl-title i{margin-left:10px}
-.tinvwl-status-message.type-error>.tinvwl-title>i:before{content:""}
-.tinvwl-status-message.type-tip>.tinvwl-title>i:before{content:""}
-.tinvwl-status-message.type-attention>.tinvwl-title>i:before{content:""}
+.tinvwl-status-message.type-error>.tinvwl-title>i:before{content:"\f00d"}
+.tinvwl-status-message.type-tip>.tinvwl-title>i:before{content:"\f05a"}
+.tinvwl-status-message.type-attention>.tinvwl-title>i:before{content:"\f071"}
 .tinvwl-status-message .tinvwl-message{padding:13px 20px;overflow:hidden;height:100%;background:#faf9f7}
 .tinvwl-content a{text-decoration:none;color:#30aec4}
 .tinvwl-content a:hover,.tinvwl-content a:active,.tinvwl-content a:focus{color:#524737}

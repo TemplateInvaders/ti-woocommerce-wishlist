@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*
 number input
 */
@@ -118,13 +117,13 @@ on off button
 }
 
 .tiwlform-onoff-container .tiwlform-onoff-button:before {
-  content: "";
+  content: "\e905";
   font-size: 20px;
   font-family: "tinvwl-webfont";
 }
 
 .tiwlform-onoff-container.checked .tiwlform-onoff-button:before {
-  content: "";
+  content: "\e91e";
   font-size: 11px;
   font-family: "tinvwl-webfont";
 }

@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.28.1 ###
+*Release Date - 20 August 2021*
+
+* Fixed PHP error in the add to wishlist button shortcode
+* Fixed plugin webfont icons issue on some devices
+
 ### 1.28.0 ###
 *Release Date - 19 August 2021*
 

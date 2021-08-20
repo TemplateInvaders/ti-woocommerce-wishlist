@@ -723,15 +723,13 @@ JOIN {$table_languages} l ON
 
 		$this->product = apply_filters('tinvwl_addtowishlist_out_prepare_product', $_product);
 
-		if (empty($this->product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
-			return false;
-		}
-
 		$position = tinv_get_option('add_to_wishlist', 'position');
+
 		if ($is_shortcode) {
 			$position = 'shortcode';
 
-			$product_id = !empty($attr['product_id']) ? absint($attr['product_id']) : $this->product->get_id();
+			$product_id = !empty($attr['product_id']) ? absint($attr['product_id']) : (($this->product instanceof WC_Product) ? $this->product->get_id() : null);
+
 			$variation_id = !empty($attr['variation_id']) ? absint($attr['variation_id']) : null;
 
 			if ('product_variation' == get_post_type($product_id)) { // WPCS: loose comparison ok.
@@ -739,15 +737,18 @@ JOIN {$table_languages} l ON
 				$product_id = wp_get_post_parent_id($variation_id);
 			}
 
-			$product_data = ($product_id !== $this->product->get_id()) ? wc_get_product($variation_id ? $variation_id : $product_id) : $this->product;
+			$product_data = ($product_id !== (($this->product instanceof WC_Product) ? $this->product->get_id() : null)) ? wc_get_product($variation_id ? $variation_id : $product_id) : $this->product;
 
-			if ($product_data && 'trash' !== get_post($product_data->get_id())->post_status) {
+			if ($product_data instanceof WC_Product && 'trash' !== get_post($product_data->get_id())->post_status) {
 				$this->product = apply_filters('tinvwl_addtowishlist_out_prepare_product', $product_data);
 			} else {
 				return false;
 			}
 		}
 
+		if (empty($this->product) || !($this->product instanceof WC_Product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
+			return false;
+		}
 
 		add_action('tinvwl_wishlist_addtowishlist_button', array($this, 'button'));
 

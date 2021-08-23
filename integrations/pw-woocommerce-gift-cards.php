@@ -4,7 +4,7 @@
  *
  * @name PW WooCommerce Gift Cards
  *
- * @version 1.173
+ * @version 1.298
  *
  * @slug pw-woocommerce-gift-cards
  *
@@ -26,7 +26,7 @@ $name = "PW WooCommerce Gift Cards";
 
 $available = defined('PWGC_VERSION');
 
-$tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
+$tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
 	'name' => $name,

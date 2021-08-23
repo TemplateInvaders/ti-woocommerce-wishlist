@@ -4,7 +4,7 @@
  *
  * @name myCRED
  *
- * @version 1.8.4.2
+ * @version 2.1.1
  *
  * @slug mycred
  *
@@ -29,8 +29,8 @@ $available = defined('myCRED_VERSION');
 $tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
 $tinvwl_integrations[$slug] = array(
-		'name' => $name,
-		'available' => $available,
+	'name' => $name,
+	'available' => $available,
 );
 
 if (!tinv_get_option('integrations', $slug)) {
@@ -52,9 +52,9 @@ if (defined('myCRED_VERSION')) {
 	{
 
 		$installed['tinvwl'] = array(
-				'title' => __('WooCommerce Wishlist', 'ti-woocommerce-wishlist'),
-				'description' => __('Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist.', 'ti-woocommerce-wishlist'),
-				'callback' => array('myCRED_Hook_TinvWL'),
+			'title' => __('WooCommerce Wishlist', 'ti-woocommerce-wishlist'),
+			'description' => __('Awards %_plural% for users adding products to their wishlist and purchased products from their wishlist.', 'ti-woocommerce-wishlist'),
+			'callback' => array('myCRED_Hook_TinvWL'),
 		);
 
 		return $installed;
@@ -83,19 +83,19 @@ if (defined('myCRED_VERSION')) {
 			{
 
 				parent::__construct(array(
-						'id' => 'tinvwl',
-						'defaults' => array(
-								'tinvwl_added' => array(
-										'creds' => 1,
-										'log' => '%plural% for adding a product to a wishlist',
-										'limit' => '0/x',
-								),
-								'tinvwl_purchased' => array(
-										'creds' => 1,
-										'log' => '%plural% for purchasing a product from a wishlist',
-										'limit' => '0/x',
-								),
+					'id' => 'tinvwl',
+					'defaults' => array(
+						'tinvwl_added' => array(
+							'creds' => 1,
+							'log' => '%plural% for adding a product to a wishlist',
+							'limit' => '0/x',
 						),
+						'tinvwl_purchased' => array(
+							'creds' => 1,
+							'log' => '%plural% for purchasing a product from a wishlist',
+							'limit' => '0/x',
+						),
+					),
 				), $hook_prefs, $type);
 
 			}
@@ -135,13 +135,13 @@ if (defined('myCRED_VERSION')) {
 
 							// Execute
 							$this->core->add_creds(
-									'added_to_wishlist',
-									$user_id,
-									$this->prefs['tinvwl_added']['creds'],
-									$this->prefs['tinvwl_added']['log'],
-									$data['product_id'],
-									array('ref_type' => 'post'),
-									$this->mycred_type
+								'added_to_wishlist',
+								$user_id,
+								$this->prefs['tinvwl_added']['creds'],
+								$this->prefs['tinvwl_added']['log'],
+								$data['product_id'],
+								array('ref_type' => 'post'),
+								$this->mycred_type
 							);
 
 						}
@@ -179,13 +179,13 @@ if (defined('myCRED_VERSION')) {
 
 							// Execute
 							$this->core->add_creds(
-									'purchased_from_wishlist',
-									$user_id,
-									$this->prefs['tinvwl_purchased']['creds'],
-									$this->prefs['tinvwl_purchased']['log'],
-									$item->get_id(),
-									array('ref_type' => 'post'),
-									$this->mycred_type
+								'purchased_from_wishlist',
+								$user_id,
+								$this->prefs['tinvwl_purchased']['creds'],
+								$this->prefs['tinvwl_purchased']['log'],
+								$item->get_id(),
+								array('ref_type' => 'post'),
+								$this->mycred_type
 							);
 
 						}
@@ -211,7 +211,7 @@ if (defined('myCRED_VERSION')) {
 						<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
 							<div class="form-group">
 								<label
-										for="<?php echo $this->field_id(array('tinvwl_added' => 'creds')); ?>"><?php _e('Points', 'ti-woocommerce-wishlist'); ?></label>
+									for="<?php echo $this->field_id(array('tinvwl_added' => 'creds')); ?>"><?php _e('Points', 'ti-woocommerce-wishlist'); ?></label>
 								<input type="text"
 									   name="<?php echo $this->field_name(array('tinvwl_added' => 'creds')); ?>"
 									   id="<?php echo $this->field_id(array('tinvwl_added' => 'creds')); ?>"
@@ -222,22 +222,22 @@ if (defined('myCRED_VERSION')) {
 						<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 							<div class="form-group">
 								<label for="<?php echo $this->field_id(array(
-										'tinvwl_added',
-										'limit',
+									'tinvwl_added',
+									'limit',
 								)); ?>"><?php _e('Limit', 'ti-woocommerce-wishlist'); ?></label>
 								<?php echo $this->hook_limit_setting($this->field_name(array(
-										'tinvwl_added',
-										'limit',
+									'tinvwl_added',
+									'limit',
 								)), $this->field_id(array(
-										'tinvwl_added',
-										'limit',
+									'tinvwl_added',
+									'limit',
 								)), $prefs['tinvwl_added']['limit']); ?>
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label
-										for="<?php echo $this->field_id(array('tinvwl_added' => 'log')); ?>"><?php _e('Log Template', 'ti-woocommerce-wishlist'); ?></label>
+									for="<?php echo $this->field_id(array('tinvwl_added' => 'log')); ?>"><?php _e('Log Template', 'ti-woocommerce-wishlist'); ?></label>
 								<input type="text"
 									   name="<?php echo $this->field_name(array('tinvwl_added' => 'log')); ?>"
 									   id="<?php echo $this->field_id(array('tinvwl_added' => 'log')); ?>"
@@ -245,8 +245,8 @@ if (defined('myCRED_VERSION')) {
 									   value="<?php echo esc_attr($prefs['tinvwl_added']['log']); ?>"
 									   class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags(array(
-											'general',
-											'post',
+										'general',
+										'post',
 									)); ?></span>
 							</div>
 						</div>
@@ -256,7 +256,7 @@ if (defined('myCRED_VERSION')) {
 						<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
 							<div class="form-group">
 								<label
-										for="<?php echo $this->field_id(array('tinvwl_purchased' => 'creds')); ?>"><?php _e('Points', 'ti-woocommerce-wishlist'); ?></label>
+									for="<?php echo $this->field_id(array('tinvwl_purchased' => 'creds')); ?>"><?php _e('Points', 'ti-woocommerce-wishlist'); ?></label>
 								<input type="text"
 									   name="<?php echo $this->field_name(array('tinvwl_purchased' => 'creds')); ?>"
 									   id="<?php echo $this->field_id(array('tinvwl_purchased' => 'creds')); ?>"
@@ -267,22 +267,22 @@ if (defined('myCRED_VERSION')) {
 						<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 							<div class="form-group">
 								<label for="<?php echo $this->field_id(array(
-										'tinvwl_purchased',
-										'limit',
+									'tinvwl_purchased',
+									'limit',
 								)); ?>"><?php _e('Limit', 'ti-woocommerce-wishlist'); ?></label>
 								<?php echo $this->hook_limit_setting($this->field_name(array(
-										'tinvwl_purchased',
-										'limit',
+									'tinvwl_purchased',
+									'limit',
 								)), $this->field_id(array(
-										'tinvwl_purchased',
-										'limit',
+									'tinvwl_purchased',
+									'limit',
 								)), $prefs['tinvwl_purchased']['limit']); ?>
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label
-										for="<?php echo $this->field_id(array('tinvwl_purchased' => 'log')); ?>"><?php _e('Log Template', 'ti-woocommerce-wishlist'); ?></label>
+									for="<?php echo $this->field_id(array('tinvwl_purchased' => 'log')); ?>"><?php _e('Log Template', 'ti-woocommerce-wishlist'); ?></label>
 								<input type="text"
 									   name="<?php echo $this->field_name(array('tinvwl_purchased' => 'log')); ?>"
 									   id="<?php echo $this->field_id(array('tinvwl_purchased' => 'log')); ?>"
@@ -290,8 +290,8 @@ if (defined('myCRED_VERSION')) {
 									   value="<?php echo esc_attr($prefs['tinvwl_purchased']['log']); ?>"
 									   class="form-control"/>
 								<span class="description"><?php echo $this->available_template_tags(array(
-											'general',
-											'post',
+										'general',
+										'post',
 									)); ?></span>
 							</div>
 						</div>

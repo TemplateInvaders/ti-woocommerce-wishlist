@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.28.2 ###
+*Release Date - 23 August 2021*
+
+* Updated integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+* Updated integration with [myCred – Points, Rewards, Gamification, Ranks, Badges & Loyalty Plugin](https://wordpress.org/plugins/mycred/) plugin
+
 ### 1.28.1 ###
 *Release Date - 20 August 2021*
 

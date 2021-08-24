@@ -78,8 +78,6 @@ class TInvWL
 			TInvWL_Activator::activate();
 		}
 
-		$this->rename();
-
 		TInvWL_View::_init($this->_name, $this->_version);
 		TInvWL_Form::_init($this->_name);
 
@@ -98,67 +96,6 @@ class TInvWL
 		$this->deprecated_hook_handlers['filters'] = new TInvWL_Deprecated_Filters();
 		$this->rest_api = TInvWL_API::init();
 	}
-
-
-	/**
-	 * Rename "wishlist" word across the plugin.
-	 */
-	private function rename()
-	{
-		$this->rename = tinv_get_option('rename', 'rename');
-		$this->rename_single = tinv_get_option('rename', 'rename_single');
-		$this->rename_plural = tinv_get_option('rename', 'rename_plural');
-
-		if ($this->rename && $this->rename_single) {
-			add_filter('gettext', array($this, 'translations'), 999, 3);
-			add_filter('ngettext', array($this, 'translations_n'), 999, 5);
-		}
-	}
-
-
-	function translations_n($translation, $single, $plural, $number, $domain)
-	{
-		return $this->translation_update($translation, $domain);
-	}
-
-	function translations($translation, $text, $domain)
-	{
-		return $this->translation_update($translation, $domain);
-	}
-
-	private function translation_update($text, $domain)
-	{
-		if ('ti-woocommerce-wishlist' === $domain) {
-
-			$translations = ['wishlist' => [$this->rename_single, $this->rename_plural ? $this->rename_plural : $this->rename_single . 's']];
-
-			$text = preg_replace_callback('~\b[a-z]+(?:(?<=(s)))?~i', function ($m) use ($translations) {
-				$lower = strtolower($m[0]);
-				$rep = $m[0];
-				if (isset($translations[$lower])) {
-					$rep = is_array($translations[$lower]) ? $translations[$lower][0] : $translations[$lower];
-				} elseif (isset($m[1])) {
-					$sing = substr($lower, 0, -1);
-					if (isset($translations[$sing]))
-						$rep = is_array($translations[$sing]) ? $translations[$sing][1] : $translations[$sing] . 's';
-				} else {
-					return $rep;
-				}
-
-				if ($m[0] == $lower)
-					return $rep;
-				elseif ($m[0] == strtoupper($lower))
-					return strtoupper($rep);
-				elseif ($m[0] == ucfirst($lower))
-					return ucfirst($rep);
-
-				return $rep;
-			}, $text);
-
-		}
-		return $text;
-	}
-
 
 	/**
 	 * Set localization

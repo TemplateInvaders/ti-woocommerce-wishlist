@@ -142,6 +142,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 ## Changelog ##
 ### 1.28.2 ###
+*Release Date - 25 August 2021*
+
+* Fixed permalink issue for multilingual setups
+* Fixed rename feature issues
+
+### 1.28.2 ###
 *Release Date - 23 August 2021*
 
 * Updated integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin

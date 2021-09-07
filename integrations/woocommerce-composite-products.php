@@ -83,6 +83,8 @@ if (!function_exists('tinvwl_row_woocommerce_composite_products')) {
 
 				$composited_variation_id = isset($wl_product['meta']['wccp_variation_id'][$component_id]) ? wc_clean($wl_product['meta']['wccp_variation_id'][$component_id]) : '';
 
+				$composited_product_id = isset($wl_product['meta']['wccp_component_selection_nil'], $wl_product['meta']['wccp_component_selection_nil'][$component_id]) ? '' : $composited_product_id;
+
 				if ($composited_product_id) {
 
 					$composited_product_wrapper = $component->get_option($composited_variation_id ? $composited_variation_id : $composited_product_id);
@@ -296,3 +298,40 @@ if (!function_exists('tinv_wishlist_metaprepare_woocommerce_composite_products')
 
 	add_filter('tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_woocommerce_composite_products');
 }
+
+function tinv_add_to_wishlist_woocommerce_composite_products()
+{
+
+	wp_add_inline_script('tinvwl', "
+		jQuery(document).ready(function($){
+			  $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
+			        var button = $(el), composite_form =[];
+
+			       	$( 'form.cart[method=post][data-product_id=\"' + button.attr( 'data-tinv-wl-product' ) + '\"], form.vtajaxform[method=post][data-product_id=\"' + button.attr( 'data-tinv-wl-product' ) + '\"]' ).each( function() {
+							composite_form.push( $( this ) );
+					});
+
+					if ( ! composite_form.length ) {
+						button.closest( 'form.cart[method=post], form.vtajaxform[method=post]' ).each( function() {
+							composite_form.push( $( this ) );
+						});
+					if ( ! composite_form.length ) {
+						composite_form.push( $( 'form.cart[method=post]' ) );
+					}
+
+					$.each( composite_form, function( index, element ) {
+						$( element ).find( 'div.composite_component' ).not(':visible').each( function() {
+						var id = $(this).attr('data-item_id');
+						if (!data.form.hasOwnProperty('wccp_component_selection_nil')) {
+							data.form.wccp_component_selection_nil = {};
+						}
+						data.form.wccp_component_selection_nil[id] = '1';
+						});
+					});
+				}
+			  });
+        });
+        ");
+}
+
+add_action('wp_enqueue_scripts', 'tinv_add_to_wishlist_woocommerce_composite_products', 100, 1);

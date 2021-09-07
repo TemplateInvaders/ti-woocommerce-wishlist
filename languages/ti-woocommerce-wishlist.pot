@@ -1,8 +1,8 @@
-# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.28.3
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.28.3 package.
+# Copyright (C) 2021 TI WooCommerce Wishlist Plugin - 1.28.4
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.28.4 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.28.3\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.28.4\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1152,7 +1152,7 @@ msgstr ""
 msgid "Custom Title"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:115, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:136, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:145, templates/ti-wishlist.php:153
+#: integrations/woo-product-bundle.php:115, integrations/woocommerce-composite-products.php:144, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:136, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:145, templates/ti-wishlist.php:153
 msgid "In stock"
 msgstr ""
 

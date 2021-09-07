@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.8
-Stable tag: 1.28.3
+Stable tag: 1.28.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,7 +163,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
-= 1.28.2 =
+= 1.28.4 =
+*Release Date - 07 September 2021*
+
+* Added integration with [Quick Buy Now Button for WooCommerce](https://woocommerce.com/products/quick-buy-now-button-for-woocommerce/?aff=3955) plugin
+* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
+
+= 1.28.3 =
 *Release Date - 25 August 2021*
 
 * Fixed permalink issue for multilingual setups

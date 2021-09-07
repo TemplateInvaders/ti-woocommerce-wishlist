@@ -100,29 +100,21 @@ if (!function_exists('tinv_wishlist_metasupport_wc_gf_addons')) {
 	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_wc_gf_addons');
 }
 
-if (!function_exists('tinvwl_wishlist_item_name_wc_gf_addons')) {
+if (!function_exists('tinvwl_wishlist_item_url_wc_gf_addons')) {
 
-	function tinvwl_wishlist_item_name_wc_gf_addons($name, $wl_product, $product)
+	function tinvwl_wishlist_item_url_wc_gf_addons($url, $wl_product, $product)
 	{
-		if (!$product->is_visible()) {
-			return $name;
-		}
 
 		$gravity_form_data = wc_gfpa()->get_gravity_form_data($product->get_id());
 
 		if (isset($gravity_form_data['enable_cart_edit']) && $gravity_form_data['enable_cart_edit'] !== 'no') {
-			$permalink = add_query_arg(array('wc_gforms_wishlist_product_id' => $wl_product['ID']), $product->get_permalink());
-
-			$name = sprintf('<a href="%s">%s</a>', esc_url($permalink), is_callable(array(
-				$product,
-				'get_name'
-			)) ? $product->get_name() : $product->get_title());
+			$url = add_query_arg(array('wc_gforms_wishlist_product_id' => $wl_product['ID']), $product->get_permalink());
 		}
 
-		return $name;
+		return $url;
 	}
 
-	add_filter('tinvwl_wishlist_item_name', 'tinvwl_wishlist_item_name_wc_gf_addons', 10, 3);
+	add_filter('tinvwl_wishlist_item_url', 'tinvwl_wishlist_item_url_wc_gf_addons', 10, 3);
 }
 
 if (!function_exists('tinvwl_item_price_wc_gf_addons')) {

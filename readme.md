@@ -141,6 +141,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.30.0 ###
+*Release Date - 09 January 2022*
+
+* WooCommerce 6.0 support
+* Updated integration with WooCommerce Product Add-Ons Ultimate plugin
+* Fixed custom AJAX endpoint issue for some customized WordPress setups
+
 ### 1.29.0 ###
 *Release Date - 25 November 2021*
 

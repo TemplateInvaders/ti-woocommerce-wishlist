@@ -41,7 +41,7 @@ if (!defined('TINVWL_DOMAIN')) {
 }
 
 if (!defined('TINVWL_FVERSION')) {
-	define('TINVWL_FVERSION', '1.29.0');
+	define('TINVWL_FVERSION', '1.30.0');
 }
 
 if (!defined('TINVWL_LOAD_FREE')) {

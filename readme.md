@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.30.1 ###
+*Release Date - 17 January 2022*
+
+* WooCommerce 6.1 support
+* Fixed translation issue
+
 ### 1.30.0 ###
 *Release Date - 09 January 2022*
 

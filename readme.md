@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+
+### 1.40.0 ###
+*Release Date - 27 January 2022*
+
+* WordPress 5.9 support
+
 ### 1.30.1 ###
 *Release Date - 17 January 2022*
 

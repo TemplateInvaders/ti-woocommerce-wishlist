@@ -132,7 +132,7 @@ class TInvWL_Includes_API_Wishlist
 	public function wishlist_get_by_user($request)
 	{
 		try {
-			$user_id = $request['user_id'];
+			$user_id = isset( $request['user_id'] ) ? absint( $request['user_id'] ) : 0;
 
 			if (!empty($user_id)) {
 
@@ -336,7 +336,7 @@ class TInvWL_Includes_API_Wishlist
 	public function wishlist_remove_product($request)
 	{
 		try {
-			$item_id = $request['item_id'];
+			$item_id = isset( $request['item_id'] ) ? absint( $request['item_id'] ) : 0;
 
 			if (!empty($item_id)) {
 				$wlp = new TInvWL_Product();

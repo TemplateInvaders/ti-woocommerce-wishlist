@@ -174,6 +174,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         data.lang = tinvwl_add_to_wishlist.wpml;
       }
 
+      if (tinvwl_add_to_wishlist.wpml_default) {
+        data.lang_default = tinvwl_add_to_wishlist.wpml_default;
+      }
+
       $('form.cart[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"], form.vtajaxform[method=post][data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
         formEl.push($(this));
       });
@@ -500,6 +504,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           params.lang = tinvwl_add_to_wishlist.wpml;
         }
 
+        if (tinvwl_add_to_wishlist.wpml_default) {
+          params.lang_default = tinvwl_add_to_wishlist.wpml_default;
+        }
+
         $.ajax({
           url: tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products',
           method: 'POST',
@@ -520,6 +528,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
         if (tinvwl_add_to_wishlist.wpml) {
           params.lang = tinvwl_add_to_wishlist.wpml;
+        }
+
+        if (tinvwl_add_to_wishlist.wpml_default) {
+          params.lang_default = tinvwl_add_to_wishlist.wpml_default;
         }
 
         $.ajax({

@@ -141,6 +141,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.41.0 ###
+*Release Date - 17 February 2022*
+
+* WooCommerce 6.2 support
+* Updated integration with [Quick Buy Now Button for WooCommerce](https://woocommerce.com/products/quick-buy-now-button-for-woocommerce/?aff=3955) plugin
+* Updated integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+* Updated integration with [Google Tag Manager for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) plugin
+* Fixed WPML plugin issue
+
 ### 1.40.1 ###
 *Release Date - 29 January 2022*
 

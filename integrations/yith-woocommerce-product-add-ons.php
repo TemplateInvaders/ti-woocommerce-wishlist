@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Product Add-Ons
  *
- * @version 2.0.3
+ * @version 2.7.0
  *
  * @slug yith-woocommerce-product-add-ons
  *
@@ -57,6 +57,7 @@ if (!function_exists('tinv_wishlist_item_meta_yith_woocommerce_product_add_on'))
 
 		if (isset($item_data['yith_wapo_product_id']) && class_exists('YITH_WAPO')) {
 			unset($item_data['yith_wapo_product_id']);
+			unset($item_data['yith_wapo_is_single']);
 
 			$id = ($variation_id) ? $variation_id : $product_id;
 
@@ -80,7 +81,8 @@ if (!function_exists('tinv_wishlist_item_meta_yith_woocommerce_product_add_on'))
 				$first_free_options_count = 0;
 				foreach (json_decode($item_data['yith_wapo']['display'], true) as $index => $option) {
 					foreach ($option as $key => $value) {
-						if ($key && $value) {
+						if ( $key && '' !== $value ) {
+							$value   = stripslashes( $value );
 
 							$explode = explode('-', $key);
 							if (isset($explode[1])) {
@@ -92,7 +94,7 @@ if (!function_exists('tinv_wishlist_item_meta_yith_woocommerce_product_add_on'))
 							}
 
 							$info = yith_wapo_get_option_info($addon_id, $option_id);
-
+							error_log( print_r($info , true ) );
 							if ($info['price_type'] == 'percentage') {
 								$option_percentage = floatval($info['price']);
 								$option_percentage_sale = floatval($info['price_sale']);
@@ -197,7 +199,8 @@ if (!function_exists('tinvwl_item_price_yith_woocommerce_product_add_on')) {
 				$first_free_options_count = 0;
 				foreach (json_decode($wl_product['meta']['yith_wapo'], true) as $index => $option) {
 					foreach ($option as $key => $value) {
-						if ($key && $value) {
+						if ( $key && '' !== $value ) {
+							$value   = stripslashes( $value );
 
 							$explode = explode('-', $key);
 							if (isset($explode[1])) {

@@ -179,7 +179,7 @@ JOIN {$table_languages} l ON
 		$sql .= ' WHERE ' . $where;
 	}
 
-	$sql .= sprintf( ' ORDER BY `%s` %s LIMIT %d,%d;', $default['order_by'], $default['order'], $default['offset'], $default['count'] );
+	$sql .= sprintf( ' GROUP BY `%s`.ID ORDER BY `%s` %s LIMIT %d,%d;', $table, $default['order_by'], $default['order'], $default['offset'], $default['count'] );
 
 	if ( ! empty( $default['sql'] ) ) {
 		$replacer    = $replace = array();
@@ -241,6 +241,5 @@ if ( $lang ) {
 if ( $lang_default ) {
 	$response['lang_default'] = $lang_default;
 }
-
 
 wp_send_json( $response );

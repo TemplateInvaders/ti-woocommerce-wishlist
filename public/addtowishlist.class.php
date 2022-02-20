@@ -22,7 +22,6 @@ class TInvWL_Public_AddToWishlist {
 	 * @var string
 	 */
 	private $_name;
-
 	/**
 	 * Global product
 	 *
@@ -35,7 +34,6 @@ class TInvWL_Public_AddToWishlist {
 	 * @var array
 	 */
 	private $user_wishlist;
-
 	/**
 	 * This wishlists and product
 	 *
@@ -56,7 +54,6 @@ class TInvWL_Public_AddToWishlist {
 	 * @var bolean
 	 */
 	private $is_loop;
-
 	/**
 	 * This class
 	 *
@@ -378,20 +375,14 @@ class TInvWL_Public_AddToWishlist {
 
 	function get_wishlists_data( $share_key ) {
 
-		global $wpdb, $sitepress;
+		global $wpdb;
 
 		$table              = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
 		$table_lists        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
 		$table_translations = sprintf( '%s%s', $wpdb->prefix, 'icl_translations' );
 		$table_languages    = sprintf( '%s%s', $wpdb->prefix, 'icl_languages' );
 		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_STRING );
-
-		if ( $sitepress && $sitepress instanceof SitePress ) {
-			$wpml_settings = $sitepress->get_settings();
-			if ( isset( $wpml_settings['custom_posts_sync_option'] ) && isset( $wpml_settings['custom_posts_sync_option']['product'] ) && '1' !== $wpml_settings['custom_posts_sync_option']['product'] ) {
-				$lang = false;
-			}
-		}
+		$lang_default       = filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_STRING );
 
 		$data = $products = $wishlists = $results = array();
 
@@ -434,14 +425,20 @@ class TInvWL_Public_AddToWishlist {
 				$sql .= " AND `{$table_lists}`.`share_key` = '{$share_key}'";
 			}
 			if ( $lang ) {
+				if ( $lang_default ) {
+					$lang = sprintf( "'%s'", implode( "', '", array( $lang, $lang_default ) ) );
+				} else {
+					$lang = "'" . $lang . "'";
+				}
+
 				$sql .= "LEFT JOIN {$table_translations} tr ON
     {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
 LEFT JOIN {$table_translations} tr2 ON
     {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
 		LEFT JOIN {$table_translations} t ON
-    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code = '{$lang}'
+    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code IN ({$lang})
 LEFT JOIN {$table_translations} t2 ON
-    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code = '{$lang}'
+    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code IN ({$lang})
 JOIN {$table_languages} l ON
     (
         t.language_code = l.code OR t2.language_code = l.code
@@ -482,7 +479,7 @@ JOIN {$table_languages} l ON
 				$sql .= ' WHERE ' . $where;
 			}
 
-			$sql .= sprintf( ' ORDER BY `%s` %s LIMIT %d,%d;', $default['order_by'], $default['order'], $default['offset'], $default['count'] );
+			$sql .= sprintf( ' GROUP BY `%s`.ID ORDER BY `%s` %s LIMIT %d,%d;', $table, $default['order_by'], $default['order'], $default['offset'], $default['count'] );
 
 			if ( ! empty( $default['sql'] ) ) {
 				$replacer    = $replace = array();
@@ -539,6 +536,10 @@ JOIN {$table_languages} l ON
 
 		if ( $lang ) {
 			$response['lang'] = $lang;
+		}
+
+		if ( $lang_default ) {
+			$response['lang_default'] = $lang_default;
 		}
 
 		return $response;

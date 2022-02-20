@@ -141,6 +141,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.41.1 ###
+*Release Date - 20 February 2022*
+
+* Added feature to automatically close add to wishlist popup after few seconds if redirect disabled
+* Added filter `tinvwl_addtowishlist_redirect`
+* Fixed WPML plugin issue
+* Fixed add to wishlist issue for guests
+
 ### 1.41.0 ###
 *Release Date - 17 February 2022*
 

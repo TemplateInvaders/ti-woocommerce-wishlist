@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.9
-Stable tag: 1.41.0
+Stable tag: 1.41.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.41.1 =
+*Release Date - 20 February 2022*
+
+* Added feature to automatically close add to wishlist popup after few seconds if redirect disabled
+* Added filter `tinvwl_addtowishlist_redirect`
+* Fixed WPML plugin issue
+* Fixed add to wishlist issue for guests
+
 = 1.41.0 =
 *Release Date - 17 February 2022*
 

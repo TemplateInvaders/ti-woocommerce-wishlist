@@ -128,11 +128,24 @@
 
 					FocusTrap( 'body > .tinv-wishlist' );
 
+					if ( ! s.redirectTimer ) {
+						s.removeTimer = window.setTimeout( function() {
+							$msg.remove();
+
+							if ( s.redirectTimer ) {
+								clearTimeout( s.redirectTimer );
+							}
+						}, 6000 );
+					}
+
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
 						$msg.remove();
 						if ( s.redirectTimer ) {
 							clearTimeout( s.redirectTimer );
+						}
+						if ( s.removeTimer ) {
+							clearTimeout( s.removeTimer );
 						}
 					});
 				},

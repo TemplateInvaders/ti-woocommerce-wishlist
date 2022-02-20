@@ -325,7 +325,7 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		if ( $status && tinv_get_option( 'general', 'redirect' ) && tinv_get_option( 'page', 'wishlist' ) && tinv_get_option( 'general', 'show_notice' ) ) {
-			$data['redirect'] = $data['wishlist_url'];
+			$data['redirect'] = apply_filters( 'tinvwl_addtowishlist_redirect', $data['wishlist_url'] );
 		}
 
 		$product = $original_product = wc_get_product( $post['product_id'] );

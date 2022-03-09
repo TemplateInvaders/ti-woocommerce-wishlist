@@ -141,6 +141,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.42.0 ###
+*Release Date - 09 March 2022*
+
+* WooCommerce 6.3 support
+* Added integration with [Anti-Spam by CleanTalk](https://wordpress.org/plugins/cleantalk-spam-protect/) plugin
+* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+
 ### 1.41.1 ###
 *Release Date - 20 February 2022*
 

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Bundles
  *
- * @version 5.12.0
+ * @version 6.15.1
  *
  * @slug woocommerce-product-bundles
  *
@@ -211,7 +211,7 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_bundles')) {
 					}
 
 					if ($bundled_item->is_priced_individually()) {
-						$product_price = $_bundled_product->get_regular_price();
+						$product_price = $_bundled_product->get_price();
 
 						$discount = $bundled_item->get_discount();
 						$product_price = empty($discount) ? $product_price : WC_PB_Product_Prices::get_discounted_price($product_price, $discount);

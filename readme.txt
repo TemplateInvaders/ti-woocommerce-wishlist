@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.9
-Stable tag: 1.42.0
+Stable tag: 1.42.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.42.1 =
+*Release Date - 04 April 2022*
+
+* Added integration with [WooCommerce Waitlist](https://woocommerce.com/document/woocommerce-waitlist/?aff=3955) plugin
+* Updated integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin
+
 = 1.42.0 =
 *Release Date - 09 March 2022*
 

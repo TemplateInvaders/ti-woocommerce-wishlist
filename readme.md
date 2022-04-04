@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.42.1 ###
+*Release Date - 04 April 2022*
+
+* Added integration with [WooCommerce Waitlist](https://woocommerce.com/document/woocommerce-waitlist/?aff=3955) plugin
+* Updated integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin
+
 ### 1.42.0 ###
 *Release Date - 09 March 2022*
 

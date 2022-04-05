@@ -104,6 +104,8 @@ class TInvWL_Public_Wishlist_Social {
 			'u' => self::$url,
 		);
 
+		$data = apply_filters( 'tinvwl_social_link_facebook', $data );
+
 		return 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( $data );
 	}
 
@@ -122,6 +124,8 @@ class TInvWL_Public_Wishlist_Social {
 		$data = array(
 			'url' => self::$url,
 		);
+
+		$data = apply_filters( 'tinvwl_social_link_twitter', $data );
 
 		return 'https://twitter.com/share?' . http_build_query( $data );
 	}
@@ -143,6 +147,8 @@ class TInvWL_Public_Wishlist_Social {
 			'media' => self::$image,
 		);
 
+		$data = apply_filters( 'tinvwl_social_link_pinterest', $data );
+
 		return 'http://pinterest.com/pin/create/button/?' . http_build_query( $data );
 	}
 
@@ -161,6 +167,8 @@ class TInvWL_Public_Wishlist_Social {
 		$data = array(
 			'body' => self::$url,
 		);
+
+		$data = apply_filters( 'tinvwl_social_link_email', $data );
 
 		return 'mailto:?' . http_build_query( $data );
 	}
@@ -195,6 +203,8 @@ class TInvWL_Public_Wishlist_Social {
 		$data = array(
 			'text' => self::$url,
 		);
+
+		$data = apply_filters( 'tinvwl_social_link_whatsapp', $data );
 
 		return 'https://api.whatsapp.com/send?' . http_build_query( $data );
 	}

@@ -542,7 +542,7 @@
 			}
 		};
 
-		var get_wishlist_data = function() {
+		$.fn.tinvwl_get_wishlist_data = function() {
 			if ( $supports_html5_storage ) {
 
 				if ( tinvwl_add_to_wishlist.update_wishlists_data ) {
@@ -570,7 +570,7 @@
 			custom_ajax();
 		};
 
-		get_wishlist_data();
+		$.fn.tinvwl_get_wishlist_data();
 
 
 		/* Dynamic buttons */
@@ -597,7 +597,7 @@
 				}
 			});
 			if ( tinvwl_products.length ) {
-				get_wishlist_data();
+				$.fn.tinvwl_get_wishlist_data();
 			}
 		});
 

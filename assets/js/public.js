@@ -565,7 +565,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       }
     };
 
-    var get_wishlist_data = function get_wishlist_data() {
+    $.fn.tinvwl_get_wishlist_data = function () {
       if ($supports_html5_storage) {
         if (tinvwl_add_to_wishlist.update_wishlists_data) {
           localStorage.setItem(hash_key, '');
@@ -590,7 +590,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       custom_ajax();
     };
 
-    get_wishlist_data();
+    $.fn.tinvwl_get_wishlist_data();
     /* Dynamic buttons */
     // Create an observer instance
 
@@ -617,7 +617,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       });
 
       if (tinvwl_products.length) {
-        get_wishlist_data();
+        $.fn.tinvwl_get_wishlist_data();
       }
     }); // Configuration of the observer:
 

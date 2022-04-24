@@ -141,6 +141,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.43.0 ###
+*Release Date - 24 April 2022*
+
+* WooCommerce 6.4 support
+* Added filters for share links
+* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
+* Added tinvwl_get_wishlist_data() as jQuery public function
+
 ### 1.42.1 ###
 *Release Date - 04 April 2022*
 

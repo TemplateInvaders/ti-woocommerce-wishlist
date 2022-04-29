@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.44.0 ###
+*Release Date - 29 April 2022*
+
+* Added support of WooCommerce Blocks
+
 ### 1.43.0 ###
 *Release Date - 24 April 2022*
 

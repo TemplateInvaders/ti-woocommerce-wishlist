@@ -559,6 +559,16 @@ class TInvWL_Public_TInvWL {
 		if ( wp_script_is( 'woocommerce', 'enqueued' ) ) {
 			wp_enqueue_script( 'tinvwl' );
 		}
+
+		$support_all_products_block = function_exists( 'has_block' ) && has_block( 'woocommerce/all-products' );
+
+		if ( $support_all_products_block ) {
+			wp_enqueue_script( $this->_name . '-blocks', TINVWL_URL . 'assets/js/blocks.js', array(
+				'wc-blocks-registry',
+				'wp-i18n',
+				'wp-element'
+			), $this->_version, true );
+		}
 	}
 
 	/**

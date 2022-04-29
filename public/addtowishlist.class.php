@@ -133,6 +133,9 @@ class TInvWL_Public_AddToWishlist {
 					add_action( 'woocommerce_after_shop_loop_item', 'tinvwl_view_addto_htmlloop', 20 );
 					break;
 			}
+
+			add_filter( 'woocommerce_blocks_product_grid_item_html', array( $this, 'htmloutput_block' ), 9, 3 );
+			add_filter( 'woocommerce_product_get_description', array( $this, 'woocommerce_blocks' ), 10, 2 );
 		}
 
 		add_action( 'wp_loaded', array( $this, 'add_to_wishlist' ), 0 );
@@ -896,4 +899,87 @@ JOIN {$table_languages} l ON
 		return ob_get_clean();
 	}
 
+
+	/**
+	 * Add button to WC Blocks
+	 *
+	 * @filter woocommerce_blocks_product_grid_item_html
+	 */
+	function htmloutput_block( $html, $data, $product_object ) {
+		global $product;
+
+		$position = tinv_get_option( 'add_to_wishlist_catalog', 'position' );
+
+		if ( ! in_array( $position, array( 'before', 'after', 'above_thumb' ) ) ) {
+			return $html;
+		}
+
+		$product = $product_object;
+		ob_start();
+		tinvwl_view_addto_htmlloop();
+		$add_to_wishlist = ob_get_clean();
+
+		$product = '';
+
+		$html = "<li class='wc-block-grid__product'>";
+
+		if ( 'above_thumb' === $position ) {
+			$html .= " {$add_to_wishlist}";
+		}
+		$html .= "<a href='{$data->permalink}' class='wc-block-grid__product-link'>
+				      {$data->image}
+				      {$data->title}
+				    </a>
+
+				    {$data->price}
+				    {$data->rating}";
+		if ( 'before' === $position ) {
+			$html .= " {$add_to_wishlist}";
+		}
+		$html .= "{$data->button}";
+		if ( 'after' === $position ) {
+			$html .= " {$add_to_wishlist}";
+		}
+		$html .= "</li>";
+
+		return $html;
+	}
+
+	/**
+	 * Add button to WC Block All Products
+	 *
+	 */
+	function woocommerce_blocks( $description, $product_object ) {
+
+		global $product;
+
+		// This is basically the store_api init, but as that calls no action, we need to replicate the logic of its protected function
+		// here for the time being. IOK 2020-09-02
+		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+			return $description;
+		}
+		if ( ! did_action( 'rest_api_init' ) ) {
+			return $description;
+		}
+		$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+
+		if ( preg_match( '/wc\/store(\/v\d)?\/products/', $request_uri ) !== 1 ) {
+			return $description;
+		}
+
+		$position = tinv_get_option( 'add_to_wishlist_catalog', 'position' );
+
+		if ( ! in_array( $position, array( 'before', 'after', 'above_thumb' ) ) ) {
+			return $description;
+		}
+
+		$product = $product_object;
+		ob_start();
+		tinvwl_view_addto_htmlloop();
+		$add_to_wishlist = ob_get_clean();
+
+		$product = '';
+
+		return $description . $add_to_wishlist;
+	}
 }

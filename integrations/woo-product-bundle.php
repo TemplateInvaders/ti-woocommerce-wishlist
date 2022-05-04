@@ -4,7 +4,7 @@
  *
  * @name WPC Product Bundles for WooCommerce
  *
- * @version 5.3.1
+ * @version 6.2.0
  *
  * @slug woo-product-bundle
  *
@@ -55,7 +55,7 @@ if (defined('WOOSB_VERSION')) {
 				$ids_str = get_post_meta($product->get_id(), 'woosb_ids', true);
 			}
 
-			$ids_str = WPCleverWoosb_Helper::woosb_clean_ids($ids_str);
+			$ids_str = WPCleverWoosb_Helper::clean_ids($ids_str);
 			?>
 			<input name="woosb_ids" class="woosb_ids woosb-ids" type="hidden"
 				   value="<?php echo esc_attr($ids_str); ?>"/>
@@ -76,7 +76,7 @@ if (defined('WOOSB_VERSION')) {
 
 			$bundle = WPCleverWoosb::instance();
 
-			$bundled_items = $bundle->woosb_get_bundled(0, $wl_product['meta']['woosb_ids']);
+			$bundled_items = $bundle->get_bundled($wl_product['meta']['woosb_ids']);
 			if (!empty($bundled_items)) {
 				foreach ($bundled_items as $key => $data) {
 

@@ -72,7 +72,6 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_product_addons'
 						'include' => $post_ids,
 						'fields' => 'ids',
 						'post_type' => WCPA_POST_TYPE,
-						'posts_per_page' => -1,
 					));
 				}
 			}
@@ -156,7 +155,6 @@ if (!function_exists('tinvwl_item_price_woocommerce_custom_product_addons')) {
 						'include' => $post_ids,
 						'fields' => 'ids',
 						'post_type' => WCPA_POST_TYPE,
-						'posts_per_page' => -1,
 					));
 				}
 			}
@@ -232,7 +230,6 @@ if (!function_exists('tinvwl_item_price_woocommerce_custom_product_addons_text_b
 						'include' => $post_ids,
 						'fields' => 'ids',
 						'post_type' => WCPA_POST_TYPE,
-						'posts_per_page' => -1
 					));
 				}
 			}

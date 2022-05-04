@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.9
-Stable tag: 1.44.0
+Stable tag: 1.44.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.44.1 =
+*Release Date - 04 May 2022*
+
+* Updated integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+
 = 1.44.0 =
 *Release Date - 29 April 2022*
 
@@ -215,138 +220,6 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 *Release Date - 27 January 2022*
 
 * WordPress 5.9 support
-
-= 1.30.1 =
-*Release Date - 17 January 2022*
-
-* WooCommerce 6.1 support
-* Fixed translation issue
-
-= 1.30.0 =
-*Release Date - 09 January 2022*
-
-* WooCommerce 6.0 support
-* Updated integration with WooCommerce Product Add-Ons Ultimate plugin
-* Fixed custom AJAX endpoint issue for some customized WordPress setups
-
-= 1.29.0 =
-*Release Date - 25 November 2021*
-
-* WooCommerce 5.9 support
-* Fixed translation issue
-
-= 1.28.4 =
-*Release Date - 07 September 2021*
-
-* Added integration with [Quick Buy Now Button for WooCommerce](https://woocommerce.com/products/quick-buy-now-button-for-woocommerce/?aff=3955) plugin
-* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
-
-= 1.28.3 =
-*Release Date - 25 August 2021*
-
-* Fixed permalink issue for multilingual setups
-* Fixed rename feature issues
-
-= 1.28.2 =
-*Release Date - 23 August 2021*
-
-* Updated integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
-* Updated integration with [myCred – Points, Rewards, Gamification, Ranks, Badges & Loyalty Plugin](https://wordpress.org/plugins/mycred/) plugin
-
-= 1.28.1 =
-*Release Date - 20 August 2021*
-
-* Fixed PHP error in the add to wishlist button shortcode
-* Fixed plugin webfont icons issue on some devices
-
-= 1.28.0 =
-*Release Date - 19 August 2021*
-
-* WooCommerce 5.6 support
-* Added option to rename the *wishlist* word across the plugin
-* Tweaked current product detection for the add to wishlist button shortcode
-* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-* Updated integration with WooCommerce TM Extra Product Options plugin
-
-= 1.27.4 =
-*Release Date - 17 August 2021*
-
-* Accessible Rich Internet Applications enhancements
-* Fixed issue for Wishlist REST API
-
-= 1.27.3 =
-*Release Date - 12 August 2021*
-
-* Fixed variable products issue with [Polylang](https://wordpress.org/plugins/polylang/) plugin
-* Fixed product translation issue for [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) plugin when product added to cart from wishlist
-
-= 1.27.2 =
-*Release Date - 11 August 2021*
-
-* Fixed products in wishlist issue for [WPML](https://wpml.org/?aid=9393&affiliate_key=9xzbMQnIyxHE) different languages
-* Fixed PHP fatal error
-
-= 1.27.1 =
-*Release Date - 4 August 2021*
-
-* Updated integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
-
-= 1.27.0 =
-*Release Date - 30 July 2021*
-
-* WordPress 5.8 support
-* WooCommerce 5.5 support
-* Remove user roles capabilities on the plugin uninstall
-* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
-* Fixed WP Menu dashboard error notification.
-
-= 1.26.1 =
-*Release Date - 16 June 2021*
-
-* Improved DB queries performance
-
-= 1.26.0 =
-*Release Date - 14 June 2021*
-
-* WooCommerce 5.4 support
-* Fixed text domain
-
-= 1.25.5 =
-*Release Date - 18 May 2021*
-
-* WooCommerce 5.3 support
-* Tweaked HTML markup for the empty wishlist template
-
-= 1.25.4 =
-*Release Date - 30 April 2021*
-
-* Fixed W3C HTML Validate issue
-* Fixed an issue for integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-
-= 1.25.3 =
-*Release Date - 23 April 2021*
-
-* Fixed PHP fatal error related to WP CLI
-
-= 1.25.2 =
-*Release Date - 16 April 2021*
-
-* Dismiss button added to admin notice
-
-= 1.25.1 =
-*Release Date - 16 April 2021*
-
-* Fixed PHP error for PHP versions below 7.3
-
-= 1.25.0 =
-*Release Date - 15 April 2021*
-
-* WooCommerce 5.2 support
-* Added opt-in options for the support chat
-* Updated integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/?aff=3955) plugin
-* Updated integration with WooCommerce TM Extra Product Options plugin
-* Fixed extra JavaScript alert on wishlist table bulk events
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 

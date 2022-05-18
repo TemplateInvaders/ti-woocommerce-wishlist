@@ -435,6 +435,10 @@ class TInvWL_Product {
 			}
 		}
 
+		// Filter wishlist products
+		$products = apply_filters( 'tinvwl_wishlist_get_products', $products, $this );
+
+
 		return $products;
 	}
 

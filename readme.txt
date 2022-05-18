@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 5.9
-Stable tag: 1.44.1
+Stable tag: 1.45.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 1.45.0 =
+*Release Date - 18 May 2022*
+
+* WooCommerce 6.5 support
+* Added integration with Nasa Core plugin
+* Added filter `tinvwl_wishlist_get_products`
+
 = 1.44.1 =
 *Release Date - 04 May 2022*
 

@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 1.46.0 ###
+*Release Date - 02 June 2022*
+
+* WordPress 6.0 support
+* Added integration with [ShopEngine](https://wordpress.org/plugins/shopengine/) plugin
+
 ### 1.45.0 ###
 *Release Date - 18 May 2022*
 

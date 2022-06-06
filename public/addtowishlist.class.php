@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+use DiDom\Document;
+
 /**
  * Add to wishlists shortcode and hooks
  */
@@ -906,6 +908,7 @@ JOIN {$table_languages} l ON
 	 * @filter woocommerce_blocks_product_grid_item_html
 	 */
 	function htmloutput_block( $html, $data, $product_object ) {
+
 		global $product;
 
 		$position = tinv_get_option( 'add_to_wishlist_catalog', 'position' );
@@ -919,28 +922,29 @@ JOIN {$table_languages} l ON
 		tinvwl_view_addto_htmlloop();
 		$add_to_wishlist = ob_get_clean();
 
+		$add_to_wishlist_document = new Document();
+		$add_to_wishlist_document->load( $add_to_wishlist,
+			false, Document::TYPE_HTML, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		$add_to_wishlist_element = $add_to_wishlist_document->toElement();
+
 		$product = '';
 
-		$html = "<li class='wc-block-grid__product'>";
+		$document = new Document();
+		$document->load( $html,
+			false, Document::TYPE_HTML, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 
-		if ( 'above_thumb' === $position ) {
-			$html .= " {$add_to_wishlist}";
+		if ( 'above_thumb' === $position && $document->find( '.wc-block-grid__product-link' ) ) {
+			$document->find( '.wc-block-grid__product-link' )[0]->insertSiblingBefore( $add_to_wishlist_element->getNode() );
 		}
-		$html .= "<a href='{$data->permalink}' class='wc-block-grid__product-link'>
-				      {$data->image}
-				      {$data->title}
-				    </a>
 
-				    {$data->price}
-				    {$data->rating}";
-		if ( 'before' === $position ) {
-			$html .= " {$add_to_wishlist}";
+		if ( 'before' === $position && $document->find( '.wc-block-grid__product-add-to-cart' ) ) {
+			$document->find( '.wc-block-grid__product-add-to-cart' )[0]->insertSiblingBefore( $add_to_wishlist_element->getNode() );
 		}
-		$html .= "{$data->button}";
-		if ( 'after' === $position ) {
-			$html .= " {$add_to_wishlist}";
+
+		if ( 'after' === $position && $document->find( '.wc-block-grid__product-add-to-cart' ) ) {
+			$document->find( '.wc-block-grid__product-add-to-cart' )[0]->insertSiblingAfter( $add_to_wishlist_element->getNode() );
 		}
-		$html .= "</li>";
+		$html = $document->html();
 
 		return $html;
 	}

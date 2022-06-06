@@ -8,8 +8,29 @@ define( 'SHORTINIT', true );
 // WP Load
 // -----------------------------------------------------------------------
 
-$config_file = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-config.php';
-$load_file   = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/wp-load.php';
+function tinvwl_scan_dir( $path, $filename ) {
+	$path     = rtrim( $path, '/' );
+	$filepath = '';
+
+	if ( $path && $filename ) {
+		$m = count( explode( DIRECTORY_SEPARATOR, $path ) );
+
+		$i = 0;
+		while ( $i < $m - 1 ) {
+			if ( file_exists( $path . DIRECTORY_SEPARATOR . $filename ) ) {
+				$filepath = $path . DIRECTORY_SEPARATOR . $filename;
+				break;
+			}
+			$path = dirname( $path );
+			$i ++;
+		}
+	}
+
+	return $filepath;
+}
+
+$config_file = tinvwl_scan_dir( dirname( dirname( dirname( __FILE__ ) ) ), 'wp-config.php' );
+$load_file   = tinvwl_scan_dir( dirname( dirname( dirname( __FILE__ ) ) ), 'wp-load.php' );
 
 if ( file_exists( $config_file ) ) {
 	if ( ! defined( 'ABSPATH' ) ) {
@@ -207,6 +228,7 @@ JOIN {$table_languages} l ON
 				'title'     => $product['wishlist_title'],
 				'status'    => $product['wishlist_status'],
 				'share_key' => $product['wishlist_share_key'],
+				'in'        => array(),
 			);
 
 		}

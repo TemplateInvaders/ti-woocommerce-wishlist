@@ -207,7 +207,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       }
 
-      $('.tinv-wraper[data-product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
+      $('.tinv-wraper[data-tinvwl_product_id="' + $(this).attr('data-tinv-wl-product') + '"]').each(function () {
         formEl.push($(this));
       });
       $.each(formEl, function (index, element) {

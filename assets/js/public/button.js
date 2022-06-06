@@ -197,7 +197,7 @@
 				}
 			}
 
-			$( '.tinv-wraper[data-product_id="' + $( this ).attr( 'data-tinv-wl-product' ) + '"]' ).each( function() {
+			$( '.tinv-wraper[data-tinvwl_product_id="' + $( this ).attr( 'data-tinv-wl-product' ) + '"]' ).each( function() {
 				formEl.push( $( this ) );
 			});
 

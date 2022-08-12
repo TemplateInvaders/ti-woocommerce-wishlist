@@ -922,6 +922,10 @@ JOIN {$table_languages} l ON
 		tinvwl_view_addto_htmlloop();
 		$add_to_wishlist = ob_get_clean();
 
+		if ( ! $add_to_wishlist ) {
+			return $html;
+		}
+
 		$add_to_wishlist_document = new Document();
 		$add_to_wishlist_document->load( $add_to_wishlist,
 			false, Document::TYPE_HTML, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );

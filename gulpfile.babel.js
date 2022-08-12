@@ -33,7 +33,7 @@ const config = require( './wpgulp.config.js' );
 const gulp = require( 'gulp' ); // Gulp of-course.
 
 // CSS related plugins.
-var sass =  require( 'gulp-sass' )( require( 'sass' ) ); // Gulp plugin for Sass compilation.
+var sass = require( 'gulp-sass' )( require( 'sass' ) ); // Gulp plugin for Sass compilation.
 const minifycss = require( 'gulp-uglifycss' ); // Minifies CSS files.
 const autoprefixer = require( 'gulp-autoprefixer' ); // Autoprefixing magic.
 const mmq = require( 'gulp-merge-media-queries' ); // Combine matching media queries into one.
@@ -419,6 +419,8 @@ gulp.task( 'zip', function() {
 		'!./.eslintrc.js',
 		'!./.eslintignore',
 		'!./.editorconfig',
+		'!./composer.json',
+		'!./composer.lock',
 		'!./package.json',
 		'!./package-lock.json' ],
 	{base: './../'})

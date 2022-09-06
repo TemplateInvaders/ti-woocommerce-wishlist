@@ -437,6 +437,121 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           s.onClick.call(this);
         }
       });
+    }); //Remove button ajax
+
+    $('body').on('click keydown', 'button[name="tinvwl-remove"]', function (e) {
+      if ('keydown' === e.type) {
+        var keyD = e.key !== undefined ? e.key : e.keyCode; // e.key && e.keycode have mixed support - keycode is deprecated but support is greater than e.key
+        // I tested within IE11, Firefox, Chrome, Edge (latest) & all had good support for e.key
+
+        if (!('Enter' === keyD || 13 === keyD || 0 <= ['Spacebar', ' '].indexOf(keyD) || 32 === keyD)) {
+          return;
+        }
+      }
+
+      e.preventDefault();
+
+      if ($(this).is('.inited-wishlist-action')) {
+        return;
+      }
+
+      $(this).addClass('inited-wishlist-action');
+      var params = {
+        'tinvwl-product_id': $(this).val(),
+        'tinvwl-action': 'remove',
+        'tinvwl-security': tinvwl_add_to_wishlist.nonce,
+        'tinvwl-paged': $(this).closest('form').data('tinvwl_paged')
+      };
+      $.ajax({
+        url: tinvwl_add_to_wishlist.wc_ajax_url,
+        method: 'POST',
+        cache: false,
+        data: params,
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
+        }
+      }).done(function (response) {
+        if (response.msg) {
+          var $msg = $(response.msg).eq(0);
+
+          if (!$('body > .tinv-wishlist').length) {
+            $('body').append($('<div>').addClass('tinv-wishlist'));
+          }
+
+          $('body > .tinv-wishlist').append($msg);
+          FocusTrap('body > .tinv-wishlist');
+          $msg.on('click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function (e) {
+            e.preventDefault();
+            $msg.remove();
+          });
+          var closeTimer;
+
+          if (!closeTimer) {
+            closeTimer = window.setTimeout(function () {
+              $msg.remove();
+
+              if (closeTimer) {
+                clearTimeout(closeTimer);
+              }
+            }, 6000);
+          }
+        }
+
+        if (response.status) {
+          $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').replaceWith(response.content);
+          $('.tinvwl-break-input').tinvwl_break_submit({
+            selector: '.tinvwl-break-input-filed'
+          });
+          $('.tinvwl-break-checkbox').tinvwl_break_submit({
+            selector: 'table td input[type=checkbox]',
+            validate: function validate() {
+              return $(this).is(':checked');
+            }
+          });
+          jQuery.fn.tinvwl_get_wishlist_data();
+        }
+
+        if (response.wishlists_data) {
+          set_hash(JSON.stringify(response.wishlists_data));
+        }
+      });
+    }); //Add to cart button ajax
+
+    $('button[name="tinvwl-add-to-cart"]').on('click', function (e) {
+      e.preventDefault();
+      var params = {
+        'tinvwl-add-to-cart': $(this).val(),
+        'action': 'product_add_to_cart',
+        'security': tinvwl_add_to_wishlist.nonce
+      };
+      $.ajax({
+        url: tinvwl_add_to_wishlist.wc_ajax_url,
+        method: 'POST',
+        cache: false,
+        data: params,
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
+        }
+      }).done(function (response) {
+        if (response.msg) {
+          var $msg = $(response.msg).eq(0);
+
+          if (!$('body > .tinv-wishlist').length) {
+            $('body').append($('<div>').addClass('tinv-wishlist'));
+          }
+
+          $('body > .tinv-wishlist').append($msg);
+          FocusTrap('body > .tinv-wishlist');
+          $msg.on('click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function (e) {
+            e.preventDefault();
+            $msg.remove();
+          });
+        }
+
+        if (response.wishlists_data) {
+          set_hash(JSON.stringify(response.wishlists_data));
+        }
+      });
     }); // Disable add to wishlist button if variations not selected
 
     $(document).on('hide_variation', '.variations_form', function (a) {
@@ -738,7 +853,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 // Misc
 (function ($) {
   $(document).ready(function () {
-    $('#tinvwl_manage_actions, #tinvwl_product_actions').addClass('form-control').parent().wrapInner('<div class="tinvwl-input-group tinvwl-no-full">').find('button').wrap('<span class="tinvwl-input-group-btn">');
     $('.tinv-lists-nav').each(function () {
       if (!$(this).html().trim().length) {
         $(this).remove();
@@ -887,7 +1001,7 @@ function clearTooltip(e) {
       }
     }); // Wishlist table bulk action checkbox
 
-    $('.global-cb').on('click', function () {
+    $('body').on('click', '.global-cb', function () {
       $(this).closest('table').eq(0).find('.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]').prop('checked', $(this).is(':checked'));
     });
   });

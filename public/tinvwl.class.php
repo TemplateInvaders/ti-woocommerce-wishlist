@@ -97,6 +97,7 @@ class TInvWL_Public_TInvWL {
 
 		$this->addto       = TInvWL_Public_AddToWishlist::instance( $this->_name );
 		$this->view        = TInvWL_Public_Wishlist_View::instance( $this->_name );
+		$this->ajax        = TInvWL_Public_Wishlist_Ajax::instance( $this->_name );
 		$this->cart        = TInvWL_Public_Cart::instance( $this->_name );
 		$this->topwishlist = TInvWL_Public_WishlistCounter::instance( $this->_name );
 	}
@@ -185,7 +186,7 @@ class TInvWL_Public_TInvWL {
 	 * Left class button
 	 */
 	function wishlist_button_action_before() {
-		echo '<div class="tinvwl-to-left look_in">';
+		echo '<div class="tinvwl-to-left look_in"><div class="tinvwl-input-group tinvwl-no-full">';
 	}
 
 	/**
@@ -199,7 +200,7 @@ class TInvWL_Public_TInvWL {
 	 * Close class button
 	 */
 	function wishlist_button_action_after() {
-		echo '</div>';
+		echo '</div></div>';
 	}
 
 	/**
@@ -533,6 +534,7 @@ class TInvWL_Public_TInvWL {
 			'nonce'                      => wp_create_nonce( 'wp_rest' ),
 			'rest_root'                  => esc_url_raw( get_rest_url() ),
 			'plugin_url'                 => esc_url_raw( TINVWL_URL ),
+			'wc_ajax_url' => WC_AJAX::get_endpoint( 'tinvwl' ),
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {

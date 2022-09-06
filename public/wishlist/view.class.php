@@ -264,7 +264,7 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @return array
 	 */
-	function get_current_products( $wishlist = null, $external = true, $lists_per_page = 10 ) {
+	function get_current_products( $wishlist = null, $external = true, $lists_per_page = 10, $paged = 1 ) {
 		if ( empty( $wishlist ) || $wishlist === $this->get_current_wishlist() ) {
 			$wishlist = $this->get_current_wishlist();
 
@@ -293,17 +293,15 @@ class TInvWL_Public_Wishlist_View {
 			return array();
 		}
 
-		$paged       = absint( get_query_var( 'wl_paged', 1 ) );
-		$this->pages = ceil( absint( $wlp->get_wishlist( array(
+		$paged        = absint( get_query_var( 'wl_paged' ) ? get_query_var( 'wl_paged' ) : $paged );
+		$this->pages  = ceil( absint( $wlp->get_wishlist( array(
 				'count'    => 9999999,
 				'external' => false,
 			), true ) ) / absint( $lists_per_page ) );
-
-		$paged = $this->pages < $paged ? $this->pages : $paged;
-
+		$this->paged  = $this->pages < $paged ? $this->pages : $paged;
 		$product_data = array(
 			'count'    => absint( $lists_per_page ),
-			'offset'   => absint( $lists_per_page ) * ( absint( $paged ) - 1 ),
+			'offset'   => absint( $lists_per_page ) * ( absint( $this->paged ) - 1 ),
 			'external' => $external,
 			'order_by' => 'date',
 			'order'    => 'DESC',
@@ -471,7 +469,6 @@ class TInvWL_Public_Wishlist_View {
 				'options' => array( 'min_range' => 0, 'default' => 1 ),
 			),
 			'tinvwl-add-to-cart' => FILTER_VALIDATE_INT,
-			'tinvwl-remove'      => FILTER_VALIDATE_INT,
 			'tinvwl-action'      => FILTER_SANITIZE_STRING,
 		) );
 
@@ -481,44 +478,7 @@ class TInvWL_Public_Wishlist_View {
 
 			return $this->button_addtocart( $wishlist, $product, $quantity, $owner );
 		}
-		if ( ! empty( $post['tinvwl-remove'] ) ) {
-			if ( ! $wishlist['is_owner'] ) {
-				return false;
-			}
-			$product = $post['tinvwl-remove'];
-			if ( 0 === $wishlist['ID'] ) {
-				$wlp = TInvWL_Product_Local::instance();
-			} else {
-				$wlp = new TInvWL_Product( $wishlist );
-			}
-			if ( empty( $wlp ) ) {
-				return false;
-			}
-			$product_data = $wlp->get_wishlist( array( 'ID' => $product ) );
-			$product_data = array_shift( $product_data );
-			if ( empty( $product_data ) ) {
-				return false;
-			}
-			$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), is_callable( array(
-				$product_data['data'],
-				'get_name'
-			) ) ? $product_data['data']->get_name() : $product_data['data']->get_title() );
-			if ( $wlp->remove( $product_data ) ) {
-				add_action( 'tinvwl_before_wishlist', array(
-					'TInvWL_Public_Wishlist_View',
-					'check_cart_hash',
-				), 99, 1 );
-				add_action( 'woocommerce_set_cart_cookies', array(
-					'TInvWL_Public_Wishlist_View',
-					'reset_cart_hash',
-				), 99, 1 );
-				wc_add_notice( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
-			} else {
-				wc_add_notice( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ), 'error' );
-			}
 
-			return true;
-		}
 		do_action( 'tinvwl_action_' . $post['tinvwl-action'], $wishlist, $post['wishlist_pr'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
@@ -666,11 +626,12 @@ class TInvWL_Public_Wishlist_View {
 		}
 
 		$this->lists_per_page = absint( $atts['lists_per_page'] );
+		$paged                = absint( get_query_var( 'wl_paged' ) ? get_query_var( 'wl_paged' ) : $atts['paged'] );
 
 		if ( 10 === $this->lists_per_page && is_array( $this->get_current_products_query() ) ) {
 			$products = $this->current_products_query;
 		} else {
-			$products = $this->get_current_products( $wishlist, true, $this->lists_per_page );
+			$products = $this->get_current_products( $wishlist, true, $this->lists_per_page, $paged );
 		}
 
 		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
@@ -697,19 +658,17 @@ class TInvWL_Public_Wishlist_View {
 			'wishlist'           => $wishlist,
 			'wishlist_table'     => tinv_get_option( 'table' ),
 			'wishlist_table_row' => $wishlist_table_row,
+			'wl_paged'           => $this->paged,
 		);
 
-		$paged = absint( get_query_var( 'wl_paged', 1 ) );
-		$paged = $this->pages < $paged ? $this->pages : $paged;
-
-		if ( 1 < $paged ) {
+		if ( 1 < $this->paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_prev' ) );
 		}
 
 		if ( 1 < $this->pages ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'pages' ) );
 		}
-		if ( $this->pages > $paged ) {
+		if ( $this->pages > $this->paged ) {
 			add_action( 'tinvwl_pagenation_wishlist', array( $this, 'page_next' ) );
 		}
 
@@ -774,7 +733,7 @@ class TInvWL_Public_Wishlist_View {
 	 * Prev page button
 	 */
 	function page_prev() {
-		$paged = absint( get_query_var( 'wl_paged', 1 ) );
+		$paged = $this->paged;
 		$paged = $this->pages < $paged ? $this->pages : $paged;
 		$paged = 1 < $paged ? $paged - 1 : 0;
 		$this->page( $paged, sprintf( '<i class="ftinvwl ftinvwl-chevron-left"></i><span>%s</span>', __( 'Previous Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-prev' ) );
@@ -784,8 +743,7 @@ class TInvWL_Public_Wishlist_View {
 	 * Pages
 	 */
 	function pages() {
-
-		$paged = absint( get_query_var( 'wl_paged', 1 ) );
+		$paged = $this->paged;
 		$paged = $this->pages < $paged ? $this->pages : $paged;
 		if ( 1 === (int) $paged ) {
 			echo '<span></span>';
@@ -802,7 +760,7 @@ class TInvWL_Public_Wishlist_View {
 	 * Next page button
 	 */
 	function page_next() {
-		$paged = absint( get_query_var( 'wl_paged', 1 ) );
+		$paged = $this->paged;
 		$paged = $this->pages < $paged ? $this->pages : $paged;
 		$paged = 1 < $paged ? $paged + 1 : 2;
 		$this->page( $paged, sprintf( '<span>%s</span><i class="ftinvwl ftinvwl-chevron-right"></i>', __( 'Next Page', 'ti-woocommerce-wishlist' ) ), array( 'class' => 'button tinv-next' ) );
@@ -835,6 +793,7 @@ class TInvWL_Public_Wishlist_View {
 	function shortcode( $atts = array() ) {
 		$default = array(
 			'lists_per_page' => 10,
+			'paged'          => 1,
 		);
 		$atts    = shortcode_atts( $default, $atts );
 

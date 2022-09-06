@@ -65,7 +65,7 @@
 		});
 
 		// Wishlist table bulk action checkbox
-		$( '.global-cb' ).on( 'click', function() {
+		$( 'body' ).on( 'click', '.global-cb', function() {
 			$( this ).closest( 'table' ).eq( 0 ).find( '.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]' ).prop( 'checked', $( this ).is( ':checked' ) );
 		});
 	});

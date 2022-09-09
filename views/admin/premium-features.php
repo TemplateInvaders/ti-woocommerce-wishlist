@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 								<div class="mc-field-group">
 									<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
-									<input type="submit" value="<?php __( 'Subscribe', 'ti-woocommerce-wishlist' ); ?>"
+									<input type="submit" value="<?php _e( 'Subscribe', 'ti-woocommerce-wishlist' ); ?>"
 										   name="subscribe"
 										   id="mc-embedded-subscribe" class="tinvwl-btn">
 								</div>

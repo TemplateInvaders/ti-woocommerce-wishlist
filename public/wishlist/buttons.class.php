@@ -203,7 +203,7 @@ class TInvWL_Public_Wishlist_Buttons {
 		$attr = array(
 			'type'  => $submit,
 			'class' => 'button',
-			'name'  => 'tinvwl-action',
+			'name'  => 'tinvwl-action-' . $value,
 			'value' => $value,
 			'title' => esc_attr( wp_strip_all_tags( $title ) ),
 		);

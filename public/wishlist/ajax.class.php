@@ -149,13 +149,13 @@ class TInvWL_Public_Wishlist_Ajax {
 				) ) ? $product_data['data']->get_name() : $product_data['data']->get_title() );
 
 				if ( $wlp->remove( $product_data ) ) {
-					$response['status'] = true;
-					$response['msg']    = array( sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
-					$response['content'] = tinvwl_shortcode_view( array( 'paged' => $post['tinvwl-paged'] ) );
+					$response['status']         = true;
+					$response['msg'][]          = sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
+					$response['content']        = tinvwl_shortcode_view( array( 'paged' => $post['tinvwl-paged'] ) );
 					$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
 				} else {
 					$response['status'] = false;
-					$response['msg']    = array( sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title ) );
+					$response['msg'][]  = sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
 				}
 
 				break;
@@ -206,7 +206,7 @@ class TInvWL_Public_Wishlist_Ajax {
 					$add = TInvWL_Public_Cart::add( $wishlist, $product_id, $quantity );
 					if ( $add ) {
 						$response['status'] = true;
-						$response['msg']    = array( sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title ) );
+						$response['msg'][]  = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title );
 
 						if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
 							$response['redirect'] = wc_get_checkout_url();
@@ -221,7 +221,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						}
 					} else {
 						$response['status'] = false;
-						$response['msg']    = array( sprintf( _n( '%s has not been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title ) );
+						$response['msg'][]  = sprintf( _n( '%s has not been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title );
 					}
 					$response['content'] = tinvwl_shortcode_view( array( 'paged' => $post['tinvwl-paged'] ) );
 				}
@@ -235,7 +235,87 @@ class TInvWL_Public_Wishlist_Ajax {
 
 				break;
 			case 'add_to_cart_all':
+				$_quantity = array();
+				add_filter( 'tinvwl_before_get_current_product', array(
+					'TInvWL_Public_Wishlist_Buttons',
+					'get_all_products_fix_offset'
+				) );
+				$products = TInvWL_Public_Wishlist_Buttons::get_current_products( $wishlist, 9999999 );
+				$result   = $errors = array();
+				foreach ( $products as $_product ) {
+					$product_data = wc_get_product( $_product['variation_id'] ? $_product['variation_id'] : $_product['product_id'] );
 
+					if ( ! $product_data || 'trash' === $product_data->get_status() ) {
+						continue;
+					}
+
+					global $product;
+					// store global product data.
+					$_product_tmp = $product;
+					// override global product data.
+					$product = $product_data;
+
+					add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
+					$redirect_url = $product_data->add_to_cart_url();
+					remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
+
+					// restore global product data.
+					$product = $_product_tmp;
+
+					$quantity             = apply_filters( 'tinvwl_product_add_to_cart_quantity', array_key_exists( $_product['ID'], (array) $_quantity ) ? $_quantity[ $_product['ID'] ] : 1, $product_data );
+					$_product['quantity'] = $quantity;
+					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $_product ) ) {
+						$errors[] = $_product['product_id'];
+						continue;
+					}
+
+					$_product = $_product['ID'];
+
+					$add = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
+
+					if ( $add ) {
+						$result = tinv_array_merge( $result, $add );
+					} else {
+						$errors[] = $product_data->get_id();
+					}
+				}
+
+				if ( ! empty( $errors ) ) {
+					$titles = array();
+					foreach ( $errors as $product_id ) {
+						$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
+					}
+					$titles            = array_filter( $titles );
+					$response['msg'][] = sprintf( _n( 'Product %s could not be added to cart because some requirements are not met.', 'Products: %s could not be added to cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+				}
+				if ( ! empty( $result ) ) {
+					$response['status'] = true;
+
+					$titles = array();
+
+					foreach ( $result as $product_id => $qty ) {
+						/* translators: %s: product name */
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
+						$count    += $qty;
+					}
+
+					$titles = array_filter( $titles );
+					/* translators: %s: product name */
+					$response['msg'][] = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', $count, 'woocommerce' ), wc_format_list_of_items( $titles ) );
+
+					if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
+						$response['redirect'] = wc_get_checkout_url();
+					}
+
+					if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
+						$response['redirect'] = wc_get_cart_url();
+					}
+
+					if ( tinv_get_option( 'processing', 'autoremove' ) ) {
+						$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
+					}
+				}
+				$response['content'] = tinvwl_shortcode_view( array( 'paged' => $post['tinvwl-paged'] ) );
 				break;
 		}
 		$response['icon'] = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';

@@ -15,7 +15,7 @@ wp_enqueue_script( 'tinvwl' );
 ?>
 <div class="tinv-wishlist woocommerce tinv-wishlist-clear">
 	<?php do_action( 'tinvwl_before_wishlist', $wishlist ); ?>
-	<?php if ( function_exists( 'wc_print_notices' ) && isset( WC()->session ) ) {
+	<?php if (function_exists('wc_print_notices') && isset(WC()->session)) {
 		wc_print_notices();
 	} ?>
 	<?php $form_url = tinv_url_wishlist( $wishlist['share_key'], $wl_paged, true ); ?>

@@ -7,7 +7,7 @@
 .tinv-wishlist *{-webkit-box-sizing:border-box;box-sizing:border-box}
 .tinvwl-wishlist :after,.tinvwl-wishlist :before{-webkit-box-sizing:border-box;box-sizing:border-box}
 .tinv-wishlist select{width:140px}
-.tinv-wishlist ul{list-style:none;margin:0;padding:0}
+.tinv-wishlist ul:not(.woocommerce-error){list-style:none;margin:0;padding:0}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt:before,.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt:before{margin-top:-10px;margin-right:-10px}
 .woocommerce.tinv-wishlist #respond input#submit.alt,.woocommerce.tinv-wishlist a.button.alt,.woocommerce.tinv-wishlist button.button.alt,.woocommerce.tinv-wishlist input.button.alt{text-align:center}
 .tinv-wishlist .button i,.tinv-wishlist .navigation-button a i{margin-left:6px}

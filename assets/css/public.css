@@ -18,7 +18,7 @@
 .tinv-wishlist select {
   width: 140px;
 }
-.tinv-wishlist ul {
+.tinv-wishlist ul:not(.woocommerce-error) {
   list-style: none;
   margin: 0;
   padding: 0;

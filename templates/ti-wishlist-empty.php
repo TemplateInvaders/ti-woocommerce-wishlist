@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-empty.php.
  *
- * @version             1.25.5
+ * @version             2.0.0
  * @package           TInvWishlist\Template
  */
 
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 ?>
 <div class="tinv-wishlist woocommerce">
 	<?php do_action('tinvwl_before_wishlist', $wishlist); ?>
-	<?php if (function_exists('wc_print_notices') && isset(WC()->session)) {
+	<?php if ( function_exists( 'wc_print_notices' ) && isset( WC()->session ) ) {
 		wc_print_notices();
 	} ?>
 	<p class="cart-empty woocommerce-info">

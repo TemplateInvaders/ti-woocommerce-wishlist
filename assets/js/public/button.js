@@ -426,17 +426,19 @@
 
 			e.preventDefault();
 
-			if ( $( this ).is( '.inited-wishlist-action' ) ) {
+			var el = $( this );
+
+			if ( el.is( '.inited-wishlist-action' ) ) {
 				return;
 			}
 
-			$( this ).addClass( 'inited-wishlist-action' );
+			el.addClass( 'inited-wishlist-action' );
 
 			var params = {
-				'tinvwl-product_id': $( this ).val(),
+				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'remove',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': $( this ).closest( 'form' ).data( 'tinvwl_paged' )
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
 			};
 
 			$.ajax({
@@ -448,6 +450,8 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+				el.removeClass( 'inited-wishlist-action' );
+
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
 					if ( ! $( 'body > .tinv-wishlist' ).length ) {
@@ -496,13 +500,34 @@
 		});
 
 		//Add to cart button ajax
-		$( 'button[name="tinvwl-add-to-cart"]' ).on( 'click', function( e ) {
+		$( 'body' ).on( 'click keydown', 'button[name="tinvwl-add-to-cart"]', function( e ) {
+
+			if ( 'keydown' === e.type ) {
+				const keyD = e.key !== undefined ? e.key : e.keyCode;
+
+				// e.key && e.keycode have mixed support - keycode is deprecated but support is greater than e.key
+				// I tested within IE11, Firefox, Chrome, Edge (latest) & all had good support for e.key
+
+				if ( ! ( ( 'Enter' === keyD || 13 === keyD ) || ( 0 <= [ 'Spacebar', ' ' ].indexOf( keyD ) || 32 === keyD ) ) ) {
+					return;
+				}
+			}
+
 			e.preventDefault();
 
+			var el = $( this );
+
+			if ( el.is( '.inited-wishlist-action' ) ) {
+				return;
+			}
+
+			el.addClass( 'inited-wishlist-action' );
+
 			var params = {
-				'tinvwl-add-to-cart': $( this ).val(),
-				'action': 'product_add_to_cart',
-				'security': tinvwl_add_to_wishlist.nonce
+				'tinvwl-product_id': el.val(),
+				'tinvwl-action': 'add_to_cart_single',
+				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
 			};
 
 			$.ajax({
@@ -514,6 +539,11 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+				el.removeClass( 'inited-wishlist-action' );
+
+				if ( response.redirect ) {
+					window.location.href = response.redirect;
+				}
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -528,14 +558,46 @@
 						e.preventDefault();
 						$msg.remove();
 					});
+
+					var closeTimer;
+					if ( ! closeTimer ) {
+						closeTimer = window.setTimeout( function() {
+							$msg.remove();
+
+							if ( closeTimer ) {
+								clearTimeout( closeTimer );
+							}
+
+						}, 6000 );
+					}
 				}
+				if ( response.redirect ) {
+					return;
+				}
+
+				$( document.body ).trigger( 'wc_fragment_refresh' );
+
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
+				$( '.tinvwl-break-input' ).tinvwl_break_submit({
+					selector: '.tinvwl-break-input-filed'
+				});
+
+				$( '.tinvwl-break-checkbox' ).tinvwl_break_submit({
+					selector: 'table td input[type=checkbox]',
+					validate: function() {
+						return $( this ).is( ':checked' );
+					}
+				});
+				jQuery.fn.tinvwl_get_wishlist_data();
 
 				if ( response.wishlists_data ) {
 					set_hash( JSON.stringify( response.wishlists_data ) );
 				}
 
+
 			});
 		});
+
 
 		// Disable add to wishlist button if variations not selected
 		$( document ).on( 'hide_variation', '.variations_form', function( a ) {

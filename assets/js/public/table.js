@@ -53,17 +53,6 @@
 
 	$( document ).ready( function() {
 
-		$( '.tinvwl-break-input' ).tinvwl_break_submit({
-			selector: '.tinvwl-break-input-filed'
-		});
-
-		$( '.tinvwl-break-checkbox' ).tinvwl_break_submit({
-			selector: 'table td input[type=checkbox]',
-			validate: function() {
-				return $( this ).is( ':checked' );
-			}
-		});
-
 		// Wishlist table bulk action checkbox
 		$( 'body' ).on( 'click', '.global-cb', function() {
 			$( this ).closest( 'table' ).eq( 0 ).find( '.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]' ).prop( 'checked', $( this ).is( ':checked' ) );

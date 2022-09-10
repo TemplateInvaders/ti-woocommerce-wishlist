@@ -352,12 +352,12 @@ class TInvWL_Public_Wishlist_Buttons {
 		);
 
 		if ( tinv_get_option( 'table', 'add_select_to_cart' ) ) {
-			$options['add_selected'] = apply_filters( 'tinvwl_add_to_cart_text', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
+			$options['add_to_cart_selected'] = apply_filters( 'tinvwl_add_to_cart_text', tinv_get_option( 'product_table', 'text_add_to_cart' ) );
 		}
 
 		$wishlist_curent = TInvWL_Public_Wishlist_View::instance()->get_current_wishlist();
 		if ( $wishlist_curent['is_owner'] ) {
-			$options['remove'] = __( 'Remove', 'ti-woocommerce-wishlist' );
+			$options['remove_selected'] = __( 'Remove', 'ti-woocommerce-wishlist' );
 		}
 
 		return TInvWL_Form::_select( 'product_actions', '', array( 'class' => 'tinvwl-break-input-filed form-control' ), $options ) . '<span class="tinvwl-input-group-btn">';

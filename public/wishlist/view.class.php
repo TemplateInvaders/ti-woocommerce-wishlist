@@ -116,7 +116,9 @@ class TInvWL_Public_Wishlist_View {
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
 
-		add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
+		if ( ! ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) ) {
+			add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
+		}
 		add_filter( 'tinvwl_wishlist_item_url', array( $this, 'add_argument' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_action_add_to_cart', array( $this, 'product_allow_add_to_cart' ), 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'external_text' ), 10, 3 );

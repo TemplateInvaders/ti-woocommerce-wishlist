@@ -134,9 +134,18 @@ class TInvWL_Public_TInvWL {
 			add_filter( 'language_attributes', array( $this, 'add_ogp' ), 100 );
 		}
 
-		if ( tinv_get_option( 'general', 'link_in_myaccount' ) ) {
+		if ( tinv_get_option( 'general', 'link_in_myaccount' ) || ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) ) {
 			add_filter( 'woocommerce_account_menu_items', array( $this, 'account_menu_items' ) );
 			add_filter( 'woocommerce_get_endpoint_url', array( $this, 'account_menu_endpoint' ), 4, 10 );
+		}
+
+		if ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) {
+			add_action( 'init', array( $this, 'wishlist_endpoint' ) );
+			add_filter( 'query_vars', array( $this, 'wishlist_query_vars' ), 0 );
+			add_action( 'woocommerce_account_' . tinv_get_option( 'general', 'my_account_endpoint_slug' ) . '_endpoint', array(
+				$this,
+				'wishlist_content'
+			) );
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_header' ) );
@@ -534,7 +543,7 @@ class TInvWL_Public_TInvWL {
 			'nonce'                      => wp_create_nonce( 'wp_rest' ),
 			'rest_root'                  => esc_url_raw( get_rest_url() ),
 			'plugin_url'                 => esc_url_raw( TINVWL_URL ),
-			'wc_ajax_url' => WC_AJAX::get_endpoint( 'tinvwl' ),
+			'wc_ajax_url'                => WC_AJAX::get_endpoint( 'tinvwl' ),
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {
@@ -656,6 +665,21 @@ class TInvWL_Public_TInvWL {
 		}
 	}
 
+
+	function wishlist_endpoint() {
+		add_rewrite_endpoint( tinv_get_option( 'general', 'my_account_endpoint_slug' ), EP_ROOT | EP_PAGES );
+	}
+
+	function wishlist_query_vars( $vars ) {
+		$vars[] = tinv_get_option( 'general', 'my_account_endpoint_slug' );
+
+		return $vars;
+	}
+
+	function wishlist_content() {
+		echo do_shortcode( ' [ti_wishlistsview] ' );
+	}
+
 	/**
 	 * Add link to wishlist in WooCommerce My Account page.
 	 *
@@ -665,14 +689,14 @@ class TInvWL_Public_TInvWL {
 	 */
 	function account_menu_items( $items ) {
 		$index_position = apply_filters( 'tinvwl_myaccount_position_wishlist', - 1, $items );
-		$items          = array_merge(
+
+		$items = array_merge(
 			array_slice( $items, 0, $index_position, true ),
 			array(
-				'tinv_wishlist' => __( 'Wishlist', 'ti-woocommerce-wishlist' ),
+				tinv_get_option( 'general', 'my_account_endpoint_slug' ) => __( 'Wishlist', 'ti-woocommerce-wishlist' ),
 			),
 			array_slice( $items, $index_position, null, true )
 		);
-//		flush_rewrite_rules();
 
 		return $items;
 	}
@@ -688,7 +712,7 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function account_menu_endpoint( $url, $endpoint, $value, $permalink ) {
-		if ( 'tinv_wishlist' === $endpoint ) {
+		if ( ! tinv_get_option( 'general', 'require_login' ) || ! tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			$url = tinv_url_wishlist_default();
 		}
 

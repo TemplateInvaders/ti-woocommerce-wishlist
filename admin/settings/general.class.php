@@ -406,7 +406,20 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'uploadfile',
 						'name'  => 'icon_upload',
 						'std'   => '',
-						'text'  => ' ',
+						'text'  => __( 'Default state', 'ti-woocommerce-wishlist' ),
+						'class' => 'tiwl-button-icon-custom',
+						'extra' => array(
+							'button' => array(
+								'value' => __( 'Upload', 'ti-woocommerce-wishlist' ),
+							),
+							'type'   => array( 'image' ),
+						),
+					),
+					array(
+						'type'  => 'uploadfile',
+						'name'  => 'icon_upload_added',
+						'std'   => '',
+						'text'  => __( 'Already added state', 'ti-woocommerce-wishlist' ),
 						'class' => 'tiwl-button-icon-custom',
 						'extra' => array(
 							'button' => array(
@@ -546,8 +559,21 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'uploadfile',
 						'name'  => 'icon_upload',
 						'std'   => '',
-						'text'  => ' ',
-						'class' => 'tiwl-buttoncat-icon-custom',
+						'text'  => __( 'Default state', 'ti-woocommerce-wishlist' ),
+						'class' => 'tiwl-button-icon-custom',
+						'extra' => array(
+							'button' => array(
+								'value' => __( 'Upload', 'ti-woocommerce-wishlist' ),
+							),
+							'type'   => array( 'image' ),
+						),
+					),
+					array(
+						'type'  => 'uploadfile',
+						'name'  => 'icon_upload_added',
+						'std'   => '',
+						'text'  => __( 'Already added state', 'ti-woocommerce-wishlist' ),
+						'class' => 'tiwl-button-icon-custom',
 						'extra' => array(
 							'button' => array(
 								'value' => __( 'Upload', 'ti-woocommerce-wishlist' ),

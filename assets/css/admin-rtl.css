@@ -346,8 +346,8 @@ h6 {
  */
 .tinvwl-content label {
   /*font-size: 14px;
-         font-weight: 600;
-         margin: 2px;*/
+        font-weight: 600;
+        margin: 2px;*/
   /*line-height: 42px;*/
 }
 .tinvwl-content a {
@@ -434,6 +434,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: 4% center;
   background-position: calc(100% - (100% - 15px)) center;
+  max-width: 100%;
 }
 .tinvwl-content select:disabled {
   font-size: 15px;
@@ -1168,8 +1169,8 @@ a.tinvwl-btn:not(:disabled):hover, a.tinvwl-btn:not(:disabled):active, a.tinvwl-
 }
 .tinvwl-info-wrap.tinvwl-in-table {
   /*position: absolute;
-    top: 50%;
-    margin-top: -11px;*/
+     top: 50%;
+     margin-top: -11px;*/
 }
 
 .tinvwl-content .widefat th.sortable, .tinvwl-content .widefat th.sorted {
@@ -2545,7 +2546,7 @@ textarea[name=style_plain-css] {
 /* Bootstrap */
 .container, .container-fluid {
   /*padding-right: 15px;
-    padding-left: 15px;*/
+     padding-left: 15px;*/
   margin-left: auto;
   margin-right: auto;
 }

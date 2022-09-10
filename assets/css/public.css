@@ -1079,14 +1079,14 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   border-color: #FF0000 !important;
 }
 
-.tinvwl_remove_from_wishlist-text, .tinvwl_already_on_wishlist-text {
+.tinvwl_remove_from_wishlist-text, .tinvwl_already_on_wishlist-text, .tinvwl_add_to_wishlist_button.tinvwl-icon-custom img.icon-already-on-wishlist {
   display: none !important;
 }
 
-.tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_remove_from_wishlist-text, .tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_already_on_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_remove_from_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_already_on_wishlist-text {
+.tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_remove_from_wishlist-text, .tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_already_on_wishlist-text, .tinvwl-product-in-list.tinvwl-product-make-remove img.icon-already-on-wishlist, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_remove_from_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_already_on_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist img.icon-already-on-wishlist {
   display: inline !important;
 }
-.tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_add_to_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_add_to_wishlist-text {
+.tinvwl-product-in-list.tinvwl-product-make-remove .tinvwl_add_to_wishlist-text, .tinvwl-product-in-list.tinvwl-product-make-remove img.icon-add-on-wishlist, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist .tinvwl_add_to_wishlist-text, .tinvwl-product-in-list.tinvwl-product-already-on-wishlist img.icon-add-on-wishlist {
   display: none !important;
 }
 

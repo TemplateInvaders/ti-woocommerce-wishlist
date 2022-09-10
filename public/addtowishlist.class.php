@@ -822,9 +822,13 @@ JOIN {$table_languages} l ON
 			}
 		}
 		if ( ! empty( $icon ) ) {
-			$icon_upload = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_upload' );
+			$icon_upload       = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_upload' );
+			$icon_upload_added = tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'icon_upload_added' );
 			if ( 'custom' === $icon && ! empty( $icon_upload ) ) {
-				$text = sprintf( '<img src="%s" alt="%s" /> %s', esc_url( $icon_upload ), esc_attr( apply_filters( 'tinvwl_added_to_wishlist_text_loop', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ) ), $text );
+				$text = sprintf( '<img src="%s" alt="%s"' . ( ! empty( $icon_upload_added ) ? 'class="icon-add-on-wishlist"' : '' ) . '  /> %s', esc_url( $icon_upload ), esc_attr( apply_filters( 'tinvwl_add_to_wishlist_text_loop', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text' ) ) ), $text );
+				if ( ! empty( $icon_upload_added ) ) {
+					$text = sprintf( '<img src="%s" alt="%s" class="icon-already-on-wishlist" /> %s', esc_url( $icon_upload_added ), esc_attr( apply_filters( 'tinvwl_added_to_wishlist_text_loop', tinv_get_option( 'add_to_wishlist' . ( $this->is_loop ? '_catalog' : '' ), 'text_already_on' ) ) ), $text );
+				}
 			}
 			$icon = 'tinvwl-icon-' . $icon;
 			if ( 'custom' !== $icon && $icon_color ) {

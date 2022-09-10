@@ -112,7 +112,6 @@ class TInvWL_Public_Wishlist_View {
 
 		add_action( 'wp_loaded', array( $this, 'login_post_redirect' ), 19 );
 
-		add_action( 'wp', array( $this, 'wishlist_action' ), 0 );
 		add_action( 'wp_head', array( $this, 'add_meta_tags' ), 1 );
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
@@ -336,53 +335,6 @@ class TInvWL_Public_Wishlist_View {
 	}
 
 	/**
-	 * Basic validation actions
-	 *
-	 * @return boolean
-	 */
-	function wishlist_action() {
-
-		$wishlist_page_id = apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true );
-
-		if ( is_page( $wishlist_page_id )
-		     || ( is_home() && 'page' === get_option( 'show_on_front' ) && absint( get_option( 'page_on_front' ) ) === $wishlist_page_id )
-		     || ( is_shop() && wc_get_page_id( 'shop' ) === $wishlist_page_id ) ) {
-			$wishlist = $this->get_current_wishlist();
-			if ( empty( $wishlist ) ) {
-				return false;
-			}
-
-			if ( version_compare( WC_VERSION, '3.2.0', '<' ) ) {
-				if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-					define( 'DONOTCACHEPAGE', true );
-				}
-				if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
-					define( 'DONOTCACHEOBJECT', true );
-				}
-				if ( ! defined( 'DONOTCACHEDB' ) ) {
-					define( 'DONOTCACHEDB', true );
-				}
-			} else {
-				WC_Cache_Helper::set_nocache_constants( true );
-				nocache_headers();
-			}
-
-			$is_owner = is_user_logged_in() ? ( get_current_user_id() === $wishlist['author'] ) : $wishlist['is_owner'];
-			$nonce    = filter_input( INPUT_POST, 'wishlist_nonce' );
-			if ( $nonce && wp_verify_nonce( $nonce, 'tinvwl_wishlist_owner' ) && $is_owner ) {
-				do_action( 'tinvwl_before_action_owner', $wishlist );
-				$this->wishlist_actions( $wishlist, true );
-				do_action( 'tinvwl_after_action_owner', $wishlist );
-			}
-			if ( $nonce && wp_verify_nonce( $nonce, 'tinvwl_wishlist_user' ) && ! $is_owner ) {
-				do_action( 'tinvwl_before_action_user', $wishlist );
-				$this->wishlist_actions( $wishlist, false );
-				do_action( 'tinvwl_after_action_user', $wishlist );
-			}
-		}
-	}
-
-	/**
 	 * Create social meta tags
 	 */
 	function add_meta_tags() {
@@ -447,143 +399,6 @@ class TInvWL_Public_Wishlist_View {
 				}
 			} // End if().
 		} // End if().
-	}
-
-	/**
-	 * Basic actions
-	 *
-	 * @param array $wishlist Wishlist object.
-	 * @param boolean $owner Is Owner.
-	 *
-	 * @return boolean
-	 */
-	function wishlist_actions( $wishlist, $owner = false ) {
-		$post = filter_input_array( INPUT_POST, array(
-			'wishlist_pr'        => array(
-				'filter' => FILTER_VALIDATE_INT,
-				'flags'  => FILTER_FORCE_ARRAY,
-			),
-			'wishlist_qty'       => array(
-				'filter'  => FILTER_VALIDATE_INT,
-				'flags'   => FILTER_FORCE_ARRAY,
-				'options' => array( 'min_range' => 0, 'default' => 1 ),
-			),
-			'tinvwl-add-to-cart' => FILTER_VALIDATE_INT,
-			'tinvwl-action'      => FILTER_SANITIZE_STRING,
-		) );
-
-		if ( ! empty( $post['tinvwl-add-to-cart'] ) ) {
-			$product  = $post['tinvwl-add-to-cart'];
-			$quantity = array_key_exists( $product, (array) $post['wishlist_qty'] ) ? $post['wishlist_qty'][ $product ] : 1;
-
-			return $this->button_addtocart( $wishlist, $product, $quantity, $owner );
-		}
-
-		do_action( 'tinvwl_action_' . $post['tinvwl-action'], $wishlist, $post['wishlist_pr'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
-	}
-
-	/**
-	 * Check cart hash to trigger WC fragments refresh on wishlist update.
-	 *
-	 * @param  $wishlist
-	 */
-	public static function check_cart_hash( $wishlist ) {
-		wp_add_inline_script( 'woocommerce', "
-		jQuery(document).ready(function($){
-		    if ( typeof wc_cart_fragments_params === 'undefined' ) {
-		        return false;
-		    }
-
-            var cart_hash_key           = wc_cart_fragments_params.cart_hash_key,
-                cart_hash    = sessionStorage.getItem( cart_hash_key );
-
-            if ( cart_hash === null || cart_hash === undefined || cart_hash === '' ) {
-                sessionStorage.setItem( cart_hash_key, 'empty' );
-            }
-        });
-        " );
-	}
-
-	/**
-	 * Reset cart hash to trigger WC fragments refresh on wishlist update.
-	 *
-	 * @param bool $set
-	 */
-	public static function reset_cart_hash( $set ) {
-		wc_setcookie( 'woocommerce_cart_hash', 'reset', time() - HOUR_IN_SECONDS );
-	}
-
-	/**
-	 * Apply action add to cart
-	 *
-	 * @param array $wishlist Wishlist object.
-	 * @param integer $id Product id in wishlist.
-	 * @param integer $quantity Product quantity.
-	 * @param boolean $owner Is Owner.
-	 *
-	 * @return boolean
-	 */
-	function button_addtocart( $wishlist, $id, $quantity = 1, $owner = false ) {
-		$id       = absint( $id );
-		$quantity = absint( $quantity );
-		if ( empty( $id ) || empty( $quantity ) ) {
-			return false;
-		}
-
-		$wlp = null;
-		if ( 0 === $wishlist['ID'] ) {
-			$wlp = TInvWL_Product_Local::instance();
-		} else {
-			$wlp = new TInvWL_Product( $wishlist );
-		}
-		if ( empty( $wlp ) ) {
-			return false;
-		}
-
-		$_product = $wlp->get_wishlist( array( 'ID' => $id ) );
-		$_product = array_shift( $_product );
-		if ( empty( $_product ) || empty( $_product['data'] ) ) {
-			return false;
-		}
-
-		global $product;
-		// store global product data.
-		$_product_tmp = $product;
-		// override global product data.
-		$product = $_product['data'];
-
-		add_filter( 'clean_url', 'tinvwl_clean_url', 10, 2 );
-		$redirect_url = $_product['data']->add_to_cart_url();
-		remove_filter( 'clean_url', 'tinvwl_clean_url', 10 );
-
-		// restore global product data.
-		$product = $_product_tmp;
-
-		$quantity = apply_filters( 'tinvwl_product_add_to_cart_quantity', $quantity, $_product['data'] );
-
-		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $_product['data'], $redirect_url, $_product ) ) {
-			wp_redirect( apply_filters( 'tinvwl_product_add_to_cart_redirect_url', $redirect_url, $_product['data'], $_product ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
-			exit;
-		} elseif ( apply_filters( 'tinvwl_allow_addtocart_in_wishlist', true, $wishlist, $owner ) ) {
-			$add = TInvWL_Public_Cart::add( $wishlist, $id, $quantity );
-			if ( $add ) {
-				wc_add_to_cart_message( $add, true );
-
-				if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
-					wp_safe_redirect( wc_get_checkout_url() );
-					exit;
-				}
-
-				if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
-					wp_safe_redirect( wc_get_cart_url() );
-					exit;
-				}
-
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

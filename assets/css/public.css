@@ -838,7 +838,6 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .admin-bar .tinv-wishlist .tinv-modal {
     padding-top: 0 !important;
   }
-
   .tinv-wishlist .tinv-modal .tinv-close-modal {
     position: static;
     display: block;
@@ -977,12 +976,10 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   .tinvwl-input-group:not(.tinvwl-no-full) .form-control {
     float: none;
   }
-
   .tinv-wishlist .tinv-search-form .tinvwl-input-group:not(.tinvwl-no-full) .form-control + .tinvwl-input-group-btn {
     padding-top: 10px;
     padding-left: 0;
   }
-
   .tinvwl-input-group:not(.tinvwl-no-full) .form-control + .tinvwl-input-group-btn {
     padding-top: 10px;
     padding-left: 0;

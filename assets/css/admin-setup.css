@@ -306,12 +306,10 @@ html {
   .tinvwl-wizard {
     margin: 20px auto;
   }
-
   .tinvwl-wizard .tinwl-finish .tinvwl-btn {
     display: block;
     margin: 0 auto;
   }
-
   .tinvwl-wizard .tinwl-finish .tinvwl-btn + .tinvwl-btn {
     margin-top: 15px;
   }
@@ -320,17 +318,14 @@ html {
   html {
     margin: 0;
   }
-
   .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-intro,
 .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-finish {
     padding-left: 50px;
     padding-right: 50px;
   }
-
   .tinvwl-wizard .tinvwl-nav {
     text-align: center;
   }
-
   .tinvwl-wizard .tinvwl-nav .tinvwl-next {
     float: none;
     text-align: center;

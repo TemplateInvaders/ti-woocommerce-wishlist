@@ -141,87 +141,23 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
-### 1.47.0 ###
-*Release Date - 06 June 2022*
+### 2.0.0 ###
+*Release Date - 11 September 2022*
 
-* Updated integration with WooCommerce Blocks
-* Fixed custom AJAX endpoint issue for customized WordPress setups
-* Fixed integration issue with XforWooCommerce plugin
+* Added feature to show stats for each product on the frontend
+* Wishlist table actions migrated to AJAX calls
+* Added feature to setup wishlist page under the WooCommerce My Account section
+* Added options for add to wishlist button custom icon states
+* WooCommerce 6.8 support
+* Translations updated
+* Code cleanup
+* Fixed issue with WooCommerce Blocks
+* Fixed conflict with WPML plugin and WooCommerce My Account menu
 
-### 1.46.0 ###
-*Release Date - 02 June 2022*
-
-* WordPress 6.0 support
-* Added integration with [ShopEngine](https://wordpress.org/plugins/shopengine/) plugin
-
-### 1.45.0 ###
-*Release Date - 18 May 2022*
-
-* WooCommerce 6.5 support
-* Added integration with Nasa Core plugin
-* Added filter `tinvwl_wishlist_get_products`
-
-### 1.44.1 ###
-*Release Date - 04 May 2022*
-
-* Updated integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
-
-### 1.44.0 ###
-*Release Date - 29 April 2022*
-
-* Added support of WooCommerce Blocks
-
-### 1.43.0 ###
-*Release Date - 24 April 2022*
-
-* WooCommerce 6.4 support
-* Added filters for share links
-* Updated integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/?aff=3955) plugin
-* Added tinvwl_get_wishlist_data() as jQuery public function
-
-### 1.42.1 ###
-*Release Date - 04 April 2022*
-
-* Added integration with [WooCommerce Waitlist](https://woocommerce.com/document/woocommerce-waitlist/?aff=3955) plugin
-* Updated integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/?aff=3955) plugin
-
-### 1.42.0 ###
-*Release Date - 09 March 2022*
-
-* WooCommerce 6.3 support
-* Added integration with [Anti-Spam by CleanTalk](https://wordpress.org/plugins/cleantalk-spam-protect/) plugin
-* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
-
-### 1.41.1 ###
-*Release Date - 20 February 2022*
-
-* Added feature to automatically close add to wishlist popup after few seconds if redirect disabled
-* Added filter `tinvwl_addtowishlist_redirect`
-* Fixed WPML plugin issue
-* Fixed add to wishlist issue for guests
-
-### 1.41.0 ###
-*Release Date - 17 February 2022*
-
-* WooCommerce 6.2 support
-* Updated integration with [Quick Buy Now Button for WooCommerce](https://woocommerce.com/products/quick-buy-now-button-for-woocommerce/?aff=3955) plugin
-* Updated integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
-* Updated integration with [Google Tag Manager for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) plugin
-* Fixed WPML plugin issue
-
-### 1.40.1 ###
-*Release Date - 29 January 2022*
-
-* Fixed security issue
-
-### 1.40.0 ###
-*Release Date - 27 January 2022*
-
-* WordPress 5.9 support
 
 [See the changelog for all versions](https://templateinvaders.com/changelogs/ti-woocommerce-wishlist-plugin-free-changelog/?utm_source=wordpressorg&utm_content=changelog).
 
 ## Upgrade Notice ##
 
-### 1.40.1 ###
-Fixed security issue
+### 2.0.0 ###
+Major update with new features

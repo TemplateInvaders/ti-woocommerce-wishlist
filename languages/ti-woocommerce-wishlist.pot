@@ -1,8 +1,8 @@
-# Copyright (C) 2022 TI WooCommerce Wishlist Plugin - 1.47.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 1.47.0 package.
+# Copyright (C) 2022 TI WooCommerce Wishlist Plugin - 2.0.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.0.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.47.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.0.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 1.47.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.0.0\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -73,7 +73,7 @@ msgid "Require Login"
 msgstr ""
 
 #: admin/settings/general.class.php:129
-msgid "Disallows guests to use Wishlist functionality until they sign-in."
+msgid "Disallows guests to use Wishlist functionality until they sign in."
 msgstr ""
 
 #: admin/settings/general.class.php:138
@@ -81,7 +81,7 @@ msgid "Redirect to Login Page"
 msgstr ""
 
 #: admin/settings/general.class.php:139
-msgid "If enabled, guests will be redirected to a login page once clicking the \"Add to Wishlist\" button or \"Wishlist Products Counter\" link. Otherwise a popup with login required notice will appear."
+msgid "If enabled, guests will be redirected to a login page once clicking the \"Add to Wishlist\" button or \"Wishlist Products Counter\" link. Otherwise, a popup with login required notice will appear."
 msgstr ""
 
 #: admin/settings/general.class.php:146
@@ -89,7 +89,7 @@ msgid "Setup wishlist page under WooCommerce My Account section"
 msgstr ""
 
 #: admin/settings/general.class.php:147
-msgid "This option will setup wishlist page under WooCommerce My Account section and prevents all sharing features."
+msgid "This option will set up the wishlist page under WooCommerce My Account section and prevents all sharing features."
 msgstr ""
 
 #: admin/settings/general.class.php:157
@@ -113,7 +113,7 @@ msgid "Redirect to the checkout page from Wishlist if added to cart"
 msgstr ""
 
 #: admin/settings/general.class.php:190
-msgid "Remove product from Wishlist on second click"
+msgid "Remove product from Wishlist on the second click"
 msgstr ""
 
 #: admin/settings/general.class.php:200
@@ -129,7 +129,7 @@ msgid "Show successful notice in popup"
 msgstr ""
 
 #: admin/settings/general.class.php:213
-msgid "This option allows to show/hide a popup with successful or error notices after addition or removing products from a Wishlist."
+msgid "This option allows to show/hide a popup with successful or error notices after adding or removing products from a Wishlist."
 msgstr ""
 
 #: admin/settings/general.class.php:223
@@ -141,7 +141,7 @@ msgid "Redirect to Wishlist"
 msgstr ""
 
 #: admin/settings/general.class.php:231
-msgid "If enabled, user will be redirected to wishlist page after 5 sec from adding product to wishlist."
+msgid "If enabled, the user will be redirected to wishlist page after 5 sec from adding product to wishlist."
 msgstr ""
 
 #: admin/settings/general.class.php:238
@@ -157,7 +157,7 @@ msgid "\"Product already in Wishlist\" Text"
 msgstr ""
 
 #: admin/settings/general.class.php:247
-msgid "This notification will be shown if user will try to add a product that is already in the wishlist. "
+msgid "This notification will be shown if a user will try to add a product that is already on the wishlist. "
 msgstr ""
 
 #: admin/settings/general.class.php:254
@@ -165,7 +165,7 @@ msgid "\"Product removed from Wishlist\" Text"
 msgstr ""
 
 #: admin/settings/general.class.php:255
-msgid "This notification will be shown once the product is removed from Wishlist on a single or a catalog page."
+msgid "This notification will be shown once the product is removed from Wishlist on a single or catalog page."
 msgstr ""
 
 #: admin/settings/general.class.php:263
@@ -197,7 +197,7 @@ msgid "Single form"
 msgstr ""
 
 #: admin/settings/general.class.php:293
-msgid "This option allowing you to change a single form of the word. You need to write a new word in lowercase and the proper case will be applied automatically for all instances."
+msgid "This option allows you to change a single form of the word. You need to write a new word in lowercase and the proper case will be applied automatically for all instances."
 msgstr ""
 
 #: admin/settings/general.class.php:300
@@ -205,7 +205,7 @@ msgid "Plural form"
 msgstr ""
 
 #: admin/settings/general.class.php:301
-msgid "This option allowing you to change a plural form of the word. Left it empty if you need to add just \"s\" suffix to the single form word that you set above."
+msgid "This option allows you to change a plural form of the word. Left it empty if you need to add just \"s\" suffix to the single form word that you set above."
 msgstr ""
 
 #: admin/settings/general.class.php:310
@@ -381,7 +381,7 @@ msgid "Wishlist Product Settings"
 msgstr ""
 
 #: admin/settings/general.class.php:661
-msgid "Following options allows you to choose what information/functionality to show/enable in wishlist table on wishlist page."
+msgid "Following options allows you to choose what information/functionality to show/enable in wishlist table on the wishlist page."
 msgstr ""
 
 #: admin/settings/general.class.php:667
@@ -421,7 +421,7 @@ msgid "Show Actions button"
 msgstr ""
 
 #: admin/settings/general.class.php:720
-msgid "Bulk actions drop down at the bottom of wishlist table"
+msgid "Bulk actions drop-down at the bottom of wishlist table"
 msgstr ""
 
 #: admin/settings/general.class.php:726
@@ -441,7 +441,7 @@ msgid "\"Add All to Cart\" Button Text"
 msgstr ""
 
 #: admin/settings/general.class.php:764
-msgid "Following options enable/disable Social share icons below wishlist table on wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can't be shared."
+msgid "Following options enable/disable Social share icons below wishlist table on the wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can't be shared."
 msgstr ""
 
 #: admin/settings/general.class.php:770
@@ -517,7 +517,7 @@ msgid "Add counter to menu"
 msgstr ""
 
 #: admin/settings/general.class.php:899
-msgid "You can add a wishlist products counter as item to the selected menu."
+msgid "You can add a wishlist products counter as an item to the selected menu."
 msgstr ""
 
 #: admin/settings/general.class.php:908
@@ -525,7 +525,7 @@ msgid "Counter position (Menu item order)"
 msgstr ""
 
 #: admin/settings/general.class.php:909
-msgid "Allows you to add the wishlist counter as a menu item and apply its position."
+msgid "Allows you to add the wishlist counter as a menu item and set its position."
 msgstr ""
 
 #: admin/settings/general.class.php:920
@@ -537,7 +537,7 @@ msgid "Hide zero value"
 msgstr ""
 
 #: admin/settings/general.class.php:930
-msgid "Do not show the \"0\" value in a counter if wishlist is empty."
+msgid "Do not show the \"0\" value in a counter if the wishlist is empty."
 msgstr ""
 
 #: admin/settings/general.class.php:941
@@ -865,7 +865,7 @@ msgid "Invalid wishlist share key."
 msgstr ""
 
 #: includes/api/wishlist.class.php:140
-msgid "WordPress user does not exists."
+msgid "WordPress user does not exist."
 msgstr ""
 
 #: includes/api/wishlist.class.php:148
@@ -921,7 +921,7 @@ msgid "Please upload the TI WooCommerce Wishlist setting file or copy the conten
 msgstr ""
 
 #: includes/export.class.php:277
-msgid "The settings json is not valid."
+msgid "The settings JSON is not valid."
 msgstr ""
 
 #: includes/export.class.php:227
@@ -1097,7 +1097,7 @@ msgid "Once per customer"
 msgstr ""
 
 #: integrations/automatewoo/trigger-wishlist-reminder.php:43
-msgid "If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use the one wishlist so use with caution. Setting a high Reminder interval may be a better plan."
+msgid "If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use one wishlist so use it with caution. Setting a high Reminder interval may be a better plan."
 msgstr ""
 
 #: integrations/gift-cards-for-woocommerce.php:119
@@ -1302,7 +1302,9 @@ msgid_plural "%s have been added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:204
+#. translators: %s: product name
+#. translators: %s: product name
+#: public/wishlist/ajax.class.php:204, public/wishlist/ajax.class.php:334, public/wishlist/ajax.class.php:417
 msgid "%s has been added to your cart."
 msgid_plural "%s have been added to your cart."
 msgstr[0] ""
@@ -1314,14 +1316,16 @@ msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:316, public/wishlist/ajax.class.php:399
+#. translators: %s: product name
+#. translators: %s: product name
+#: public/wishlist/ajax.class.php:316, public/wishlist/ajax.class.php:328, public/wishlist/ajax.class.php:399, public/wishlist/ajax.class.php:411
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
 #: public/wishlist/ajax.class.php:319, public/wishlist/ajax.class.php:402
-msgid "Product %s could not be added to cart because some requirements are not met."
-msgid_plural "Products: %s could not be added to cart because some requirements are not met."
+msgid "Product %s could not be added to the cart because some requirements are not met."
+msgid_plural "Products: %s could not be added to the cart because some requirements are not met."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -1442,15 +1446,15 @@ msgid "Import settings"
 msgstr ""
 
 #: views/admin/export-import-settings.php:48
-msgid "Please upload the exported json file or"
+msgid "Please upload the exported JSON file or"
 msgstr ""
 
 #: views/admin/export-import-settings.php:50
-msgid "paste the entire json"
+msgid "paste the entire JSON"
 msgstr ""
 
 #: views/admin/export-import-settings.php:55
-msgid "Please paste the exported json file or"
+msgid "Please paste the exported JSON file or"
 msgstr ""
 
 #: views/admin/export-import-settings.php:57
@@ -1490,7 +1494,7 @@ msgid "Rate us please"
 msgstr ""
 
 #: views/admin/premium-features.php:32
-msgid "We’d really appreciate if you could spend a few minutes to"
+msgid "We’d really appreciate it if you could spend a few minutes to"
 msgstr ""
 
 #: views/admin/premium-features.php:34
@@ -1554,7 +1558,7 @@ msgid "Your Wishlist is ready!"
 msgstr ""
 
 #: views/wizard/finish.php:18
-msgid "You have set basic Wishlist settings. If you want to make more in-depth plugin setup you can make it in plugin settings page %s."
+msgid "You have set basic Wishlist settings. If you want to make a more in-depth plugin setup you can make it on the plugin settings page %s."
 msgstr ""
 
 #: views/wizard/finish.php:18
@@ -1614,7 +1618,7 @@ msgid "Button options"
 msgstr ""
 
 #: views/wizard/step-button.php:21
-msgid "Choose where to place “Add to Wishlist” button on the product page: before or after “Add to Cart” button."
+msgid "Choose where to place the “Add to Wishlist” button on the product page: before or after the “Add to Cart” button."
 msgstr ""
 
 #: views/wizard/step-button.php:25
@@ -1622,7 +1626,7 @@ msgid "TI  Wishlists > Style Options"
 msgstr ""
 
 #: views/wizard/step-button.php:27
-msgid "And set button text. You can add an icon, change button appearance and other settings in %s."
+msgid "And set button text. You can add an icon, change button appearance, and other settings in %s."
 msgstr ""
 
 #: views/wizard/step-button.php:27
@@ -1630,7 +1634,7 @@ msgid " and "
 msgstr ""
 
 #: views/wizard/step-button.php:52
-msgid "You can also show “Add to Wishlist” button in Product listing. More options in %s."
+msgid "You can also show the “Add to Wishlist” button on Product listings. More options in %s."
 msgstr ""
 
 #: views/wizard/step-button.php:57
@@ -1650,7 +1654,7 @@ msgid "continue"
 msgstr ""
 
 #: views/wizard/step-page-field.php:36
-msgid "Page with name “%s” aready exist! Please choose another page or create a new one"
+msgid "Page with name “%s” already exist! Please choose another page or create a new one"
 msgstr ""
 
 #: views/wizard/step-page.php:18
@@ -1662,7 +1666,7 @@ msgid "Choose from existing pages or leave this field empty and the Wishlist pag
 msgstr ""
 
 #: views/wizard/step-page.php:54
-msgid "Once created, this page can be managed from WordPress dashboard."
+msgid "Once created, this page can be managed from the WordPress dashboard."
 msgstr ""
 
 #: views/wizard/step-processing.php:16
@@ -1670,7 +1674,7 @@ msgid "Processing Options"
 msgstr ""
 
 #: views/wizard/step-processing.php:20
-msgid "Following option allows you to set products to be automatically removed from a wishlist when added to cart."
+msgid "Following option allows you to set products to be automatically removed from a wishlist when added to the cart."
 msgstr ""
 
 #: views/wizard/step-processing.php:24
@@ -1678,7 +1682,7 @@ msgid "How products should be removed from Wishlist?"
 msgstr ""
 
 #: views/wizard/step-social.php:22
-msgid "Allow people to share wishlists by adding social share buttons to Wishlist page."
+msgid "Allow people to share wishlists by adding social share buttons to the Wishlist page."
 msgstr ""
 
 #: views/wizard/step-social.php:62

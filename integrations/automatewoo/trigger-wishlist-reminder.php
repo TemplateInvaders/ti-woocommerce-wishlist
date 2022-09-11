@@ -40,7 +40,7 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 		$once_only = new AutomateWoo\Fields\Checkbox();
 		$once_only->set_name('once_only');
 		$once_only->set_title(__('Once per customer', 'ti-woocommerce-wishlist'));
-		$once_only->set_description(__('If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use the one wishlist so use with caution. Setting a high Reminder interval may be a better plan.', 'ti-woocommerce-wishlist'));
+		$once_only->set_description(__('If checked the trigger will fire only once for each customer for each wishlist they create. Most customers only use one wishlist so use it with caution. Setting a high Reminder interval may be a better plan.', 'ti-woocommerce-wishlist'));
 
 		$this->add_field($period);
 		$this->add_field($this->get_field_time_of_day());

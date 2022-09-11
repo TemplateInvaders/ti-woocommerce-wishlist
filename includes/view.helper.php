@@ -259,7 +259,7 @@ class TInvWL_View {
 	/**
 	 * Ajax templates
 	 *
-	 * @param string $_template_name If empty returned json array.
+	 * @param string $_template_name If empty returned JSON array.
 	 * @param array $_data Parameter for template.
 	 * @param string $_type Folder section.
 	 */

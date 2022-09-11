@@ -18,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<div class="tinvwl-desc">
-		<?php esc_html_e( 'Choose where to place “Add to Wishlist” button on the product page: before or after “Add to Cart” button.', 'ti-woocommerce-wishlist' ); ?>
+		<?php esc_html_e( 'Choose where to place the “Add to Wishlist” button on the product page: before or after the “Add to Cart” button.', 'ti-woocommerce-wishlist' ); ?>
 		<br/>
 		<?php
 		$links = array(
 				sprintf( '<a target="_blank" href="%s">%s</a>', esc_url( self::admin_url( 'style-settings' ) ), __( 'TI  Wishlists > Style Options', 'ti-woocommerce-wishlist' ) ),
 		);
-		printf( __( 'And set button text. You can add an icon, change button appearance and other settings in %s.', 'ti-woocommerce-wishlist' ), implode( __( ' and ', 'ti-woocommerce-wishlist' ), $links ) ); // WPCS: xss ok.
+		printf( __( 'And set button text. You can add an icon, change button appearance, and other settings in %s.', 'ti-woocommerce-wishlist' ), implode( __( ' and ', 'ti-woocommerce-wishlist' ), $links ) ); // WPCS: xss ok.
 		?>
 	</div>
 
@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="tinvwl-separator"></div>
 
 	<div class="tinvwl-desc">
-		<?php printf( __( 'You can also show “Add to Wishlist” button in Product listing. More options in %s.', 'ti-woocommerce-wishlist' ), $links[0] ); // WPCS: xss ok. ?>
+		<?php printf( __( 'You can also show the “Add to Wishlist” button on Product listings. More options in %s.', 'ti-woocommerce-wishlist' ), $links[0] ); // WPCS: xss ok. ?>
 	</div>
 
 	<div class="form-horizontal">

@@ -316,7 +316,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 					}
 					$titles            = array_filter( $titles );
-					$response['msg'][] = sprintf( _n( 'Product %s could not be added to cart because some requirements are not met.', 'Products: %s could not be added to cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = sprintf( _n( 'Product %s could not be added to the cart because some requirements are not met.', 'Products: %s could not be added to the cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
 				}
 				if ( ! empty( $result ) ) {
 					$response['status'] = true;
@@ -325,13 +325,13 @@ class TInvWL_Public_Wishlist_Ajax {
 					$count  = 0;
 					foreach ( $result as $product_id => $qty ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
 						$count    += $qty;
 					}
 
 					$titles = array_filter( $titles );
 					/* translators: %s: product name */
-					$response['msg'][] = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', $count, 'woocommerce' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', $count, 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
 
 					if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
 						$response['redirect'] = wc_get_checkout_url();
@@ -399,7 +399,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
 					}
 					$titles            = array_filter( $titles );
-					$response['msg'][] = sprintf( _n( 'Product %s could not be added to cart because some requirements are not met.', 'Products: %s could not be added to cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = sprintf( _n( 'Product %s could not be added to the cart because some requirements are not met.', 'Products: %s could not be added to the cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
 				}
 				if ( ! empty( $result ) ) {
 					$response['status'] = true;
@@ -408,13 +408,13 @@ class TInvWL_Public_Wishlist_Ajax {
 					$count  = 0;
 					foreach ( $result as $product_id => $qty ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'woocommerce' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
 						$count    += $qty;
 					}
 
 					$titles = array_filter( $titles );
 					/* translators: %s: product name */
-					$response['msg'][] = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', $count, 'woocommerce' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', $count, 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
 
 					if ( tinv_get_option( 'processing', 'redirect_checkout' ) ) {
 						$response['redirect'] = wc_get_checkout_url();

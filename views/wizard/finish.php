@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<h2 class="tinvwl-sub-title"><?php esc_html_e( 'Congratulations', 'ti-woocommerce-wishlist' ); ?></h2>
 	<h1 class="tinvwl-title"><?php esc_html_e( 'Your Wishlist is ready!', 'ti-woocommerce-wishlist' ); ?></h1>
 	<div class="tinvwl-desc">
-		<?php printf( esc_html__( 'You have set basic Wishlist settings. If you want to make more in-depth plugin setup you can make it in plugin settings page %s.', 'ti-woocommerce-wishlist' ), sprintf( '<a target="_blank" href="%s">%s</a>', esc_url( self::admin_url( '' ) ), esc_html__( 'WooCommerce Wishlist Plugin Settings', 'ti-woocommerce-wishlist' ) ) ); // WPCS: xss ok. ?>
+		<?php printf( esc_html__( 'You have set basic Wishlist settings. If you want to make a more in-depth plugin setup you can make it on the plugin settings page %s.', 'ti-woocommerce-wishlist' ), sprintf( '<a target="_blank" href="%s">%s</a>', esc_url( self::admin_url( '' ) ), esc_html__( 'WooCommerce Wishlist Plugin Settings', 'ti-woocommerce-wishlist' ) ) ); // WPCS: xss ok. ?>
 		<br/>
 		<?php printf( esc_html__( 'Details about WooCommerce Wishlist Plugin options can be found in our %s.', 'ti-woocommerce-wishlist' ), sprintf( '<a target="_blank" href="%s">%s</a>', 'https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=wizard_documentation&partner=' . TINVWL_UTM_SOURCE, esc_html__( 'Online Documentation', 'ti-woocommerce-wishlist' ) ) ); // WPCS: xss ok.
 		?>

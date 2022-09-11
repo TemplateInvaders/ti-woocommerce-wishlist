@@ -274,7 +274,7 @@ class TInvWL_Export {
 				wp_redirect(
 					admin_url(
 						'admin.php?page=tinvwl-export-import-settings&error=' .
-						rawurlencode( __( 'The settings json is not valid.', 'ti-woocommerce-wishlist' ) )
+						rawurlencode( __( 'The settings JSON is not valid.', 'ti-woocommerce-wishlist' ) )
 					)
 				)
 				);

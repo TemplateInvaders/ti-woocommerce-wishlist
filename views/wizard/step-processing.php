@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="tinvwl-separator"></div>
 	</div>
 
-	<div class="tinvwl-desc"><?php esc_html_e( 'Following option allows you to set products to be automatically removed from a wishlist when added to cart.', 'ti-woocommerce-wishlist' ); ?></div>
+	<div class="tinvwl-desc"><?php esc_html_e( 'Following option allows you to set products to be automatically removed from a wishlist when added to the cart.', 'ti-woocommerce-wishlist' ); ?></div>
 
 	<div class="form-horizontal">
 		<div class="form-group">

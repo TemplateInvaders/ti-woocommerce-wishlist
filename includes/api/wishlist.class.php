@@ -137,7 +137,7 @@ class TInvWL_Includes_API_Wishlist
 			if (!empty($user_id)) {
 
 				if (!$this->user_id_exists($user_id)) {
-					throw new WC_REST_Exception('ti_woocommerce_wishlist_api_wishlist_user_not_exists', __('WordPress user does not exists.', 'ti-woocommerce-wishlist'), 400);
+					throw new WC_REST_Exception('ti_woocommerce_wishlist_api_wishlist_user_not_exists', __('WordPress user does not exist.', 'ti-woocommerce-wishlist'), 400);
 				}
 
 

@@ -126,7 +126,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'require_login',
 						'text'  => __( 'Require Login', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'Disallows guests to use Wishlist functionality until they sign-in.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Disallows guests to use Wishlist functionality until they sign in.', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-general-redirect-require-login',
@@ -136,7 +136,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'redirect_require_login',
 						'text'  => __( 'Redirect to Login Page', 'ti-woocommerce-wishlist' ),
-						'desc'  => '<span class="tiwl-button-show-notice">' . __( 'If enabled, guests will be redirected to a login page once clicking the "Add to Wishlist" button or "Wishlist Products Counter" link. Otherwise a popup with login required notice will appear.', 'ti-woocommerce-wishlist' ) . '</span>',
+						'desc'  => '<span class="tiwl-button-show-notice">' . __( 'If enabled, guests will be redirected to a login page once clicking the "Add to Wishlist" button or "Wishlist Products Counter" link. Otherwise, a popup with login required notice will appear.', 'ti-woocommerce-wishlist' ) . '</span>',
 						'std'   => false,
 						'class' => 'tiwl-general-redirect-require-login',
 					),
@@ -144,7 +144,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'my_account_endpoint',
 						'text'  => __( 'Setup wishlist page under WooCommerce My Account section', 'ti-woocommerce-wishlist' ),
-						'desc'  => '<span class="tiwl-button-show-notice">' . __( 'This option will setup wishlist page under WooCommerce My Account section and prevents all sharing features.', 'ti-woocommerce-wishlist' ) . '</span>',
+						'desc'  => '<span class="tiwl-button-show-notice">' . __( 'This option will set up the wishlist page under WooCommerce My Account section and prevents all sharing features.', 'ti-woocommerce-wishlist' ) . '</span>',
 						'std'   => false,
 						'class' => 'tiwl-general-redirect-require-login',
 						'extra' => array(
@@ -187,7 +187,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'checkboxonoff',
 						'name'  => 'simple_flow',
-						'text'  => __( 'Remove product from Wishlist on second click', 'ti-woocommerce-wishlist' ),
+						'text'  => __( 'Remove product from Wishlist on the second click', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-general-simple-flow>td, .tiwl-button-simple-flow',
@@ -210,7 +210,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'show_notice',
 						'text'  => __( 'Show successful notice in popup', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'This option allows to show/hide a popup with successful or error notices after addition or removing products from a Wishlist.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'This option allows to show/hide a popup with successful or error notices after adding or removing products from a Wishlist.', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'extra' => array(
 							'tiwl-show' => '.tiwl-button-show-notice',
@@ -228,7 +228,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'redirect',
 						'text'  => __( 'Redirect to Wishlist', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'If enabled, user will be redirected to wishlist page after 5 sec from adding product to wishlist.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'If enabled, the user will be redirected to wishlist page after 5 sec from adding product to wishlist.', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
 						'class' => 'tiwl-button-show-notice',
 					),
@@ -244,7 +244,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'text',
 						'name'  => 'text_already_in',
 						'text'  => __( '"Product already in Wishlist" Text', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'This notification will be shown if user will try to add a product that is already in the wishlist. ', 'ti-woocommerce-wishlist' ) . __( 'You can use next placeholder in this field to get current product name: <code>{product_name}</code>, <code>{product_sku}</code>', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'This notification will be shown if a user will try to add a product that is already on the wishlist. ', 'ti-woocommerce-wishlist' ) . __( 'You can use next placeholder in this field to get current product name: <code>{product_name}</code>, <code>{product_sku}</code>', 'ti-woocommerce-wishlist' ),
 						'std'   => '{product_name} already in Wishlist',
 						'class' => 'tiwl-button-show-notice tiwl-general-simple-flow-hide',
 					),
@@ -252,7 +252,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'text',
 						'name'  => 'text_removed_from',
 						'text'  => __( '"Product removed from Wishlist" Text', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'This notification will be shown once the product is removed from Wishlist on a single or a catalog page.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'This notification will be shown once the product is removed from Wishlist on a single or catalog page.', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Product removed from Wishlist',
 						'class' => 'tiwl-button-show-notice tiwl-general-simple-flow',
 					),
@@ -290,7 +290,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'text',
 						'name'  => 'rename_single',
 						'text'  => __( 'Single form', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'This option allowing you to change a single form of the word. You need to write a new word in lowercase and the proper case will be applied automatically for all instances.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'This option allows you to change a single form of the word. You need to write a new word in lowercase and the proper case will be applied automatically for all instances.', 'ti-woocommerce-wishlist' ),
 						'std'   => '',
 						'class' => 'tiwl-rename-single',
 					),
@@ -298,7 +298,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'text',
 						'name'  => 'rename_plural',
 						'text'  => __( 'Plural form', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'This option allowing you to change a plural form of the word. Left it empty if you need to add just "s" suffix to the single form word that you set above.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'This option allows you to change a plural form of the word. Left it empty if you need to add just "s" suffix to the single form word that you set above.', 'ti-woocommerce-wishlist' ),
 						'std'   => '',
 						'class' => 'tiwl-rename-plural',
 					),
@@ -658,7 +658,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			array(
 				'id'         => 'product_table',
 				'title'      => __( 'Wishlist Product Settings', 'ti-woocommerce-wishlist' ),
-				'desc'       => __( 'Following options allows you to choose what information/functionality to show/enable in wishlist table on wishlist page.', 'ti-woocommerce-wishlist' ),
+				'desc'       => __( 'Following options allows you to choose what information/functionality to show/enable in wishlist table on the wishlist page.', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 				'fields'     => array(
 					array(
@@ -717,7 +717,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type' => 'checkboxonoff',
 						'name' => 'colm_actions',
 						'text' => __( 'Show Actions button', 'ti-woocommerce-wishlist' ),
-						'desc' => __( 'Bulk actions drop down at the bottom of wishlist table', 'ti-woocommerce-wishlist' ),
+						'desc' => __( 'Bulk actions drop-down at the bottom of wishlist table', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
 					),
 					array(
@@ -761,7 +761,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					array(
 						'type'  => 'group',
 						'id'    => 'social',
-						'desc'  => __( 'Following options enable/disable Social share icons below wishlist table on wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can\'t be shared.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Following options enable/disable Social share icons below wishlist table on the wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can\'t be shared.', 'ti-woocommerce-wishlist' ),
 						'class' => 'tinvwl-info-top',
 					),
 					array(
@@ -896,7 +896,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'    => 'menu',
 						'text'    => __( 'Add counter to menu', 'ti-woocommerce-wishlist' ),
 						'options' => $menus,
-						'desc'    => __( 'You can add a wishlist products counter as item to the selected menu.', 'ti-woocommerce-wishlist' ),
+						'desc'    => __( 'You can add a wishlist products counter as an item to the selected menu.', 'ti-woocommerce-wishlist' ),
 						'extra'   => array(
 							'tiwl-value' => '0',
 							'tiwl-hide'  => '.tiwl-menu-position',
@@ -906,7 +906,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'number',
 						'name'  => 'menu_order',
 						'text'  => __( 'Counter position (Menu item order)', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'Allows you to add the wishlist counter as a menu item and apply its position.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Allows you to add the wishlist counter as a menu item and set its position.', 'ti-woocommerce-wishlist' ),
 						'std'   => 100,
 						'class' => 'tiwl-menu-position',
 						'extra' => array(
@@ -927,7 +927,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'type'  => 'checkboxonoff',
 						'name'  => 'hide_zero_counter',
 						'text'  => __( 'Hide zero value', 'ti-woocommerce-wishlist' ),
-						'desc'  => __( 'Do not show the "0" value in a counter if wishlist is empty.', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Do not show the "0" value in a counter if the wishlist is empty.', 'ti-woocommerce-wishlist' ),
 						'class' => 'tiwl-zero-counter',
 						'std'   => false,
 					),

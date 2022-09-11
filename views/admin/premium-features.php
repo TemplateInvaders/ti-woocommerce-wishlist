@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<h2>
 						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'Rate us please', 'ti-woocommerce-wishlist' ) ?></a>
 					</h2>
-					<p><?php esc_html_e( 'We’d really appreciate if you could spend a few minutes to', 'ti-woocommerce-wishlist' ) ?>
+					<p><?php esc_html_e( 'We’d really appreciate it if you could spend a few minutes to', 'ti-woocommerce-wishlist' ) ?>
 						<br>
 						<a href="https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/"><?php esc_html_e( 'leave a review', 'ti-woocommerce-wishlist' ) ?></a>.
 					</p>

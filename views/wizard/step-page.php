@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="tinvwl-separator"></div>
 
 	<div class="tinvwl-desc">
-		<?php esc_html_e( 'Once created, this page can be managed from WordPress dashboard.', 'ti-woocommerce-wishlist' ); ?>
+		<?php esc_html_e( 'Once created, this page can be managed from the WordPress dashboard.', 'ti-woocommerce-wishlist' ); ?>
 		<br/>
 	</div>
 

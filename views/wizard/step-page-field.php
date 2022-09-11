@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			), $page_field['error'] ? 0 : 1 );
 			?>
 			<?php if ( $page_field['error'] ) : ?>
-				<div class="tinvwl-error-desc"><?php printf( __( 'Page with name “%s” aready exist! Please choose another page or create a new one', 'ti-woocommerce-wishlist' ), esc_html( $page_field['new_value'] ) ); // WPCS: xss ok. ?></div><?php endif; ?>
+				<div class="tinvwl-error-desc"><?php printf( __( 'Page with name “%s” already exist! Please choose another page or create a new one', 'ti-woocommerce-wishlist' ), esc_html( $page_field['new_value'] ) ); // WPCS: xss ok. ?></div><?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="tinvwl-separator"></div>
 			</div>
 
-			<div class="tinvwl-desc"><?php esc_html_e( 'Allow people to share wishlists by adding social share buttons to Wishlist page.', 'ti-woocommerce-wishlist' ); ?></div>
+			<div class="tinvwl-desc"><?php esc_html_e( 'Allow people to share wishlists by adding social share buttons to the Wishlist page.', 'ti-woocommerce-wishlist' ); ?></div>
 
 			<div class="form-horizontal">
 				<div class="form-group">

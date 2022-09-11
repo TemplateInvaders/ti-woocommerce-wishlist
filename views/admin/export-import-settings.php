@@ -45,14 +45,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<input type="hidden" name="tinvwl_import_nonce"
 						   value="<?php echo esc_attr( wp_create_nonce( 'tinvwl_import' ) ); ?>"/>
 					<div id="js-tinvwl-upload-file">
-						<p><?php _e( 'Please upload the exported json file or', 'ti-woocommerce-wishlist' ); ?>
+						<p><?php _e( 'Please upload the exported JSON file or', 'ti-woocommerce-wishlist' ); ?>
 							<span style="cursor: pointer;color: #ff5739;text-decoration: underline;"
-								  class="js-tinvwl-upload-toggle"><?php _e( 'paste the entire json', 'ti-woocommerce-wishlist' ); ?></span>.
+								  class="js-tinvwl-upload-toggle"><?php _e( 'paste the entire JSON', 'ti-woocommerce-wishlist' ); ?></span>.
 						</p>
 						<div style="margin-bottom: 20px;"><input type="file" name="settings-file"/></div>
 					</div>
 					<div id="js-tinvwl-paste-json" style="display:none;">
-						<p><?php _e( 'Please paste the exported json file or', 'ti-woocommerce-wishlist' ); ?>
+						<p><?php _e( 'Please paste the exported JSON file or', 'ti-woocommerce-wishlist' ); ?>
 							<span style="cursor: pointer;color: #ff5739;text-decoration: underline;"
 								  class="js-tinvwl-upload-toggle"><?php _e( 'upload the exported file', 'ti-woocommerce-wishlist' ); ?></span>.
 						</p>

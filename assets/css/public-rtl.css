@@ -82,15 +82,15 @@ a.wishlist_products_counter {
 
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt, .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 18px;
+  height: 18px;
   vertical-align: sub;
 }
 
 a.wishlist_products_counter.top_wishlist-heart-plus.no-txt, span.wishlist_products_counter.top_wishlist-heart-plus.no-txt {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 18px;
+  height: 18px;
   vertical-align: sub;
 }
 
@@ -131,7 +131,8 @@ a.wishlist_products_counter.top_wishlist-heart-plus.no-txt, span.wishlist_produc
   margin-top: 15px;
 }
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt {
-  padding: 10px 11px;
+  width: 18px;
+  height: 18px;
   line-height: 1;
 }
 
@@ -143,7 +144,8 @@ a.wishlist_products_counter.top_wishlist-heart-plus.no-txt, span.wishlist_produc
 }
 
 a.wishlist_products_counter.top_wishlist-custom.no-txt, span.wishlist_products_counter.top_wishlist-custom.no-txt {
-  padding: 10px 11px;
+  width: 18px;
+  height: 18px;
   line-height: 1;
 }
 
@@ -153,7 +155,6 @@ a.wishlist_products_counter.top_wishlist-custom.no-txt, span.wishlist_products_c
   width: auto !important;
   max-width: 16px;
   max-height: 16px;
-  margin-bottom: 0;
   margin: 0 0 0 6px !important;
 }
 
@@ -176,6 +177,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   transition: opacity 1s;
   opacity: 1;
   visibility: visible;
+  position: relative;
 }
 
 .tinv-wishlist.woocommerce .stock.in-stock:before {
@@ -1419,6 +1421,20 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
 
 .wishlist-title {
   margin-bottom: 20px;
+}
+
+span.tinvwl-product-stats {
+  background-color: #ebe9eb;
+  border-radius: 50%;
+  padding: 0.2em;
+  line-height: 1;
+  font-size: 0.7em;
+  min-width: 1.5em;
+  display: inline-block;
+  position: absolute;
+  top: -0.7em;
+  left: -1.5em;
+  text-align: center;
 }
 /*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJwdWJsaWMtcnRsLmNzcyJdLCJmaWxlIjoicHVibGljLXJ0bC5jc3MifQ== */
 

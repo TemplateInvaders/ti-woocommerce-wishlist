@@ -33,7 +33,7 @@ class TInvWL_Analytics {
 	/**
 	 * Constructor
 	 *
-	 * @param array $wishlist Object wishlist.
+	 * @param array $wishlist Array wishlist.
 	 * @param string $plugin_name Plugin name.
 	 *
 	 * @global wpdb $wpdb
@@ -139,6 +139,19 @@ class TInvWL_Analytics {
 	}
 
 	/**
+	 * Add to wishlist product
+	 *
+	 * @param integer $product_id Product id.
+	 * @param integer $variation_id Product variation id.
+	 * @param integer $quantity Quantity applyed product.
+	 *
+	 * @return boolean
+	 */
+	function added( $product_id, $variation_id = 0, $quantity = 1 ) {
+		return $this->_product( 'added', $product_id, $variation_id, $quantity );
+	}
+
+	/**
 	 * Add to cart product
 	 *
 	 * @param integer $product_id Product id.
@@ -230,6 +243,7 @@ class TInvWL_Analytics {
 	 */
 	function add( $type = 'visite', $wishlist_id = 0, $product_id = 0, $variation_id = 0, $quantity = 1 ) {
 		if ( ! in_array( $type, array(
+			'added',
 			'add_to_cart',
 			'author',
 			'author_click',
@@ -307,6 +321,7 @@ class TInvWL_Analytics {
 				break;
 		}
 		switch ( $type ) {
+			case 'added':
 			case 'author':
 			case 'visite':
 				break;
@@ -331,6 +346,7 @@ class TInvWL_Analytics {
 						'sell_of_wishlist',
 						'visite',
 						'visite_author',
+						'added',
 					) ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
 						$duplicates[] = sprintf( '`%s`=`%s`+%d', $key, $key, $value );
 					}

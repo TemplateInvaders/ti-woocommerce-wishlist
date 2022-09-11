@@ -195,6 +195,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						),
 					),
 					array(
+						'type'  => 'checkboxonoff',
+						'name'  => 'product_stats',
+						'text'  => __( 'Show stats for each product', 'ti-woocommerce-wishlist' ),
+						'desc'  => __( 'Show number of times each product added to wishlists across the site.', 'ti-woocommerce-wishlist' ),
+						'std'   => false,
+						'class' => '',
+					),
+					array(
 						'type' => 'group',
 						'id'   => 'show_notice',
 					),
@@ -560,7 +568,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'  => 'icon_upload',
 						'std'   => '',
 						'text'  => __( 'Default state', 'ti-woocommerce-wishlist' ),
-						'class' => 'tiwl-button-icon-custom',
+						'class' => 'tiwl-buttoncat-icon-custom',
 						'extra' => array(
 							'button' => array(
 								'value' => __( 'Upload', 'ti-woocommerce-wishlist' ),
@@ -573,7 +581,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'  => 'icon_upload_added',
 						'std'   => '',
 						'text'  => __( 'Already added state', 'ti-woocommerce-wishlist' ),
-						'class' => 'tiwl-button-icon-custom',
+						'class' => 'tiwl-buttoncat-icon-custom',
 						'extra' => array(
 							'button' => array(
 								'value' => __( 'Upload', 'ti-woocommerce-wishlist' ),

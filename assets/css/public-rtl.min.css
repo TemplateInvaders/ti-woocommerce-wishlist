@@ -16,8 +16,8 @@
 a.wishlist_products_counter{text-decoration:none}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart:before,.woocommerce ul.products li.product a.tinvwl-button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart:before,.woocommerce-page ul.products li.product a.tinvwl-button.tinvwl-icon-heart.tinvwl_add_to_wishlist_button:before,a.wishlist_products_counter.top_wishlist-heart:before,span.wishlist_products_counter.top_wishlist-heart:before,a.sidr-class-wishlist_products_counter.sidr-class-top_wishlist-heart:before{content:"\e909";display:inline-block;font-family:tinvwl-webfont !important;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:20px;vertical-align:sub;margin-left:5px}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus:before,.woocommerce ul.products li.product a.tinvwl-button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus:before,.woocommerce-page ul.products li.product a.tinvwl-button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus:before,a.wishlist_products_counter.top_wishlist-heart-plus:before,span.wishlist_products_counter.top_wishlist-heart-plus:before,a.sidr-class-wishlist_products_counter.sidr-class-top_wishlist-heart-plus:before{content:"\e906";display:inline-block;font-family:tinvwl-webfont !important;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:20px;vertical-align:sub;margin-left:5px}
-.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt,.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt{position:relative;width:36px;height:36px;vertical-align:sub}
-a.wishlist_products_counter.top_wishlist-heart-plus.no-txt,span.wishlist_products_counter.top_wishlist-heart-plus.no-txt{position:relative;width:36px;height:36px;vertical-align:sub}
+.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt,.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt{position:relative;width:18px;height:18px;vertical-align:sub}
+a.wishlist_products_counter.top_wishlist-heart-plus.no-txt,span.wishlist_products_counter.top_wishlist-heart-plus.no-txt{position:relative;width:18px;height:18px;vertical-align:sub}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt:before,.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt:before{position:absolute;top:50%;right:50%;margin-left:0}
 .tinv-wishlist .tinvwl-button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart-plus.no-txt,.tinv-wishlist .tinvwl-button.tinvwl_add_to_wishlist_button.tinvwl-icon-heart.no-txt{padding-right:1em;vertical-align:bottom}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-heart.tinvwl-product-in-list:before{content:"\e908"}
@@ -27,15 +27,15 @@ a.wishlist_products_counter.top_wishlist-heart-plus.no-txt,span.wishlist_product
 .tinv-wishlist .tinvwl_add_to_wishlist_button.icon-black:before,a.wishlist_products_counter.top_wishlist-black:before,span.wishlist_products_counter.top_wishlist-black:before{color:#000}
 .tinv-wishlist.tinvwl-before-add-to-cart .tinvwl_add_to_wishlist_button{margin-bottom:15px}
 .tinv-wishlist.tinvwl-after-add-to-cart .tinvwl_add_to_wishlist_button{margin-top:15px}
-.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt{padding:10px 11px;line-height:1}
+.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt{width:18px;height:18px;line-height:1}
 .wishlist-popup .tinv-wishlist .tinvwl_add_to_wishlist_button{margin:0}
 .wishlist-popup .tinv-wishlist .tinvwl_add_to_wishlist_button::before{display:none}
-a.wishlist_products_counter.top_wishlist-custom.no-txt,span.wishlist_products_counter.top_wishlist-custom.no-txt{padding:10px 11px;line-height:1}
-.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom img,a.wishlist_products_counter.top_wishlist-custom img,span.wishlist_products_counter.top_wishlist-custom img{display:inline-block !important;vertical-align:baseline;width:auto !important;max-width:16px;max-height:16px;margin-bottom:0;margin:0 0 0 6px !important}
+a.wishlist_products_counter.top_wishlist-custom.no-txt,span.wishlist_products_counter.top_wishlist-custom.no-txt{width:18px;height:18px;line-height:1}
+.tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom img,a.wishlist_products_counter.top_wishlist-custom img,span.wishlist_products_counter.top_wishlist-custom img{display:inline-block !important;vertical-align:baseline;width:auto !important;max-width:16px;max-height:16px;margin:0 0 0 6px !important}
 .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt img,a.wishlist_products_counter.top_wishlist-custom.no-txt img,span.wishlist_products_counter.top_wishlist-custom.no-txt img{margin-left:0 !important}
 .single-product div.product form.cart .tinvwl-button.tinvwl_add_to_wishlist_button,div.product form.cart .tinvwl_add_to_wishlist_button{float:none}
 ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
-.tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer;-webkit-transition:opacity 1s;transition:opacity 1s;opacity:1;visibility:visible}
+.tinvwl_add_to_wishlist_button{display:inline-block;cursor:pointer;-webkit-transition:opacity 1s;transition:opacity 1s;opacity:1;visibility:visible;position:relative}
 .tinv-wishlist.woocommerce .stock.in-stock:before{content:none}
 .tinv-wraper.tinv-wishlist{font-size:100%}
 .tinv-wraper.tinv-wishlist.tinvwl-above_thumb-add-to-cart{position:absolute;z-index:10;margin:0;top:10px;right:10px}
@@ -210,6 +210,7 @@ ul.products li.product .tinvwl_add_to_wishlist_button{margin-top:1em}
 .wishlist-icon.added:after{background-color:red;-webkit-transform:translateY(-3px);transform:translateY(-3px)}
 .wishlist-popup .ajax-loading,.wishlist-popup .feedback{display:none !important}
 .wishlist-title{margin-bottom:20px}
+span.tinvwl-product-stats{background-color:#ebe9eb;border-radius:50%;padding:.2em;line-height:1;font-size:.7em;min-width:1.5em;display:inline-block;position:absolute;top:-0.7em;left:-1.5em;text-align:center}
 @media screen and (min-width:0 \0){.tooltipped-multiline::after{width:250px}
 }@media only screen and (max-width:1024px) and (min-width:769px){.tinv-wishlist .tinvwl-table-manage-list td.product-stock p{display:block;text-align:center}
 .tinv-wishlist .product-stock span{display:block}

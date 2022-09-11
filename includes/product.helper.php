@@ -193,6 +193,8 @@ class TInvWL_Product {
 			 * @param array $data product data including author and wishlist IDs.
 			 * */
 			do_action( 'tinvwl_product_added', $data );
+			$wla = new TInvWL_Analytics( $this->wishlist );
+			$wla->cart_product( $data['product_id'], $data['variation_id'] );
 
 			return $id;
 		}

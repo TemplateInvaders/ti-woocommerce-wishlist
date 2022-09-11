@@ -384,10 +384,12 @@ class TInvWL_Public_AddToWishlist {
 
 		$table              = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
 		$table_lists        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
+		$table_stats        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_analytics' );
 		$table_translations = sprintf( '%s%s', $wpdb->prefix, 'icl_translations' );
 		$table_languages    = sprintf( '%s%s', $wpdb->prefix, 'icl_languages' );
 		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_STRING );
 		$lang_default       = filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_STRING );
+		$stats              = filter_input( INPUT_POST, 'stats', FILTER_SANITIZE_STRING );
 
 		$data = $products = $wishlists = $results = array();
 
@@ -530,6 +532,19 @@ JOIN {$table_languages} l ON
 				}
 			}
 
+			if ( $stats ) {
+				$stats_sql = "SELECT `A`.`product_id`, `A`.`variation_id`, COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999";
+
+				$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
+
+				if ( ! empty( $stats_results ) ) {
+					$stats = array();
+					foreach ( $stats_results as $product_stats ) {
+						$stats[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = $product_stats['count'];
+					}
+				}
+			}
+
 		}
 
 		$count = is_array( $results ) ? count( $results ) : 0;
@@ -545,6 +560,10 @@ JOIN {$table_languages} l ON
 
 		if ( $lang_default ) {
 			$response['lang_default'] = $lang_default;
+		}
+
+		if ( $stats ) {
+			$response['stats'] = $stats;
 		}
 
 		return $response;

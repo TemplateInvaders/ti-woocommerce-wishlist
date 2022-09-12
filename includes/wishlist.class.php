@@ -316,7 +316,14 @@ class TInvWL_Wishlist {
 		}
 		$wishlists = $this->get( array( 'share_key' => $share_key ) );
 		$wishlist  = array_shift( $wishlists );
-
+		if ( is_array( $wishlist ) ) {
+			$wishlist['is_owner'] = false;
+			if ( is_user_logged_in() ) {
+				$wishlist['is_owner'] = get_current_user_id() == $wishlist['author']; // WPCS: loose comparison ok.
+			} else {
+				$wishlist['is_owner'] = $this->get_sharekey() === $wishlist['share_key']; // WPCS: loose comparison ok.
+			}
+		}
 		return $wishlist;
 	}
 

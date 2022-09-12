@@ -442,7 +442,8 @@
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'remove',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
 			$.ajax({
@@ -531,7 +532,8 @@
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'add_to_cart_single',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
 			$.ajax({
@@ -620,7 +622,8 @@
 			var params = {
 				'tinvwl-action': 'add_to_cart_all',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
 			$.ajax({
@@ -728,7 +731,8 @@
 				'tinvwl-products': products,
 				'tinvwl-action': action,
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' )
+				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
 			$.ajax({

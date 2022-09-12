@@ -411,7 +411,14 @@ class TInvWL_Public_Wishlist_View {
 	 * @return mixed
 	 */
 	function htmloutput( $atts ) {
-		$wishlist = $this->get_current_wishlist();
+
+		if ( $atts['sharekey'] ) {
+			$wl       = new TInvWL_Wishlist( $this->_name );
+			$wishlist = $wl->get_by_share_key( $atts['sharekey'] );
+			$this->current_wishlist = $wishlist;
+		} else {
+			$wishlist = $this->get_current_wishlist();
+		}
 
 		if ( empty( $wishlist ) ) {
 			$id = get_query_var( 'tinvwlID', null );
@@ -445,7 +452,7 @@ class TInvWL_Public_Wishlist_View {
 		$this->lists_per_page = absint( $atts['lists_per_page'] );
 		$paged                = absint( get_query_var( 'wl_paged' ) ? get_query_var( 'wl_paged' ) : $atts['paged'] );
 
-		if ( 10 === $this->lists_per_page && is_array( $this->get_current_products_query() ) ) {
+		if ( 10 === $this->lists_per_page && is_array( $this->get_current_products_query() ) && ! $atts['sharekey'] ) {
 			$products = $this->current_products_query;
 		} else {
 			$products = $this->get_current_products( $wishlist, true, $this->lists_per_page, $paged );
@@ -611,6 +618,7 @@ class TInvWL_Public_Wishlist_View {
 		$default = array(
 			'lists_per_page' => 10,
 			'paged'          => 1,
+			'sharekey'       => false,
 		);
 		$atts    = shortcode_atts( $default, $atts );
 

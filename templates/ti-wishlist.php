@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist.php.
  *
- * @version             2.0.0
+ * @version             2.0.1
  * @package           TInvWishlist\Template
  */
 
@@ -15,12 +15,12 @@ wp_enqueue_script( 'tinvwl' );
 ?>
 <div class="tinv-wishlist woocommerce tinv-wishlist-clear">
 	<?php do_action( 'tinvwl_before_wishlist', $wishlist ); ?>
-	<?php if (function_exists('wc_print_notices') && isset(WC()->session)) {
+	<?php if ( function_exists( 'wc_print_notices' ) && isset( WC()->session ) ) {
 		wc_print_notices();
 	} ?>
 	<?php $form_url = tinv_url_wishlist( $wishlist['share_key'], $wl_paged, true ); ?>
 	<form action="<?php echo esc_url( $form_url ); ?>" method="post" autocomplete="off"
-		  data-tinvwl_paged="<? echo $wl_paged; ?>">
+		  data-tinvwl_paged="<? echo $wl_paged; ?>" data-tinvwl_sharekey="<?php echo $wishlist['share_key'] ?>">
 		<?php do_action( 'tinvwl_before_wishlist_table', $wishlist ); ?>
 		<table class="tinvwl-table-manage-list">
 			<thead>

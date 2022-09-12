@@ -465,7 +465,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-product_id': el.val(),
         'tinvwl-action': 'remove',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-        'tinvwl-paged': el.closest('form').data('tinvwl_paged')
+        'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       $.ajax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
@@ -546,7 +547,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-product_id': el.val(),
         'tinvwl-action': 'add_to_cart_single',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-        'tinvwl-paged': el.closest('form').data('tinvwl_paged')
+        'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       $.ajax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
@@ -624,7 +626,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       var params = {
         'tinvwl-action': 'add_to_cart_all',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-        'tinvwl-paged': el.closest('form').data('tinvwl_paged')
+        'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       $.ajax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
@@ -720,7 +723,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-products': products,
         'tinvwl-action': action,
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-        'tinvwl-paged': el.closest('form').data('tinvwl_paged')
+        'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       $.ajax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,

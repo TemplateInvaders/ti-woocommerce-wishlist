@@ -713,7 +713,7 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function account_menu_endpoint( $url, $endpoint, $value, $permalink ) {
-		if ( ! tinv_get_option( 'general', 'require_login' ) || ! tinv_get_option( 'general', 'my_account_endpoint' ) ) {
+		if ( ( ! tinv_get_option( 'general', 'require_login' ) || ! tinv_get_option( 'general', 'my_account_endpoint' ) ) && tinv_get_option( 'general', 'my_account_endpoint' ) === $endpoint ) {
 			$url = tinv_url_wishlist_default();
 		}
 

@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.1 ###
+*Release Date - 12 September 2022*
+
+* Fixed WooCommerce My Account links issue
+* Fixed AJAX actions for guests issue
+
 ### 2.0.0 ###
 *Release Date - 11 September 2022*
 

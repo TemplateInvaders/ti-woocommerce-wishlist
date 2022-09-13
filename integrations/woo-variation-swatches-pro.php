@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Variation Swatches - Pro
  *
- * @version 1.0.35
+ * @version 2.0.9
  *
  * @slug woo-variation-swatches-pro
  *
@@ -13,7 +13,7 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -24,43 +24,27 @@ $slug = "woo-variation-swatches-pro";
 
 $name = "WooCommerce Variation Swatches - Pro";
 
-$available = class_exists('Woo_Variation_Swatches_Pro');
+$available = class_exists( 'Woo_Variation_Swatches_Pro' );
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 
-$tinvwl_integrations[$slug] = array(
-	'name' => $name,
+$tinvwl_integrations[ $slug ] = array(
+	'name'      => $name,
 	'available' => $available,
 );
 
-if (!tinv_get_option('integrations', $slug)) {
+if ( ! tinv_get_option( 'integrations', $slug ) ) {
 	return;
 }
 
-if (!$available) {
+if ( ! $available ) {
 	return;
 }
 
-if (class_exists('Woo_Variation_Swatches_Pro')) {
+if ( class_exists( 'Woo_Variation_Swatches_Pro' ) ) {
 
-	add_action('before_get_redirect_url', 'tinvwl_remove_custom_url_woo_variation_swatches_pro');
-
-	function tinvwl_remove_custom_url_woo_variation_swatches_pro()
-	{
-		remove_filter('woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2);
-	}
-
-	add_action('after_get_redirect_url', 'tinvwl_add_custom_url_woo_variation_swatches_pro');
-
-	function tinvwl_add_custom_url_woo_variation_swatches_pro()
-	{
-		add_filter('woocommerce_product_add_to_cart_url', 'wvs_simple_product_cart_url', 10, 2);
-	}
-
-	function tinv_add_to_wishlist_woo_variation_swatches_pro()
-	{
-
-		wp_add_inline_script('tinvwl', "
+	function tinv_add_to_wishlist_woo_variation_swatches_pro() {
+		wp_add_inline_script( 'tinvwl', "
 		jQuery(document).ready(function($){
 			  $(document).on('tinvwl_wishlist_button_clicked', function (e, el, data) {
 			        var button = $(el);
@@ -72,13 +56,22 @@ if (class_exists('Woo_Variation_Swatches_Pro')) {
 			            var container = wrapper.closest('*.product');
 
 			            if (container.find('a.add_to_cart_button').length > 0){
-		                     data.form.variation_id = container.find('a.add_to_cart_button').data('variation_id');
+			                var hash,  url, hashes;
+			                url = container.find('a.add_to_cart_button').attr('href')
+						    hashes = url.slice(url.indexOf('?') + 1).split('&');
+						    for(var i = 0; i < hashes.length; i++)
+						    {
+							    hash = hashes[i].split('=');
+							    if ('variation_id' === hash[0]){
+								     data.form.variation_id = hash[1];
+								}
+						    }
 			            }
 			        }
 			  });
         });
-        ");
+        " );
 	}
 
-	add_action('wp_enqueue_scripts', 'tinv_add_to_wishlist_woo_variation_swatches_pro', 100, 1);
+	add_action( 'wp_enqueue_scripts', 'tinv_add_to_wishlist_woo_variation_swatches_pro', 100, 1 );
 }

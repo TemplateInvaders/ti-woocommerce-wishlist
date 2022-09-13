@@ -545,6 +545,7 @@ class TInvWL_Public_TInvWL {
 			'plugin_url'                 => esc_url_raw( TINVWL_URL ),
 			'wc_ajax_url'                => WC_AJAX::get_endpoint( 'tinvwl' ),
 			'stats'                      => tinv_get_option( 'general', 'product_stats' ),
+			'popup_timer'                => apply_filters( 'tinvwl_popup_close_timer', 6000 ),
 		);
 
 		if ( function_exists( 'wpml_get_current_language' ) ) {

@@ -143,7 +143,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               if (s.redirectTimer) {
                 clearTimeout(s.redirectTimer);
               }
-            }, 6000);
+            }, tinvwl_add_to_wishlist.popup_timer);
           }
 
           $msg.on('click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function (e) {
@@ -501,7 +501,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               if (closeTimer) {
                 clearTimeout(closeTimer);
               }
-            }, 6000);
+            }, tinvwl_add_to_wishlist.popup_timer);
           }
         }
 
@@ -587,7 +587,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               if (closeTimer) {
                 clearTimeout(closeTimer);
               }
-            }, 6000);
+            }, tinvwl_add_to_wishlist.popup_timer);
           }
         }
 
@@ -666,7 +666,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               if (closeTimer) {
                 clearTimeout(closeTimer);
               }
-            }, 6000);
+            }, tinvwl_add_to_wishlist.popup_timer);
           }
         }
 
@@ -763,7 +763,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               if (closeTimer) {
                 clearTimeout(closeTimer);
               }
-            }, 6000);
+            }, tinvwl_add_to_wishlist.popup_timer);
           }
         }
 

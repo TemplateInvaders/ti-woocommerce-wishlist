@@ -83,7 +83,7 @@ class TInvWL_Public_Wishlist_Ajax {
 			$this->wishlist_ajax_actions( $wishlist, $post );
 		} else {
 			$response['status'] = false;
-			$response['msg'][]  = __( 'Something went wrong1', 'ti-woocommerce-wishlist' );
+			$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 			$response['icon']   = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 			$response['msg']    = array_unique( $response['msg'] );
 			$response['msg']    = implode( '<br>', $response['msg'] );

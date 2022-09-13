@@ -135,7 +135,7 @@
 							if ( s.redirectTimer ) {
 								clearTimeout( s.redirectTimer );
 							}
-						}, 6000 );
+						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
@@ -479,7 +479,7 @@
 							if ( closeTimer ) {
 								clearTimeout( closeTimer );
 							}
-						}, 6000 );
+						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
 				if ( response.status ) {
@@ -574,7 +574,7 @@
 								clearTimeout( closeTimer );
 							}
 
-						}, 6000 );
+						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
 				if ( response.redirect ) {
@@ -664,7 +664,7 @@
 								clearTimeout( closeTimer );
 							}
 
-						}, 6000 );
+						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
 				if ( response.redirect ) {
@@ -773,7 +773,7 @@
 								clearTimeout( closeTimer );
 							}
 
-						}, 6000 );
+						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
 				if ( response.redirect ) {

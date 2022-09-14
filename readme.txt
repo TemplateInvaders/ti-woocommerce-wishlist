@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.0.2 =
+*Release Date - 14 September 2022*
+
+* Added filter `tinvwl_popup_close_timer`
+* Updated integration with WooCommerce Variation Swatches - Pro plugin
+* Options to setup wishlist page under WooCommerce My Account section are simplified
+
 = 2.0.1 =
 *Release Date - 12 September 2022*
 

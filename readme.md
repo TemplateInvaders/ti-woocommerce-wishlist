@@ -141,6 +141,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.2 ###
+*Release Date - 14 September 2022*
+
+* Added filter `tinvwl_popup_close_timer`
+* Updated integration with WooCommerce Variation Swatches - Pro plugin
+* Options to setup wishlist page under WooCommerce My Account section are simplified
+
 ### 2.0.1 ###
 *Release Date - 12 September 2022*
 

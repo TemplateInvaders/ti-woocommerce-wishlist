@@ -427,7 +427,7 @@ if ( ! function_exists( 'tinv_url_wishlist_default' ) ) {
 	 * @return string
 	 */
 	function tinv_url_wishlist_default() {
-		if ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) {
+		if ( tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			return esc_url( wc_get_endpoint_url( tinv_get_option( 'general', 'my_account_endpoint_slug' ), '', wc_get_page_permalink( 'myaccount' ) ) );
 		}
 

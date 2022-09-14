@@ -116,7 +116,7 @@ class TInvWL_Public_Wishlist_View {
 
 		add_action( 'tinvwl_before_wishlist', array( $this, 'wishlist_header' ) );
 
-		if ( ! ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) ) {
+		if ( ! tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			add_action( 'tinvwl_after_wishlist', array( 'TInvWL_Public_Wishlist_Social', 'init' ) );
 		}
 		add_filter( 'tinvwl_wishlist_item_url', array( $this, 'add_argument' ), 10, 3 );
@@ -413,8 +413,8 @@ class TInvWL_Public_Wishlist_View {
 	function htmloutput( $atts ) {
 
 		if ( $atts['sharekey'] ) {
-			$wl       = new TInvWL_Wishlist( $this->_name );
-			$wishlist = $wl->get_by_share_key( $atts['sharekey'] );
+			$wl                     = new TInvWL_Wishlist( $this->_name );
+			$wishlist               = $wl->get_by_share_key( $atts['sharekey'] );
 			$this->current_wishlist = $wishlist;
 		} else {
 			$wishlist = $this->get_current_wishlist();

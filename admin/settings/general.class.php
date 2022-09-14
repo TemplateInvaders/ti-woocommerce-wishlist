@@ -146,9 +146,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( 'Setup wishlist page under WooCommerce My Account section', 'ti-woocommerce-wishlist' ),
 						'desc'  => '<span class="tiwl-button-show-notice">' . __( 'This option will set up the wishlist page under WooCommerce My Account section and prevents all sharing features.', 'ti-woocommerce-wishlist' ) . '</span>',
 						'std'   => false,
-						'class' => 'tiwl-general-redirect-require-login',
 						'extra' => array(
 							'tiwl-show' => '.tinwl-general-my-account-endpoint',
+							'tiwl-hide' => '.tinwl-general-my-account-link',
 						),
 					),
 					array(
@@ -156,13 +156,14 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'  => 'my_account_endpoint_slug',
 						'text'  => __( 'WooCommerce My Account Wishlist page slug', 'ti-woocommerce-wishlist' ),
 						'std'   => 'wishlist',
-						'class' => 'tinwl-general-my-account-endpoint, tiwl-general-redirect-require-login',
+						'class' => 'tinwl-general-my-account-endpoint',
 					),
 					array(
 						'type' => 'checkboxonoff',
 						'name' => 'link_in_myaccount',
 						'text' => __( 'Show Link to Wishlist in my account', 'ti-woocommerce-wishlist' ),
 						'std'  => true,
+						'class' => 'tinwl-general-my-account-link',
 					),
 					array(
 						'type'  => 'checkboxonoff',

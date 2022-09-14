@@ -134,12 +134,12 @@ class TInvWL_Public_TInvWL {
 			add_filter( 'language_attributes', array( $this, 'add_ogp' ), 100 );
 		}
 
-		if ( tinv_get_option( 'general', 'link_in_myaccount' ) || ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) ) {
+		if ( tinv_get_option( 'general', 'link_in_myaccount' ) || tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			add_filter( 'woocommerce_account_menu_items', array( $this, 'account_menu_items' ) );
 			add_filter( 'woocommerce_get_endpoint_url', array( $this, 'account_menu_endpoint' ), 4, 10 );
 		}
 
-		if ( tinv_get_option( 'general', 'require_login' ) && tinv_get_option( 'general', 'my_account_endpoint' ) ) {
+		if ( tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			add_action( 'init', array( $this, 'wishlist_endpoint' ) );
 			add_filter( 'query_vars', array( $this, 'wishlist_query_vars' ), 0 );
 			add_action( 'woocommerce_account_' . tinv_get_option( 'general', 'my_account_endpoint_slug' ) . '_endpoint', array(
@@ -714,7 +714,7 @@ class TInvWL_Public_TInvWL {
 	 * @return string
 	 */
 	function account_menu_endpoint( $url, $endpoint, $value, $permalink ) {
-		if ( ( ! tinv_get_option( 'general', 'require_login' ) || ! tinv_get_option( 'general', 'my_account_endpoint' ) ) && tinv_get_option( 'general', 'my_account_endpoint' ) === $endpoint ) {
+		if ( ! tinv_get_option( 'general', 'my_account_endpoint' ) && tinv_get_option( 'general', 'my_account_endpoint_slug' ) === $endpoint ) {
 			$url = tinv_url_wishlist_default();
 		}
 

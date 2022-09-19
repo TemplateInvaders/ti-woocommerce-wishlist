@@ -170,7 +170,7 @@ class TInvWL_Public_Wishlist_Social {
 
 		$data = apply_filters( 'tinvwl_social_link_email', $data );
 
-		return 'mailto:?' . http_build_query( $data );
+		return 'mailto:' . apply_filters( 'tinvwl_social_link_email_recepient', '' ) . '?' . http_build_query( $data );
 	}
 
 	/**

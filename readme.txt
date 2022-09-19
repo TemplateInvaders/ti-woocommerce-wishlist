@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.0.3 =
+*Release Date - 19 September 2022*
+
+* WooCommerce 6.9 support
+* Added option to hide AJAX popup on the wishlist page
+* Added filter `tinvwl_social_link_email_recepient`
+
 = 2.0.2 =
 *Release Date - 14 September 2022*
 

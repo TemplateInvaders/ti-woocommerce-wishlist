@@ -159,10 +159,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'class' => 'tinwl-general-my-account-endpoint',
 					),
 					array(
-						'type' => 'checkboxonoff',
-						'name' => 'link_in_myaccount',
-						'text' => __( 'Show Link to Wishlist in my account', 'ti-woocommerce-wishlist' ),
-						'std'  => true,
+						'type'  => 'checkboxonoff',
+						'name'  => 'link_in_myaccount',
+						'text'  => __( 'Show Link to Wishlist in my account', 'ti-woocommerce-wishlist' ),
+						'std'   => true,
 						'class' => 'tinwl-general-my-account-link',
 					),
 					array(
@@ -752,6 +752,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'text'  => __( '"Add All to Cart" Button Text', 'ti-woocommerce-wishlist' ),
 						'std'   => 'Add All to Cart',
 						'class' => 'tiwl-table-addcart-all',
+					),
+					array(
+						'type' => 'checkboxonoff',
+						'name' => 'hide_popup',
+						'text' => __( 'Hide popup for wishlist products management actions', 'ti-woocommerce-wishlist' ),
+						'desc' => __( 'This option allows hide/show a popup after any action is processed with wishlist products on the wishlist page.', 'ti-woocommerce-wishlist' ),
+						'std'  => false,
 					),
 				),
 			),

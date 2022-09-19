@@ -87,6 +87,9 @@ class TInvWL_Public_Wishlist_Ajax {
 			$response['icon']   = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 			$response['msg']    = array_unique( $response['msg'] );
 			$response['msg']    = implode( '<br>', $response['msg'] );
+			if ( tinv_get_option( 'table', 'hide_popup' ) && array_key_exists( 'msg', $response ) ) {
+				unset( $response['msg'] );
+			}
 			if ( ! empty( $response['msg'] ) ) {
 				$response['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $response, $post ) );
 			}
@@ -447,6 +450,9 @@ class TInvWL_Public_Wishlist_Ajax {
 		$response['icon'] = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 		$response['msg']  = array_unique( $response['msg'] );
 		$response['msg']  = implode( '<br>', $response['msg'] );
+		if ( tinv_get_option( 'table', 'hide_popup' ) && array_key_exists( 'msg', $response ) ) {
+			unset( $response['msg'] );
+		}
 		if ( ! empty( $response['msg'] ) ) {
 			$response['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $response, $post ) );
 		}

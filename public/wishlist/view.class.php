@@ -616,7 +616,7 @@ class TInvWL_Public_Wishlist_View {
 	 */
 	function shortcode( $atts = array() ) {
 		$default = array(
-			'lists_per_page' => 10,
+			'lists_per_page' => tinv_get_option( 'table', 'per_page' ),
 			'paged'          => 1,
 			'sharekey'       => false,
 		);

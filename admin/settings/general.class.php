@@ -703,6 +703,16 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 				'show_names' => true,
 				'fields'     => array(
 					array(
+						'type'  => 'number',
+						'name'  => 'per_page',
+						'text'  => __( 'Products per page', 'ti-woocommerce-wishlist' ),
+						'std'   => 10,
+						'extra' => array(
+							'step' => '1',
+							'min'  => '1',
+						),
+					),
+					array(
 						'type'  => 'checkboxonoff',
 						'name'  => 'colm_checkbox',
 						'text'  => __( 'Show Checkboxes', 'ti-woocommerce-wishlist' ),

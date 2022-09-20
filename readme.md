@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.5 ###
+*Release Date - 20 September 2022*
+
+* Added option "Products per page" for wishlist table
+* Fixed pagination issue for wishlist owner
+
 ### 2.0.4 ###
 *Release Date - 20 September 2022*
 

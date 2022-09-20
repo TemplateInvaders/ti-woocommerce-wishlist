@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.4 ###
+*Release Date - 20 September 2022*
+
+* Fixed issue with PHP `short_open_tag`
+
 ### 2.0.3 ###
 *Release Date - 19 September 2022*
 

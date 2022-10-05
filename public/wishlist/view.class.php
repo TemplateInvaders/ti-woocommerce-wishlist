@@ -176,8 +176,7 @@ class TInvWL_Public_Wishlist_View {
 		// override global product data.
 		$product = $_product;
 
-		if ( 'external' === ( $product->get_type() ) ) {
-
+		if ( 'external' === $product->get_type() ) {
 			$text = $product->single_add_to_cart_text();
 
 			// restore global product data.
@@ -384,7 +383,6 @@ class TInvWL_Public_Wishlist_View {
 					}
 
 					$this->social_image = $image;
-
 
 					$meta = apply_filters( 'tinvwl_social_header_meta', array(
 						'url'         => $this->wishlist_url,

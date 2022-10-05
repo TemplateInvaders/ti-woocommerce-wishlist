@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 2.0.5
+ * @version 2.0.6
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 *{-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -26,6 +26,7 @@ div.error,div.updated{margin:20px 0 0 40px}
 .notice{margin-right:40px}
 div.error,div.updated{margin-right:40px}
 body .tinvwl-header,body .tinvwl-content{font-family:Arial,sans-serif;font-size:14px;line-height:1.429;color:#6b625a}
+body .tinvwl-wizard{border:0}
 button,input,select,textarea{font-family:inherit;font-size:inherit;font-weight:inherit}
 label,.tinv-label{display:block;font-size:15px;font-family:"Open Sans","Helvetica Neue",sans-serif;color:#291c09;font-weight:600;margin-bottom:7px}
 h1,h2,h3,h4,h5,h6,.wrap h1{color:#291c09;font-family:"Open Sans",Arial,sans-serif;font-weight:normal;line-height:1.313;padding:0;margin:0;border:0}
@@ -58,6 +59,7 @@ h6{font-size:12px}
 .tinvwl-content a:hover,.tinvwl-content a:active,.tinvwl-content a:focus{color:#524737}
 .tinvwl-content input[type=text],.tinvwl-content input[type=password],.tinvwl-content input[type=checkbox],.tinvwl-content input[type=color],.tinvwl-content input[type=date],.tinvwl-content input[type=datetime],.tinvwl-content input[type=datetime-local],.tinvwl-content input[type=email],.tinvwl-content input[type=month],.tinvwl-content input[type=number],.tinvwl-content input[type=radio],.tinvwl-content input[type=tel],.tinvwl-content input[type=time],.tinvwl-content input[type=url],.tinvwl-content input[type=week],.tinvwl-content input[type=search]{line-height:1.429;padding:9px 13px;margin:0;color:#4f4639;border:1px solid rgba(0,0,0,0.14);-webkit-box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14);box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14)}
 .tinvwl-content select{line-height:1.429;padding:9px 13px;margin:0;color:#4f4639;border:1px solid rgba(0,0,0,0.14);-webkit-box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14);box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14)}
+.tinvwl-content input[type=checkbox]+label{display:inline-block;margin:10px}
 .tinvwl-content textarea{line-height:1.429;padding:9px 13px;margin:0;color:#4f4639;border:1px solid rgba(0,0,0,0.14);-webkit-box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14);box-shadow:inset 1px 1px 6px 0 rgba(170,157,137,0.14);height:70px}
 .tinvwl-content input[type=text],.tinvwl-content input[type=password],.tinvwl-content input[type=color],.tinvwl-content input[type=date],.tinvwl-content input[type=datetime],.tinvwl-content input[type=datetime-local],.tinvwl-content input[type=email],.tinvwl-content input[type=month],.tinvwl-content input[type=number],.tinvwl-content input[type=tel],.tinvwl-content input[type=time],.tinvwl-content input[type=url],.tinvwl-content input[type=week],.tinvwl-content input[type=search]{height:42px;border-radius:4px}
 .tinvwl-content select{height:42px;border-radius:4px}
@@ -94,6 +96,7 @@ h6{font-size:12px}
 .tinvwl-panel.only-button #save_buttons--setting_reset .tinvwl-btn.split span{background:#fbfaf9}
 .tinvwl-panel.only-button #save_buttons--setting_reset .form-control:hover{color:#fff;background-color:#515151}
 .tinvwl-panel.only-button #save_buttons--setting_reset .tinvwl-btn.split:hover span{background:#434343}
+.tinvwl-panel.only-button .tinvwl-table>tbody>tr>td{padding:0}
 #doaction,#doaction2,#post-query-submit{margin:0}
 button,input[type=submit]{display:inline-block;vertical-align:middle;margin:0;font-family:"Open Sans",Arial,sans-serif;font-size:14px;line-height:normal;cursor:pointer;text-decoration:none}
 .tinvwl-btn{display:inline-block;vertical-align:middle;margin:0;font-family:"Open Sans",Arial,sans-serif;font-size:14px;line-height:normal;cursor:pointer;text-decoration:none;padding:11px 19px 12px 18px;font-weight:800;text-align:center;text-transform:uppercase;letter-spacing:-0.025em;border:0;border-radius:2px;color:#fff;background-color:#96b100}
@@ -708,7 +711,7 @@ div.error,div.updated{margin-top:20px;margin-left:20px;margin-right:20px}
 .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-sign span{display:none}
 .tinvwl-table .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-sign .tinvwl-help{display:block;margin:0 auto}
 .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-desc{display:none}
-}@media(max-width:1199px){.tinvwl-header{text-align:center}
+}@media(max-width:1199px){.tinvwl-header{text-align:center;padding:18px 0 25px}
 .tinvwl-header .tinvwl-table,.tinvwl-header .tinvwl-cell,.tinvwl-header .tinvwl-cell-3{display:block}
 .tinvwl-header h1+.tinvwl-status-panel{margin-top:25px}
 .tinvwl-header .tinvwl-status-panel{text-align:center;margin-top:15px}

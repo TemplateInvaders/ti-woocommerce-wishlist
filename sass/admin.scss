@@ -141,6 +141,10 @@ body {
 		line-height: 1.429;
 		color: #6b625a;
 	}
+
+	.tinvwl-wizard {
+		border: none;
+	}
 }
 
 button, input, select, textarea {
@@ -440,6 +444,11 @@ h6 {
 		box-shadow: inset 1px 1px 6px 0 rgba(170, 157, 137, 0.14);
 	}
 
+	input[type=checkbox] + label {
+		display: inline-block;
+		margin: 10px;
+	}
+
 	textarea {
 		line-height: 1.429;
 		padding: 9px 13px;
@@ -681,6 +690,10 @@ h6 {
 		.tinvwl-btn.split:hover span {
 			background: #434343;
 		}
+	}
+
+	.tinvwl-table > tbody > tr > td {
+		padding: 0;
 	}
 }
 
@@ -1111,6 +1124,8 @@ a.tinvwl-btn:not(:disabled) {
 				margin-left: 9px;
 			}
 		}
+
+		padding: 18px 0 25px;
 	}
 	.tinwl-logo {
 		display: block;

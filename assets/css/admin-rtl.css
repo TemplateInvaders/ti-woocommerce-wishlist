@@ -114,6 +114,9 @@ body .tinvwl-header, body .tinvwl-content {
   line-height: 1.429;
   color: #6b625a;
 }
+body .tinvwl-wizard {
+  border: none;
+}
 
 button, input, select, textarea {
   font-family: inherit;
@@ -370,6 +373,10 @@ h6 {
   -webkit-box-shadow: inset -1px 1px 6px 0 rgba(170, 157, 137, 0.14);
           box-shadow: inset -1px 1px 6px 0 rgba(170, 157, 137, 0.14);
 }
+.tinvwl-content input[type=checkbox] + label {
+  display: inline-block;
+  margin: 10px;
+}
 .tinvwl-content textarea {
   line-height: 1.429;
   padding: 9px 13px;
@@ -565,6 +572,9 @@ h6 {
 }
 .tinvwl-panel.only-button #save_buttons--setting_reset .tinvwl-btn.split:hover span {
   background: #434343;
+}
+.tinvwl-panel.only-button .tinvwl-table > tbody > tr > td {
+  padding: 0;
 }
 
 /* reset button */
@@ -899,6 +909,7 @@ a.tinvwl-btn:not(:disabled):hover, a.tinvwl-btn:not(:disabled):active, a.tinvwl-
 @media (max-width: 1199px) {
   .tinvwl-header {
     text-align: center;
+    padding: 18px 0 25px;
   }
   .tinvwl-header .tinvwl-table, .tinvwl-header .tinvwl-cell, .tinvwl-header .tinvwl-cell-3 {
     display: block;

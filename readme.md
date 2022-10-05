@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.6 ###
+*Release Date - 5 October 2022*
+
+* Added JavaScript event ‘tinvwl_wishlist_ajax_response’
+* Integration updated with the [WooCommerce Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/)
+
 ### 2.0.5 ###
 *Release Date - 20 September 2022*
 

@@ -306,6 +306,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         processData: false,
         data: formData
       }).done(function (body) {
+        $('body').trigger('tinvwl_wishlist_ajax_response', [this, body]);
         s.onDialogHide.call(a.tinvwl_dialog, a);
 
         if ('object' === _typeof(body)) {
@@ -477,6 +478,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
         }
       }).done(function (response) {
+        $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
 
         if (response.msg) {
@@ -559,6 +561,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
         }
       }).done(function (response) {
+        $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
 
         if (response.redirect) {
@@ -638,6 +641,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
         }
       }).done(function (response) {
+        $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
 
         if (response.redirect) {
@@ -735,6 +739,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
         }
       }).done(function (response) {
+        $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
 
         if (response.redirect) {
@@ -906,6 +911,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
           }
         }).done(function (response) {
+          $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
           set_hash(JSON.stringify(response));
           mark_products(response);
         });
@@ -936,6 +942,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             xhr.setRequestHeader('X-WP-Nonce', tinvwl_add_to_wishlist.nonce);
           }
         }).done(function (response) {
+          $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
           set_hash(JSON.stringify(response));
           mark_products(response);
         }).fail(function () {

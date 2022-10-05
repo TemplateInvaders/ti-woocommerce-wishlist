@@ -121,6 +121,7 @@
 						return false;
 					}
 					var $msg = $( html ).eq( 0 );
+
 					if ( ! $( 'body > .tinv-wishlist' ).length ) {
 						$( 'body' ).append( $( '<div>' ).addClass( 'tinv-wishlist' ) );
 					}
@@ -292,6 +293,9 @@
 				processData: false,
 				data: formData
 			}).done( function( body ) {
+
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, body ]);
+
 				s.onDialogHide.call( a.tinvwl_dialog, a );
 				if ( 'object' === typeof body ) {
 					for ( var k in body ) {
@@ -455,6 +459,9 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 				el.removeClass( 'inited-wishlist-action' );
 
 				if ( response.msg ) {
@@ -545,6 +552,9 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 				el.removeClass( 'inited-wishlist-action' );
 
 				if ( response.redirect ) {
@@ -635,6 +645,9 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 				el.removeClass( 'inited-wishlist-action' );
 
 				if ( response.redirect ) {
@@ -744,6 +757,9 @@
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
 			}).done( function( response ) {
+
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 				el.removeClass( 'inited-wishlist-action' );
 
 				if ( response.redirect ) {
@@ -920,6 +936,9 @@
 						xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 					}
 				}).done( function( response ) {
+
+					$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 					set_hash( JSON.stringify( response ) );
 					mark_products( response );
 				});
@@ -952,6 +971,9 @@
 						xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 					}
 				}).done( function( response ) {
+
+					$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
 					set_hash( JSON.stringify( response ) );
 					mark_products( response );
 

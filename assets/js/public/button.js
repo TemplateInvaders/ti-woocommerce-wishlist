@@ -442,7 +442,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			var params = {
+			var data = {
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'remove',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
@@ -450,11 +450,23 @@
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
+			if ( tinvwl_add_to_wishlist.wpml ) {
+				data.lang = tinvwl_add_to_wishlist.wpml;
+			}
+
+			if ( tinvwl_add_to_wishlist.wpml_default ) {
+				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
+			}
+
+			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+				data.stats = tinvwl_add_to_wishlist.stats;
+			}
+
 			$.ajax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
-				data: params,
+				data: data,
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
@@ -535,7 +547,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			var params = {
+			var data = {
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'add_to_cart_single',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
@@ -543,11 +555,23 @@
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
+			if ( tinvwl_add_to_wishlist.wpml ) {
+				data.lang = tinvwl_add_to_wishlist.wpml;
+			}
+
+			if ( tinvwl_add_to_wishlist.wpml_default ) {
+				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
+			}
+
+			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+				data.stats = tinvwl_add_to_wishlist.stats;
+			}
+
 			$.ajax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
-				data: params,
+				data: data,
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
@@ -629,18 +653,30 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			var params = {
+			var data = {
 				'tinvwl-action': 'add_to_cart_all',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
 				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
+			if ( tinvwl_add_to_wishlist.wpml ) {
+				data.lang = tinvwl_add_to_wishlist.wpml;
+			}
+
+			if ( tinvwl_add_to_wishlist.wpml_default ) {
+				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
+			}
+
+			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+				data.stats = tinvwl_add_to_wishlist.stats;
+			}
+
 			$.ajax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
-				data: params,
+				data: data,
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
@@ -740,7 +776,7 @@
 				action = $( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val();
 			}
 
-			var params = {
+			var data = {
 				'tinvwl-products': products,
 				'tinvwl-action': action,
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
@@ -748,11 +784,23 @@
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
+			if ( tinvwl_add_to_wishlist.wpml ) {
+				data.lang = tinvwl_add_to_wishlist.wpml;
+			}
+
+			if ( tinvwl_add_to_wishlist.wpml_default ) {
+				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
+			}
+
+			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+				data.stats = tinvwl_add_to_wishlist.stats;
+			}
+
 			$.ajax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
-				data: params,
+				data: data,
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
@@ -907,31 +955,33 @@
 			tinvwl_counter = true;
 		});
 
-		var rest_request = function() {
+		var get_data_ajax = function() {
 
 			if ( tinvwl_products.length || tinvwl_counter ) {
-				var params = {
-					'ids': tinvwl_products,
-					'counter': tinvwl_counter,
-					'tinvwl_request': true
+
+				var data = {
+					'tinvwl-action': 'get_data',
+					'tinvwl-security': tinvwl_add_to_wishlist.nonce
 				};
 
+
 				if ( tinvwl_add_to_wishlist.wpml ) {
-					params.lang = tinvwl_add_to_wishlist.wpml;
+					data.lang = tinvwl_add_to_wishlist.wpml;
 				}
 
 				if ( tinvwl_add_to_wishlist.wpml_default ) {
-					params.lang_default = tinvwl_add_to_wishlist.wpml_default;
+					data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 				}
 
 				if ( '1' == tinvwl_add_to_wishlist.stats ) {
-					params.stats = tinvwl_add_to_wishlist.stats;
+					data.stats = tinvwl_add_to_wishlist.stats;
 				}
 
 				$.ajax({
-					url: tinvwl_add_to_wishlist.rest_root + 'wishlist/v1/products',
+					url: tinvwl_add_to_wishlist.wc_ajax_url,
 					method: 'POST',
-					data: params,
+					cache: false,
+					data: data,
 					beforeSend: function( xhr ) {
 						xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 					}
@@ -939,46 +989,10 @@
 
 					$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
-					set_hash( JSON.stringify( response ) );
-					mark_products( response );
-				});
-			}
-		};
-
-
-		var custom_ajax = function() {
-
-			if ( tinvwl_products.length || tinvwl_counter ) {
-				var params = {};
-
-				if ( tinvwl_add_to_wishlist.wpml ) {
-					params.lang = tinvwl_add_to_wishlist.wpml;
-				}
-
-				if ( tinvwl_add_to_wishlist.wpml_default ) {
-					params.lang_default = tinvwl_add_to_wishlist.wpml_default;
-				}
-
-				if ( '1' == tinvwl_add_to_wishlist.stats ) {
-					params.stats = tinvwl_add_to_wishlist.stats;
-				}
-
-				$.ajax({
-					url: tinvwl_add_to_wishlist.plugin_url + 'includes/api/ajax.php',
-					method: 'POST',
-					data: params,
-					beforeSend: function( xhr ) {
-						xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
+					if ( response.wishlists_data ) {
+						set_hash( JSON.stringify( response.wishlists_data ) );
 					}
-				}).done( function( response ) {
 
-					$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
-
-					set_hash( JSON.stringify( response ) );
-					mark_products( response );
-
-				}).fail( function() {
-					rest_request();
 				});
 			}
 		};
@@ -1008,7 +1022,8 @@
 				return;
 			}
 
-			custom_ajax();
+			get_data_ajax();
+
 		};
 
 		$.fn.tinvwl_get_wishlist_data();

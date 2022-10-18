@@ -79,8 +79,19 @@ class TInvWL_Public_Wishlist_Ajax {
 		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_share_key( $post['tinvwl-sharekey'] );
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && $post['tinvwl-security'] && wp_verify_nonce( $post['tinvwl-security'], 'wp_rest' ) && $wishlist && $post['tinvwl-action'] ) {
-			$this->wishlist_ajax_actions( $wishlist, $post );
+		if ( ! $wishlist ) {
+			$wishlist = $wl->get_by_user_default();
+			$wishlist = array_shift( $wishlist );
+		}
+
+		$guest_wishlist = false;
+		if ( ! is_user_logged_in() ) {
+			$guest_wishlist = $wl->get_by_user_default();
+			$guest_wishlist = array_shift( $guest_wishlist );
+		}
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && $post['tinvwl-security'] && wp_verify_nonce( $post['tinvwl-security'], 'wp_rest' ) && $post['tinvwl-action'] ) {
+			$this->wishlist_ajax_actions( $wishlist, $post, $guest_wishlist );
 		} else {
 			$response['status'] = false;
 			$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
@@ -97,11 +108,11 @@ class TInvWL_Public_Wishlist_Ajax {
 		}
 	}
 
-	function wishlist_ajax_actions( $wishlist, $post ) {
+	function wishlist_ajax_actions( $wishlist, $post, $guest_wishlist = false ) {
 		$post['wishlist_qty'] = 1;
 		$action               = $post['tinvwl-action'];
 		$class                = TInvWL_Public_AddToWishlist::instance();
-		$owner                = (bool) $wishlist['is_owner'];
+		$owner                = ( $wishlist && isset( $wishlist['is_owner'] ) ) ? (bool) $wishlist['is_owner'] : false;
 		$response['status']   = false;
 		$response['msg']      = array();
 
@@ -143,9 +154,6 @@ class TInvWL_Public_Wishlist_Ajax {
 						'paged'    => $post['tinvwl-paged'],
 						'sharekey' => $post['tinvwl-sharekey']
 					) );
-					if ( $owner ) {
-						$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
-					}
 				} else {
 					$response['status'] = false;
 					$response['msg'][]  = sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
@@ -208,12 +216,6 @@ class TInvWL_Public_Wishlist_Ajax {
 						if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
 							$response['redirect'] = wc_get_cart_url();
 						}
-
-						if ( tinv_get_option( 'processing', 'autoremove' ) ) {
-							if ( $owner ) {
-								$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
-							}
-						}
 					} else {
 						$response['status'] = false;
 						$response['msg'][]  = sprintf( _n( '%s has not been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title );
@@ -255,13 +257,12 @@ class TInvWL_Public_Wishlist_Ajax {
 					}
 				}
 				if ( ! empty( $titles ) ) {
-					$response['status']         = true;
-					$response['msg'][]          = sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
-					$response['content']        = tinvwl_shortcode_view( array(
+					$response['status']  = true;
+					$response['msg'][]   = sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['content'] = tinvwl_shortcode_view( array(
 						'paged'    => $post['tinvwl-paged'],
 						'sharekey' => $post['tinvwl-sharekey']
 					) );
-					$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
 				}
 
 				break;
@@ -346,12 +347,6 @@ class TInvWL_Public_Wishlist_Ajax {
 					if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
 						$response['redirect'] = wc_get_cart_url();
 					}
-
-					if ( tinv_get_option( 'processing', 'autoremove' ) ) {
-						if ( $owner ) {
-							$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
-						}
-					}
 				}
 				$response['content'] = tinvwl_shortcode_view( array(
 					'paged'    => $post['tinvwl-paged'],
@@ -434,17 +429,14 @@ class TInvWL_Public_Wishlist_Ajax {
 					if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
 						$response['redirect'] = wc_get_cart_url();
 					}
-
-					if ( tinv_get_option( 'processing', 'autoremove' ) ) {
-						if ( $owner ) {
-							$response['wishlists_data'] = $class->get_wishlists_data( $wishlist['share_key'] );
-						}
-					}
 				}
 				$response['content'] = tinvwl_shortcode_view( array(
 					'paged'    => $post['tinvwl-paged'],
 					'sharekey' => $post['tinvwl-sharekey']
 				) );
+				break;
+			case 'get_data':
+				$response['status'] = true;
 				break;
 		}
 		$response['icon'] = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
@@ -456,6 +448,13 @@ class TInvWL_Public_Wishlist_Ajax {
 		if ( ! empty( $response['msg'] ) ) {
 			$response['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $response, $post ) );
 		}
+
+		$share_key = false;
+
+		if ( $guest_wishlist ) {
+			$share_key = $guest_wishlist['share_key'];
+		}
+		$response['wishlists_data'] = $class->get_wishlists_data( $share_key );
 
 		do_action( 'tinvwl_action_' . $action, $wishlist, $post['tinvwl-products'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
 

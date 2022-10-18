@@ -324,6 +324,7 @@ class TInvWL_Wishlist {
 				$wishlist['is_owner'] = $this->get_sharekey() === $wishlist['share_key']; // WPCS: loose comparison ok.
 			}
 		}
+
 		return $wishlist;
 	}
 
@@ -415,6 +416,15 @@ class TInvWL_Wishlist {
 			}
 			if ( 'default' === $wl['type'] && empty( $wl['title'] ) ) {
 				$wl['title'] = $this->default_name;
+			}
+
+			if ( is_array( $wl ) ) {
+				$wl['is_owner'] = false;
+				if ( is_user_logged_in() ) {
+					$wl['is_owner'] = get_current_user_id() == $wl['author']; // WPCS: loose comparison ok.
+				} else {
+					$wl['is_owner'] = $this->get_sharekey() === $wl['share_key']; // WPCS: loose comparison ok.
+				}
 			}
 
 			$wls[ $k ] = apply_filters( 'tinvwl_wishlist_get', $wl );

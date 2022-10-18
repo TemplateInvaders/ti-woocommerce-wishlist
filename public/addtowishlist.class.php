@@ -372,7 +372,13 @@ class TInvWL_Public_AddToWishlist {
 		if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 			$data['make_remove'] = $data['status'];
 		}
-		$data['wishlists_data'] = $this->get_wishlists_data( $wishlist['share_key'] );
+		$share_key = false;
+
+		if ( ! is_user_logged_in() ) {
+			$share_key = $wishlist['share_key'];
+		}
+
+		$data['wishlists_data'] = $this->get_wishlists_data( $share_key );
 		$data                   = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post, $form, $product );
 		ob_clean();
 		wp_send_json( $data );
@@ -424,6 +430,7 @@ class TInvWL_Public_AddToWishlist {
 			} else {
 				$default['field'] = $table . '.*, ';
 			}
+
 			$default['field'] .= $table_lists . '.ID as wishlist_id, ' . $table_lists . '.status as wishlist_status, ' . $table_lists . '.title as wishlist_title, ' . $table_lists . '.share_key as wishlist_share_key';
 
 			$sql = "SELECT {$default[ 'field' ]} FROM `{$table}` INNER JOIN `{$table_lists}` ON `{$table}`.`wishlist_id` = `{$table_lists}`.`ID` AND `{$table_lists}`.`type` = 'default'";
@@ -531,13 +538,16 @@ JOIN {$table_languages} l ON
 					}
 				}
 			}
+
 		}
 
 		if ( $stats ) {
 			$stats_sql = "SELECT `A`.`product_id`, `A`.`variation_id`, COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999";
 
 			$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
+
 			if ( ! empty( $stats_results ) ) {
+				$analytics = array();
 				foreach ( $stats_results as $product_stats ) {
 					$analytics[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = $product_stats['count'];
 				}

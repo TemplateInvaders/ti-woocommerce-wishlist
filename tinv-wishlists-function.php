@@ -498,7 +498,7 @@ if ( ! function_exists( 'tinv_url_wishlist' ) ) {
 		$share_key = $id;
 		if ( ! ( is_string( $id ) && preg_match( '/^[A-Fa-f0-9]{6}$/', $id ) ) ) {
 			$wishlist  = tinv_wishlist_get( $id, false );
-			$share_key = $wishlist['share_key'];
+			$share_key = isset( $wishlist['share_key'] ) ? $wishlist['share_key'] : '';
 		}
 
 		return tinv_url_wishlist_by_key( $share_key, $paged );

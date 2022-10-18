@@ -140,6 +140,7 @@ class TInvWL_Public_Wishlist_Buttons {
 				self::button( $button['name'], __( $button['title'] ), $button['submit'] );
 			}
 		}, $button['priority'] );
+
 		add_action( 'tinvwl_action_' . $button['name'], $button['method'], 10, 4 );
 	}
 
@@ -264,12 +265,12 @@ class TInvWL_Public_Wishlist_Buttons {
 		$paged = 1 < $paged ? $paged : 1;
 
 		if ( ! $per_page ) {
-			$per_page = apply_filters( 'tinvwl_wishlist_products_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
+			$per_page = absint( apply_filters( 'tinvwl_wishlist_products_per_page', filter_input( INPUT_POST, 'lists_per_page', FILTER_VALIDATE_INT, array(
 				'options' => array(
 					'default'   => 10,
 					'min_range' => 1,
 				),
-			) ) );
+			) ) ) );
 
 		}
 

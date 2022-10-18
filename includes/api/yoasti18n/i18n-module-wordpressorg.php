@@ -45,7 +45,7 @@ class TInvWL_Yoast_I18n_WordPressOrg_V2 {
 	private function set_defaults( $args ) {
 
 		if ( ! isset( $args['glotpress_logo'] ) ) {
-			$args['glotpress_logo'] = 'https://plugins.svn.wordpress.org/' . $args['textdomain'] . '/assets/icon-128x128.png';
+			$args['glotpress_logo'] = 'https://plugins.svn.wordpress.org/' . $args['textdomain'] . '/assets/icon-128x128.gif';
 		}
 
 		if ( ! isset( $args['register_url'] ) ) {

@@ -82,8 +82,6 @@ class TInvWL_Public_TInvWL {
 
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
-		add_filter( 'tinvwl_update_wishlists_data', array( $this, 'update_local_wishlists_data' ) );
-
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
 		add_action( 'wp', array( $this, 'analytics_referer' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
@@ -100,16 +98,6 @@ class TInvWL_Public_TInvWL {
 		$this->ajax        = TInvWL_Public_Wishlist_Ajax::instance( $this->_name );
 		$this->cart        = TInvWL_Public_Cart::instance( $this->_name );
 		$this->topwishlist = TInvWL_Public_WishlistCounter::instance( $this->_name );
-	}
-
-	function update_local_wishlists_data( $state ) {
-		if ( get_transient( '_tinvwl_update_wishlists_data' ) ) {
-			delete_transient( '_tinvwl_update_wishlists_data' );
-
-			return true;
-		}
-
-		return $state;
 	}
 
 	/**
@@ -260,6 +248,10 @@ class TInvWL_Public_TInvWL {
 	 * Create rewrite url for wishlist
 	 */
 	public static function add_rewrite_rules() {
+		if ( tinv_get_option( 'general', 'my_account_endpoint' ) ) {
+			return;
+		}
+
 		$id             = tinv_get_option( 'page', 'wishlist' );
 		$pages          = array( $id );
 		$language_codes = array();

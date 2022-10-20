@@ -2871,6 +2871,8 @@ textarea[name="style_plain-css"] {
 	}
 
 	.tinvwl-pic-col {
+		display: flex;
+		align-items: center;
 		border: 5px solid #ffffff;
 		text-align: center;
 		background: #df4c57; /* Old browsers */
@@ -2878,7 +2880,7 @@ textarea[name="style_plain-css"] {
 		background: -webkit-linear-gradient(-45deg, #df4c57 0%, #f78c62 100%); /* Chrome10-25,Safari5.1-6 */
 		background: linear-gradient(135deg, #df4c57 0%, #f78c62 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#df4c57', endColorstr='#f78c62', GradientType=1); /* IE6-9 fallback on horizontal gradient */
-		padding: 50px 10px;
+		padding: 25px 10px;
 		color: #ffffff;
 
 		img {
@@ -2897,6 +2899,7 @@ textarea[name="style_plain-css"] {
 		p {
 			font-size: 16px;
 			padding-bottom: 1em;
+			display: inline;
 		}
 	}
 
@@ -2911,6 +2914,7 @@ textarea[name="style_plain-css"] {
 	.tinvwl-sup-col {
 		display: flex;
 		flex-direction: column;
+		border: 5px solid #ffffff;
 	}
 }
 
@@ -4194,7 +4198,7 @@ label.one-line {
 .premium_adv {
 	background: url('../img/premium_logo.png') no-repeat center;
 	display: inline-block;
-	margin: 0 auto 35px;
+	margin: 0 auto;
 	background-size: 107px 106px;
 	width: 107px;
 	height: 106px;

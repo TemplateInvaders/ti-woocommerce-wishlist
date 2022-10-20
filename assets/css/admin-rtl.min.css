@@ -360,13 +360,13 @@ textarea[name=style_plain-css]{height:150px}
 .tinvwl-premium-feat .col-lg-4 .half-containers.subscribe .mc-field-group input[type=submit]{width:30%}
 .tinvwl-premium-feat .col-lg-4 .half-containers.subscribe #mc_embed_signup{margin-bottom:30px}
 .tinvwl-premium-feat h2{font-size:30px;text-transform:uppercase;letter-spacing:-0.025em;line-height:1;color:#fff}
-.tinvwl-premium-feat .tinvwl-pic-col{border:5px solid #fff;text-align:center;background:#df4c57;background:linear-gradient(-135deg,#df4c57 0,#f78c62 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#df4c57",endColorstr="#f78c62",GradientType=1);padding:50px 10px;color:#fff}
+.tinvwl-premium-feat .tinvwl-pic-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border:5px solid #fff;text-align:center;background:#df4c57;background:linear-gradient(-135deg,#df4c57 0,#f78c62 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#df4c57",endColorstr="#f78c62",GradientType=1);padding:25px 10px;color:#fff}
 .tinvwl-premium-feat .tinvwl-pic-col img{display:block;margin:0 auto}
 .tinvwl-premium-feat .tinvwl-pic-col .tinvwl-btn.white{color:#ff5739}
 .tinvwl-premium-feat .tinvwl-pic-col .tinvwl-btn.white:hover{color:#fff}
-.tinvwl-premium-feat .tinvwl-pic-col p{font-size:16px;padding-bottom:1em}
+.tinvwl-premium-feat .tinvwl-pic-col p{font-size:16px;padding-bottom:1em;display:inline}
 .tinvwl-premium-feat .tinvwl-feat-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;border-top:1px solid #fff;border-bottom:1px solid #fff;background-color:#f9f8f5}
-.tinvwl-premium-feat .tinvwl-sup-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+.tinvwl-premium-feat .tinvwl-sup-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;border:5px solid #fff}
 #wpfooter{padding:10px 40px}
 #wpfooter p{font-family:"Open Sans","Helvetica Neue",sans-serif;font-size:14px;line-height:1.85714286;color:#4b4b4b}
 #wpfooter .ftinvwl-heart{margin:0 3px}
@@ -479,7 +479,7 @@ label.one-line{display:inline-block;margin-bottom:0;margin-left:10px}
 .admin-update{background:url("../img/admin-update.png") no-repeat center;display:inline-block;background-size:61px 60px;width:61px;height:60px}
 .wizard_logo{background:url("../img/wizard_logo.png") no-repeat center;background-size:54px 54px;width:54px;height:54px;display:block;margin:10px auto}
 .wizard_setup{background:url("../img/wizard_setup.png") no-repeat center;display:inline-block;background-size:143px 144px;width:143px;height:144px}
-.premium_adv{background:url("../img/premium_logo.png") no-repeat center;display:inline-block;margin:0 auto 35px;background-size:107px 106px;width:107px;height:106px}
+.premium_adv{background:url("../img/premium_logo.png") no-repeat center;display:inline-block;margin:0 auto;background-size:107px 106px;width:107px;height:106px}
 .tinvwl-content select{background-size:13px 8px}
 .tinvwl-select+.tinvwl-caret span{background-size:13px 18px}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page .tinvwl-chevron,.tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page:hover .tinvwl-chevron{background-size:20px 30px}

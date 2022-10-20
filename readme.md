@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.8 ###
+*Release Date - 20 October 2022*
+
+* Added integration updated with the [All in One Product Quantity for WooCommerce](https://wordpress.org/plugins/product-quantity-for-woocommerce/) plugin
+* Updated framework
+
 ### 2.0.7 ###
 *Release Date - 18 October 2022*
 

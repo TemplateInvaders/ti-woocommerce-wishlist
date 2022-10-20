@@ -4,7 +4,7 @@
  * Plugin Name:       TI WooCommerce Wishlist
  * Plugin URI:        https://wordpress.org/plugins/ti-woocommerce-wishlist/
  * Description:       Wishlist functionality for your WooCommerce store.
- * Version:           2.0.7
+ * Version:           2.0.8
  * Requires at least: 4.7
  * Tested up to: 6.0
  * WC requires at least: 3.0
@@ -41,7 +41,7 @@ if ( ! defined( 'TINVWL_DOMAIN' ) ) {
 }
 
 if ( ! defined( 'TINVWL_FVERSION' ) ) {
-	define( 'TINVWL_FVERSION', '2.0.7' );
+	define( 'TINVWL_FVERSION', '2.0.8' );
 }
 
 if ( ! defined( 'TINVWL_LOAD_FREE' ) ) {

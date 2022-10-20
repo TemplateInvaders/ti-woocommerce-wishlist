@@ -48,6 +48,10 @@ if ( ! defined( 'TINVWL_LOAD_FREE' ) ) {
 	define( 'TINVWL_LOAD_FREE', plugin_basename( __FILE__ ) );
 }
 
+if ( ! defined( 'TINVWL_NAME' ) ) {
+	define( 'TINVWL_NAME', 'TI WooCommerce Wishlist' );
+}
+
 if ( ! function_exists( 'tinv_array_merge' ) ) {
 
 	/**

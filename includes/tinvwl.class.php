@@ -84,6 +84,7 @@ class TInvWL
 		if (is_admin()) {
 			new TInvWL_WizardSetup($this->_name, $this->_version);
 			new TInvWL_Export($this->_name, $this->_version);
+			TInvWL_Admin_Notices::instance();
 			$this->object_admin->load_function();
 		} else {
 			// Allow to disable wishlist for frontend conditionally. Must be hooked on 'plugins_loaded' action.
@@ -175,7 +176,6 @@ class TInvWL
 	{
 		$plugin_links[] = '<a href="' . admin_url('admin.php?page=tinvwl') . '">' . __('Settings', 'ti-woocommerce-wishlist') . '</a>';
 		$plugin_links[] = '<a target="_blank" href="https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=action_link&partner=' . TINVWL_UTM_SOURCE . '" style="color:#46b450;font-weight:700;">' . __('Premium Version', 'ti-woocommerce-wishlist') . '</a>';
-		$plugin_links[] = '<a target="_blank" href="https://woocommercewishlist.com/preview/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=action_link&partner=' . TINVWL_UTM_SOURCE . '"  style="color:#515151">' . __('Live Demo', 'ti-woocommerce-wishlist') . '</a>';
 
 		return array_merge($links, $plugin_links);
 	}

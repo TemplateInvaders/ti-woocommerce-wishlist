@@ -148,13 +148,13 @@ class TInvWL_Product {
 			'price'        => 0,
 			'in_stock'     => 1,
 		);
-		$data    = filter_var_array( $data, apply_filters( 'tinvwl_wishlist_product_add_field', array(
+		$data    =  apply_filters( 'tinvwl_wishlist_product_add_field',filter_var_array( $data, array(
 			'author'       => FILTER_VALIDATE_INT,
 			'product_id'   => FILTER_VALIDATE_INT,
 			'quantity'     => FILTER_VALIDATE_INT,
 			'variation_id' => FILTER_VALIDATE_INT,
 			'wishlist_id'  => FILTER_VALIDATE_INT,
-		) ) );
+		) ));
 		$data    = array_filter( $data );
 
 		$data = tinv_array_merge( $default, $data );

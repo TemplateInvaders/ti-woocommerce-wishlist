@@ -4,7 +4,7 @@
  *
  * @name ShopEngine
  *
- * @version 2.2.2
+ * @version 2.5.1
  *
  * @slug shopengine
  *
@@ -86,10 +86,22 @@ function tinv_shop_engine() {
 	}
 	add_filter( 'woocommerce_loop_add_to_cart_link', 'tinv_shop_engine_loop', 10, 3 );
 
-
 }
 
 add_action( 'init', 'tinv_shop_engine' );
+
+
+add_action( 'tinvwl_wishlist_contents_before', 'tinv_shop_engine_loop_disable' );
+
+function tinv_shop_engine_loop_disable() {
+	remove_filter( 'woocommerce_loop_add_to_cart_link', 'tinv_shop_engine_loop', 10, 3 );
+}
+
+add_action( 'tinvwl_wishlist_contents_after', 'tinv_shop_engine_loop_disable' );
+
+function tinv_shop_engine_loop_enable() {
+	add_filter( 'woocommerce_loop_add_to_cart_link', 'tinv_shop_engine_loop', 10, 3 );
+}
 
 /**
  * @param $add_to_cart_html

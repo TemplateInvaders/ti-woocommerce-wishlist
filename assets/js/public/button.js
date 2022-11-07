@@ -1086,16 +1086,15 @@
 
 		var g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 
-		if ( g || ( data.stats && '1' == tinvwl_add_to_wishlist.stats ) ) {
-			$( 'a.tinvwl_add_to_wishlist_button' ).each( function() {
-				if ( g ) {
-					$( this ).removeClass( 'tinvwl-product-make-remove' ).removeClass( 'tinvwl-product-already-on-wishlist' ).removeClass( 'tinvwl-product-in-list' ).attr( 'data-tinv-wl-action', 'addto' ).attr( 'data-tinv-wl-list', '[]' );
-				}
-				if ( data.stats ) {
-					$( this ).find( 'span.tinvwl-product-stats' ).remove();
-				}
-			});
-		}
+		$( 'a.tinvwl_add_to_wishlist_button' ).each( function() {
+
+			$( this ).removeClass( 'tinvwl-product-make-remove' ).removeClass( 'tinvwl-product-already-on-wishlist' ).removeClass( 'tinvwl-product-in-list' ).attr( 'data-tinv-wl-action', 'addto' ).attr( 'data-tinv-wl-list', '[]' );
+
+			if ( data.stats ) {
+				$( this ).find( 'span.tinvwl-product-stats' ).remove();
+			}
+		});
+
 		$( 'body' ).trigger( 'tinvwl_wishlist_mark_products', [ data ]);
 
 		$.each( data.products, function( i, item ) {

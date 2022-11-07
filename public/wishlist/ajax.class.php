@@ -439,9 +439,10 @@ class TInvWL_Public_Wishlist_Ajax {
 				$response['status'] = true;
 				break;
 		}
-		$response['icon'] = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
-		$response['msg']  = array_unique( $response['msg'] );
-		$response['msg']  = implode( '<br>', $response['msg'] );
+		$response['action'] = $action;
+		$response['icon']   = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
+		$response['msg']    = array_unique( $response['msg'] );
+		$response['msg']    = implode( '<br>', $response['msg'] );
 		if ( tinv_get_option( 'table', 'hide_popup' ) && array_key_exists( 'msg', $response ) ) {
 			unset( $response['msg'] );
 		}

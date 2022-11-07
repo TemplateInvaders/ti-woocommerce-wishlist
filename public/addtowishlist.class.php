@@ -368,6 +368,7 @@ class TInvWL_Public_AddToWishlist {
 		}
 		if ( ! tinv_get_option( 'general', 'show_notice' ) && array_key_exists( 'msg', $data ) ) {
 			unset( $data['msg'] );
+			$data['force_redirect'] = $data['wishlist_url'];
 		}
 		if ( tinv_get_option( 'general', 'simple_flow' ) ) {
 			$data['make_remove'] = $data['status'];

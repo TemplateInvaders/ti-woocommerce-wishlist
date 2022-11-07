@@ -917,7 +917,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
   function mark_products(data) {
     var g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
     $('a.tinvwl_add_to_wishlist_button').each(function () {
-      $(this).removeClass('tinvwl-product-make-remove').removeClass('tinvwl-product-already-on-wishlist').removeClass('tinvwl-product-in-list').attr('data-tinv-wl-action', 'addto').attr('data-tinv-wl-list', '[]');
+      $(this).removeClass('tinvwl-product-make-remove').removeClass('tinvwl-product-in-list').attr('data-tinv-wl-action', 'addto').attr('data-tinv-wl-list', '[]');
       if (data.stats) {
         $(this).find('span.tinvwl-product-stats').remove();
       }

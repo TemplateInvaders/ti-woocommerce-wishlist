@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.11 ###
+*Release Date - 7 November 2022*
+
+* Fixed force redirect to the wishlist page
+
 ### 2.0.10 ###
 *Release Date - 7 November 2022*
 

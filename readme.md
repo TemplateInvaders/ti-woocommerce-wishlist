@@ -141,6 +141,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.10 ###
+*Release Date - 7 November 2022*
+
+* WordPress 6.1 support
+* Added integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+* Added type of action for AJAX response
+* Added redirect to the wishlist page in case of product is already on the wishlist and the event popup is disabled in the settings
+* Fixed issue with marks product already in the wishlist
+
 ### 2.0.9 ###
 *Release Date - 30 October 2022*
 

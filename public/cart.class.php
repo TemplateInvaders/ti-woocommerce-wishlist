@@ -137,8 +137,6 @@ class TInvWL_Public_Cart {
 					// Could be any value that saved to a custom meta.
 					if ( array_key_exists( 'meta', $product ) && array_key_exists( $name, $product['meta'] ) ) {
 						$variations[ $name ] = $product['meta'][ $name ];
-					} else {
-						continue;
 					}
 				}
 			}
@@ -183,7 +181,7 @@ class TInvWL_Public_Cart {
 		self::$_post    = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		self::$_request = $_REQUEST;
 		if ( array_key_exists( 'meta', $product ) && ! empty( $product['meta'] ) ) {
-			$_POST    = $product['meta']; // May be a conflict there will be no GET attributes.
+			$_POST    = $product['meta']; // Maybe a conflict there will be no GET attributes.
 			$_REQUEST = $product['meta'];
 		} else {
 			$_POST    = array();

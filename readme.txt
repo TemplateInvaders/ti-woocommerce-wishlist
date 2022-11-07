@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, e-commerce, ecommerce
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.0.9
+Stable tag: 2.0.10
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.0.10 =
+*Release Date - 7 November 2022*
+
+* WordPress 6.1 support
+* Added integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+* Added type of action for AJAX response
+* Added redirect to the wishlist page in case of product is already on the wishlist and the event popup is disabled in the settings
+* Fixed issue with marks product already in the wishlist
+
 = 2.0.9 =
 *Release Date - 30 October 2022*
 

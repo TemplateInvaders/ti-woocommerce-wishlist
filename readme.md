@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.12 ###
+*Release Date - 12 November 2022*
+
+* Fixed issue with WPML plugin
+
 ### 2.0.11 ###
 *Release Date - 7 November 2022*
 

@@ -126,6 +126,21 @@ class TInvWL_Public_Cart {
 			$use_original_id = true;
 		}
 
+		if ( function_exists( 'wpml_get_current_language' ) ) {
+
+			global $sitepress;
+
+			if ( $sitepress && $sitepress instanceof SitePress ) {
+				$wpml_settings = $sitepress->get_settings();
+				if ( isset( $wpml_settings['custom_posts_sync_option'] ) && isset( $wpml_settings['custom_posts_sync_option']['product'] ) && in_array( $wpml_settings['custom_posts_sync_option']['product'], array(
+						1,
+						2,
+					) ) ) {
+					$use_original_id = true;
+				}
+			}
+		}
+
 		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', apply_filters( 'wpml_object_id', absint( $product['product_id'] ), 'product', $use_original_id ) );
 		$quantity     = empty( $wl_quantity ) ? 1 : apply_filters( 'tinvwl_wishlist_product_add_cart_qty', wc_stock_amount( $wl_quantity ), $product );
 		$variation_id = apply_filters( 'wpml_object_id', $product['variation_id'], 'product_variation', $use_original_id );

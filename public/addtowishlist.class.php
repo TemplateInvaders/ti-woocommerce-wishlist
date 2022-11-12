@@ -443,9 +443,9 @@ class TInvWL_Public_AddToWishlist {
 			}
 			if ( $lang ) {
 				if ( $lang_default ) {
-					$lang = sprintf( "'%s'", implode( "', '", array( $lang, $lang_default ) ) );
+					$languages = sprintf( "'%s'", implode( "', '", array( $lang, $lang_default ) ) );
 				} else {
-					$lang = "'" . $lang . "'";
+					$languages = "'" . $lang . "'";
 				}
 
 				$sql .= "LEFT JOIN {$table_translations} tr ON
@@ -453,9 +453,9 @@ class TInvWL_Public_AddToWishlist {
 LEFT JOIN {$table_translations} tr2 ON
     {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
 		LEFT JOIN {$table_translations} t ON
-    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code IN ({$lang})
+    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code IN ({$languages})
 LEFT JOIN {$table_translations} t2 ON
-    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code IN ({$lang})
+    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code IN ({$languages})
 JOIN {$table_languages} l ON
     (
         t.language_code = l.code OR t2.language_code = l.code

@@ -418,6 +418,21 @@ class TInvWL_Product {
 								$use_original_id = true;
 							}
 
+							if ( function_exists( 'wpml_get_current_language' ) ) {
+
+								global $sitepress;
+
+								if ( $sitepress && $sitepress instanceof SitePress ) {
+									$wpml_settings = $sitepress->get_settings();
+									if ( isset( $wpml_settings['custom_posts_sync_option'] ) && isset( $wpml_settings['custom_posts_sync_option']['product_variation'] ) && in_array( $wpml_settings['custom_posts_sync_option']['product_variation'], array(
+											1,
+											2,
+										) ) ) {
+										$use_original_id = true;
+									}
+								}
+							}
+
 							$products[ $key ]['data'] = $wlproduct['variation_id'] ? wc_get_product( apply_filters( 'wpml_object_id', $wlproduct['variation_id'], 'product_variation', $use_original_id ) ) : $_product;
 						} else {
 							$products[ $key ]['data'] = $_product;

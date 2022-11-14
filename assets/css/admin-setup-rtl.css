@@ -319,7 +319,7 @@ html {
     margin: 0;
   }
   .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-intro,
-.tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-finish {
+  .tinvwl-wizard .tinvwl-content .tinwl-inner.tinwl-finish {
     padding-right: 50px;
     padding-left: 50px;
   }

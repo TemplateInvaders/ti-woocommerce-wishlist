@@ -141,6 +141,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.14 ###
+*Release Date - 17 November 2022*
+
+* Fixed issue with wishlist products counter
+
 ### 2.0.13 ###
 *Release Date - 14 November 2022*
 

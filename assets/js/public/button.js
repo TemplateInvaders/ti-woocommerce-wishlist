@@ -1162,10 +1162,10 @@
 		}
 		jQuery( 'i.wishlist-icon' ).addClass( 'added' );
 		if ( 'false' !== counter ) {
-			jQuery( '.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count' ).html( counter );
+			jQuery( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).html( counter );
 			jQuery( 'i.wishlist-icon' ).attr( 'data-icon-label', counter );
 		} else {
-			jQuery( '.wishlist_products_counter_number, body.theme-woostify .wishlist-item-count' ).html( '' ).closest( 'span.wishlist-counter-with-products' ).removeClass( 'wishlist-counter-with-products' );
+			jQuery( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).html( '' ).closest( 'span.wishlist-counter-with-products' ).removeClass( 'wishlist-counter-with-products' );
 			jQuery( 'i.wishlist-icon' ).removeAttr( 'data-icon-label' );
 		}
 

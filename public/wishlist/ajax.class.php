@@ -218,7 +218,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						}
 					} else {
 						$response['status'] = false;
-						$response['msg'][]  = sprintf( _n( '%s has not been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title );
+						$response['msg'][]  = sprintf( __( 'Product %s could not be added to the cart because some requirements are not met.', 'ti-woocommerce-wishlist' ), $title );
 					}
 					$response['content'] = tinvwl_shortcode_view( array(
 						'paged'    => $post['tinvwl-paged'],

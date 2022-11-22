@@ -204,6 +204,17 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'class' => '',
 					),
 					array(
+						'type'  => 'number',
+						'name'  => 'guests_timeout',
+						'text'  => __( 'Days after which the guest wishlist will be deleted', 'ti-woocommerce-wishlist' ),
+						'std'   => 30,
+						'extra' => array(
+							'step' => '1',
+							'min'  => '1',
+						),
+						'desc'  => __( "Guest's wishlists are automatically deleted after a defined period of days from the latest product addition.", 'ti-woocommerce-wishlist' ),
+					),
+					array(
 						'type' => 'group',
 						'id'   => 'show_notice',
 					),

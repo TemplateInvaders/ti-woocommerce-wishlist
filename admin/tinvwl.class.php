@@ -417,14 +417,14 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Removing old wishlist without a user older than 34 days
 	 */
 	public function remove_old_wishlists() {
-		$wl        = new TInvWL_Wishlist();
-		$wishlists = $wl->get( array(
-			'author' => 0,
-			'type'   => 'default',
-			'sql'    => 'SELECT * FROM {table} {where} AND `date` < DATE_SUB( CURDATE(), INTERVAL 34 DAY)',
-		) );
-		foreach ( $wishlists as $wishlist ) {
-			$wl->remove( $wishlist['ID'] );
+		global $wpdb;
+		$wishlists = $wpdb->get_results( 'SELECT t1.wishlist_id ID FROM ' . $wpdb->prefix . 'tinvwl_items t1 JOIN( SELECT wishlist_id, MAX(DATE) DATE FROM ' . $wpdb->prefix . 'tinvwl_items GROUP BY wishlist_id ) t2 ON t1.wishlist_id = t2.wishlist_id AND t1.date = t2.date WHERE t1.author = 0 AND t1.date < DATE_SUB(CURDATE(), INTERVAL ' . (int) tinv_get_option( 'general', 'guests_timeout' ) . ' DAY)', ARRAY_A );
+
+		if ( $wishlists ) {
+			$wl = new TInvWL_Wishlist();
+			foreach ( $wishlists as $wishlist ) {
+				$wl->remove( $wishlist['ID'] );
+			}
 		}
 	}
 

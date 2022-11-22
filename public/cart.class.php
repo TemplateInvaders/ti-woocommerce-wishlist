@@ -375,7 +375,7 @@ class TInvWL_Public_Cart {
 
 				/* Run a 3rd party code when product purchased from wishlist.
 				 *
-				 * @param WC_order $order Order object.
+				 * @param WC_Order $order Order object.
 				 * @param WC_Order_Item_Product $item Order item product object.
 				 * @param array $wishlist A wishlist data where product added from.
 				 * */

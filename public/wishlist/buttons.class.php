@@ -196,7 +196,7 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return array
 	 */
 	public static function class_action( $attr ) {
-		if ( array_key_exists( 'class', $attr ) ) {
+		if ( array_key_exists( 'class', (array) $attr ) ) {
 			$attr['class'] .= ' alt';
 		} else {
 			$attr['class'] = 'alt';

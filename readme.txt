@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.0.14
+Stable tag: 2.0.15
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -163,6 +163,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.0.15 =
+*Release Date - 22 November 2022*
+
+* Added option "Days after which the guest wishlist will be deleted"
+* Fixed the message about the failed event of the add to cart button on the wishlist page
+
 = 2.0.14 =
 *Release Date - 17 November 2022*
 

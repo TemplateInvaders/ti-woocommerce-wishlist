@@ -141,6 +141,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.15 ###
+*Release Date - 22 November 2022*
+
+* Added option "Days after which the guest wishlist will be deleted"
+* Fixed the message about the failed event of the add to cart button on the wishlist page
+
 ### 2.0.14 ###
 *Release Date - 17 November 2022*
 

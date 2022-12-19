@@ -147,6 +147,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.0.17 ###
+*Release Date - 19 December 2022*
+
+* WooCommerce 7.2 support
+* Fixed PHP error related to the add to wishlist event
+
 ### 2.0.16 ###
 *Release Date - 6 December 2022*
 

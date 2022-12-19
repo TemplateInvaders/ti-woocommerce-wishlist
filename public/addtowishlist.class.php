@@ -333,36 +333,38 @@ class TInvWL_Public_AddToWishlist {
 			$data['redirect'] = apply_filters( 'tinvwl_addtowishlist_redirect', $data['wishlist_url'] );
 		}
 
-		$product = $original_product = wc_get_product( $post['product_id'] );
 		if ( empty( $form ) ) {
 			$form = array();
 		}
-		$data['wishlists'] = wp_json_encode( $this->user_wishlist( $product, $wlp ) );
 
 		$data['icon'] = $data['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 		$data['msg']  = array_unique( $data['msg'] );
 		$data['msg']  = implode( '<br>', $data['msg'] );
 
+		$product = $original_product = wc_get_product( $post['product_id'] );
+
 		if ( $post['original_product_id'] && $post['product_id'] !== $post['original_product_id'] ) {
 			$original_product = wc_get_product( $post['original_product_id'] );
 		}
+		if ( $original_product ) {
+			$msg_placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders',
+				array(
+					'{product_name}' => is_callable( array(
+						$original_product,
+						'get_name'
+					) ) ? $original_product->get_name() : $original_product->get_title(),
+					'{product_sku}'  => $original_product->get_sku(),
+				),
+				$original_product
+			);
 
-		$msg_placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders',
-			array(
-				'{product_name}' => is_callable( array(
-					$original_product,
-					'get_name'
-				) ) ? $original_product->get_name() : $original_product->get_title(),
-				'{product_sku}'  => $original_product->get_sku(),
-			),
-			$original_product
-		);
-
-		$find    = array_keys( $msg_placeholders );
-		$replace = array_values( $msg_placeholders );
-
+			$find    = array_keys( $msg_placeholders );
+			$replace = array_values( $msg_placeholders );
+		}
 		if ( ! empty( $data['msg'] ) ) {
-			$data['msg'] = str_replace( $find, $replace, $data['msg'] );
+			if ( $original_product ) {
+				$data['msg'] = str_replace( $find, $replace, $data['msg'] );
+			}
 			$data['msg'] = apply_filters( 'tinvwl_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
 			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 		}

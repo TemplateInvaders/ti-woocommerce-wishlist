@@ -454,9 +454,9 @@ class TInvWL_Wishlist {
 			);
 		}
 		$data = filter_var_array( $data, apply_filters( 'tinvwl_wishlist_fields_update', array(
-			'title'  => FILTER_SANITIZE_STRING,
-			'status' => FILTER_SANITIZE_STRING,
-			'type'   => FILTER_SANITIZE_STRING,
+			'title'  => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'status' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'type'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'author' => FILTER_VALIDATE_INT,
 		) ) );
 		$data = array_filter( $data );

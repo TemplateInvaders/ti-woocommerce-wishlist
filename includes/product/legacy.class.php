@@ -320,7 +320,7 @@ class TInvWL_Product_Legacy {
 				'product_id'   => FILTER_VALIDATE_INT,
 				'variation_id' => FILTER_VALIDATE_INT,
 				'author'       => FILTER_VALIDATE_INT,
-				'date'         => FILTER_SANITIZE_STRING,
+				'date'         => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 				'quantity'     => FILTER_VALIDATE_INT,
 				'price'        => FILTER_SANITIZE_NUMBER_FLOAT,
 				'in_stock'     => FILTER_VALIDATE_BOOLEAN,

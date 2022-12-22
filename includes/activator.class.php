@@ -227,8 +227,8 @@ class TInvWL_Activator
 		$fields = $table['field'];
 		$index = (isset($table['index'])) ? $table['index'] : null;
 		$table = filter_var_array($table, array(
-			'charset' => FILTER_SANITIZE_STRING,
-			'key' => FILTER_SANITIZE_STRING,
+			'charset' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'key' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'post' => FILTER_DEFAULT,
 		));
 

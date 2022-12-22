@@ -85,8 +85,8 @@ abstract class TInvWL_Admin_Base {
 
 		$default = 'general';
 		$params  = filter_input_array( INPUT_GET, array(
-			'page' => FILTER_SANITIZE_STRING,
-			'cat'  => FILTER_SANITIZE_STRING,
+			'page' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'cat'  => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'id'   => FILTER_VALIDATE_INT,
 		) );
 		extract( $params ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.extract

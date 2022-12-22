@@ -352,11 +352,11 @@ class TInvWL_Wizard
 			'wishlist' => '[ti_wishlistsview]',
 		);
 		$data = array(
-			'general_default_title' => FILTER_SANITIZE_STRING,
+			'general_default_title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		);
 		foreach (array_keys($title_pages) as $key) {
 			$data['page_' . $key] = FILTER_VALIDATE_INT;
-			$data['page_' . $key . '_new'] = FILTER_SANITIZE_STRING;
+			$data['page_' . $key . '_new'] = FILTER_SANITIZE_FULL_SPECIAL_CHARS;
 			$data['page_' . $key . '_auto'] = FILTER_VALIDATE_BOOLEAN;
 		}
 		$data = filter_input_array(INPUT_POST, $data);
@@ -454,10 +454,10 @@ class TInvWL_Wizard
 	function wizard_2_save()
 	{
 		$data = filter_input_array(INPUT_POST, array(
-			'add_to_wishlist_position' => FILTER_SANITIZE_STRING,
-			'add_to_wishlist_text' => FILTER_SANITIZE_STRING,
+			'add_to_wishlist_position' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'add_to_wishlist_text' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'add_to_wishlist_catalog_show_in_loop' => FILTER_VALIDATE_BOOLEAN,
-			'add_to_wishlist_catalog_text' => FILTER_SANITIZE_STRING,
+			'add_to_wishlist_catalog_text' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		));
 		tinv_update_option('add_to_wishlist', 'position', $data['add_to_wishlist_position']);
 		tinv_update_option('add_to_wishlist', 'text', $data['add_to_wishlist_text']);
@@ -496,7 +496,7 @@ class TInvWL_Wizard
 	function wizard_3_save()
 	{
 		$data = filter_input_array(INPUT_POST, array(
-			'processing_autoremove' => FILTER_SANITIZE_STRING,
+			'processing_autoremove' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		));
 		$autoremove = 'auto' === $data['processing_autoremove'];
 		tinv_update_option('processing', 'autoremove', $autoremove);

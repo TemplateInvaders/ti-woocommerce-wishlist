@@ -445,7 +445,7 @@ class TInvWL_ViewSection extends TInvWL_View {
 		$types = array(
 			'button'        => FILTER_DEFAULT,
 			'button_submit' => FILTER_DEFAULT,
-			'checkbox'      => FILTER_SANITIZE_STRING,
+			'checkbox'      => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'checkboxonoff' => FILTER_VALIDATE_BOOLEAN,
 			'color'         => array(
 				'filter'  => FILTER_VALIDATE_REGEXP,
@@ -454,33 +454,33 @@ class TInvWL_ViewSection extends TInvWL_View {
 					'default' => '#FFFFFF',
 				),
 			),
-			'date'          => FILTER_SANITIZE_STRING,
+			'date'          => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'dateperiod'    => array(
-				'filter' => FILTER_SANITIZE_STRING,
+				'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
 			'multicheckbox' => array(
-				'filter' => FILTER_SANITIZE_STRING,
+				'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
-			'multiradio'    => FILTER_SANITIZE_STRING,
-			'multiradiobox' => FILTER_SANITIZE_STRING,
+			'multiradio'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'multiradiobox' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'multiselect'   => array(
-				'filter' => FILTER_SANITIZE_STRING,
+				'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
 			'number'        => FILTER_VALIDATE_INT,
 			'numberrange'   => FILTER_VALIDATE_INT,
-			'radio'         => FILTER_SANITIZE_STRING,
-			'select'        => FILTER_SANITIZE_STRING,
-			'text'          => FILTER_SANITIZE_STRING,
+			'radio'         => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'select'        => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'text'          => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'textarea'      => FILTER_DEFAULT,
 			'time'          => FILTER_VALIDATE_INT,
 			'timeperiod'    => array(
 				'filter' => FILTER_VALIDATE_INT,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
-			'uploadfile'    => FILTER_SANITIZE_STRING,
+			'uploadfile'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		);
 		if ( array_key_exists( $type, $types ) ) {
 			return $types[ $type ];

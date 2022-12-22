@@ -64,11 +64,11 @@ class TInvWL_Public_Wishlist_Ajax {
 
 	function ajax_action() {
 		$post = filter_input_array( INPUT_POST, array(
-			'tinvwl-security'   => FILTER_SANITIZE_STRING,
-			'tinvwl-action'     => FILTER_SANITIZE_STRING,
+			'tinvwl-security'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'tinvwl-action'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-product_id' => FILTER_VALIDATE_INT,
 			'tinvwl-paged'      => FILTER_VALIDATE_INT,
-			'tinvwl-sharekey'   => FILTER_SANITIZE_STRING,
+			'tinvwl-sharekey'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-products'   => array(
 				'filter' => FILTER_VALIDATE_INT,
 				'flags'  => FILTER_FORCE_ARRAY,

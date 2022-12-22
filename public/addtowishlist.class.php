@@ -158,11 +158,11 @@ class TInvWL_Public_AddToWishlist {
 		ob_start();
 		$post = filter_input_array( INPUT_POST, array(
 			'tinv_wishlist_id'   => FILTER_VALIDATE_INT,
-			'tinv_wishlist_name' => FILTER_SANITIZE_STRING,
+			'tinv_wishlist_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'product_id'         => FILTER_VALIDATE_INT,
 			'product_variation'  => FILTER_VALIDATE_INT,
-			'product_type'       => FILTER_SANITIZE_STRING,
-			'product_action'     => FILTER_SANITIZE_STRING,
+			'product_type'       => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'product_action'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'redirect'           => FILTER_SANITIZE_URL,
 		) );
 
@@ -398,9 +398,9 @@ class TInvWL_Public_AddToWishlist {
 		$table_stats        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_analytics' );
 		$table_translations = sprintf( '%s%s', $wpdb->prefix, 'icl_translations' );
 		$table_languages    = sprintf( '%s%s', $wpdb->prefix, 'icl_languages' );
-		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_STRING );
-		$lang_default       = filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_STRING );
-		$stats              = filter_input( INPUT_POST, 'stats', FILTER_SANITIZE_STRING );
+		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$lang_default       = filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$stats              = filter_input( INPUT_POST, 'stats', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		$data = $products = $wishlists = $results = $analytics = array();
 

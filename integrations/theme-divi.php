@@ -4,7 +4,7 @@
  *
  * @name Divi
  *
- * @version 4.4.6
+ * @version 4.19.4
  *
  * @slug divi
  *
@@ -46,7 +46,7 @@ if (!$available) {
  */
 function tinvwl_divi_init()
 {
-	if (class_exists('ET_Builder_Element') && is_product() && version_compare(ET_BUILDER_PRODUCT_VERSION, '4.0.0', '>=')) {
+	if (class_exists('ET_Builder_Element') && is_product() && version_compare(ET_BUILDER_PRODUCT_VERSION, '4.0.0', '>=') && version_compare(ET_BUILDER_PRODUCT_VERSION, '4.4.0', '<=')) {
 		global $post;
 		$product = wc_get_product($post->ID);
 		if (!empty($product) && !$product->is_in_stock()) {

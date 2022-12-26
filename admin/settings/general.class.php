@@ -1050,7 +1050,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			}
 			parent::constructor_save( $data );
 		}
-		TInvWL_Public_TInvWL::update_rewrite_rules();
+		delete_option( 'rewrite_rules' );
 	}
 
 	/**

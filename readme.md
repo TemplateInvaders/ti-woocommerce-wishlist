@@ -147,6 +147,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.1.1 ###
+*Release Date - 26 December 2022*
+
+* Fixed issue with URL rewrites when wishlist set up under the WooCommerce My Account area
+* Fixed PHP warning in AJAX events
+* Updated integration with the Divi theme
+
 ### 2.1.0 ###
 *Release Date - 22 December 2022*
 

@@ -75,6 +75,9 @@ class TInvWL_Public_Wishlist_Ajax {
 			),
 		) );
 
+		if ( ! $post['tinvwl-action'] ) {
+			return;
+		}
 
 		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_share_key( $post['tinvwl-sharekey'] );
@@ -119,7 +122,6 @@ class TInvWL_Public_Wishlist_Ajax {
 		switch ( $action ) {
 			case 'remove':
 				if ( ! $wishlist['is_owner'] ) {
-					$response['status'] = false;
 					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
@@ -130,14 +132,12 @@ class TInvWL_Public_Wishlist_Ajax {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
 				if ( empty( $wlp ) ) {
-					$response['status'] = false;
 					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 				$product_data = $wlp->get_wishlist( array( 'ID' => $product ) );
 				$product_data = array_shift( $product_data );
 				if ( empty( $product_data ) ) {
-					$response['status'] = false;
 					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
@@ -150,10 +150,6 @@ class TInvWL_Public_Wishlist_Ajax {
 				if ( $wlp->remove( $product_data ) ) {
 					$response['status']  = true;
 					$response['msg'][]   = sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
-					$response['content'] = tinvwl_shortcode_view( array(
-						'paged'    => $post['tinvwl-paged'],
-						'sharekey' => $post['tinvwl-sharekey']
-					) );
 				} else {
 					$response['status'] = false;
 					$response['msg'][]  = sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
@@ -167,15 +163,13 @@ class TInvWL_Public_Wishlist_Ajax {
 				} else {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
-				if ( empty( $wlp ) ) {
-					$response['status'] = false;
+				if ( empty( $wlp ) ) {				;
 					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 				$product_data = $wlp->get_wishlist( array( 'ID' => $product_id ) );
 				$product_data = array_shift( $product_data );
 				if ( empty( $product_data ) ) {
-					$response['status'] = false;
 					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
@@ -220,17 +214,14 @@ class TInvWL_Public_Wishlist_Ajax {
 						$response['status'] = false;
 						$response['msg'][]  = sprintf( __( 'Product %s could not be added to the cart because some requirements are not met.', 'ti-woocommerce-wishlist' ), $title );
 					}
-					$response['content'] = tinvwl_shortcode_view( array(
-						'paged'    => $post['tinvwl-paged'],
-						'sharekey' => $post['tinvwl-sharekey']
-					) );
 				}
 
 				break;
 
 			case 'remove_selected':
 				if ( ! $owner ) {
-					return false;
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					break;
 				}
 				$wlp = null;
 				if ( 0 === $wishlist['ID'] ) {
@@ -239,7 +230,8 @@ class TInvWL_Public_Wishlist_Ajax {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
 				if ( empty( $wlp ) ) {
-					return false;
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					break;
 				}
 
 				$products = $wlp->get_wishlist( array(
@@ -259,10 +251,6 @@ class TInvWL_Public_Wishlist_Ajax {
 				if ( ! empty( $titles ) ) {
 					$response['status']  = true;
 					$response['msg'][]   = sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
-					$response['content'] = tinvwl_shortcode_view( array(
-						'paged'    => $post['tinvwl-paged'],
-						'sharekey' => $post['tinvwl-sharekey']
-					) );
 				}
 
 				break;
@@ -348,10 +336,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						$response['redirect'] = wc_get_cart_url();
 					}
 				}
-				$response['content'] = tinvwl_shortcode_view( array(
-					'paged'    => $post['tinvwl-paged'],
-					'sharekey' => $post['tinvwl-sharekey']
-				) );
+
 				break;
 			case 'add_to_cart_all':
 				$_quantity = array();
@@ -430,15 +415,15 @@ class TInvWL_Public_Wishlist_Ajax {
 						$response['redirect'] = wc_get_cart_url();
 					}
 				}
-				$response['content'] = tinvwl_shortcode_view( array(
-					'paged'    => $post['tinvwl-paged'],
-					'sharekey' => $post['tinvwl-sharekey']
-				) );
 				break;
 			case 'get_data':
 				$response['status'] = true;
 				break;
 		}
+		$response['content'] = tinvwl_shortcode_view( array(
+			'paged'    => $post['tinvwl-paged'],
+			'sharekey' => $post['tinvwl-sharekey']
+		) );
 		$response['action'] = $action;
 		$response['icon']   = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
 		$response['msg']    = array_unique( $response['msg'] );

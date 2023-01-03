@@ -131,6 +131,19 @@ class TInvWL {
 			'action_links',
 		) );
 		add_action( 'after_setup_theme', 'tinvwl_set_utm', 100 );
+
+		add_action( 'wp_logout', array( $this, 'reset_cookie' ) );
+		add_action( 'wp_login', array( $this, 'reset_cookie' ) );
+	}
+
+	/**
+	 * Reset cookies shaerkey on logout
+	 * @return void
+	 */
+	function reset_cookie() {
+		wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
+		unset( $_COOKIE['tinv_wishlistkey'] );
+		wc_setcookie( 'tinvwl_update_data', 1, time() + HOUR_IN_SECONDS );
 	}
 
 	/**

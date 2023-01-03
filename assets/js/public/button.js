@@ -1000,7 +1000,8 @@
 		$.fn.tinvwl_get_wishlist_data = function() {
 			if ( $supports_html5_storage ) {
 
-				if ( tinvwl_add_to_wishlist.update_wishlists_data ) {
+				if ( Cookies.get( 'tinvwl_update_data' ) ) {
+					Cookies.set( 'tinvwl_update_data', 0, {expires: -1});
 					localStorage.setItem( hash_key, '' );
 				}
 

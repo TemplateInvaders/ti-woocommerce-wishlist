@@ -812,8 +812,10 @@ JOIN {$table_languages} l ON
 			}
 		}
 
+		$action_class = current_action() ? ' tinvwl-' . current_action() : ' tinvwl-no-action';
+
 		$data = array(
-			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ),
+			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ) . $action_class,
 			'product'             => $this->product,
 			'variation_id'        => ( $this->is_loop && in_array( ( $this->product->get_type() ), array(
 					'variable',

@@ -25,6 +25,25 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	function __construct( $plugin_name, $version ) {
 		$this->_name    = $plugin_name;
 		$this->_version = $version;
+
+		$this->maybe_update();
+	}
+
+	/**
+	 * Testing for the ability to update the functional
+	 */
+	function maybe_update() {
+		$prev = get_option( $this->_name . '_ver' );
+		if ( false === $prev ) {
+			add_option( $this->_name . '_ver', $this->_version );
+			$prev = $this->_version;
+		}
+		if ( version_compare( $this->_version, $prev, 'gt' ) ) {
+			TInvWL_Activator::update();
+			new TInvWL_Update( $this->_version, $prev );
+			update_option( $this->_name . '_ver', $this->_version );
+			do_action( 'tinvwl_updated', $this->_version, $prev );
+		}
 	}
 
 	/**

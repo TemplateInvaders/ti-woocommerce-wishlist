@@ -578,7 +578,7 @@ class TInvWL_Activator
 	{
 		global $wpdb;
 
-		$indexes = $table['index'];
+		$indexes = isset( $table['index'] ) ? $table['index'] : array();
 
 		foreach ($indexes as $index => $columns) {
 

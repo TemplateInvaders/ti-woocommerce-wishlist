@@ -160,7 +160,7 @@ class TInvWL_Public_Cart {
 		$passed_validation = $product['data']->is_purchasable() && ( $product['data']->is_in_stock() || $product['data']->backorders_allowed() ) && 'external' !== $product['data']->get_type();
 		$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 		if ( $passed_validation ) {
-			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations );
+			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product['meta']  );
 			if ( $cart_item_key ) {
 
 				/* Run a 3rd party code when product added to a cart from a wishlist.

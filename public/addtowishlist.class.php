@@ -254,6 +254,7 @@ class TInvWL_Public_AddToWishlist {
 			if ( empty( $form ) ) {
 				$form = array();
 			}
+			wp_recursive_ksort( $form );
 			switch ( $post['product_type'] ) {
 				case 'group':
 				case 'grouped' :

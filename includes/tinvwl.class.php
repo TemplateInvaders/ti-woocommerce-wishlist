@@ -143,6 +143,8 @@ class TInvWL {
 	function reset_cookie() {
 		wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
 		unset( $_COOKIE['tinv_wishlistkey'] );
+		wc_setcookie( 'tinvwl_wishlists_data_counter', 0, time() - HOUR_IN_SECONDS );
+		unset( $_COOKIE['tinvwl_wishlists_data_counter'] );
 		wc_setcookie( 'tinvwl_update_data', 1, time() + HOUR_IN_SECONDS );
 	}
 

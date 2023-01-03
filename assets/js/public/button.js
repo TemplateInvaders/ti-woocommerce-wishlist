@@ -1011,8 +1011,10 @@
 
 					if ( 'object' === typeof data && null !== data && ( data.hasOwnProperty( 'products' ) || data.hasOwnProperty( 'counter' ) ) ) {
 						if ( ( ! data.hasOwnProperty( 'lang' ) && ! tinvwl_add_to_wishlist.wpml ) || ( tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml ) ) {
-							mark_products( data );
-							return;
+							if ( Cookies.get( 'tinvwl_wishlists_data_counter' ) == data.counter && ( ! data.hasOwnProperty( 'stats_count' ) || Cookies.get( 'tinvwl_wishlists_data_stats' ) == data.stats_count ) ) {
+								mark_products( data );
+								return;
+							}
 						}
 					}
 

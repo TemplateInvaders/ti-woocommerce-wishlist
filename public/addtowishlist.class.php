@@ -144,6 +144,39 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		add_action( 'wp_loaded', array( $this, 'add_to_wishlist' ), 0 );
+		add_action( 'init', array( $this, 'set_wishlists_data_cookies' ) );
+	}
+
+	/**
+	 * Set cookies to sync session data across devices
+	 *
+	 * @return void
+	 */
+	function set_wishlists_data_cookies() {
+		$class   = TInvWL_Public_WishlistCounter::instance();
+		$counter = $class->get_counter();
+		wc_setcookie( 'tinvwl_wishlists_data_counter', $counter );
+
+
+		if ( tinv_get_option( 'general', 'product_stats' ) ) {
+			global $wpdb;
+			$table       = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
+			$table_lists = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
+			$table_stats = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_analytics' );
+
+			$stats_sql = "SELECT SUM(`count`) as `stats_count` FROM (SELECT COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999) AS `A`";
+
+			$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
+
+			if ( ! empty( $stats_results ) ) {
+				foreach ( $stats_results as $product_stats ) {
+					$stats_count = $product_stats['stats_count'];
+				}
+			}
+			if ( $stats_count ) {
+				wc_setcookie( 'tinvwl_wishlists_data_stats', $stats_count );
+			}
+		}
 	}
 
 	/**
@@ -555,9 +588,11 @@ JOIN {$table_languages} l ON
 			$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
 
 			if ( ! empty( $stats_results ) ) {
-				$analytics = array();
+				$analytics   = array();
+				$stats_count = 0;
 				foreach ( $stats_results as $product_stats ) {
 					$analytics[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = $product_stats['count'];
+					$stats_count                                                                 = $stats_count + $product_stats['count'];
 				}
 			}
 		}
@@ -578,7 +613,8 @@ JOIN {$table_languages} l ON
 		}
 
 		if ( $stats ) {
-			$response['stats'] = $analytics;
+			$response['stats']       = $analytics;
+			$response['stats_count'] = $stats_count;
 		}
 
 		return $response;

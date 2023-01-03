@@ -34,7 +34,7 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 		$this->_version = $version;
 		$menu           = $this->menu();
 		if ( ! empty( $menu ) ) {
-			add_action( 'tinvwl_admin_menu', array( $this, 'adminmenu' ), $this->priority );
+			add_filter( 'tinvwl_admin_menu', array( $this, 'adminmenu' ), $this->priority );
 		}
 		$this->load_function();
 	}

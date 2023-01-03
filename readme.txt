@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.1.1
+Stable tag: 2.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -169,6 +169,16 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.2.0 =
+*Release Date - 03 January 2023*
+
+* Added wishlist data update on login and logout
+* Added integration with Ultimate Addons for the Elementor plugin
+* Added integration with the VAD Product Design plugin
+* Fixed admin menu duplicated items issue
+* Fixed database upgrade issue
+* Fixed issue with updating wishlists user data across devices
+
 = 2.1.1 =
 *Release Date - 26 December 2022*
 

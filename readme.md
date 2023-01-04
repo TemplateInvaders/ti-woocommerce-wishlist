@@ -147,6 +147,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.2.1 ###
+*Release Date - 04 January 2023*
+
+* Fixed PHP error on Flatsome theme integration
+
 ### 2.2.0 ###
 *Release Date - 03 January 2023*
 

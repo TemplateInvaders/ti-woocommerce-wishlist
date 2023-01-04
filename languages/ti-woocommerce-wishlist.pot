@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.2.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.2.0 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.2.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.2.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.1\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1032,7 +1032,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:317, includes/wizard.class.php:349, integrations/theme-flatsome.php:124, integrations/theme-flatsome.php:167, integrations/theme-flatsome.php:245, integrations/theme-flatsome.php:284, public/tinvwl.class.php:692, views/header.php:25
+#: includes/wizard.class.php:317, includes/wizard.class.php:349, integrations/theme-flatsome.php:119, integrations/theme-flatsome.php:161, integrations/theme-flatsome.php:238, integrations/theme-flatsome.php:279, public/tinvwl.class.php:692, views/header.php:25
 msgid "Wishlist"
 msgstr ""
 
@@ -1180,19 +1180,19 @@ msgstr ""
 msgid "Flat rate cost"
 msgstr ""
 
-#: integrations/theme-flatsome.php:175
+#: integrations/theme-flatsome.php:169
 msgid "Wishlist Icon"
 msgstr ""
 
-#: integrations/theme-flatsome.php:194
+#: integrations/theme-flatsome.php:188
 msgid "Wishlist Icon Style"
 msgstr ""
 
-#: integrations/theme-flatsome.php:211
+#: integrations/theme-flatsome.php:205
 msgid "Show Wishlist Title"
 msgstr ""
 
-#: integrations/theme-flatsome.php:222
+#: integrations/theme-flatsome.php:216
 msgid "Custom Title"
 msgstr ""
 

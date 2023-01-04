@@ -106,7 +106,7 @@ if ( ! function_exists( 'tinv_get_option_defaults' ) ) {
 		$defaults = array();
 		foreach ( $files as $file ) {
 			$class         = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-			$class         = $class::instance( TINVWL_PREFIX, TINVWL_VERSION );
+			$class         = $class::instance( TINVWL_PREFIX, TINVWL_FVERSION );
 			$class_methods = get_class_methods( $class );
 
 			foreach ( $class_methods as $method ) {

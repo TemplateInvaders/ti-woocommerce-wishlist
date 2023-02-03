@@ -8,7 +8,7 @@
  * Requires at least: 4.7
  * Tested up to: 6.1
  * WC requires at least: 3.0
- * WC tested up to: 7.2
+ * WC tested up to: 7.3
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+
@@ -261,7 +261,7 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 	}
 }
 
-add_action( 'before_woocommerce_init', function() {
+add_action( 'before_woocommerce_init', function () {
 	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 	}

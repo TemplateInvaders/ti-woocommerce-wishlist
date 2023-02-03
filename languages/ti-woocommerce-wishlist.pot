@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.2.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.2.1 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.3.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.3.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.2.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.0\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1196,7 +1196,7 @@ msgstr ""
 msgid "Custom Title"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:113, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:134, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:143, templates/ti-wishlist.php:151
+#: integrations/woo-product-bundle.php:113, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:134, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:144, templates/ti-wishlist.php:152
 msgid "In stock"
 msgstr ""
 
@@ -1252,15 +1252,15 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
-#: public/addtowishlist.class.php:228
+#: public/addtowishlist.class.php:230
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:230
+#: public/addtowishlist.class.php:232
 msgid "Login"
 msgstr ""
 
-#: public/addtowishlist.class.php:249, public/wishlist/ajax.class.php:100, public/wishlist/ajax.class.php:125, public/wishlist/ajax.class.php:135, public/wishlist/ajax.class.php:141, public/wishlist/ajax.class.php:167, public/wishlist/ajax.class.php:173, public/wishlist/ajax.class.php:223, public/wishlist/ajax.class.php:233
+#: public/addtowishlist.class.php:251, public/wishlist/ajax.class.php:101, public/wishlist/ajax.class.php:126, public/wishlist/ajax.class.php:136, public/wishlist/ajax.class.php:142, public/wishlist/ajax.class.php:169, public/wishlist/ajax.class.php:175, public/wishlist/ajax.class.php:225, public/wishlist/ajax.class.php:235
 msgid "Something went wrong"
 msgstr ""
 
@@ -1300,19 +1300,19 @@ msgstr ""
 msgid "Counter Text"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:145, public/wishlist/ajax.class.php:177, public/wishlist/ajax.class.php:245
+#: public/wishlist/ajax.class.php:146, public/wishlist/ajax.class.php:179, public/wishlist/ajax.class.php:247
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:155
+#: public/wishlist/ajax.class.php:156
 msgid "%s has not been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:152
+#: public/wishlist/ajax.class.php:153
 msgid "%s has been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:215, public/wishlist/ajax.class.php:314, public/wishlist/ajax.class.php:393
+#: public/wishlist/ajax.class.php:217, public/wishlist/ajax.class.php:316, public/wishlist/ajax.class.php:395
 msgid "Product %s could not be added to the cart because some requirements are not met."
 msgid_plural "Products: %s could not be added to the cart because some requirements are not met."
 msgstr[0] ""
@@ -1320,13 +1320,13 @@ msgstr[1] ""
 
 #. translators: %s: product name
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:204, public/wishlist/ajax.class.php:329, public/wishlist/ajax.class.php:408
+#: public/wishlist/ajax.class.php:206, public/wishlist/ajax.class.php:331, public/wishlist/ajax.class.php:410
 msgid "%s has been added to your cart."
 msgid_plural "%s have been added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:253
+#: public/wishlist/ajax.class.php:255
 msgid "%s has been successfully removed from wishlist."
 msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
@@ -1334,7 +1334,7 @@ msgstr[1] ""
 
 #. translators: %s: product name
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:311, public/wishlist/ajax.class.php:323, public/wishlist/ajax.class.php:390, public/wishlist/ajax.class.php:402
+#: public/wishlist/ajax.class.php:313, public/wishlist/ajax.class.php:325, public/wishlist/ajax.class.php:392, public/wishlist/ajax.class.php:404
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
@@ -1351,7 +1351,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: public/wishlist/buttons.class.php:237, templates/ti-wishlist.php:93
+#: public/wishlist/buttons.class.php:237, templates/ti-wishlist.php:94
 msgid "Remove"
 msgstr ""
 
@@ -1379,19 +1379,19 @@ msgstr ""
 msgid "WhatsApp"
 msgstr ""
 
-#: public/wishlist/view.class.php:390
+#: public/wishlist/view.class.php:393
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: public/wishlist/view.class.php:442
+#: public/wishlist/view.class.php:445
 msgid "Return to Wishlist"
 msgstr ""
 
-#: public/wishlist/view.class.php:561
+#: public/wishlist/view.class.php:565
 msgid "Previous Page"
 msgstr ""
 
-#: public/wishlist/view.class.php:588
+#: public/wishlist/view.class.php:592
 msgid "Next Page"
 msgstr ""
 
@@ -1415,31 +1415,31 @@ msgstr ""
 msgid "Wishlist is not found!"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:30, templates/ti-wishlist.php:30
+#: templates/ti-wishlist-user.php:31, templates/ti-wishlist.php:31
 msgid "Select all for bulk action"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:35, templates/ti-wishlist.php:36
+#: templates/ti-wishlist-user.php:36, templates/ti-wishlist.php:37
 msgid "Product Name"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:36, templates/ti-wishlist.php:37
+#: templates/ti-wishlist-user.php:37, templates/ti-wishlist.php:38
 msgid "Product"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:39, templates/ti-wishlist.php:40
+#: templates/ti-wishlist-user.php:40, templates/ti-wishlist.php:41
 msgid "Unit Price"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:42, templates/ti-wishlist.php:43
+#: templates/ti-wishlist-user.php:43, templates/ti-wishlist.php:44
 msgid "Date Added"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:45, templates/ti-wishlist.php:46
+#: templates/ti-wishlist-user.php:46, templates/ti-wishlist.php:47
 msgid "Stock Status"
 msgstr ""
 
-#: templates/ti-wishlist-user.php:84, templates/ti-wishlist.php:85
+#: templates/ti-wishlist-user.php:85, templates/ti-wishlist.php:86
 msgid "Select for bulk action"
 msgstr ""
 

@@ -51,7 +51,7 @@ class TInvWL_Public_TInvWL {
 	 *
 	 * @return \TInvWL_Public_TInvWL
 	 */
-	public static function instance( $plugin_name = TINVWL_PREFIX, $version = TINVWL_VERSION ) {
+	public static function instance( $plugin_name = TINVWL_PREFIX, $version = TINVWL_FVERSION ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name, $version );
 		}

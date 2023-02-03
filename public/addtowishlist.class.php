@@ -144,7 +144,9 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		add_action( 'wp_loaded', array( $this, 'add_to_wishlist' ), 0 );
-		add_action( 'init', array( $this, 'set_wishlists_data_cookies' ) );
+		if ( is_user_logged_in() ) {
+			add_action( 'init', array( $this, 'set_wishlists_data_cookies' ) );
+		}
 	}
 
 	/**
@@ -584,13 +586,14 @@ JOIN {$table_languages} l ON
 		}
 
 		if ( $stats ) {
+			$stats_count = 0;
 			$stats_sql = "SELECT `A`.`product_id`, `A`.`variation_id`, COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999";
 
 			$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
 
 			if ( ! empty( $stats_results ) ) {
 				$analytics   = array();
-				$stats_count = 0;
+
 				foreach ( $stats_results as $product_stats ) {
 					$analytics[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = $product_stats['count'];
 					$stats_count                                                                 = $stats_count + $product_stats['count'];

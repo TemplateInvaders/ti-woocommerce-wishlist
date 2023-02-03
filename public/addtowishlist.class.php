@@ -923,7 +923,8 @@ JOIN {$table_languages} l ON
 
 		$icon .= $this->is_loop ? ' tinvwl-loop' : '';
 
-		$content .= sprintf( '<a role="button" tabindex="0" aria-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
+		$content .= sprintf( '<a role="button" tabindex="0" name="%s" aria-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
+			$button_text,
 			$button_text,
 			$icon,
 			apply_filters( 'wpml_object_id', ( $this->product->is_type( 'variation' ) ? $this->product->get_parent_id() : $this->product->get_id() ), 'product', true ),

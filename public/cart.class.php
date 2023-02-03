@@ -462,7 +462,7 @@ class TInvWL_Public_Cart {
 	 */
 	function order_status_analytics( $order_id, $old_status, $new_status ) {
 		$new_status = str_replace( 'wc-', '', $new_status );
-		$order      = new WC_Order( $order_id );
+		$order      = wc_get_order( $order_id );
 
 		if ( in_array( $new_status, array(
 				'processing',

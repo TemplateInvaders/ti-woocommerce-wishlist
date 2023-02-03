@@ -261,6 +261,12 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 	}
 }
 
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 register_activation_hook( __FILE__, 'activation_tinv_wishlist' );
 register_deactivation_hook( __FILE__, 'deactivation_tinv_wishlist' );
 register_uninstall_hook( __FILE__, 'uninstall_tinv_wishlist' );

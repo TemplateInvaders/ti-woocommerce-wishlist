@@ -447,6 +447,7 @@
 				'tinvwl-action': 'remove',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
 				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
@@ -552,6 +553,7 @@
 				'tinvwl-action': 'add_to_cart_single',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
 				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
@@ -657,6 +659,7 @@
 				'tinvwl-action': 'add_to_cart_all',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
 				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 
@@ -781,6 +784,7 @@
 				'tinvwl-action': action,
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
 				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
 				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
 			};
 

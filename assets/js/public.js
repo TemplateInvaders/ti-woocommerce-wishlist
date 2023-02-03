@@ -409,6 +409,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-action': 'remove',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
         'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-per-page': el.closest('form').data('tinvwl_per_page'),
         'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       if (tinvwl_add_to_wishlist.wpml) {
@@ -494,6 +495,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-action': 'add_to_cart_single',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
         'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-per-page': el.closest('form').data('tinvwl_per_page'),
         'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       if (tinvwl_add_to_wishlist.wpml) {
@@ -574,6 +576,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-action': 'add_to_cart_all',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
         'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-per-page': el.closest('form').data('tinvwl_per_page'),
         'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       if (tinvwl_add_to_wishlist.wpml) {
@@ -669,6 +672,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         'tinvwl-action': action,
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
         'tinvwl-paged': el.closest('form').data('tinvwl_paged'),
+        'tinvwl-per-page': el.closest('form').data('tinvwl_per_page'),
         'tinvwl-sharekey': el.closest('form').data('tinvwl_sharekey')
       };
       if (tinvwl_add_to_wishlist.wpml) {

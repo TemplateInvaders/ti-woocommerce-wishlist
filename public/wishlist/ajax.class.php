@@ -68,6 +68,7 @@ class TInvWL_Public_Wishlist_Ajax {
 			'tinvwl-action'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-product_id' => FILTER_VALIDATE_INT,
 			'tinvwl-paged'      => FILTER_VALIDATE_INT,
+			'tinvwl-per-page'   => FILTER_VALIDATE_INT,
 			'tinvwl-sharekey'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-products'   => array(
 				'filter' => FILTER_VALIDATE_INT,
@@ -122,7 +123,7 @@ class TInvWL_Public_Wishlist_Ajax {
 		switch ( $action ) {
 			case 'remove':
 				if ( ! $wishlist['is_owner'] ) {
-					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 				$product = $post['tinvwl-product_id'];
@@ -132,13 +133,13 @@ class TInvWL_Public_Wishlist_Ajax {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
 				if ( empty( $wlp ) ) {
-					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 				$product_data = $wlp->get_wishlist( array( 'ID' => $product ) );
 				$product_data = array_shift( $product_data );
 				if ( empty( $product_data ) ) {
-					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 
@@ -148,8 +149,8 @@ class TInvWL_Public_Wishlist_Ajax {
 				) ) ? $product_data['data']->get_name() : $product_data['data']->get_title() );
 
 				if ( $wlp->remove( $product_data ) ) {
-					$response['status']  = true;
-					$response['msg'][]   = sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
+					$response['status'] = true;
+					$response['msg'][]  = sprintf( __( '%s has been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
 				} else {
 					$response['status'] = false;
 					$response['msg'][]  = sprintf( __( '%s has not been removed from wishlist.', 'ti-woocommerce-wishlist' ), $title );
@@ -163,14 +164,15 @@ class TInvWL_Public_Wishlist_Ajax {
 				} else {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
-				if ( empty( $wlp ) ) {				;
-					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+				if ( empty( $wlp ) ) {
+					;
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 				$product_data = $wlp->get_wishlist( array( 'ID' => $product_id ) );
 				$product_data = array_shift( $product_data );
 				if ( empty( $product_data ) ) {
-					$response['msg'][]  = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}
 
@@ -249,8 +251,8 @@ class TInvWL_Public_Wishlist_Ajax {
 					}
 				}
 				if ( ! empty( $titles ) ) {
-					$response['status']  = true;
-					$response['msg'][]   = sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['status'] = true;
+					$response['msg'][]  = sprintf( _n( '%s has been successfully removed from wishlist.', '%s have been successfully removed from wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
 				}
 
 				break;
@@ -421,13 +423,14 @@ class TInvWL_Public_Wishlist_Ajax {
 				break;
 		}
 		$response['content'] = tinvwl_shortcode_view( array(
-			'paged'    => $post['tinvwl-paged'],
-			'sharekey' => $post['tinvwl-sharekey']
+			'paged'          => $post['tinvwl-paged'],
+			'sharekey'       => $post['tinvwl-sharekey'],
+			'lists_per_page' => $post['tinvwl-per-page'],
 		) );
-		$response['action'] = $action;
-		$response['icon']   = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
-		$response['msg']    = array_unique( $response['msg'] );
-		$response['msg']    = implode( '<br>', $response['msg'] );
+		$response['action']  = $action;
+		$response['icon']    = $response['status'] ? 'icon_big_heart_check' : 'icon_big_times';
+		$response['msg']     = array_unique( $response['msg'] );
+		$response['msg']     = implode( '<br>', $response['msg'] );
 		if ( tinv_get_option( 'table', 'hide_popup' ) && array_key_exists( 'msg', $response ) ) {
 			unset( $response['msg'] );
 		}

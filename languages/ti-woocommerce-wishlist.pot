@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.3.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.3.0 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.3.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.3.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.1\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1252,15 +1252,15 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
-#: public/addtowishlist.class.php:230
+#: public/addtowishlist.class.php:231
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:232
+#: public/addtowishlist.class.php:233
 msgid "Login"
 msgstr ""
 
-#: public/addtowishlist.class.php:251, public/wishlist/ajax.class.php:101, public/wishlist/ajax.class.php:126, public/wishlist/ajax.class.php:136, public/wishlist/ajax.class.php:142, public/wishlist/ajax.class.php:169, public/wishlist/ajax.class.php:175, public/wishlist/ajax.class.php:225, public/wishlist/ajax.class.php:235
+#: public/addtowishlist.class.php:252, public/wishlist/ajax.class.php:101, public/wishlist/ajax.class.php:126, public/wishlist/ajax.class.php:136, public/wishlist/ajax.class.php:142, public/wishlist/ajax.class.php:169, public/wishlist/ajax.class.php:175, public/wishlist/ajax.class.php:225, public/wishlist/ajax.class.php:235
 msgid "Something went wrong"
 msgstr ""
 

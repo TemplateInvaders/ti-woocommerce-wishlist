@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -169,6 +169,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.3.1 =
+*Release Date - 16 February 2023*
+
+* WooCommerce 7.4 support
+* Fixed name attribute value issue
+* Fixed PHP errors for old WordPress and WooCommerce versions
+
+
 = 2.3.0 =
 *Release Date - 03 February 2023*
 

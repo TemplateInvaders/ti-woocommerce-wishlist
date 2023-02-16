@@ -147,6 +147,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.3.1 ###
+*Release Date - 16 February 2023*
+
+* WooCommerce 7.4 support
+* Fixed name attribute value issue
+* Fixed PHP errors for old WordPress and WooCommerce versions
+
+
 ### 2.3.0 ###
 *Release Date - 03 February 2023*
 

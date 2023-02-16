@@ -524,7 +524,7 @@ if ( ! function_exists( 'tinv_wishlist_status' ) ) {
 
 			return 'plugins.php';
 		}
-		if ( TINVWL_LOAD_PREMIUM === $transient ) {
+		if ( defined( 'TINVWL_LOAD_PREMIUM' ) && TINVWL_LOAD_PREMIUM === $transient ) {
 			if ( is_plugin_active( TINVWL_LOAD_FREE ) ) {
 				TInvWL_PluginExtend::deactivate_self( TINVWL_LOAD_FREE );
 				if ( ! function_exists( 'wp_create_nonce' ) ) {
@@ -856,8 +856,8 @@ if ( ! function_exists( 'tinv_wishlistmeta' ) ) {
 	function tinv_wishlistmeta( $meta, $wl_product, $product ) {
 		if ( array_key_exists( 'meta', $wl_product ) ) {
 			$wlmeta = apply_filters( 'tinvwl_wishlist_item_meta_wishlist_output', tinv_wishlist_print_meta( $wl_product['meta'] ), $wl_product, $product );
+			$meta   .= $wlmeta;
 		}
-		$meta .= $wlmeta;
 
 		return $meta;
 	}
@@ -982,6 +982,44 @@ if ( ! function_exists( 'tinvwl_get_wishlist_products' ) ) {
 		}
 
 		return $products;
+	}
+}
+
+if ( ! function_exists( 'wp_recursive_ksort' ) ) {
+	/**
+	 * Sorts the keys of an array alphabetically.
+	 * The array is passed by reference so it doesn't get returned
+	 * which mimics the behaviour of ksort.
+	 *
+	 * @param array $array The array to sort, passed by reference.
+	 *
+	 * @since 2.3.1
+	 *
+	 */
+	function wp_recursive_ksort( &$array ) {
+		foreach ( $array as &$value ) {
+			if ( is_array( $value ) ) {
+				wp_recursive_ksort( $value );
+			}
+		}
+		ksort( $array );
+	}
+}
+
+if ( ! function_exists( 'wc_is_attribute_in_product_name' ) ) {
+	/**
+	 * Check if an attribute is included in the attributes area of a variation name.
+	 *
+	 * @param string $attribute Attribute value to check for.
+	 * @param string $name Product name to check in.
+	 *
+	 * @return bool
+	 * @since  2.3.1
+	 */
+	function wc_is_attribute_in_product_name( $attribute, $name ) {
+		$is_in_name = stristr( $name, ' ' . $attribute . ',' ) || 0 === stripos( strrev( $name ), strrev( ' ' . $attribute ) );
+
+		return apply_filters( 'woocommerce_is_attribute_in_product_name', $is_in_name, $attribute, $name );
 	}
 }
 

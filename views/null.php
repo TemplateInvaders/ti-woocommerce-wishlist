@@ -18,4 +18,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$path = implode( DIRECTORY_SEPARATOR, $path );
 	printf( __( 'Template "%s" not found!', 'ti-woocommerce-wishlist' ), $path ); // WPCS: xss ok.
 	?></h2>
-<!-- <?php echo self::file( @$_template_name, @$_type ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged ?> -->
+<!-- <?php echo TInvWL_View::file( @$_template_name, @$_type ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged ?> -->

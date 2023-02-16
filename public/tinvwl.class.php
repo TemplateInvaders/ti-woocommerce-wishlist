@@ -591,7 +591,7 @@ class TInvWL_Public_TInvWL {
 	 * @param string $user_login Not used.
 	 * @param object $user User object.
 	 *
-	 * @return boolean
+	 * @return void
 	 */
 	function transfert_local_to_user( $user_login, $user ) {
 		return $this->transfert_local_to_user_register( $user->ID );

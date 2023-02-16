@@ -160,7 +160,7 @@ class TInvWL_Public_Cart {
 		$passed_validation = $product['data']->is_purchasable() && ( $product['data']->is_in_stock() || $product['data']->backorders_allowed() ) && 'external' !== $product['data']->get_type();
 		$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 		if ( $passed_validation ) {
-			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product['meta']  );
+			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product['meta'] );
 			if ( $cart_item_key ) {
 
 				/* Run a 3rd party code when product added to a cart from a wishlist.
@@ -216,42 +216,36 @@ class TInvWL_Public_Cart {
 	 * Get product added from wishlist
 	 *
 	 * @param string $cart_item_key Cart product key.
-	 * @param array $wishlist Wishlist object.
 	 *
-	 * @return array
+	 * @return int
 	 */
-	public static function get_item_data( $cart_item_key, $wishlist = null ) {
+	public static function get_item_data( $cart_item_key ) {
 		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $data[ $cart_item_key ] ) ) {
 			$data[ $cart_item_key ] = array();
 		}
 
-		if ( empty( $wishlist ) ) {
-			return $data[ $cart_item_key ];
-		} else {
-			return empty( $data[ $cart_item_key ][ $wishlist ] ) ? 0 : $data[ $cart_item_key ][ $wishlist ];
-		}
+		return $data[ $cart_item_key ];
 	}
 
 	/**
 	 * Set product added from wishlist
 	 *
 	 * @param string $cart_item_key Cart product key.
-	 * @param array $wishlist Wishlist object.
+	 * @param string $wishlist_sharekey Wishlist sharekey.
 	 * @param integer $quantity Product quantity.
 	 *
 	 * @return boolean
 	 */
-	public static function set_item_data( $cart_item_key, $wishlist, $quantity = 1 ) {
+	public static function set_item_data( $cart_item_key, $wishlist_sharekey, $quantity = 1 ) {
 		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $data[ $cart_item_key ] ) ) {
 			$data[ $cart_item_key ] = array();
 		}
-
-		if ( array_key_exists( $wishlist, $data[ $cart_item_key ] ) ) {
-			$data[ $cart_item_key ][ $wishlist ] += $quantity;
+		if ( array_key_exists( $wishlist_sharekey, $data[ $cart_item_key ] ) ) {
+			$data[ $cart_item_key ][ $wishlist_sharekey ] += $quantity;
 		} else {
-			$data[ $cart_item_key ][ $wishlist ] = $quantity;
+			$data[ $cart_item_key ][ $wishlist_sharekey ] = $quantity;
 		}
 
 		WC()->session->set( 'tinvwl_wishlist_cart', $data );
@@ -291,11 +285,10 @@ class TInvWL_Public_Cart {
 	 * Remove product added from wishlist
 	 *
 	 * @param string $cart_item_key Cart product key.
-	 * @param array $wishlist Wishlist object.
 	 *
 	 * @return boolean
 	 */
-	public static function remove_item_data( $cart_item_key = null, $wishlist = null ) {
+	public static function remove_item_data( $cart_item_key = null ) {
 		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $cart_item_key ) ) {
 			WC()->session->set( 'tinvwl_wishlist_cart', array() );
@@ -305,14 +298,9 @@ class TInvWL_Public_Cart {
 		if ( ! array_key_exists( $cart_item_key, $data ) ) {
 			return false;
 		}
-		if ( empty( $wishlist ) ) {
-			unset( $data[ $cart_item_key ] );
-		} else {
-			if ( ! array_key_exists( $wishlist, $data[ $cart_item_key ] ) ) {
-				return false;
-			}
-			unset( $data[ $cart_item_key ][ $wishlist ] );
-		}
+
+		unset( $data[ $cart_item_key ] );
+
 		WC()->session->set( 'tinvwl_wishlist_cart', $data );
 
 		return true;

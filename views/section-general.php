@@ -26,7 +26,7 @@ $show_title = $show_names && $title;
 			<?php if ( $show_helper ) : ?>
 				<th class="tinvwl-info w-bg-grey">
 					<?php if ( ! empty( $desc ) ) {
-						self::view( 'section-infoblock', array( 'desc' => $desc ), '' );
+						TInvWL_View::view( 'section-infoblock', array( 'desc' => $desc ), '' );
 					} ?>
 				</th>
 			<?php endif; ?>

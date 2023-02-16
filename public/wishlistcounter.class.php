@@ -30,7 +30,7 @@ class TInvWL_Public_WishlistCounter {
 	/**
 	 * Counter
 	 *
-	 * @var floatval
+	 * @var float
 	 */
 	private $counter;
 	/**

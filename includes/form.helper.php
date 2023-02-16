@@ -266,7 +266,7 @@ class TInvWL_Form
 	 * Create select html element with time period
 	 *
 	 * @param mixed $data Name field or array attributes.
-	 * @param intger $value Value.
+	 * @param int $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
 	 * @return string
@@ -862,7 +862,7 @@ class TInvWL_Form
 	 * @param string $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
-	 * @return type
+	 * @return string
 	 */
 	public static function _button($data = '', $value = '', $extra = '')
 	{
@@ -882,7 +882,7 @@ class TInvWL_Form
 	 * @param string $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
-	 * @return type
+	 * @return string
 	 */
 	public static function _button_submit_quick($data = '', $value = '', $extra = '')
 	{
@@ -896,7 +896,7 @@ class TInvWL_Form
 	 * @param string $value Value.
 	 * @param mixed $extra Styling or Custom variable.
 	 *
-	 * @return type
+	 * @return string
 	 */
 	public static function _button_submit($data = '', $value = '', $extra = '')
 	{

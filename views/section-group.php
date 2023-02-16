@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( $show_helper ) : ?>
 		<td class="tinvwl-info w-bg-grey" <?php echo ( $desc ) ? 'rowspan="' . $fields_count . '"' : ''; // WPCS: xss ok. ?>>
 			<?php if ( ! empty( $desc ) ) {
-				self::view( 'section-infoblock', array( 'desc' => $desc ), '' );
+				TInvWL_View::view( 'section-infoblock', array( 'desc' => $desc ), '' );
 			} ?>
 		</td>
 	<?php endif; ?>

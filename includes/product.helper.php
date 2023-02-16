@@ -711,8 +711,8 @@ class TInvWL_Product {
 	 * Prepare to save meta in database
 	 *
 	 * @param array $meta Meta array.
-	 * @param ineger $product_id Woocommerce product ID.
-	 * @param ineger $variation_id Woocommerce product variation ID.
+	 * @param int $product_id Woocommerce product ID.
+	 * @param int $variation_id Woocommerce product variation ID.
 	 *
 	 * @return string
 	 */

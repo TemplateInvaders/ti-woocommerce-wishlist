@@ -7,6 +7,7 @@
  */
 
 // If this file is called directly, abort.
+/** @noinspection SpellCheckingInspection */
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }

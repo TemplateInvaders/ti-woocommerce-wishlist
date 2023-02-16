@@ -93,7 +93,7 @@ class TInvWL_Update {
 	 * @param string $method1 Method name first from this class.
 	 * @param string $method2 Method name second from this class.
 	 *
-	 * @return type
+	 * @return bool
 	 */
 	public function sort( $method1, $method2 ) {
 		return version_compare( $this->prepare( $method1 ), $this->prepare( $method2 ) );

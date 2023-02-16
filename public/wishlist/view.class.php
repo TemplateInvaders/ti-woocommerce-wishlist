@@ -223,7 +223,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @param array $wl_product Wishlist product.
 	 * @param object $product Product.
 	 *
-	 * @return type
+	 * @return string
 	 */
 	function add_argument( $url, $wl_product, $product ) {
 		return add_query_arg( 'tiwp', $wl_product['ID'], $url );
@@ -597,7 +597,7 @@ class TInvWL_Public_Wishlist_View {
 	 *
 	 * @param integer $paged Index page.
 	 * @param string $text Text button.
-	 * @param style $style Style attribute.
+	 * @param string $style Style attribute.
 	 */
 	function page( $paged, $text, $style = array() ) {
 		$paged    = absint( $paged );

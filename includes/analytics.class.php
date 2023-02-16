@@ -303,11 +303,13 @@ class TInvWL_Analytics {
 		switch ( $type ) {
 			case 'author':
 				$data['visite_author'] = $quantity;
+				break;
 			case 'visite':
 				$data['visite'] = $quantity;
 				break;
 			case 'author_click':
 				$data['click_author'] = $quantity;
+				break;
 			case 'click':
 				$data['click'] = $quantity;
 				break;
@@ -316,6 +318,7 @@ class TInvWL_Analytics {
 				break;
 			case 'gift':
 				$data['sell_as_gift'] = $quantity;
+				break;
 			case 'wishlist':
 				$data['sell_of_wishlist'] = $quantity;
 				break;
@@ -333,7 +336,6 @@ class TInvWL_Analytics {
 		$fields     = array();
 		$values     = array();
 		$duplicates = array();
-
 		foreach ( array_keys( $product_id ) as $index ) {
 			foreach ( $data as $key => $value ) {
 				if ( 0 === $index ) {
@@ -501,11 +503,11 @@ class TInvWL_Analytics {
 	/**
 	 * Get Analytics Product
 	 *
-	 * @param type $wishlist_id If exist wishlist object, you can put 0.
-	 * @param type $product_id Product id.
-	 * @param type $variation_id Product variation id.
+	 * @param int $wishlist_id If exist wishlist object, you can put 0.
+	 * @param int $product_id Product id.
+	 * @param int $variation_id Product variation id.
 	 *
-	 * @return type
+	 * @return array
 	 * @global wpdb $wpdb
 	 */
 	function get_product( $wishlist_id = 0, $product_id = 0, $variation_id = 0 ) {

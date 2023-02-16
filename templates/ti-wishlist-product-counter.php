@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-product-counter.php.
  *
- * @version             2.3.0
+ * @version             2.3.1
  * @package           TInvWishlist\Template
  */
 
@@ -17,7 +17,7 @@ if ( $icon_class && 'custom' === $icon && ! empty( $icon_upload ) ) {
 }
 ?>
 <a href="<?php echo esc_url( tinv_url_wishlist_default() ); ?>"
-   name="<?php echo esc_attr( $text ); ?>" aria-label="<?php echo esc_attr( $text ); ?>"
+   name="<?php echo esc_attr( sanitize_title( $text ) ); ?>" aria-label="<?php echo esc_attr( $text ); ?>"
    class="wishlist_products_counter<?php echo ' ' . $icon_class . ' ' . $icon_style . ( empty( $text ) ? ' no-txt' : '' ) . ( 0 < $counter ? ' wishlist-counter-with-products' : '' ); // WPCS: xss ok. ?>">
 	<span class="wishlist_products_counter_text"><?php echo $text; // WPCS: xss ok. ?></span>
 	<?php if ( $show_counter ) : ?>

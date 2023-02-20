@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.3.1
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.3.1 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.3.2
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.3.2 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.1\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.3.2\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1260,7 +1260,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: public/addtowishlist.class.php:252, public/wishlist/ajax.class.php:101, public/wishlist/ajax.class.php:126, public/wishlist/ajax.class.php:136, public/wishlist/ajax.class.php:142, public/wishlist/ajax.class.php:169, public/wishlist/ajax.class.php:175, public/wishlist/ajax.class.php:225, public/wishlist/ajax.class.php:235
+#: public/addtowishlist.class.php:252, public/wishlist/ajax.class.php:101, public/wishlist/ajax.class.php:126, public/wishlist/ajax.class.php:136, public/wishlist/ajax.class.php:142, public/wishlist/ajax.class.php:168, public/wishlist/ajax.class.php:174, public/wishlist/ajax.class.php:224, public/wishlist/ajax.class.php:234
 msgid "Something went wrong"
 msgstr ""
 
@@ -1300,7 +1300,7 @@ msgstr ""
 msgid "Counter Text"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:146, public/wishlist/ajax.class.php:179, public/wishlist/ajax.class.php:247
+#: public/wishlist/ajax.class.php:146, public/wishlist/ajax.class.php:178, public/wishlist/ajax.class.php:246
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
@@ -1312,7 +1312,7 @@ msgstr ""
 msgid "%s has been removed from wishlist."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:217, public/wishlist/ajax.class.php:316, public/wishlist/ajax.class.php:395
+#: public/wishlist/ajax.class.php:216, public/wishlist/ajax.class.php:315, public/wishlist/ajax.class.php:394
 msgid "Product %s could not be added to the cart because some requirements are not met."
 msgid_plural "Products: %s could not be added to the cart because some requirements are not met."
 msgstr[0] ""
@@ -1320,13 +1320,13 @@ msgstr[1] ""
 
 #. translators: %s: product name
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:206, public/wishlist/ajax.class.php:331, public/wishlist/ajax.class.php:410
+#: public/wishlist/ajax.class.php:205, public/wishlist/ajax.class.php:330, public/wishlist/ajax.class.php:409
 msgid "%s has been added to your cart."
 msgid_plural "%s have been added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:255
+#: public/wishlist/ajax.class.php:254
 msgid "%s has been successfully removed from wishlist."
 msgid_plural "%s have been successfully removed from wishlist."
 msgstr[0] ""
@@ -1334,7 +1334,7 @@ msgstr[1] ""
 
 #. translators: %s: product name
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:313, public/wishlist/ajax.class.php:325, public/wishlist/ajax.class.php:392, public/wishlist/ajax.class.php:404
+#: public/wishlist/ajax.class.php:312, public/wishlist/ajax.class.php:324, public/wishlist/ajax.class.php:391, public/wishlist/ajax.class.php:403
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""

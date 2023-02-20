@@ -147,6 +147,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.3.2 ###
+*Release Date - 20 February 2023*
+
+* Update framework
+
 ### 2.3.1 ###
 *Release Date - 16 February 2023*
 

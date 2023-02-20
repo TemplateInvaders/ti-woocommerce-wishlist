@@ -165,7 +165,6 @@ class TInvWL_Public_Wishlist_Ajax {
 					$wlp = new TInvWL_Product( $wishlist );
 				}
 				if ( empty( $wlp ) ) {
-					;
 					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
 					break;
 				}

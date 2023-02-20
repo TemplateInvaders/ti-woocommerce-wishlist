@@ -913,12 +913,6 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 	 */
 	function tinvwl_set_utm() {
 
-		// Forcing partners UTM.
-		if ( class_exists( 'Ocean_Extra' ) && ! defined( 'TINVWL_PARTNER' ) && ! defined( 'TINVWL_CAMPAIGN' ) ) {
-			define( 'TINVWL_PARTNER', 'oceanwporg' );
-			define( 'TINVWL_CAMPAIGN', 'oceanwp_theme' );
-		}
-
 		// Set a source.
 		$source = get_option( TINVWL_PREFIX . '_utm_source' );
 		if ( ! $source || $source !== defined( 'TINVWL_PARTNER' ) ) {

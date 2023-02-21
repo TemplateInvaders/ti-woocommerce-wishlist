@@ -113,6 +113,9 @@ class TInvWL_Public_Wishlist_Ajax {
 	}
 
 	function wishlist_ajax_actions( $wishlist, $post, $guest_wishlist = false ) {
+
+		do_action( 'tinvwl_ajax_actions_before', $wishlist, $post, $guest_wishlist );
+
 		$post['wishlist_qty'] = 1;
 		$action               = $post['tinvwl-action'];
 		$class                = TInvWL_Public_AddToWishlist::instance();
@@ -445,7 +448,7 @@ class TInvWL_Public_Wishlist_Ajax {
 		$response['wishlists_data'] = $class->get_wishlists_data( $share_key );
 
 		do_action( 'tinvwl_action_' . $action, $wishlist, $post['tinvwl-products'], $post['wishlist_qty'], $owner ); // @codingStandardsIgnoreLine WordPress.NamingConventions.ValidHookName.UseUnderscores
-
+		do_action( 'tinvwl_ajax_actions_after', $wishlist, $post, $guest_wishlist );
 		wp_send_json( $response );
 	}
 }

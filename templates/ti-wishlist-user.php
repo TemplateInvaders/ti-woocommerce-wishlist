@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-user.php.
  *
- * @version             2.3.0
+ * @version             2.3.3
  * @package           TInvWishlist\Template
  */
 
@@ -27,7 +27,7 @@ wp_enqueue_script( 'tinvwl' );
 			<thead>
 			<tr>
 				<?php if ( isset( $wishlist_table['colm_checkbox'] ) && $wishlist_table['colm_checkbox'] ) { ?>
-					<th class="product-cb"><input type="checkbox" class="global-cb"
+					<th class="product-cb"><input type="checkbox" class="global-cb input-checkbox"
 												  title="<?php _e( 'Select all for bulk action', 'ti-woocommerce-wishlist' ) ?>">
 					</th>
 				<?php } ?>
@@ -82,7 +82,7 @@ wp_enqueue_script( 'tinvwl' );
 							<td class="product-cb">
 								<?php
 								echo apply_filters( 'tinvwl_wishlist_item_cb', sprintf( // WPCS: xss ok.
-									'<input type="checkbox" name="wishlist_pr[]" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
+									'<input type="checkbox" name="wishlist_pr[]" class="input-checkbox" value="%d" title="%s">', esc_attr( $wl_product['ID'] ), __( 'Select for bulk action', 'ti-woocommerce-wishlist' )
 								), $wl_product, $product );
 								?>
 							</td>

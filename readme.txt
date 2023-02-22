@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -169,6 +169,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.3.3 =
+*Release Date - 22 February 2023*
+
+* Blocking the wishlist table visually while processing AJAX events
+* Added integration with [Extra product options For WooCommerce | Custom Product Addons and Fields](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+* Added integration with [ione360 Configurator](https://wordpress.org/plugins/ione360-configurator/) plugin
+* Added "input-checkbox" class to checkbox
+
 = 2.3.2 =
 *Release Date - 20 February 2023*
 

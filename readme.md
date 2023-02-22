@@ -147,6 +147,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.3.3 ###
+*Release Date - 22 February 2023*
+
+* Blocking the wishlist table visually while processing AJAX events
+* Added integration with [Extra product options For WooCommerce | Custom Product Addons and Fields](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+* Added integration with [ione360 Configurator](https://wordpress.org/plugins/ione360-configurator/) plugin
+* Added "input-checkbox" class to checkbox
+
 ### 2.3.2 ###
 *Release Date - 20 February 2023*
 

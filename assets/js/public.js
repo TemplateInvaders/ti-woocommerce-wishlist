@@ -404,6 +404,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return;
       }
       el.addClass('inited-wishlist-action');
+      $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').block({
+        message: null,
+        overlayCSS: {
+          background: '#fff',
+          opacity: 0.6
+        }
+      });
       var data = {
         'tinvwl-product_id': el.val(),
         'tinvwl-action': 'remove',
@@ -432,6 +439,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       }).done(function (response) {
         $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
+        $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').unblock();
         if (response.msg) {
           var $msg = $(response.msg).eq(0);
           if (!$('body > .tinv-wishlist').length) {
@@ -490,6 +498,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return;
       }
       el.addClass('inited-wishlist-action');
+      $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').block({
+        message: null,
+        overlayCSS: {
+          background: '#fff',
+          opacity: 0.6
+        }
+      });
       var data = {
         'tinvwl-product_id': el.val(),
         'tinvwl-action': 'add_to_cart_single',
@@ -518,6 +533,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       }).done(function (response) {
         $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
+        $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').unblock();
         if (response.redirect) {
           window.location.href = response.redirect;
         }
@@ -572,6 +588,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return;
       }
       el.addClass('inited-wishlist-action');
+      $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').block({
+        message: null,
+        overlayCSS: {
+          background: '#fff',
+          opacity: 0.6
+        }
+      });
       var data = {
         'tinvwl-action': 'add_to_cart_all',
         'tinvwl-security': tinvwl_add_to_wishlist.nonce,
@@ -599,6 +622,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       }).done(function (response) {
         $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
+        $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').unblock();
         if (response.redirect) {
           window.location.href = response.redirect;
         }
@@ -661,6 +685,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return;
       }
       el.addClass('inited-wishlist-action');
+      $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').block({
+        message: null,
+        overlayCSS: {
+          background: '#fff',
+          opacity: 0.6
+        }
+      });
       var action = '';
       if ('tinvwl-action-product_selected' === el.attr('name')) {
         action = 'add_to_cart_selected';
@@ -695,6 +726,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       }).done(function (response) {
         $('body').trigger('tinvwl_wishlist_ajax_response', [this, response]);
         el.removeClass('inited-wishlist-action');
+        $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear').unblock();
         if (response.redirect) {
           window.location.href = response.redirect;
         }

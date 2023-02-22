@@ -442,6 +442,14 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
+			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+				message: null,
+				overlayCSS: {
+					background: '#fff',
+					opacity: 0.6
+				}
+			});
+
 			var data = {
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'remove',
@@ -476,6 +484,8 @@
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
 				el.removeClass( 'inited-wishlist-action' );
+
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -548,6 +558,14 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
+			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+				message: null,
+				overlayCSS: {
+					background: '#fff',
+					opacity: 0.6
+				}
+			});
+
 			var data = {
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'add_to_cart_single',
@@ -582,6 +600,8 @@
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
 				el.removeClass( 'inited-wishlist-action' );
+
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
 				if ( response.redirect ) {
 					window.location.href = response.redirect;
@@ -655,6 +675,14 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
+			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+				message: null,
+				overlayCSS: {
+					background: '#fff',
+					opacity: 0.6
+				}
+			});
+
 			var data = {
 				'tinvwl-action': 'add_to_cart_all',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
@@ -688,6 +716,8 @@
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
 				el.removeClass( 'inited-wishlist-action' );
+
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
 				if ( response.redirect ) {
 					window.location.href = response.redirect;
@@ -770,6 +800,14 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
+			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+				message: null,
+				overlayCSS: {
+					background: '#fff',
+					opacity: 0.6
+				}
+			});
+
 			var action = '';
 
 
@@ -813,6 +851,8 @@
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
 				el.removeClass( 'inited-wishlist-action' );
+
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
 				if ( response.redirect ) {
 					window.location.href = response.redirect;

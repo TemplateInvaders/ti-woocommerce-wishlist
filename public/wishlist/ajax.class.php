@@ -76,7 +76,7 @@ class TInvWL_Public_Wishlist_Ajax {
 			),
 		) );
 
-		if ( ! $post['tinvwl-action'] ) {
+		if ( ! isset( $post['tinvwl-action'] ) || ! $post['tinvwl-action'] ) {
 			return;
 		}
 
@@ -90,7 +90,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 		$guest_wishlist = false;
 		if ( ! is_user_logged_in() ) {
-			$guest_wishlist = $wl->get_by_user_default();
+			$guest_wishlist = $wl->get_by_sharekey_default();
 			$guest_wishlist = array_shift( $guest_wishlist );
 		}
 

@@ -73,16 +73,18 @@ function tinv_add_to_wishlist_ione360_configurator() {
 		jQuery(document).ready(function($){
 
 			  $(document).on('tinvwl_add_to_wishlist_button_click', function (e, el, data) {
-				if ( $( el ).is( '.inited-add-wishlist-ione360' ) ) {
-					return;
-				}
 			    let selector = document.getElementById('selector');
-                selector.addToCart();
-                $(el).addClass('inited-add-wishlist inited-add-wishlist-ione360');
-                 setTimeout(function () {
-		              $(el).removeClass('inited-add-wishlist').trigger('click');
-		          }, 2000);
+			    if (selector){
+					if ( $( el ).is( '.inited-add-wishlist-ione360' ) ) {
+						return;
+					}
 
+	                selector.addToCart();
+	                $(el).addClass('inited-add-wishlist inited-add-wishlist-ione360');
+	                 setTimeout(function () {
+			              $(el).removeClass('inited-add-wishlist').trigger('click');
+			          }, 2000);
+				}
 			  });
         });
         " );

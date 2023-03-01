@@ -147,6 +147,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.3.5 ###
+*Release Date - 01 March 2023*
+
+* Fixed wishlist table ajax events issue for guests
+* Fixed PHP warning in ajax events
+
 ### 2.3.3 ###
 *Release Date - 22 February 2023*
 

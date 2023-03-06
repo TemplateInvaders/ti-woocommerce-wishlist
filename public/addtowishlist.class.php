@@ -59,7 +59,7 @@ class TInvWL_Public_AddToWishlist {
 	/**
 	 * This class
 	 *
-	 * @var \TInvWL_Public_AddToWishlist
+	 * @var TInvWL_Public_AddToWishlist
 	 */
 	protected static $_instance = null;
 
@@ -68,7 +68,7 @@ class TInvWL_Public_AddToWishlist {
 	 *
 	 * @param string $plugin_name Plugin name.
 	 *
-	 * @return \TInvWL_Public_AddToWishlist
+	 * @return TInvWL_Public_AddToWishlist
 	 */
 	public static function instance( $plugin_name = TINVWL_PREFIX ) {
 		if ( is_null( self::$_instance ) ) {
@@ -429,6 +429,11 @@ class TInvWL_Public_AddToWishlist {
 		wp_send_json( $data );
 	}
 
+	/**
+	 * @param $share_key
+	 *
+	 * @return array
+	 */
 	function get_wishlists_data( $share_key ) {
 
 		global $wpdb;
@@ -847,6 +852,9 @@ JOIN {$table_languages} l ON
 			}
 
 			if ( $match_attributes ) {
+
+				add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'default_variation_loop' ), 10, 2 );
+
 				$data_store         = WC_Data_Store::load( 'product' );
 				$this->variation_id = $data_store->find_matching_product_variation( $this->product, $match_attributes );
 			}
@@ -1029,9 +1037,8 @@ JOIN {$table_languages} l ON
 		if ( 'after' === $position && $document->find( '.wc-block-grid__product-add-to-cart' ) ) {
 			$document->find( '.wc-block-grid__product-add-to-cart' )[0]->insertSiblingAfter( $add_to_wishlist_element->getNode() );
 		}
-		$html = $document->html();
 
-		return $html;
+		return $document->html();
 	}
 
 	/**
@@ -1070,5 +1077,28 @@ JOIN {$table_languages} l ON
 		$product = '';
 
 		return $description . $add_to_wishlist;
+	}
+
+	/**
+	 * @param WC_Product $product
+	 * @param bool $loop
+	 */
+	function default_variation_loop( $product, $loop ) {
+
+		if ( $loop && in_array( $product->get_type(), array(
+				'variable',
+				'variable-subscription',
+			) ) ) {
+			$match_attributes = [];
+			foreach ( $product->get_default_attributes() as $attribute_name => $value ) {
+				$match_attributes[ 'attribute_' . sanitize_title( $attribute_name ) ] = $value;
+			}
+
+			foreach ( $match_attributes as $name => $value ) {
+				?>
+				<input name="<?php echo esc_attr( $name ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>"/>
+				<?php
+			}
+		}
 	}
 }

@@ -279,16 +279,42 @@ function tinvwl_flatsome() {
 						aria-label="<?php echo __( 'Wishlist', 'ti-woocommerce-wishlist' ); ?>">
 					<?php echo get_flatsome_icon( 'icon-' . $icon ); ?>
 				</button>
-				<div class="wishlist-popup dark">
-					<?php echo do_shortcode( '[ti_wishlists_addtowishlist loop="yes"]' ); ?>
+				<div
+					class="wishlist-popup dark <?php echo tinv_get_option( 'add_to_wishlist', 'show_text' ) ? '' : 'hidden'; ?>">
+					<?php echo do_shortcode( '[ti_wishlists_addtowishlist]' ); ?>
 				</div>
 			</div>
 			<?php
 		}
 	}
 	add_action( 'flatsome_product_image_tools_top', 'tinvwl_flatsome_product_wishlist_button', 2 );
+
+	if ( ! function_exists( 'tinvwl_flatsome_product_wishlist_button_loop' ) ) {
+		/**
+		 * Add wishlist Button to Product Image
+		 */
+		function tinvwl_flatsome_product_wishlist_button_loop() {
+			$icon = get_theme_mod( 'wishlist_icon', 'heart' );
+			if ( ! $icon ) {
+				$icon = 'heart';
+			}
+			?>
+			<div class="wishlist-icon">
+				<button class="wishlist-button button is-outline circle icon"
+						aria-label="<?php echo __( 'Wishlist', 'ti-woocommerce-wishlist' ); ?>">
+					<?php echo get_flatsome_icon( 'icon-' . $icon ); ?>
+				</button>
+				<div
+					class="wishlist-popup dark <?php echo tinv_get_option( 'add_to_wishlist_catalog', 'show_text' ) ? '' : 'hidden'; ?>">
+					<?php echo do_shortcode( '[ti_wishlists_addtowishlist loop="yes"]' ); ?>
+				</div>
+			</div>
+			<?php
+		}
+	}
+
 	if ( tinv_get_option( 'add_to_wishlist_catalog', 'show_in_loop' ) ) {
-		add_action( 'flatsome_product_box_tools_top', 'tinvwl_flatsome_product_wishlist_button', 2 );
+		add_action( 'flatsome_product_box_tools_top', 'tinvwl_flatsome_product_wishlist_button_loop', 2 );
 	}
 
 

@@ -147,6 +147,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.3.6 ###
+*Release Date - 06 March 2023*
+
+* Fixed issue with removing from wishlist when default product variation is used
+* Updated integration with Flatsome theme
+
 ### 2.3.5 ###
 *Release Date - 01 March 2023*
 

@@ -17,7 +17,7 @@ Let your customers save and share their favorite products!
 
 Are you looking to boost sales on your WooCommerce site? Look no further than WooCommerce Wishlist! Our powerful tool is designed to increase conversions and drive more traffic to your site. By allowing customers to save products for later, they are more likely to return and make a purchase. Plus, the easy and convenient process of adding products to a wishlist can encourage customers to buy even more products than they planned. And with the ability to share wishlists, you can attract new potential customers and increase your site's visibility. Don't miss out on the opportunity to boost sales. Try WooCommerce Wishlist today and watch your business grow!
 
-🔗 [Live Preview](https://wishlist3.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
+🔗 [Live Preview](https://wishlist2.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
 
 🔗 [View documentation](https://templateinvaders.com/documentation/ti-woocommerce-wishlist-free/?utm_source=wordpressorg&utm_content=documentation)
 

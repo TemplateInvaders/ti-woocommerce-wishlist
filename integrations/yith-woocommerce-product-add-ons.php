@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Product Add-Ons
  *
- * @version 2.7.0
+ * @version 2.20.0
  *
  * @slug yith-woocommerce-product-add-ons
  *
@@ -203,20 +203,20 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 				$first_free_options_count = 0;
 				foreach ( json_decode( $wl_product['meta']['yith_wapo'], true ) as $index => $option ) {
 					foreach ( $option as $key => $value ) {
+
+						$value = stripslashes( $value );
+
+						$explode = explode( '-', $key );
+						if ( isset( $explode[1] ) ) {
+							$addon_id  = $explode[0];
+							$option_id = $explode[1];
+						} else {
+							$addon_id  = $key;
+							$option_id = $value;
+						}
+
+						$info = yith_wapo_get_option_info( $addon_id, $option_id );
 						if ( $key && '' !== $value ) {
-							$value = stripslashes( $value );
-
-							$explode = explode( '-', $key );
-							if ( isset( $explode[1] ) ) {
-								$addon_id  = $explode[0];
-								$option_id = $explode[1];
-							} else {
-								$addon_id  = $key;
-								$option_id = $value;
-							}
-
-							$info = yith_wapo_get_option_info( $addon_id, $option_id );
-
 							if ( $info['price_type'] == 'percentage' ) {
 								$_product = $product;
 								// WooCommerce Measurement Price Calculator (compatibility)
@@ -299,4 +299,53 @@ if ( ! function_exists( 'tinvwl_add_to_cart_meta_yith_woocommerce_product_add_on
 	}
 
 	add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_yith_woocommerce_product_add_on' );
+} // End if().
+
+
+if ( ! function_exists( 'tinvwl_meta_validate_cart_add_yith_woocommerce_product_add_on' ) ) {
+
+	/**
+	 * Checks the ability to add a product
+	 *
+	 * @param boolean $redirect Default value to redirect.
+	 * @param \WC_Product $product Product data.
+	 * @param string $redirect_url Current url for redirect.
+	 * @param array $wl_product Wishlist Product.
+	 *
+	 * @return boolean
+	 */
+	function tinvwl_meta_validate_cart_add_yith_woocommerce_product_add_on( $redirect, $product, $redirect_url, $wl_product ) {
+		if ( class_exists( 'YITH_WAPO' ) ) {
+
+			if ( ! empty( $wl_product['meta']['yith_wapo'] ) ) {
+
+				foreach ( json_decode( $wl_product['meta']['yith_wapo'], true ) as $index => $option ) {
+					foreach ( $option as $key => $value ) {
+						if ( $key && '' === $value ) {
+							$value = stripslashes( $value );
+
+							$explode = explode( '-', $key );
+							if ( isset( $explode[1] ) ) {
+								$addon_id  = $explode[0];
+								$option_id = $explode[1];
+							} else {
+								$addon_id  = $key;
+								$option_id = $value;
+							}
+
+							$addon    = new YITH_WAPO_Addon( $addon_id );
+							$required = $addon->get_option( 'required', $option_id );
+							if ( 'yes' === $required ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $redirect;
+	}
+
+	add_filter( 'tinvwl_product_add_to_cart_need_redirect', 'tinvwl_meta_validate_cart_add_yith_woocommerce_product_add_on', 100, 4 );
 } // End if().

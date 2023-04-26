@@ -132,8 +132,10 @@ class TInvWL {
 		) );
 		add_action( 'after_setup_theme', 'tinvwl_set_utm', 100 );
 
-		add_action( 'wp_logout', array( $this, 'reset_cookie' ) );
-		add_action( 'wp_login', array( $this, 'reset_cookie' ) );
+		if ( apply_filters( 'tinvwl_allow_data_cookies', true ) ) {
+			add_action( 'wp_logout', array( $this, 'reset_cookie' ) );
+			add_action( 'wp_login', array( $this, 'reset_cookie' ) );
+		}
 	}
 
 	/**

@@ -144,7 +144,7 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		add_action( 'wp_loaded', array( $this, 'add_to_wishlist' ), 0 );
-		if ( is_user_logged_in() ) {
+		if ( is_user_logged_in() && apply_filters( 'tinvwl_allow_data_cookies', true ) ) {
 			add_action( 'init', array( $this, 'set_wishlists_data_cookies' ) );
 		}
 	}

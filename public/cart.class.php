@@ -116,7 +116,7 @@ class TInvWL_Public_Cart {
 		if ( empty( $product['data'] ) ) {
 			return false;
 		}
-
+		$product['action'] = 'add';
 		$product = apply_filters( 'tinvwl_addproduct_tocart', $product );
 		self::prepare_post( $product );
 

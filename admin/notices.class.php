@@ -114,7 +114,7 @@ class TInvWL_Admin_Notices {
 		<script>
 			(function ($) {
 
-				$(document).on('click', '.notice-dismiss, .tinvwl-notice-dismiss', function () {
+				$(document).on('click', '.tinvwl-notice-dismiss', function () {
 					var $box = $(this).closest('.tinvwl-admin-notice'),
 						isLink = $(this).attr('data-link') === 'follow' ? true : false,
 						notice_type = $box.data('notice_type');

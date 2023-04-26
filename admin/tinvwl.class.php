@@ -93,10 +93,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		} elseif ( ! tinv_get_option( 'page', 'wishlist' ) ) {
 			add_action( 'admin_notices', array( $this, 'empty_page_admin_notice' ) );
 		}
-		if ( ! tinv_get_option( 'chat', 'enabled' ) ) {
-			add_action( 'admin_notices', array( $this, 'enable_chat_admin_notice' ) );
-		}
-		add_action( 'wp_ajax_tinvwl_admin_chat_notice', array( $this, 'tinvwl_admin_chat_notice' ) );
+
 		add_action( 'woocommerce_system_status_report', array( $this, 'system_report_templates' ) );
 
 		add_action( 'switch_theme', array( $this, 'admin_notice_outdated_templates' ) );
@@ -144,32 +141,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	}
 
 	/**
-	 * Notice to enable support chat.
-	 */
-	function enable_chat_admin_notice() {
-		if ( ! isset( $_GET['page'] ) || substr( $_GET['page'], 0, 6 ) !== 'tinvwl' ) {
-			return;
-		}
-
-		$hide_notice = get_option( 'tinvwl_hide_chat_notice' );
-
-		if ( $hide_notice ) {
-			return;
-		}
-
-		printf( '<div class="notice notice-warning  is-dismissible tinvwl-chat-notice"><p>%1$s</p><p><a href="%2$s" class="button-primary">%3$s</a></p></div>',
-			__( 'The Support Chat is disabled by default for the plugin setting pages. Enable it to get the most from our service!', 'ti-woocommerce-wishlist' ), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput.OutputNotEscaped
-			esc_url( admin_url( 'admin.php?page=tinvwl#chat' ) ),
-			esc_html__( 'Enable Support Chat', 'ti-woocommerce-wishlist' )
-		);
-	}
-
-	function tinvwl_admin_chat_notice() {
-		update_option( 'tinvwl_hide_chat_notice', '1' );
-	}
-
-	/**
-	 * Creation mune and sub-menu
+	 * Creation menu and sub-menu
 	 */
 	function action_menu() {
 		global $wp_roles;
@@ -259,24 +231,24 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		) );
 		wp_enqueue_script( $this->_name );
 
-		if ( tinv_get_option( 'chat', 'enabled' ) ) {
+		$geo              = new WC_Geolocation(); // Get WC_Geolocation instance object
+		$user_ip          = $geo->get_ip_address(); // Get user IP
+		$user_geo         = $geo->geolocate_ip( $user_ip ); // Get geolocated user data.
+		$country_code     = $user_geo['country']; // Get the country code
+		$restricted_codes = array( 'BD', 'PK', 'IN', 'NG', 'KE' );
 
-			$geo              = new WC_Geolocation(); // Get WC_Geolocation instance object
-			$user_ip          = $geo->get_ip_address(); // Get user IP
-			$user_geo         = $geo->geolocate_ip( $user_ip ); // Get geolocated user data.
-			$country_code     = $user_geo['country']; // Get the country code
-			$restricted_codes = array( 'BD', 'PK', 'IN', 'NG', 'KE' );
+		$chat_option = ( isset( $_POST['chat_nonce'] ) ) ? ( isset( $_POST['chat-enabled'] ) ? true : false ) : tinv_get_option( 'chat', 'enabled' );
 
-			if ( ! in_array( $country_code, $restricted_codes ) ) {
+		$disable_chat = ! $chat_option || in_array( $country_code, $restricted_codes );
 
-				$user_id       = get_current_user_id();
-				$user_info     = get_userdata( $user_id );
-				$current_theme = wp_get_theme();
+		$user_id       = get_current_user_id();
+		$user_info     = get_userdata( $user_id );
+		$current_theme = wp_get_theme();
+		$parent_theme  = $current_theme->parent();
 
-				$parent_theme = $current_theme->parent();
-
-				wp_add_inline_script( $this->_name, 'window.intercomSettings = {
+		wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 					app_id: "zyh6v0pc",
+					hide_default_launcher: ' . ( ( $disable_chat ) ? 'true' : 'false' ) . ',
 					"Website": "' . get_site_url() . '",
 					"Plugin name": "WooCommerce Wishlist Plugin",
 					"Plugin version":"' . TINVWL_FVERSION . '",
@@ -306,8 +278,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 						partner:"' . TINVWL_UTM_SOURCE . '"
 					});
 			' );
-			}
-		}
 	}
 
 	/**

@@ -213,6 +213,9 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function add_inline_scripts() {
 		wp_add_inline_script( 'jquery-blockui', 'jQuery(function(c){c("body").on("click.woo",\'a[href*="//woocommerce.com"]\',function(o){var e=(((o||{}).originalEvent||{}).target||{}).href||!1,r=((o||{}).currentTarget||{}).href||!1,t="&";e&&r&&(o.currentTarget.href=e.split("?")[0]+"?aff=3955",setTimeout(function(){o.originalEvent.target.href=e},1)),c("body").off("click.woo",\'a[href*="woocommerce.com"]\')})});' );
+		if ( class_exists( 'OceanWP_Theme_Panel' ) ) {
+			wp_add_inline_script( 'wp-util', 'jQuery(function(c){c("body").on("click.oceanwp",\'a[href*="//oceanwp.org"]\',function(o){var r=((o||{}).currentTarget||{}).href||!1,t="&";r&&(o.currentTarget.href="https://r.freemius.com/3767/6941420/"+r,setTimeout(function(){o.currentTarget.href=r;},1)),c("body").off("click.oceanwp",\'a[href*="oceanwp.org"]\')})});' );
+		}
 	}
 
 	/**

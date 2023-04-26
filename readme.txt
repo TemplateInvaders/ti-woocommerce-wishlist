@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 2.3.6
+Stable tag: 2.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -157,6 +157,19 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.4.0 =
+*Release Date - 26 April 2023*
+
+* Added support for WordPress 6.2
+* Added support for WooCommerce 7.6
+* Added a filter `tinvwl_allow_data_cookies`
+* Added filters `tinvwl_api_wishlist_data_response` and `tinvwl_api_product_data_response` for REST API response
+* Updated integration with the [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+* Updated integration with the Advanced Product Fields Extended for WooCommerce plugin
+* Updated integration with the [Advanced Product Fields (Product Addons) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+* Fixed an issue with the dismiss button in admin notices
+* Fixed a JavaScript warning when checking cookies
+
 = 2.3.6 =
 *Release Date - 06 March 2023*
 

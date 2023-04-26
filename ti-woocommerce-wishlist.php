@@ -6,7 +6,7 @@
  * Description:       Wishlist functionality for your WooCommerce store.
  * Version:           2.3.6
  * Requires at least: 4.7
- * Tested up to: 6.1
+ * Tested up to: 6.2
  * WC requires at least: 3.0
  * WC tested up to: 7.6
  * Author:            TemplateInvaders

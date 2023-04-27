@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.4.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.4.0 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.4.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.4.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.4.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.4.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.4.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.4.1\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -36,15 +36,15 @@ msgstr ""
 msgid "Template Custom CSS"
 msgstr ""
 
-#: admin/basestyle.helper.php:115, admin/settings/general.class.php:993, admin/settings/integrations.class.php:115
+#: admin/basestyle.helper.php:115, admin/settings/general.class.php:992, admin/settings/integrations.class.php:115
 msgid "Save Settings"
 msgstr ""
 
-#: admin/basestyle.helper.php:121, admin/settings/general.class.php:999
+#: admin/basestyle.helper.php:121, admin/settings/general.class.php:998
 msgid "Reset"
 msgstr ""
 
-#: admin/basestyle.helper.php:127, admin/settings/general.class.php:1005, admin/settings/integrations.class.php:121
+#: admin/basestyle.helper.php:127, admin/settings/general.class.php:1004, admin/settings/integrations.class.php:121
 msgid "Save"
 msgstr ""
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "General Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:82, admin/settings/general.class.php:413, admin/settings/general.class.php:567, admin/settings/general.class.php:870
+#: admin/settings/general.class.php:82, admin/settings/general.class.php:413, admin/settings/general.class.php:567, admin/settings/general.class.php:869
 msgid "None"
 msgstr ""
 
@@ -316,19 +316,19 @@ msgstr ""
 msgid "\"Add to Wishlist\" Icon"
 msgstr ""
 
-#: admin/settings/general.class.php:410, admin/settings/general.class.php:875
+#: admin/settings/general.class.php:410, admin/settings/general.class.php:874
 msgid "You can choose from our predefined icons or upload your custom icon. Custom icon size is limited to 16x16 px."
 msgstr ""
 
-#: admin/settings/general.class.php:414, admin/settings/general.class.php:568, admin/settings/general.class.php:871
+#: admin/settings/general.class.php:414, admin/settings/general.class.php:568, admin/settings/general.class.php:870
 msgid "Heart"
 msgstr ""
 
-#: admin/settings/general.class.php:415, admin/settings/general.class.php:569, admin/settings/general.class.php:872
+#: admin/settings/general.class.php:415, admin/settings/general.class.php:569, admin/settings/general.class.php:871
 msgid "Heart+"
 msgstr ""
 
-#: admin/settings/general.class.php:416, admin/settings/general.class.php:570, admin/settings/general.class.php:873
+#: admin/settings/general.class.php:416, admin/settings/general.class.php:570, admin/settings/general.class.php:872
 msgid "Custom"
 msgstr ""
 
@@ -336,7 +336,7 @@ msgstr ""
 msgid "Default state"
 msgstr ""
 
-#: admin/settings/general.class.php:433, admin/settings/general.class.php:446, admin/settings/general.class.php:586, admin/settings/general.class.php:599, admin/settings/general.class.php:890
+#: admin/settings/general.class.php:433, admin/settings/general.class.php:446, admin/settings/general.class.php:586, admin/settings/general.class.php:599, admin/settings/general.class.php:889
 msgid "Upload"
 msgstr ""
 
@@ -348,15 +348,15 @@ msgstr ""
 msgid "\"Add to Wishlist\" Icon Color"
 msgstr ""
 
-#: admin/settings/general.class.php:457, admin/settings/general.class.php:610, admin/settings/general.class.php:850, admin/settings/general.class.php:901
+#: admin/settings/general.class.php:457, admin/settings/general.class.php:610, admin/settings/general.class.php:849, admin/settings/general.class.php:900
 msgid "Use font color"
 msgstr ""
 
-#: admin/settings/general.class.php:458, admin/settings/general.class.php:611, admin/settings/general.class.php:902
+#: admin/settings/general.class.php:458, admin/settings/general.class.php:611, admin/settings/general.class.php:901
 msgid "Black"
 msgstr ""
 
-#: admin/settings/general.class.php:459, admin/settings/general.class.php:612, admin/settings/general.class.php:852, admin/settings/general.class.php:903
+#: admin/settings/general.class.php:459, admin/settings/general.class.php:612, admin/settings/general.class.php:851, admin/settings/general.class.php:902
 msgid "White"
 msgstr ""
 
@@ -424,179 +424,179 @@ msgstr ""
 msgid "Show \"Add to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:686
+#: admin/settings/general.class.php:685
 msgid "\"Add to Cart\" Text"
 msgstr ""
 
-#: admin/settings/general.class.php:693
+#: admin/settings/general.class.php:692
 msgid "Show Unit price"
 msgstr ""
 
-#: admin/settings/general.class.php:699
+#: admin/settings/general.class.php:698
 msgid "Show Stock status"
 msgstr ""
 
-#: admin/settings/general.class.php:705
+#: admin/settings/general.class.php:704
 msgid "Show Date of addition"
 msgstr ""
 
-#: admin/settings/general.class.php:712
+#: admin/settings/general.class.php:711
 msgid "Wishlist Table Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:713
+#: admin/settings/general.class.php:712
 msgid "Following options will help user to manage and add products to cart from wishlist table in bulk."
 msgstr ""
 
-#: admin/settings/general.class.php:719
+#: admin/settings/general.class.php:718
 msgid "Products per page"
 msgstr ""
 
-#: admin/settings/general.class.php:729
+#: admin/settings/general.class.php:728
 msgid "Show Checkboxes"
 msgstr ""
 
-#: admin/settings/general.class.php:741
+#: admin/settings/general.class.php:740
 msgid "Show Actions button"
 msgstr ""
 
-#: admin/settings/general.class.php:742
+#: admin/settings/general.class.php:741
 msgid "Bulk actions drop-down at the bottom of wishlist table"
 msgstr ""
 
-#: admin/settings/general.class.php:748
+#: admin/settings/general.class.php:747
 msgid "Show \"Add Selected to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:755
+#: admin/settings/general.class.php:754
 msgid "\"Add Selected to Cart\" Button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:766
+#: admin/settings/general.class.php:765
 msgid "Show \"Add All to Cart\" button"
 msgstr ""
 
-#: admin/settings/general.class.php:773
+#: admin/settings/general.class.php:772
 msgid "\"Add All to Cart\" Button Text"
 msgstr ""
 
-#: admin/settings/general.class.php:780
+#: admin/settings/general.class.php:779
 msgid "Hide popup for wishlist products management actions"
 msgstr ""
 
-#: admin/settings/general.class.php:781
+#: admin/settings/general.class.php:780
 msgid "This option allows hide/show a popup after any action is processed with wishlist products on the wishlist page."
 msgstr ""
 
-#: admin/settings/general.class.php:793
+#: admin/settings/general.class.php:792
 msgid "Following options enable/disable Social share icons below wishlist table on the wishlist page. Wishlist owner can easily share their wishlists using this button on social networks. Wishlist privacy should be set to public or shared status, private wishlists can't be shared."
 msgstr ""
 
-#: admin/settings/general.class.php:799
+#: admin/settings/general.class.php:798
 msgid "Social Networks Sharing Options"
 msgstr ""
 
-#: admin/settings/general.class.php:805, views/wizard/step-social.php:26
+#: admin/settings/general.class.php:804, views/wizard/step-social.php:26
 msgid "Show \"Facebook\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:811, views/wizard/step-social.php:35
+#: admin/settings/general.class.php:810, views/wizard/step-social.php:35
 msgid "Show \"Twitter\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:817, views/wizard/step-social.php:44
+#: admin/settings/general.class.php:816, views/wizard/step-social.php:44
 msgid "Show \"Pinterest\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:823, views/wizard/step-social.php:53
+#: admin/settings/general.class.php:822, views/wizard/step-social.php:53
 msgid "Show \"WhatsApp\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:829
+#: admin/settings/general.class.php:828
 msgid "Show \"Copy to clipboard\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:835, views/wizard/step-social.php:71
+#: admin/settings/general.class.php:834, views/wizard/step-social.php:71
 msgid "Show \"Share by Email\" Button"
 msgstr ""
 
-#: admin/settings/general.class.php:841
+#: admin/settings/general.class.php:840
 msgid "\"Share on\" Text"
 msgstr ""
 
-#: admin/settings/general.class.php:847
+#: admin/settings/general.class.php:846
 msgid "Social Icons Color"
 msgstr ""
 
-#: admin/settings/general.class.php:851
+#: admin/settings/general.class.php:850
 msgid "Dark"
 msgstr ""
 
-#: admin/settings/general.class.php:860
+#: admin/settings/general.class.php:859
 msgid "Wishlist Product Counter"
 msgstr ""
 
-#: admin/settings/general.class.php:861
+#: admin/settings/general.class.php:860
 msgid "Add this shortcode <code>[ti_wishlist_products_counter]</code> anywhere into a page content to show Wishlist Counter.<br/><br/>It can be also added as a widget <code>Wishlist Products Counter</code> under the <a href=\"%s\">Appearance -> Widgets</a> section."
 msgstr ""
 
-#: admin/settings/general.class.php:867
+#: admin/settings/general.class.php:866
 msgid "\"Wishlist\" Counter Icon"
 msgstr ""
 
-#: admin/settings/general.class.php:899
+#: admin/settings/general.class.php:898
 msgid "\"Wishlist\" Counter Icon Color"
 msgstr ""
 
-#: admin/settings/general.class.php:910
+#: admin/settings/general.class.php:909
 msgid "Show \"Wishlist\" Counter Text"
 msgstr ""
 
-#: admin/settings/general.class.php:919
+#: admin/settings/general.class.php:918
 msgid "\"Wishlist\" Counter Text"
 msgstr ""
 
-#: admin/settings/general.class.php:920
+#: admin/settings/general.class.php:919
 msgid "Wishlist - "
 msgstr ""
 
-#: admin/settings/general.class.php:926
+#: admin/settings/general.class.php:925
 msgid "Add counter to menu"
 msgstr ""
 
-#: admin/settings/general.class.php:928
+#: admin/settings/general.class.php:927
 msgid "You can add a wishlist products counter as an item to the selected menu."
 msgstr ""
 
-#: admin/settings/general.class.php:937
+#: admin/settings/general.class.php:936
 msgid "Counter position (Menu item order)"
 msgstr ""
 
-#: admin/settings/general.class.php:938
+#: admin/settings/general.class.php:937
 msgid "Allows you to add the wishlist counter as a menu item and set its position."
 msgstr ""
 
-#: admin/settings/general.class.php:949
+#: admin/settings/general.class.php:948
 msgid "Show number of products in counter"
 msgstr ""
 
-#: admin/settings/general.class.php:958
+#: admin/settings/general.class.php:957
 msgid "Hide zero value"
 msgstr ""
 
-#: admin/settings/general.class.php:959
+#: admin/settings/general.class.php:958
 msgid "Do not show the \"0\" value in a counter if the wishlist is empty."
 msgstr ""
 
-#: admin/settings/general.class.php:970
+#: admin/settings/general.class.php:969
 msgid "Support Chat Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:971, views/wizard/step-support.php:22
+#: admin/settings/general.class.php:970, views/wizard/step-support.php:22
 msgid "Enable the support chat to get the most from our service and get answers to your questions promptly. We optimized the support process to get the required details from your current setup to solve your issues faster. Dedicated to your Care."
 msgstr ""
 
-#: admin/settings/general.class.php:977, views/wizard/step-support.php:26
+#: admin/settings/general.class.php:976, views/wizard/step-support.php:26
 msgid "Enable support chat"
 msgstr ""
 

@@ -136,6 +136,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.4.1###
+*Release Date - 27 April 2023*
+
+* Updated integration with the WooCommerce TM Extra Product Options plugin
+* Fixed hidden option issue in the plugin settings
+
 ### 2.4.0 ###
 *Release Date - 26 April 2023*
 

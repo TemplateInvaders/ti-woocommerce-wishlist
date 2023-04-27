@@ -4,7 +4,7 @@
  *
  * @name WooCommerce TM Extra Product Options
  *
- * @version 6.0.5
+ * @version 6.3.1
  *
  * @slug woocommerce-tm-extra-product-options
  *
@@ -208,7 +208,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_tm_extra_product_options' ) ) {
 											echo sprintf( $row_string, is_callable( array(
 												$_product,
 												'get_name'
-											) ) ? $_product->get_name() : $_product->get_title(), $product_image, $product_title, $product_price, '', $wl_product['meta'][ $attribute . '_quantity' ] ); // WPCS: xss ok.
+											) ) ? $_product->get_name() : $_product->get_title(), $product_image, $product_title, $product_price, '', isset( $wl_product['meta'][ $attribute . '_quantity' ] ) ? $wl_product['meta'][ $attribute . '_quantity' ] : 1 ); // WPCS: xss ok.
 
 										}
 									}

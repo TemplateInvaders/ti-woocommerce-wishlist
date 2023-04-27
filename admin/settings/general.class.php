@@ -678,7 +678,6 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 						'name'  => 'add_to_cart',
 						'text'  => __( 'Show "Add to Cart" button', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
-						'extra' => array( 'tiwl-show' => '.tiwl-table-action-addcart' ),
 					),
 					array(
 						'type'  => 'text',

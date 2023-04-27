@@ -906,6 +906,22 @@ if ( ! function_exists( 'tinvwl_add_to_cart_item_meta_post' ) ) {
 	add_action( 'woocommerce_add_cart_item', 'tinvwl_add_to_cart_item_meta_post', 10, 2 );
 } // End if().
 
+/**
+ * Filters the Astra React admin localization data and adds an upgrade URL.
+ *
+ * @param array $data The localization data.
+ *
+ * @return array The modified localization data with the upgrade URL.
+ */
+function tinvwl_astra_upgrade_url( $data ) {
+	$data['upgrade_url'] = 'https://wpastra.com/pro/?bsf=11452';
+
+	return $data;
+}
+
+add_filter( 'astra_react_admin_localize', 'tinvwl_astra_upgrade_url', 9999, 1 );
+
+
 if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 
 	/**

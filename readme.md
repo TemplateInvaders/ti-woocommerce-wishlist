@@ -136,7 +136,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
-### 2.4.1###
+### 2.4.2 ###
+*Release Date - 1 May 2023*
+
+* Updated integration with the [myCred – Points, Rewards, Gamification, Ranks, Badges & Loyalty Plugin](https://wordpress.org/plugins/mycred/) plugin
+
+### 2.4.1 ###
 *Release Date - 27 April 2023*
 
 * Updated integration with the WooCommerce TM Extra Product Options plugin

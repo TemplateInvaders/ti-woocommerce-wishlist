@@ -136,6 +136,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.4.3 ###
+*Release Date - 6 May 2023*
+
+* Added `{wishlist_title}` placeholder
+* Fixed issues with products in wishlists data
+
 ### 2.4.2 ###
 *Release Date - 1 May 2023*
 

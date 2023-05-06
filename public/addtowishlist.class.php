@@ -394,6 +394,7 @@ class TInvWL_Public_AddToWishlist {
 						'get_name'
 					) ) ? $original_product->get_name() : $original_product->get_title(),
 					'{product_sku}'  => $original_product->get_sku(),
+					'{wishlist_title}' => ( empty( $wishlist['title'] ) ? apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) ) : $wishlist['title'] ),
 				),
 				$original_product
 			);

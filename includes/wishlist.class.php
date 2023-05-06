@@ -419,7 +419,6 @@ class TInvWL_Wishlist {
 			}
 
 			if ( is_array( $wl ) ) {
-				$wl['is_owner'] = false;
 				if ( is_user_logged_in() ) {
 					$wl['is_owner'] = get_current_user_id() == $wl['author']; // WPCS: loose comparison ok.
 				} else {

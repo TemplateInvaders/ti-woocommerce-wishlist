@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-addtowishlist.php.
  *
- * @version             1.47.0
+ * @version             2.4.3
  * @package           TInvWishlist\Template
  */
 
@@ -16,6 +16,7 @@ wp_enqueue_script( 'tinvwl' );
 <div class="tinv-wraper woocommerce tinv-wishlist <?php echo esc_attr( $class_postion ) ?>"
 	 data-tinvwl_product_id="<?php echo $product->get_id(); ?>">
 	<?php do_action( 'tinvwl_wishlist_addtowishlist_button', $product, $loop ); ?>
-	<?php do_action( 'tinvwl_wishlist_addtowishlist_dialogbox' ); ?>
-	<div class="tinvwl-tooltip"><?php echo wp_kses_post( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
+	<?php do_action( 'tinvwl_wishlist_addtowishlist_dialogbox', $product, $loop ); ?>
+	<div
+		class="tinvwl-tooltip"><?php echo wp_kses_post( tinv_get_option( 'add_to_wishlist' . ( $loop ? '_catalog' : '' ), 'text' ) ); ?></div>
 </div>

@@ -32,9 +32,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         $(modal).addClass('tinv-modal-open');
         $(modal).removeClass('ftinvwl-pulse');
       },
-      onDialogHide: function onDialogHide(modal) {
-        $(modal).removeClass('tinv-modal-open');
-        $(modal).removeClass('ftinvwl-pulse');
+      onDialogHide: function onDialogHide(element) {
+        $(this).removeClass('tinv-modal-open');
+        $(element).removeClass('ftinvwl-pulse');
       },
       onInited: function onInited() {},
       onClick: function onClick() {
@@ -769,28 +769,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     $(document).on('hide_variation', '.variations_form', function (a) {
       var e = $('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
       e.attr('data-tinv-wl-productvariation', 0);
-      if (e.length && e.attr('data-tinv-wl-list')) {
-        var f = JSON.parse(e.attr('data-tinv-wl-list')),
-          j = false,
-          g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
-        for (var i in f) {
-          if (f[i].hasOwnProperty('in') && Array.isArray(f[i].in) && -1 < (f[i].in || []).indexOf(0)) {
-            j = true;
-          }
-        }
-        e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j && g).attr('data-tinv-wl-action', j && g ? 'remove' : 'addto');
-      }
-      if (e.length && e.attr('data-tinv-wl-product-stats')) {
-        e.find('span.tinvwl-product-stats').remove();
-        var stats = JSON.parse(e.attr('data-tinv-wl-product-stats'));
-        for (var i in stats) {
-          if (-1 < i.indexOf(0)) {
-            j = true;
-            $('body').trigger('tinvwl_wishlist_product_stats', [e, j]);
-            e.append('<span class="tinvwl-product-stats">' + stats[i] + '</span>');
-          }
-        }
-      }
+      var originalBlockAjaxWishlistsData = tinvwl_add_to_wishlist.block_ajax_wishlists_data;
+      tinvwl_add_to_wishlist.block_ajax_wishlists_data = true;
+      $.fn.tinvwl_get_wishlist_data();
+      tinvwl_add_to_wishlist.block_ajax_wishlists_data = originalBlockAjaxWishlistsData;
       if (e.length && !tinvwl_add_to_wishlist.allow_parent_variable) {
         a.preventDefault();
         e.addClass('disabled-add-wishlist');
@@ -799,28 +781,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     $(document).on('show_variation', '.variations_form', function (a, b, d) {
       var e = $('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $(this).data('product_id') + '"]');
       e.attr('data-tinv-wl-productvariation', b.variation_id);
-      if (e.length && e.attr('data-tinv-wl-list')) {
-        var f = JSON.parse(e.attr('data-tinv-wl-list')),
-          j = false,
-          g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
-        for (var i in f) {
-          if (f[i].hasOwnProperty('in') && Array.isArray(f[i].in) && -1 < (f[i].in || []).indexOf(b.variation_id)) {
-            j = true;
-          }
-        }
-        e.toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j && g).attr('data-tinv-wl-action', j && g ? 'remove' : 'addto');
-      }
-      if (e.length && e.attr('data-tinv-wl-product-stats')) {
-        e.find('span.tinvwl-product-stats').remove();
-        var stats = JSON.parse(e.attr('data-tinv-wl-product-stats'));
-        for (var i in stats) {
-          if (-1 < i.indexOf(b.variation_id)) {
-            j = true;
-            $('body').trigger('tinvwl_wishlist_product_stats', [e, j]);
-            e.append('<span class="tinvwl-product-stats">' + stats[i] + '</span>');
-          }
-        }
-      }
+      var originalBlockAjaxWishlistsData = tinvwl_add_to_wishlist.block_ajax_wishlists_data;
+      tinvwl_add_to_wishlist.block_ajax_wishlists_data = true;
+      $.fn.tinvwl_get_wishlist_data();
+      tinvwl_add_to_wishlist.block_ajax_wishlists_data = originalBlockAjaxWishlistsData;
       a.preventDefault();
       e.removeClass('disabled-add-wishlist');
     });
@@ -904,6 +868,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       }
       if (tinvwl_add_to_wishlist.block_ajax_wishlists_data) {
+        setTimeout(function () {
+          mark_products(data);
+        }, 500);
         return;
       }
       get_data_ajax();
@@ -982,8 +949,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             j = true;
           }
         }
-        $('body').trigger('tinvwl_wishlist_product_marked', [this, j]);
         $(this).attr('data-tinv-wl-list', JSON.stringify(item)).toggleClass('tinvwl-product-in-list', j).toggleClass('tinvwl-product-make-remove', j && g).attr('data-tinv-wl-action', j && g ? 'remove' : 'addto');
+        $('body').trigger('tinvwl_wishlist_product_marked', [this, j]);
       });
     });
     if (data.stats && '1' == tinvwl_add_to_wishlist.stats) {

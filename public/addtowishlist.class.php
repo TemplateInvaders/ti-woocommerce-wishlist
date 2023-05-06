@@ -578,6 +578,11 @@ JOIN {$table_languages} l ON
 				foreach ( $wishlists as $wishlist ) {
 
 					foreach ( $results as $product ) {
+
+						if ( (int) $wishlist['ID'] !== (int) $product['wishlist_id'] ) {
+							continue;
+						}
+
 						if ( array_key_exists( $product['product_id'], $products ) ) {
 							$products[ $product['product_id'] ][ $wishlist['ID'] ]['in'][] = (int) $product['variation_id'];
 						} else {

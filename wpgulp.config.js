@@ -7,35 +7,35 @@
  * @package WPGulp
  */
 
-const config = require('./package.json');
+const config = require( './package.json' );
 
 module.exports = {
 
 	Styles: [
 		{
 			styleSRC: './sass/admin.scss', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
 		},
 		{
 			styleSRC: './assets/css/admin-form.css', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
 		},
 		{
 			styleSRC: './assets/css/admin-setup.css', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
 		},
 		{
 			styleSRC: './sass/public.scss', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
 		},
 		{
 			styleSRC: './sass/theme.scss', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
 		},
 		{
 			styleSRC: './sass/webfont.scss', // Path to .scss file.
-			styleDestination: './assets/css/', // Path to place the compiled CSS file.
-		},
+			styleDestination: './assets/css/' // Path to place the compiled CSS file.
+		}
 	],
 
 	// JS Public options.
@@ -47,6 +47,11 @@ module.exports = {
 	jsAdminSRC: './assets/js/admin/*.js', // Path to JS custom scripts folder.
 	jsAdminDestination: './assets/js/', // Path to place the compiled JS custom scripts file.
 	jsAdminFile: 'admin', // Compiled JS custom file name. Default set to custom i.e. custom.js.
+
+	// JS Dev options.
+	jsDevSRC: './assets/js/dev/*.js', // Path to JS custom scripts folder.
+	jsDevDestination: './assets/js/', // Path to place the compiled JS custom scripts file.
+	jsDevFile: 'dev', // Compiled JS custom file name. Default set to custom i.e. custom.js.
 
 	// Images options.
 	imgSRC: './assets/img/raw/**/*', // Source folder of images which should be optimized and watched. You can also specify types e.g. raw/**.{png,jpg,gif} in the glob.

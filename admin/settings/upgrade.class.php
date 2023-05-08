@@ -53,7 +53,7 @@ class TInvWL_Admin_Settings_Upgrade extends TInvWL_Admin_BaseSection {
 	 */
 	function menu() {
 		return array(
-			'title'      => __( 'Upgrade to Premium', 'ti-woocommerce-wishlist' ),
+			'title'      => __( 'Upgrade', 'ti-woocommerce-wishlist' ),
 			'page_title' => __( 'Premium Features', 'ti-woocommerce-wishlist' ),
 			'method'     => array( $this, '_print_' ),
 			'slug'       => 'upgrade',

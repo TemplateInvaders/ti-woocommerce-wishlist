@@ -280,6 +280,50 @@ gulp.task( 'adminJS', () => {
 });
 
 /**
+ * Task: `devJS`.
+ *
+ * Concatenate and uglify custom JS scripts.
+ *
+ * This task does the following:
+ *     1. Gets the source folder for JS custom files
+ *     2. Concatenates all the files and generates custom.js
+ *     3. Renames the JS file with suffix .min.js
+ *     4. Uglifes/Minifies the JS file and generates custom.min.js
+ */
+gulp.task( 'devJS', () => {
+	return gulp
+		.src( config.jsDevSRC, {since: gulp.lastRun( 'devJS' )}) // Only run on changed files.
+		.pipe( plumber( errorHandler ) )
+		.pipe(
+			babel({
+				presets: [
+					[
+						'@babel/preset-env', // Preset to compile your modern JS to ES5.
+						{
+							targets: {browsers: config.BROWSERS_LIST} // Target browser list to support.
+						}
+					]
+				]
+			})
+		)
+		.pipe( remember( config.jsDevSRC ) ) // Bring all files back to stream.
+		.pipe( concat( config.jsDevFile + '.js' ) )
+		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
+		.pipe( gulp.dest( config.jsDevDestination ) )
+		.pipe(
+			rename({
+				basename: config.jsDevFile,
+				suffix: '.min'
+			})
+		)
+		.pipe( uglify() )
+		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
+		// .pipe( header( banner, {pkg: pkg}) )
+		.pipe( gulp.dest( config.jsDevDestination ) )
+		.pipe( notify({message: '\n\n✅  ===> Dev JS — completed!\n', onLast: true}) );
+});
+
+/**
  * Task: `images`.
  *
  * Minifies PNG, JPEG, GIF and SVG images.

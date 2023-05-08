@@ -1033,6 +1033,23 @@ if ( ! function_exists( 'wc_is_attribute_in_product_name' ) ) {
 	}
 }
 
+add_action( 'admin_init', 'tinvwl_handle_external_redirects', 9 );
+
+function tinvwl_handle_external_redirects() {
+	if ( empty( $_GET['page'] ) ) {
+		return;
+	}
+	if ( 'tinvwl-upgrade' === $_GET['page'] ) {
+		wp_redirect( 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=wp_menu&partner=' . TINVWL_UTM_SOURCE );
+		die;
+	}
+
+	if ( 'go_elementor_pro' === $_GET['page'] ) {
+		wp_redirect( 'https://be.elementor.com/visit/?bta=211953&nci=5383' );
+		die;
+	}
+}
+
 add_action( 'init', function () {
 	if ( ! is_user_logged_in() ) {
 		add_filter( 'nonce_user_logged_out', function ( $uid, $action = - 1 ) {

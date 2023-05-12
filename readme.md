@@ -136,6 +136,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.5.0 ###
+*Release Date - 12 May 2023*
+
+* Added support for WooCommerce 7.7
+* Enhanced product custom meta handling
+* Fixed an issue with the `variation_id` attribute not working correctly on product listings
+
 ### 2.4.4 ###
 *Release Date - 8 May 2023*
 

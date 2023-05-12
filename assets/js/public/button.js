@@ -175,6 +175,7 @@
 				},
 				a = this,
 				formEl = [],
+				hiddenFields = [],
 				formData = new FormData();
 
 			if ( tinvwl_add_to_wishlist.wpml ) {
@@ -266,8 +267,14 @@
 					} else {
 						data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
 					}
+
+					if ( 'hidden' === type_elm ) {
+						hiddenFields.push( name_elm );
+					}
 				});
 			});
+
+			data.form['tinvwl-hidden-fields'] = hiddenFields;
 
 			data = s.onPrepareDataAction.call( a, a, data ) || data;
 

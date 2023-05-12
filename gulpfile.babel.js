@@ -453,6 +453,8 @@ gulp.task( 'zip', function() {
 		'./**/*',
 		'!./{node_modules,node_modules/**/*}',
 		'!./.git',
+		'!./assets/js/dev/**',
+		'!./assets/js/dev.**',
 		'!./sass/**',
 		'!./assets/img/raw/**',
 		'!./assets/js/public/**',

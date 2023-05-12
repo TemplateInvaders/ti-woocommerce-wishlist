@@ -801,6 +801,17 @@ if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {
 				unset( $meta[ $field ] );
 			}
 		}
+		if ( array_key_exists( 'tinvwl-hidden-fields', $meta ) ) {
+			$hiddenFields = json_decode( $meta['tinvwl-hidden-fields'], true );
+			if ( $hiddenFields !== null ) {
+				foreach ( $hiddenFields as $hiddenKey ) {
+					if ( isset( $meta[ $hiddenKey ] ) ) {
+						unset( $meta[ $hiddenKey ] );
+					}
+				}
+			}
+			unset( $meta['tinvwl-hidden-fields'] );
+		}
 		$meta = array_filter( $meta );
 		if ( empty( $meta ) ) {
 			return '';

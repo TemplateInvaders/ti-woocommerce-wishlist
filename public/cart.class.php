@@ -117,7 +117,7 @@ class TInvWL_Public_Cart {
 			return false;
 		}
 		$product['action'] = 'add';
-		$product = apply_filters( 'tinvwl_addproduct_tocart', $product );
+		$product           = apply_filters( 'tinvwl_addproduct_tocart', $product );
 		self::prepare_post( $product );
 
 		$use_original_id = false;

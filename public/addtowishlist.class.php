@@ -386,28 +386,14 @@ class TInvWL_Public_AddToWishlist {
 		if ( $post['original_product_id'] && $post['product_id'] !== $post['original_product_id'] ) {
 			$original_product = wc_get_product( $post['original_product_id'] );
 		}
-		if ( $original_product ) {
-			$msg_placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders',
-				array(
-					'{product_name}'   => is_callable( array(
-						$original_product,
-						'get_name'
-					) ) ? $original_product->get_name() : $original_product->get_title(),
-					'{product_sku}'    => $original_product->get_sku(),
-					'{wishlist_title}' => ( empty( $wishlist['title'] ) ? apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) ) : $wishlist['title'] ),
-				),
-				$original_product
-			);
 
-			$find    = array_keys( $msg_placeholders );
-			$replace = array_values( $msg_placeholders );
-		}
 		if ( ! empty( $data['msg'] ) ) {
 			if ( $original_product ) {
-				$data['msg'] = str_replace( $find, $replace, $data['msg'] );
+				$data['msg'] = tinvwl_message_placeholders( $data['msg'], $original_product, $wishlist );
 			}
-			$data['msg'] = apply_filters( 'tinvwl_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
-			$data['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
+			$data['msg']      = apply_filters( 'tinvwl_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product );
+			$data['wishlist'] = $wishlist;
+			$data['msg']      = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $data, $post ) );
 		}
 		if ( ! tinv_get_option( 'general', 'show_notice' ) && array_key_exists( 'msg', $data ) ) {
 			unset( $data['msg'] );

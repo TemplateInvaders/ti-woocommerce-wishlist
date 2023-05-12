@@ -40,6 +40,7 @@ class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 		'tinvwl_add_all_to_cart_text'                => 'tinvwl-table-text_add_all_to_cart',
 		'tinvwl_remove_from_wishlist_text_loop'      => 'tinvwl-add_to_wishlist_catalog-text_remove',
 		'tinvwl_wishlist_get_item_data'              => 'tinv_wishlist_get_item_data',
+		'tinvwl_message_placeholders'                => 'tinvwl_addtowishlist_message_placeholders',
 	);
 
 	/**
@@ -65,6 +66,7 @@ class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 		'tinvwl-table-text_add_all_to_cart'          => '1.13.0',
 		'tinvwl-add_to_wishlist_catalog-text_remove' => '1.13.0',
 		'tinv_wishlist_get_item_data'                => '1.13.0',
+		'tinvwl_addtowishlist_message_placeholders'  => '2.5.0',
 	);
 
 	/**

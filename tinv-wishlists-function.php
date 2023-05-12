@@ -1072,3 +1072,44 @@ add_action( 'init', function () {
 		}, 99, 2 );
 	}
 } );
+
+/**
+ * Get message placeholders for the add-to-wishlist message.
+ *
+ * @param string $string The message string to replace placeholders.
+ * @param WC_Product|null $product (Optional) The product to get the message placeholders for.
+ * @param array|null $wishlist (Optional) The wishlist to get the message placeholders for.
+ *
+ * @return string The message string with replaced placeholders.
+ */
+function tinvwl_message_placeholders( string $string, ?WC_Product $product = null, ?array $wishlist = null ): string {
+	$placeholders = [];
+
+	if ( $product instanceof WC_Product ) {
+		$placeholders['{product_name}'] = is_callable( [ $product, 'get_name' ] )
+			? $product->get_name()
+			: $product->get_title();
+		$placeholders['{product_sku}']  = $product->get_sku();
+	}
+
+	if ( is_array( $wishlist ) ) {
+		$wishlist_title                   = empty( $wishlist['title'] )
+			? apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) )
+			: $wishlist['title'];
+		$placeholders['{wishlist_title}'] = $wishlist_title;
+	}
+
+	/**
+	 * Filters the message placeholders for the add-to-wishlist message.
+	 *
+	 * @param array $placeholders The message placeholders.
+	 * @param WC_Product|null $product The product to get the message placeholders for.
+	 * @param array|null $wishlist The wishlist to get the message placeholders for.
+	 */
+	$placeholders = apply_filters( 'tinvwl_addtowishlist_message_placeholders', $placeholders, $product, $wishlist );
+
+	$find    = array_keys( $placeholders );
+	$replace = array_values( $placeholders );
+
+	return str_replace( $find, $replace, $string );
+}

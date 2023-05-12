@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-addedtowishlist-dialogbox.php.
  *
- * @version             1.21.6
+ * @version             2.5.0
  * @package           TInvWishlist\Template
  */
 
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php if ( isset( $wishlist_url ) ) : ?>
 						<button class="button tinvwl_button_view tinvwl-btn-onclick"
 								data-url="<?php echo esc_url( $wishlist_url ); ?>" type="button"><i
-									class="ftinvwl ftinvwl-heart-o"></i><?php echo wp_kses_post( apply_filters( 'tinvwl_view_wishlist_text', tinv_get_option( 'general', 'text_browse' ) ) ); ?>
+								class="ftinvwl ftinvwl-heart-o"></i><?php echo wp_kses_post( apply_filters( 'tinvwl_view_wishlist_text', tinvwl_message_placeholders( tinv_get_option( 'general', 'text_browse' ), null, $wishlist ) ) ); ?>
 						</button>
 					<?php endif; ?>
 					<?php if ( isset( $dialog_custom_url ) && isset( $dialog_custom_html ) ) : ?>
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								type="button"><?php echo $dialog_custom_html; // WPCS: xss ok. ?></button>
 					<?php endif; ?>
 					<button class="button tinvwl_button_close" type="button"><i
-								class="ftinvwl ftinvwl-times"></i><?php esc_html_e( 'Close', 'ti-woocommerce-wishlist' ); ?>
+							class="ftinvwl ftinvwl-times"></i><?php esc_html_e( 'Close', 'ti-woocommerce-wishlist' ); ?>
 					</button>
 				</div>
 				<div class="tinv-wishlist-clear"></div>

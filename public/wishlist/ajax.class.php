@@ -116,6 +116,10 @@ class TInvWL_Public_Wishlist_Ajax {
 
 		do_action( 'tinvwl_ajax_actions_before', $wishlist, $post, $guest_wishlist );
 
+		if ( ! $wishlist && $guest_wishlist ) {
+			$wishlist = $guest_wishlist;
+		}
+
 		$post['wishlist_qty'] = 1;
 		$action               = $post['tinvwl-action'];
 		$class                = TInvWL_Public_AddToWishlist::instance();

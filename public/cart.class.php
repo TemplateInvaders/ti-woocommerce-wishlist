@@ -177,12 +177,12 @@ class TInvWL_Public_Cart {
 				}
 				self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
 				self::set_item_meta( $cart_item_key, $product['meta'] );
-				self::unprepare_post();
+				self::unprepare_post( $product );
 
 				return array( $product_id => $quantity );
 			}
 		}
-		self::unprepare_post();
+		self::unprepare_post( $product );
 
 		return false;
 	}
@@ -193,6 +193,7 @@ class TInvWL_Public_Cart {
 	 * @param array $product Wishlist Product.
 	 */
 	public static function prepare_post( $product ) {
+		do_action( 'tinvwl_before_prepare_post', $product );
 		self::$_post    = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		self::$_request = $_REQUEST;
 		if ( array_key_exists( 'meta', $product ) && ! empty( $product['meta'] ) ) {
@@ -206,8 +207,11 @@ class TInvWL_Public_Cart {
 
 	/**
 	 * Unprepare _POST data
+	 *
+	 * @param array $product Wishlist Product.
 	 */
-	public static function unprepare_post() {
+	public static function unprepare_post( $product ) {
+		do_action( 'tinvwl_before_unprepare_post', $product, self::$_post, self::$_request );
 		$_POST    = self::$_post;
 		$_REQUEST = self::$_request;
 	}

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Composite Products
  *
- * @version 8.3.7
+ * @version 8.7.6
  *
  * @slug woocommerce-composite-products
  *
@@ -81,7 +81,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 
 				$composited_variation_id = isset( $wl_product['meta']['wccp_variation_id'][ $component_id ] ) ? wc_clean( $wl_product['meta']['wccp_variation_id'][ $component_id ] ) : '';
 
-				$composited_product_id = isset( $wl_product['meta']['wccp_component_selection_nil'], $wl_product['meta']['wccp_component_selection_nil'][ $component_id ] ) ? '' : $composited_product_id;
+//				$composited_product_id = isset( $wl_product['meta']['wccp_component_selection_nil'], $wl_product['meta']['wccp_component_selection_nil'][ $component_id ] ) ? '' : $composited_product_id;
 
 				if ( $composited_product_id ) {
 
@@ -280,19 +280,59 @@ if ( ! function_exists( 'tinv_wishlist_metaprepare_woocommerce_composite_product
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_metaprepare_woocommerce_composite_products( $meta ) {
+	function tinv_wishlist_metaprepare_woocommerce_composite_products( $meta, $product_id, $variation_id ) {
 
-		foreach ( $meta as $key => $value ) {
-			if ( strpos( $key, 'wccp_' ) === 0 && ! is_array( $value ) ) {
+		$product = wc_get_product( $product_id );
 
-				$meta[ $key ] = json_decode( $value );
+		if ( $product instanceof WC_Product_Composite ) {
+
+			if ( method_exists( 'WC_CP_Core_Compatibility', 'save_rest_request' ) ) {
+				WC_CP_Core_Compatibility::save_rest_request( false, false, false );
+			}
+
+			if ( isset( $meta['wccp_component_selection_nil'] ) ) {
+				unset( $meta['wccp_component_selection_nil'] );
+			}
+
+			$configuration = WC_CP()->cart->parse_composite_configuration( $product, $meta );
+
+			foreach ( $configuration as $id => $component ) {
+				if ( isset( $component['type'] ) && 'variable' == $component['type'] ) {
+
+					$variable_product = wc_get_product( $component['product_id'] );
+
+					if ( $variable_product instanceof WC_Product_Variable ) {
+						$match_attributes = array();
+						foreach ( $variable_product->get_default_attributes() as $attribute_name => $value ) {
+							$match_attributes[ 'attribute_' . sanitize_title( $attribute_name ) ]                   = $value;
+							$configuration[ $id ]['attributes'][ 'attribute_' . sanitize_title( $attribute_name ) ] = $value;
+						}
+
+						if ( $match_attributes ) {
+							$data_store                           = WC_Data_Store::load( 'product' );
+							$configuration[ $id ]['variation_id'] = $data_store->find_matching_product_variation( $variable_product, $match_attributes );
+						}
+					}
+				}
+
+			}
+
+			$configuration_data = WC_CP()->cart->rebuild_posted_composite_form_data( $configuration );
+
+			$meta = wp_parse_args( $meta, $configuration_data );
+
+			foreach ( $meta as $key => $value ) {
+				if ( strpos( $key, 'wccp_' ) === 0 && ! is_array( $value ) ) {
+
+					$meta[ $key ] = json_decode( $value );
+				}
 			}
 		}
 
 		return $meta;
 	}
 
-	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_woocommerce_composite_products' );
+	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_woocommerce_composite_products', 10, 3 );
 }
 
 function tinv_add_to_wishlist_woocommerce_composite_products() {
@@ -330,3 +370,70 @@ function tinv_add_to_wishlist_woocommerce_composite_products() {
 }
 
 add_action( 'wp_enqueue_scripts', 'tinv_add_to_wishlist_woocommerce_composite_products', 100, 1 );
+
+/**
+ * Filters the product being added to the cart in the Wishlist plugin for WooCommerce.
+ *
+ * @param array $wl_product The wishlist product data.
+ *
+ * @return array The modified wishlist product data.
+ */
+function tinvwl_addproduct_tocart_woocommerce_composite_products( $wl_product ) {
+	$product = wc_get_product( $wl_product['product_id'] );
+
+	if ( $product instanceof WC_Product_Composite ) {
+		if ( method_exists( 'WC_CP_Core_Compatibility', 'save_rest_request' ) ) {
+			WC_CP_Core_Compatibility::save_rest_request( false, false, false );
+		}
+	}
+
+	return $wl_product;
+}
+
+add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_addproduct_tocart_woocommerce_composite_products' );
+
+/**
+ * Callback function for the 'tinvwl_before_unprepare_post' action hook.
+ * Performs additional checks for WooCommerce Composite Products.
+ *
+ * @param array $wl_product The wishlist product data.
+ */
+function tinvwl_before_unprepare_post_woocommerce_composite_products( $wl_product ) {
+	$product = wc_get_product( $wl_product['product_id'] );
+
+	if ( $product instanceof WC_Product_Composite && ! isset( $wl_product['meta']['action'] ) ) {
+		if ( function_exists( 'wc_clear_notices' ) ) {
+			wc_clear_notices();
+		}
+	}
+}
+
+add_action( 'tinvwl_before_unprepare_post', 'tinvwl_before_unprepare_post_woocommerce_composite_products', 10, 1 );
+
+/**
+ * Filter for adding an item to cart in the wishlist.
+ *
+ * @param bool $allow Whether to allow adding the item to cart.
+ * @param array $wl_product Wishlist item being added to cart.
+ * @param WC_Product $product Product being added to cart.
+ *
+ * @return bool Whether to allow adding the item to cart.
+ */
+add_filter( 'tinvwl_wishlist_item_action_add_to_cart', 'tinvwl_wishlist_item_action_add_to_cart_woocommerce_composite_products', 10, 3 );
+
+/**
+ * Prevents adding composite products to the cart from the wishlist.
+ *
+ * @param bool $allow Whether to allow adding the item to cart.
+ * @param array $wl_product Wishlist item being added to cart.
+ * @param WC_Product $product Product being added to cart.
+ *
+ * @return bool Whether to allow adding the item to cart.
+ */
+function tinvwl_wishlist_item_action_add_to_cart_woocommerce_composite_products( $allow, $wl_product, $product ) {
+	if ( $product instanceof WC_Product_Composite ) {
+		$allow = ! tinvwl_meta_validate_cart_add( true, $product, '', $wl_product );
+	}
+
+	return $allow;
+}

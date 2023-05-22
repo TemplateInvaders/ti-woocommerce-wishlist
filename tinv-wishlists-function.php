@@ -766,7 +766,7 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add' ) ) {
 				$redirect = false;
 			}
 
-			TInvWL_Public_Cart::unprepare_post();
+			TInvWL_Public_Cart::unprepare_post( $wl_product );
 		}
 
 		return $redirect;
@@ -881,7 +881,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_item_meta_post' ) ) {
 	/**
 	 * Save post data to cart item
 	 *
-	 * @param array $cart_item_data Array with cart imet information.
+	 * @param array $cart_item_data Array with cart item information.
 	 * @param string $cart_item_key Cart item key.
 	 *
 	 * @return array
@@ -889,7 +889,7 @@ if ( ! function_exists( 'tinvwl_add_to_cart_item_meta_post' ) ) {
 	function tinvwl_add_to_cart_item_meta_post( $cart_item_data, $cart_item_key ) {
 		$postdata = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
-		$postdata = apply_filters( 'tinvwl_product_prepare_meta', $postdata );
+		$postdata = apply_filters( 'tinvwl_product_prepare_meta', $postdata, $cart_item_data['product_id'], $cart_item_data['variation_id'] );
 
 		if ( array_key_exists( 'variation_id', $postdata ) && ! empty( $postdata['variation_id'] ) ) {
 			foreach ( $postdata as $key => $field ) {

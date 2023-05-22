@@ -136,6 +136,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.5.1 ###
+*Release Date - 22 May 2023*
+
+* Added integration with [WooCommerce Fast Cart](https://barn2.com/wordpress-plugins/woocommerce-fast-cart/ref/1007/) plugin
+* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Fixed wishlist AJAX event issue for guests
+* Fixed issue with custom icon states for the 'Add to Wishlist' button
+
 ### 2.5.0 ###
 *Release Date - 12 May 2023*
 

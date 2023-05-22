@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI:  https://wordpress.org/plugins/ti-woocommerce-wishlist/
@@ -157,6 +157,14 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.5.1 =
+*Release Date - 22 May 2023*
+
+* Added integration with [WooCommerce Fast Cart](https://barn2.com/wordpress-plugins/woocommerce-fast-cart/ref/1007/) plugin
+* Updated integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/?aff=3955) plugin
+* Fixed wishlist AJAX event issue for guests
+* Fixed issue with custom icon states for the 'Add to Wishlist' button
+
 = 2.5.0 =
 *Release Date - 12 May 2023*
 

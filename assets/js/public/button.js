@@ -186,7 +186,7 @@
 				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 			}
 
-			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+			if ( tinvwl_add_to_wishlist.stats ) {
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
@@ -474,7 +474,7 @@
 				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 			}
 
-			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+			if ( tinvwl_add_to_wishlist.stats ) {
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
@@ -590,7 +590,7 @@
 				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 			}
 
-			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+			if ( tinvwl_add_to_wishlist.stats ) {
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
@@ -706,7 +706,7 @@
 				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 			}
 
-			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+			if ( tinvwl_add_to_wishlist.stats ) {
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
@@ -841,7 +841,7 @@
 				data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 			}
 
-			if ( '1' == tinvwl_add_to_wishlist.stats ) {
+			if ( tinvwl_add_to_wishlist.stats ) {
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
@@ -985,7 +985,7 @@
 					data.lang_default = tinvwl_add_to_wishlist.wpml_default;
 				}
 
-				if ( '1' == tinvwl_add_to_wishlist.stats ) {
+				if ( tinvwl_add_to_wishlist.stats ) {
 					data.stats = tinvwl_add_to_wishlist.stats;
 				}
 
@@ -1115,7 +1115,7 @@
 
 			$( this ).removeClass( 'tinvwl-product-make-remove' ).removeClass( 'tinvwl-product-in-list' ).attr( 'data-tinv-wl-action', 'addto' ).attr( 'data-tinv-wl-list', '[]' );
 
-			if ( data.stats ) {
+			if ( data && data.stats ) {
 				$( this ).find( 'span.tinvwl-product-stats' ).remove();
 			}
 		});
@@ -1147,7 +1147,7 @@
 			});
 		});
 
-		if ( data.stats && '1' == tinvwl_add_to_wishlist.stats ) {
+		if ( data && data.stats && tinvwl_add_to_wishlist.stats ) {
 			$.each( data.stats, function( i, item ) {
 				var id = i,
 					e = $( 'a.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]' );

@@ -409,7 +409,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( ! is_user_logged_in() ) {
 			$share_key = $wishlist['share_key'];
 		}
-
+		$data['action']  = 'add_to_wishlist';
 		$data['wishlists_data'] = $this->get_wishlists_data( $share_key );
 		$data                   = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post, $form, $product );
 		ob_clean();

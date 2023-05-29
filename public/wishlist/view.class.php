@@ -126,6 +126,8 @@ class TInvWL_Public_Wishlist_View {
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
 		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
+
+		add_action( 'tinvwl_before_wishlist_template', array( $this, 'refresh_wishlist_after_action' ) );
 	}
 
 	/**
@@ -202,7 +204,7 @@ class TInvWL_Public_Wishlist_View {
 		// override global product data.
 		$product = $_product;
 		if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product, $product->get_permalink(), $wl_product )
-		     && in_array( $product->get_type(), array(
+			 && in_array( $product->get_type(), array(
 				'variable',
 				'variable-subscription',
 			) ) ) {
@@ -467,7 +469,9 @@ class TInvWL_Public_Wishlist_View {
 				unset( $products[ $key ] );
 			}
 		}
-
+		if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			do_action( 'tinvwl_before_wishlist_template', $wishlist );
+		}
 		if ( empty( $products ) ) {
 
 			$this->pages = 0;
@@ -640,5 +644,39 @@ class TInvWL_Public_Wishlist_View {
 				'name' => 'lists_per_page',
 			), $this->lists_per_page );
 		}
+	}
+
+	/**
+	 * Outputs the script for refreshing wishlist.
+	 */
+	public function refresh_wishlist_after_action( $wishlist ) {
+
+		if ( ! $wishlist['is_owner'] ) {
+			return false;
+		}
+
+		?>
+		<script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				// Generate a unique hash key for localStorage
+				var hash_key = tinvwl_add_to_wishlist.hash_key + '_refresh';
+
+				if (localStorage.getItem(hash_key) && '<?php echo $wishlist['share_key'] ?>' === localStorage.getItem(hash_key)) {
+					localStorage.setItem(hash_key, '');
+				}
+
+				// Refresh the wishlist when storage changes in another tab
+				$(window).on('storage', function (e) {
+					if (
+						e.originalEvent.key === hash_key &&
+						'<?php echo $wishlist['share_key'] ?>' === e.originalEvent.newValue
+					) {
+						// Call the function to refresh the wishlist data
+						$.fn.tinvwl_get_wishlist_data('refresh');
+					}
+				});
+			});
+		</script>
+		<?php
 	}
 }

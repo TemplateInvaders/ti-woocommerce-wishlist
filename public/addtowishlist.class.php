@@ -409,7 +409,7 @@ class TInvWL_Public_AddToWishlist {
 		if ( ! is_user_logged_in() ) {
 			$share_key = $wishlist['share_key'];
 		}
-		$data['action']  = 'add_to_wishlist';
+		$data['action']         = 'add_to_wishlist';
 		$data['wishlists_data'] = $this->get_wishlists_data( $share_key );
 		$data                   = apply_filters( 'tinvwl_addtowishlist_return_ajax', $data, $post, $form, $product );
 		ob_clean();
@@ -781,7 +781,7 @@ JOIN {$table_languages} l ON
 	function htmloutput( $attr = array(), $is_shortcode = false ) {
 		$attr = apply_filters( 'tinvwl_addtowishlist_out_prepare_attr', $attr );
 		//is shortcode
-
+		$this->variation_id = null;
 		if ( $is_shortcode ) {
 			$position = 'shortcode';
 
@@ -819,8 +819,6 @@ JOIN {$table_languages} l ON
 		if ( empty( $this->product ) || ! ( $this->product instanceof WC_Product ) || ! apply_filters( 'tinvwl_allow_addtowishlist_single_product', true, $this->product ) ) {
 			return false;
 		}
-
-		add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
 		if ( isset( $variation_id ) ) {
 			$this->variation_id = $variation_id;
@@ -863,6 +861,7 @@ JOIN {$table_languages} l ON
 				}
 			}
 		}
+		add_action( 'tinvwl_wishlist_addtowishlist_button', array( $this, 'button' ) );
 
 		$action_class = current_action() ? ' tinvwl-' . current_action() : ' tinvwl-no-action';
 
@@ -947,7 +946,7 @@ JOIN {$table_languages} l ON
 			json_encode( ( $this->is_loop && in_array( $this->product->get_type(), array(
 					'variable',
 					'variable-subscription',
-				) ) ) ? $this->variation_ids : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array( 0 ) ) ),
+				) ) ) ? $this->variation_ids : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array(  ) ) ),
 			$this->product->get_type(),
 			$text );
 		$content .= apply_filters( 'tinvwl_wishlist_button_after', '' );
@@ -1084,8 +1083,10 @@ JOIN {$table_languages} l ON
 	}
 
 	/**
-	 * @param WC_Product $product
-	 * @param bool $loop
+	 * Outputs hidden input fields for default variation attributes.
+	 *
+	 * @param WC_Product $product The product.
+	 * @param bool $loop Optional. Whether to enable the loop. Default is false.
 	 */
 	function default_variation_loop( $product, $loop ) {
 

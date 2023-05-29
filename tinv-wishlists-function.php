@@ -1059,6 +1059,10 @@ function tinvwl_handle_external_redirects() {
 		wp_redirect( 'https://be.elementor.com/visit/?bta=211953&nci=5383' );
 		die;
 	}
+	if ( 'go_knowledge_base_site' === $_GET['page'] ) {
+		wp_redirect( 'https://be.elementor.com/visit/?bta=211953&nci=5517' );
+		die;
+	}
 }
 
 add_action( 'init', function () {

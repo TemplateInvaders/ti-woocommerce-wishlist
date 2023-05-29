@@ -136,6 +136,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.5.2 ###
+*Release Date - 29 May 2023*
+
+* Refreshed wishlist table when a product is added or removed from the wishlist
+* Updated integration with [WooCommerce Fast Cart](https://barn2.com/wordpress-plugins/woocommerce-fast-cart/ref/1007/) plugin
+* Fixed an issue related to adding/removing products to the wishlist when the option 'Remove product from Wishlist on second click' is enabled
+* Fixed a JavaScript notice: "Cannot read properties of undefined (reading 'stats')."
+* Fixed an issue where the wrong variable product was being added to the wishlist from the product listing
+
 ### 2.5.1 ###
 *Release Date - 22 May 2023*
 

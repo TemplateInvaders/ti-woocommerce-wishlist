@@ -105,8 +105,7 @@ class TInvWL_Public_WishlistCounter {
 		}
 
 		foreach ( $menu_ids as $menu_id ) {
-
-			if ( $menu_id == $menu->term_id && apply_filters( 'tinvwl_add_to_menu', true, $menu_id ) ) {
+			if ( apply_filters( 'wpml_object_id', absint( $menu_id ), 'nav_menu', true ) == $menu->term_id && apply_filters( 'tinvwl_add_to_menu', true, $menu_id ) ) {
 
 				$menu_order = tinv_get_option( 'topline', 'menu_order' ) ? tinv_get_option( 'topline', 'menu_order' ) : 100;
 

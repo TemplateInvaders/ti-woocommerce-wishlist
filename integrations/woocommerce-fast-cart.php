@@ -41,9 +41,11 @@ if ( ! $available ) {
 	return;
 }
 
-function tinvwl_before_wishlist_woocommerce_fast_cart() {
-	?>
-	<script type="text/javascript">
+/**
+ * Outputs the script for refreshing FastCart after wishlist actions.
+ */
+function tinvwl_woocommerce_fast_cart() {
+	wp_add_inline_script( 'tinvwl', "
 		jQuery(document).ready(function ($) {
 			$(document.body).on('tinvwl_wishlist_ajax_response', function (event, element, response) {
 				// Check if the action is one of the specified values and the status is true
@@ -56,8 +58,8 @@ function tinvwl_before_wishlist_woocommerce_fast_cart() {
 				}
 			});
 		});
-	</script>
-	<?php
+	" );
 }
 
-add_action( 'tinvwl_before_wishlist', 'tinvwl_before_wishlist_woocommerce_fast_cart' );
+add_action( 'wp_enqueue_scripts', 'tinvwl_woocommerce_fast_cart', 100, 1 );
+

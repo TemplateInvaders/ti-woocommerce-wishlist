@@ -46,6 +46,10 @@ class TInvWL_Admin_Notices {
 	function __construct( $plugin_name = TINVWL_PREFIX ) {
 		global $wpdb;
 
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return false;
+		}
+
 		$this->_name = $plugin_name;
 		$this->table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
 

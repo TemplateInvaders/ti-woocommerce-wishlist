@@ -124,7 +124,7 @@ class TInvWL_Public_WishlistCounter {
 				$icon = '<span class="wishlist_products_counter ' . $icon_class . ' ' . $icon_style . ( empty( $text ) ? ' no-txt' : '' ) . ( 0 < $this->get_counter() ? ' wishlist-counter-with-products' : '' ) . '" >';
 
 				if ( $icon_class && 'custom' === $icon_type && ! empty( $icon_upload ) ) {
-					$icon .= sprintf( '<img src="%s" />', esc_url( $icon_upload ) );
+					$icon .= sprintf( '<img src="%s"  alt="%s"/>', esc_url( $icon_upload ), esc_attr( $text ) );
 				}
 
 				$icon .= '</span>';

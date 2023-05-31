@@ -139,9 +139,13 @@ class TInvWL_Public_AddToWishlist {
 					break;
 			}
 
-			add_filter( 'woocommerce_blocks_product_grid_item_html', array( $this, 'htmloutput_block' ), 9, 3 );
-			add_filter( 'woocommerce_product_get_description', array( $this, 'woocommerce_blocks' ), 10, 2 );
+
 		}
+
+		// WooCommerce Blocks
+		add_filter( 'woocommerce_blocks_product_grid_item_html', array( $this, 'htmloutput_block' ), 9, 3 );
+		add_filter( 'woocommerce_product_get_description', array( $this, 'woocommerce_blocks_all_products' ), 10, 2 );
+		add_action( 'init', array( $this, 'woocommerce_blocks' ) );
 
 		add_action( 'wp_loaded', array( $this, 'add_to_wishlist' ), 0 );
 		if ( is_user_logged_in() && apply_filters( 'tinvwl_allow_data_cookies', true ) ) {
@@ -812,7 +816,7 @@ JOIN {$table_languages} l ON
 
 			$this->product = apply_filters( 'tinvwl_addtowishlist_out_prepare_product', $_product );
 
-			$position = tinv_get_option( 'add_to_wishlist', 'position' );
+			$position = $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : tinv_get_option( 'add_to_wishlist', 'position' );
 
 		}
 
@@ -866,7 +870,7 @@ JOIN {$table_languages} l ON
 		$action_class = current_action() ? ' tinvwl-' . current_action() : ' tinvwl-no-action';
 
 		$data = array(
-			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $this->is_loop ? tinv_get_option( 'add_to_wishlist_catalog', 'position' ) : $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ) . $action_class,
+			'class_postion'       => sprintf( 'tinvwl-%s-add-to-cart', $position ) . ( $this->is_loop ? ' tinvwl-loop-button-wrapper' : '' ) . $action_class,
 			'product'             => $this->product,
 			'variation_id'        => ( $this->is_loop && in_array( ( $this->product->get_type() ), array(
 					'variable',
@@ -946,7 +950,7 @@ JOIN {$table_languages} l ON
 			json_encode( ( $this->is_loop && in_array( $this->product->get_type(), array(
 					'variable',
 					'variable-subscription',
-				) ) ) ? $this->variation_ids : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array(  ) ) ),
+				) ) ) ? $this->variation_ids : ( $this->product->is_type( 'variation' ) ? array( $this->product->get_id() ) : array() ) ),
 			$this->product->get_type(),
 			$text );
 		$content .= apply_filters( 'tinvwl_wishlist_button_after', '' );
@@ -993,6 +997,37 @@ JOIN {$table_languages} l ON
 		return ob_get_clean();
 	}
 
+	/**
+	 * Registers the WooCommerce blocks.
+	 */
+	function woocommerce_blocks() {
+		/**
+		 * Registers the custom product label block.
+		 */
+		register_block_type(
+			'tinvwl/add-to-wishlist',
+			[
+				'render_callback' => 'woocommerce_blocks_render',
+			]
+		);
+	}
+
+	/**
+	 * Renders the WooCommerce blocks.
+	 *
+	 * @param array $attributes The block attributes.
+	 *
+	 * @return string The rendered output.
+	 */
+	function woocommerce_blocks_render( $attributes ) {
+		global $product;
+
+		ob_start();
+		echo do_shortcode( '[ti_wishlists_addtowishlist loop=yes]' );
+		$output = ob_get_clean();
+
+		return $output;
+	}
 
 	/**
 	 * Add button to WC Blocks
@@ -1048,7 +1083,7 @@ JOIN {$table_languages} l ON
 	 * Add button to WC Block All Products
 	 *
 	 */
-	function woocommerce_blocks( $description, $product_object ) {
+	function woocommerce_blocks_all_products( $description, $product_object ) {
 
 		global $product;
 
@@ -1066,15 +1101,9 @@ JOIN {$table_languages} l ON
 			return $description;
 		}
 
-		$position = tinv_get_option( 'add_to_wishlist_catalog', 'position' );
-
-		if ( ! in_array( $position, array( 'before', 'after', 'above_thumb' ) ) ) {
-			return $description;
-		}
-
 		$product = $product_object;
 		ob_start();
-		tinvwl_view_addto_htmlloop();
+		echo do_shortcode( '[ti_wishlists_addtowishlist loop=yes]' );
 		$add_to_wishlist = ob_get_clean();
 
 		$product = '';
@@ -1101,7 +1130,7 @@ JOIN {$table_languages} l ON
 
 			foreach ( $match_attributes as $name => $value ) {
 				?>
-				<input name="<?php echo esc_attr( $name ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>"/>
+                <input name="<?php echo esc_attr( $name ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php
 			}
 		}

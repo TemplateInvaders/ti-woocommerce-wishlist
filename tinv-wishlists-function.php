@@ -158,6 +158,11 @@ class TInvWLRename {
 	private function translation_update( $text, $domain ) {
 		if ( 'ti-woocommerce-wishlist' === $domain ) {
 
+			if (strpos($text, '{wishlist_title}') !== false) {
+				// If $text contains "{wishlist_title}", skip the replacement
+				return $text;
+			}
+
 			$translations = [
 				'wishlist' => [
 					$this->rename_single,

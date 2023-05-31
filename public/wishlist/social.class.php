@@ -49,16 +49,17 @@ class TInvWL_Public_Wishlist_Social {
 	}
 
 	/**
-	 * Output social buttons
+	 * Output social buttons.
 	 *
 	 * @param array $wishlist Set from action.
+	 *
+	 * @return void
 	 */
-	public static function htmloutput( $wishlist ) {
-
+	public static function htmloutput( array $wishlist ): void {
 		$social = tinv_get_option( 'social' );
 
 		$share_on      = apply_filters( 'tinvwl_share_on_text', tinv_get_option( 'social', 'share_on' ) );
-		$social_titles = array();
+		$social_titles = [];
 		foreach ( $social as $name => $soc_network ) {
 			if ( $soc_network && method_exists( __CLASS__, $name ) ) {
 				$social[ $name ]        = self::$name();
@@ -71,21 +72,30 @@ class TInvWL_Public_Wishlist_Social {
 			}
 		}
 
-		$social = apply_filters( 'tinvwl_view_social', $social, array(
-			'wishlist' => $wishlist,
-			'image'    => self::$image,
-			'url'      => self::$url,
-		) );
+		$social = apply_filters(
+			'tinvwl_view_social',
+			$social,
+			[
+				'wishlist' => $wishlist,
+				'image'    => self::$image,
+				'url'      => self::$url,
+			]
+		);
 		$social = array_filter( $social );
 		if ( empty( $social ) ) {
-			return false;
+			return;
 		}
-		$data = array(
+
+		$data = [
 			'social'        => $social,
 			'social_titles' => $social_titles,
 			'share_on'      => $share_on,
+		];
+
+		tinv_wishlist_template(
+			'ti-wishlist-social.php',
+			apply_filters( 'tinvwl_social_share_data', $data, $wishlist )
 		);
-		tinv_wishlist_template( 'ti-wishlist-social.php', $data );
 	}
 
 	/**

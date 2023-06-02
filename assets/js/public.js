@@ -866,7 +866,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return;
       }
       if ($supports_html5_storage) {
-        if (Cookies.get('tinvwl_update_data') !== undefined) {
+        if ('undefined' !== typeof Cookies && Cookies.get('tinvwl_update_data') !== undefined) {
           Cookies.set('tinvwl_update_data', 0, {
             expires: -1
           });
@@ -876,11 +876,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           var data = JSON.parse(localStorage.getItem(hash_key));
           if ('object' === _typeof(data) && null !== data && (data.hasOwnProperty('products') || data.hasOwnProperty('counter'))) {
             if (!data.hasOwnProperty('lang') && !tinvwl_add_to_wishlist.wpml || tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml) {
-              if (Cookies.get('tinvwl_wishlists_data_counter') === undefined) {
+              if ('undefined' !== typeof Cookies && Cookies.get('tinvwl_wishlists_data_counter') === undefined) {
                 mark_products(data);
                 return;
               }
-              if (Cookies.get('tinvwl_wishlists_data_counter') == data.counter && (!data.hasOwnProperty('stats_count') || Cookies.get('tinvwl_wishlists_data_stats') == data.stats_count)) {
+              if ('undefined' !== typeof Cookies && Cookies.get('tinvwl_wishlists_data_counter') == data.counter && (!data.hasOwnProperty('stats_count') || Cookies.get('tinvwl_wishlists_data_stats') == data.stats_count)) {
                 mark_products(data);
                 return;
               }

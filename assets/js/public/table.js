@@ -68,6 +68,7 @@
 
 				// Run wishlist refresh
 				if ( response.wishlist && response.wishlist.share_key ) {
+					localStorage.setItem( hash_key, '' );
 					localStorage.setItem( hash_key, response.wishlist.share_key );
 				}
 			}

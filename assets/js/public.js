@@ -1232,6 +1232,7 @@ function clearTooltip(e) {
       if ((response.status || response.removed) && ['add_to_wishlist'].includes(response.action)) {
         // Run wishlist refresh
         if (response.wishlist && response.wishlist.share_key) {
+          localStorage.setItem(hash_key, '');
           localStorage.setItem(hash_key, response.wishlist.share_key);
         }
       }

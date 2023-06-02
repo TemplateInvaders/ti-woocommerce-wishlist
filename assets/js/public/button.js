@@ -607,10 +607,6 @@
 
 				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
-				if ( response.redirect ) {
-					window.location.href = response.redirect;
-				}
-
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
 					if ( ! $( 'body > .tinv-wishlist' ).length ) {
@@ -637,9 +633,6 @@
 						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
-				if ( response.redirect ) {
-					return;
-				}
 
 				$( document.body ).trigger( 'wc_fragment_refresh' );
 
@@ -652,6 +645,10 @@
 				}
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
+				if ( response.redirect ) {
+					window.location.href = response.redirect;
+				}
 			});
 		});
 
@@ -721,10 +718,6 @@
 
 				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
-				if ( response.redirect ) {
-					window.location.href = response.redirect;
-				}
-
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
 					if ( ! $( 'body > .tinv-wishlist' ).length ) {
@@ -751,9 +744,6 @@
 						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
-				if ( response.redirect ) {
-					return;
-				}
 
 				$( document.body ).trigger( 'wc_fragment_refresh' );
 
@@ -766,6 +756,10 @@
 				}
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
+				if ( response.redirect ) {
+					window.location.href = response.redirect;
+				}
 			});
 		});
 
@@ -856,10 +850,6 @@
 
 				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
 
-				if ( response.redirect ) {
-					window.location.href = response.redirect;
-				}
-
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
 					if ( ! $( 'body > .tinv-wishlist' ).length ) {
@@ -886,9 +876,7 @@
 						}, tinvwl_add_to_wishlist.popup_timer );
 					}
 				}
-				if ( response.redirect ) {
-					return;
-				}
+
 				if ( 'add_to_cart_selected' === action ) {
 					$( document.body ).trigger( 'wc_fragment_refresh' );
 				}
@@ -902,6 +890,10 @@
 				}
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
+
+				if ( response.redirect ) {
+					window.location.href = response.redirect;
+				}
 			});
 		});
 

@@ -136,6 +136,21 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.6.0 ###
+*Release Date - 5 June 2023*
+
+* Added custom error messages for adding products to the cart from the wishlist
+* Added `tinvwl_social_share_data` filter to extend social share buttons
+* Updated integration with WooCommerce Blocks
+* Fixed the JavaScript dependencies error
+* Fixed the issue with the auto-refresh of the wishlist table when adding or removing products
+* Fixed the issue with the "Add to Wishlist" button in relation to the WPML plugin
+* Fixed the issue with redirecting to the cart before updating the wishlist data
+* Fixed placeholders conflict with wishlist rename feature
+* Fixed WPML sync menu issue related to wishlist products counter
+* Limit dashboard notices only for admin users
+* Framework Update
+
 ### 2.5.2 ###
 *Release Date - 29 May 2023*
 

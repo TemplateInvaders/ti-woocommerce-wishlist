@@ -157,7 +157,8 @@ class TInvWL_Public_Cart {
 			}
 		}
 
-		$passed_validation = $product['data']->is_purchasable() && ( $product['data']->is_in_stock() || $product['data']->backorders_allowed() ) && 'external' !== $product['data']->get_type();
+		$cart_errors       = self::add_to_cart_errors( $product['data'], $quantity );
+		$passed_validation = ! isset( $cart_errors['error_code'] );
 		$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 		if ( $passed_validation ) {
 			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product['meta'] );
@@ -179,12 +180,17 @@ class TInvWL_Public_Cart {
 				self::set_item_meta( $cart_item_key, $product['meta'] );
 				self::unprepare_post( $product );
 
-				return array( $product_id => $quantity );
+				return array(
+					'product'       => $product['data'],
+					'quantity'      => $quantity,
+					'cart_item_key' => $cart_item_key
+				);
 			}
 		}
 		self::unprepare_post( $product );
+		$error_code = $cart_errors['error_code'] ?? 'default';
 
-		return false;
+		return array( 'product' => $product['data'], 'quantity' => $quantity, 'error_code' => $error_code );
 	}
 
 	/**
@@ -507,5 +513,176 @@ class TInvWL_Public_Cart {
 		$value = $item->get_meta( $key );
 
 		return $value;
+	}
+
+
+	/**
+	 * Get errors when adding a product to the cart.
+	 *
+	 * @param WC_Product $product The product to add to the cart.
+	 * @param int $quantity The quantity of the product to be added. Default is 1.
+	 *
+	 * @return array Array of error codes or false if no errors.
+	 */
+	public static function add_to_cart_errors( WC_Product $product, int $quantity = 1 ): array {
+		if ( ! $product->is_purchasable() ) {
+			return [ 'product' => $product, 'error_code' => 'not_purchasable' ];
+		}
+
+		if ( ! $product->is_in_stock() && ! $product->backorders_allowed() ) {
+			return [ 'product' => $product, 'error_code' => 'not_in_stock' ];
+		}
+
+		if ( 'external' === $product->get_type() ) {
+			return [ 'product' => $product, 'error_code' => 'external' ];
+		}
+
+		if ( 'variable' === $product->get_type() && ! empty( $product->get_children() ) ) {
+			return [ 'product' => $product, 'error_code' => 'parent_variable' ];
+		}
+
+		/** @global \WooCommerce $woocommerce */
+		global $woocommerce;
+		$product_in_cart = array_filter(
+			$woocommerce->cart->get_cart(),
+			fn( array $item ): bool => $item['product_id'] === $product->get_id()
+		);
+
+		if ( $product->is_sold_individually() && ! empty( $product_in_cart ) ) {
+			return [ 'product' => $product, 'error_code' => 'sold_individually' ];
+		}
+
+		if ( ! $product->has_enough_stock( $quantity ) ) {
+			return [ 'product' => $product, 'error_code' => 'more_than_stock' ];
+		}
+
+		if ( $product->managing_stock() ) {
+			$quantity_in_cart = array_sum( wp_list_pluck( $product_in_cart, 'quantity' ) );
+			if ( $quantity_in_cart + $quantity > $product->get_stock_quantity() ) {
+				return [ 'product' => $product, 'error_code' => 'more_than_stock' ];
+			}
+		}
+
+		return [ 'product' => $product ];
+	}
+
+	/**
+	 * Generates an error message for products that couldn't be added to the cart.
+	 *
+	 * @param array $products Array of products with error codes.
+	 *                        Each product should have the 'product' (WC_Product) and 'error_code' (string) keys.
+	 *
+	 * @return string Error message.
+	 */
+	public static function cart_all_errors_message( array $products ): string {
+		$response = [];
+
+		// Group $products data by error_code to get a new array $codes
+		$codes = [];
+		foreach ( $products as $product ) {
+			$error_code             = $product['error_code'];
+			$product_name           = $product['product']->get_name();
+			$codes[ $error_code ][] = $product_name;
+		}
+
+		foreach ( $codes as $code => $titles ) {
+			$response[] = self::cart_error_message( $code, $titles );
+		}
+
+		return implode( '<br>', $response );
+	}
+
+	/**
+	 * Generate an error message based on the provided code and titles.
+	 *
+	 * @param string $code Error code.
+	 * @param array $titles Array of titles.
+	 *
+	 * @return string Error message.
+	 */
+	public static function cart_error_message( string $code, array $titles ): string {
+		$error_message = '';
+
+		switch ( $code ) {
+			case 'not_purchasable':
+				$error_message = sprintf(
+					_n(
+						'Sorry, the &quot;%s&quot; cannot be purchased.',
+						'Sorry, the following products cannot be purchased: &quot;%s&quot;.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			case 'not_in_stock':
+				$error_message = sprintf(
+					_n(
+						'You cannot add &quot;%s&quot; to the cart because the product is out of stock.',
+						'You cannot add the following products to the cart because they are out of stock: &quot;%s&quot;.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			case 'external':
+				$error_message = sprintf(
+					_n(
+						'External product &quot;%s&quot; cannot be bought.',
+						'The following external products cannot be bought: &quot;%s&quot;.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			case 'parent_variable':
+				$error_message = sprintf(
+					_n(
+						'Please choose product options for &quot;%s&quot;.',
+						'Please choose options for the following products: &quot;%s&quot;.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			case 'sold_individually':
+				$error_message = sprintf(
+					_n(
+						'You cannot add another &quot;%s&quot; to your cart.',
+						'You cannot add &quot;%s&quot; more to your cart.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			case 'more_than_stock':
+				$error_message = sprintf(
+					_n(
+						'You cannot add that amount of &quot;%s&quot; to the cart because there is not enough stock.',
+						'You cannot add the following products to the cart because there is not enough stock: &quot;%s&quot;.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+			default:
+				$error_message = sprintf(
+					_n(
+						'Product &quot;%s&quot; could not be added to the cart because some requirements are not met.',
+						'Products: &quot;%s&quot; could not be added to the cart because some requirements are not met.',
+						count( $titles ),
+						'ti-woocommerce-wishlist'
+					),
+					wc_format_list_of_items( $titles )
+				);
+				break;
+		}
+
+		return $error_message;
 	}
 }

@@ -207,7 +207,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 				} elseif ( apply_filters( 'tinvwl_allow_addtocart_in_wishlist', true, $wishlist, $owner ) ) {
 					$add = TInvWL_Public_Cart::add( $wishlist, $product_id, $quantity );
-					if ( $add ) {
+					if ( $add && ! isset( $add['error_code'] ) ) {
 						$response['status'] = true;
 						$response['msg'][]  = sprintf( _n( '%s has been added to your cart.', '%s have been added to your cart.', 1, 'ti-woocommerce-wishlist' ), $title );
 
@@ -220,7 +220,7 @@ class TInvWL_Public_Wishlist_Ajax {
 						}
 					} else {
 						$response['status'] = false;
-						$response['msg'][]  = sprintf( __( 'Product %s could not be added to the cart because some requirements are not met.', 'ti-woocommerce-wishlist' ), $title );
+						$response['msg'][]  = TInvWL_Public_Cart::cart_all_errors_message( array( $add ) );
 					}
 				}
 
@@ -298,7 +298,13 @@ class TInvWL_Public_Wishlist_Ajax {
 					$quantity             = apply_filters( 'tinvwl_product_add_to_cart_quantity', array_key_exists( $_product['ID'], (array) $_quantity ) ? $_quantity[ $_product['ID'] ] : 1, $product_data );
 					$_product['quantity'] = $quantity;
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $_product ) ) {
-						$errors[] = $_product['product_id'];
+						$cart_errors = TInvWL_Public_Cart::add_to_cart_errors( $product_data, $quantity );
+						$error_code  = $cart_errors['error_code'] ?? 'default';
+						$errors[]    = array(
+							'product'    => $product_data,
+							'quantity'   => $quantity,
+							'error_code' => $error_code
+						);
 						continue;
 					}
 
@@ -306,30 +312,25 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					$add = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
 
-					if ( $add ) {
-						$result = tinv_array_merge( $result, $add );
+					if ( $add && ! isset( $add['error_code'] ) ) {
+						$result[] = $add;
 					} else {
-						$errors[] = $product_data->get_id();
+						$errors[] = $add;
 					}
 				}
 
 				if ( ! empty( $errors ) ) {
-					$titles = array();
-					foreach ( $errors as $product_id ) {
-						$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
-					}
-					$titles            = array_filter( $titles );
-					$response['msg'][] = sprintf( _n( 'Product %s could not be added to the cart because some requirements are not met.', 'Products: %s could not be added to the cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = TInvWL_Public_Cart::cart_all_errors_message( $errors );
 				}
 				if ( ! empty( $result ) ) {
 					$response['status'] = true;
 
 					$titles = array();
 					$count  = 0;
-					foreach ( $result as $product_id => $qty ) {
+					foreach ( $result as $key => $data ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
-						$count    += $qty;
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $data['quantity'] > 1 ? absint( $data['quantity'] ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
+						$count    += $data['quantity'];
 					}
 
 					$titles = array_filter( $titles );
@@ -377,7 +378,13 @@ class TInvWL_Public_Wishlist_Ajax {
 					$quantity             = apply_filters( 'tinvwl_product_add_to_cart_quantity', array_key_exists( $_product['ID'], (array) $_quantity ) ? $_quantity[ $_product['ID'] ] : 1, $product_data );
 					$_product['quantity'] = $quantity;
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $_product ) ) {
-						$errors[] = $_product['product_id'];
+						$cart_errors = TInvWL_Public_Cart::add_to_cart_errors( $product_data, $quantity );
+						$error_code  = $cart_errors['error_code'] ?? 'default';
+						$errors[]    = array(
+							'product'    => $product_data,
+							'quantity'   => $quantity,
+							'error_code' => $error_code
+						);
 						continue;
 					}
 
@@ -385,30 +392,25 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					$add = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
 
-					if ( $add ) {
-						$result = tinv_array_merge( $result, $add );
+					if ( $add && ! isset( $add['error_code'] ) ) {
+						$result[] = $add;
 					} else {
-						$errors[] = $product_data->get_id();
+						$errors[] = $add;
 					}
 				}
 
 				if ( ! empty( $errors ) ) {
-					$titles = array();
-					foreach ( $errors as $product_id ) {
-						$titles[] = sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) );
-					}
-					$titles            = array_filter( $titles );
-					$response['msg'][] = sprintf( _n( 'Product %s could not be added to the cart because some requirements are not met.', 'Products: %s could not be added to the cart because some requirements are not met.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+					$response['msg'][] = TInvWL_Public_Cart::cart_all_errors_message( $errors );
 				}
 				if ( ! empty( $result ) ) {
 					$response['status'] = true;
 
 					$titles = array();
 					$count  = 0;
-					foreach ( $result as $product_id => $qty ) {
+					foreach ( $result as $key => $data ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $qty > 1 ? absint( $qty ) . ' &times; ' : '' ), $product_id ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), strip_tags( get_the_title( $product_id ) ) ), $product_id );
-						$count    += $qty;
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $data['quantity'] > 1 ? absint( $data['quantity'] ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
+						$count    += $data['quantity'];
 					}
 
 					$titles = array_filter( $titles );

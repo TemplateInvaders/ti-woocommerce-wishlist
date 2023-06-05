@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
 						</div>
 					</div>
 					<div class="tinvwl-cell">
-						<h1 class="tinvwl-title"><?php echo esc_html($_name); ?></h1>
+						<h1 class="tinvwl-title"><?php echo $_name; ?></h1>
 					</div>
 				</div>
 			</div>

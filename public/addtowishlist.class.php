@@ -1009,7 +1009,7 @@ JOIN {$table_languages} l ON
 		register_block_type(
 			'tinvwl/add-to-wishlist',
 			[
-				'render_callback' => 'woocommerce_blocks_render',
+				'render_callback' => array( $this, 'woocommerce_blocks_render' ),
 			]
 		);
 	}
@@ -1132,7 +1132,7 @@ JOIN {$table_languages} l ON
 
 			foreach ( $match_attributes as $name => $value ) {
 				?>
-                <input name="<?php echo esc_attr( $name ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>"/>
+				<input name="<?php echo esc_attr( $name ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php
 			}
 		}

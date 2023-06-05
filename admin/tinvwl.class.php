@@ -52,7 +52,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Load settings classes.
 	 */
 	function load_function() {
-
+		$this->wishlist = new TInvWL_Admin_Wishlist( $this->_name, $this->_version );
+//		$this->product  = new TInvWL_Admin_Product( $this->_name, $this->_version );
 		$this->load_settings();
 
 		$this->define_hooks();

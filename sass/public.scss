@@ -1889,16 +1889,13 @@ $border-radius: 3px !default;
 }
 
 .tinvwl-table-manage-list .component_table_item_price:before {
-	font-family: 'FontAwesomeCP';
+	font-family: FontAwesomeCP;
 	font-size: 1rem;
 	display: inline-block;
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
-	-webkit-transform: rotate(90deg);
-	-ms-transform: rotate(90deg);
 	transform: rotate(90deg);
 	content: "\e811";
-	margin: 0 12px 0 3px;
-	opacity: .25
+	opacity: 0.25;
+	margin: 0px 12px 0px 2px;
 }
 
 .wishlist-icon {

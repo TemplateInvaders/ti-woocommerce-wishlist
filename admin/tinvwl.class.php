@@ -51,7 +51,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Create Wishlist and Product class.
 	 * Load settings classes.
 	 */
-	function load_function() {
+	function load_function(): void {
 		$this->wishlist = new TInvWL_Admin_Wishlist( $this->_name, $this->_version );
 //		$this->product  = new TInvWL_Admin_Product( $this->_name, $this->_version );
 		$this->load_settings();
@@ -153,7 +153,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$page = add_menu_page( __( 'TI Wishlist', 'ti-woocommerce-wishlist' ), __( 'TI Wishlist', 'ti-woocommerce-wishlist' ), 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888' );
 		add_action( "load-$page", array( $this, 'onload' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_inline_scripts' ) );
-		wp_add_inline_style('admin-menu','#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"] {font-weight: 600;background-color: #df4d57;color: #fff;margin: 3px 10px 0;display: block;text-align: center;border-radius: 3px;transition: all .3s }#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:focus,#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:hover {background-color: #f48460;box-shadow: none }');
+		wp_add_inline_style( 'admin-menu', '#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"] {font-weight: 600;background-color: #df4d57;color: #fff;margin: 3px 10px 0;display: block;text-align: center;border-radius: 3px;transition: all .3s }#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:focus,#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:hover {background-color: #f48460;box-shadow: none }' );
 		$menu = apply_filters( 'tinvwl_admin_menu', array() );
 		foreach ( $menu as $item ) {
 			if ( ! array_key_exists( 'page_title', $item ) ) {

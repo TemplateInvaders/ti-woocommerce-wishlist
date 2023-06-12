@@ -20,59 +20,32 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
-// Define default path.
-if ( ! defined( 'TINVWL_URL' ) ) {
-	define( 'TINVWL_URL', plugins_url( '/', __FILE__ ) );
-}
-if ( ! defined( 'TINVWL_PATH' ) ) {
-	define( 'TINVWL_PATH', plugin_dir_path( __FILE__ ) );
-}
-
-if ( ! defined( 'TINVWL_PREFIX' ) ) {
-	define( 'TINVWL_PREFIX', 'tinvwl' );
-}
-
-if ( ! defined( 'TINVWL_DOMAIN' ) ) {
-	define( 'TINVWL_DOMAIN', 'ti-woocommerce-wishlist' );
-}
-
-if ( ! defined( 'TINVWL_FVERSION' ) ) {
-	define( 'TINVWL_FVERSION', '2.6.0' );
-}
-
-if ( ! defined( 'TINVWL_LOAD_FREE' ) ) {
-	define( 'TINVWL_LOAD_FREE', plugin_basename( __FILE__ ) );
-}
-
-if ( ! defined( 'TINVWL_NAME' ) ) {
-	define( 'TINVWL_NAME', 'TI WooCommerce Wishlist' );
-}
+// Define constants.
+defined( 'TINVWL_URL' ) || define( 'TINVWL_URL', plugins_url( '/', __FILE__ ) );
+defined( 'TINVWL_PATH' ) || define( 'TINVWL_PATH', plugin_dir_path( __FILE__ ) );
+defined( 'TINVWL_PREFIX' ) || define( 'TINVWL_PREFIX', 'tinvwl' );
+defined( 'TINVWL_DOMAIN' ) || define( 'TINVWL_DOMAIN', 'ti-woocommerce-wishlist' );
+defined( 'TINVWL_FVERSION' ) || define( 'TINVWL_FVERSION', '2.6.0' );
+defined( 'TINVWL_LOAD_FREE' ) || define( 'TINVWL_LOAD_FREE', plugin_basename( __FILE__ ) );
+defined( 'TINVWL_NAME' ) || define( 'TINVWL_NAME', 'TI WooCommerce Wishlist' );
 
 if ( ! function_exists( 'tinv_array_merge' ) ) {
-
 	/**
 	 * Function to merge arrays with replacement options
 	 *
 	 * @param array $array1 Array.
-	 * @param array $_ Array.
+	 * @param array|null $_ Array.
 	 *
 	 * @return array
 	 */
-	function tinv_array_merge( $array1, $_ = null ) {
-		if ( ! is_array( $array1 ) ) {
-			return $array1;
-		}
+	function tinv_array_merge( array $array1, array $_ = null ): array {
 		$args = func_get_args();
 		array_shift( $args );
 		foreach ( $args as $array2 ) {
 			if ( is_array( $array2 ) ) {
-				foreach ( $array2 as $key => $value ) {
-					$array1[ $key ] = $value;
-				}
+				$array1 = array_merge( $array1, $array2 );
 			}
 		}
 
@@ -80,38 +53,39 @@ if ( ! function_exists( 'tinv_array_merge' ) ) {
 	}
 }
 
-
 if ( ! function_exists( 'tinv_get_option_defaults' ) ) {
-
 	/**
-	 * Extract default options from settings class
+	 * Extracts default options from settings class.
 	 *
-	 * @param string $category Name category settings.
+	 * @param string $category Name of the category settings.
 	 *
-	 * @return array
+	 * @return array Default settings for a given category or all settings.
 	 */
-	function tinv_get_option_defaults( $category ) {
+	function tinv_get_option_defaults( string $category ): array {
 		$dir = TINVWL_PATH . 'admin/settings/';
 		if ( ! file_exists( $dir ) || ! is_dir( $dir ) ) {
-			return array();
+			return [];
 		}
-		$files = scandir( $dir );
-		foreach ( $files as $key => $value ) {
-			if ( preg_match( '/\.class\.php$/i', $value ) ) {
-				$files[ $key ] = preg_replace( '/\.class\.php$/i', '', $value );
-			} else {
-				unset( $files[ $key ] );
-			}
-		}
-		$defaults = array();
-		foreach ( $files as $file ) {
-			$class         = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-			$class         = $class::instance( TINVWL_PREFIX, TINVWL_FVERSION );
-			$class_methods = get_class_methods( $class );
 
-			foreach ( $class_methods as $method ) {
+		$files = array_filter( scandir( $dir ), static function ( $file ) {
+			return preg_match( '/\.class\.php$/i', $file );
+		} );
+
+		$classFiles = array_map( static function ( $value ) {
+			return preg_replace( '/\.class\.php$/i', '', $value );
+		}, $files );
+
+		$defaults = [];
+
+		foreach ( $classFiles as $file ) {
+			$className     = 'TInvWL_Admin_Settings_' . ucfirst( $file );
+			$classInstance = $className::instance( TINVWL_PREFIX, TINVWL_FVERSION );
+
+			$classMethods = get_class_methods( $classInstance );
+
+			foreach ( $classMethods as $method ) {
 				if ( preg_match( '/_data$/i', $method ) ) {
-					$settings = $class->get_defaults( $class->$method() );
+					$settings = $classInstance->get_defaults( $classInstance->$method() );
 					$defaults = tinv_array_merge( $defaults, $settings );
 				}
 			}
@@ -120,20 +94,16 @@ if ( ! function_exists( 'tinv_get_option_defaults' ) ) {
 		if ( 'all' === $category ) {
 			return $defaults;
 		}
-		if ( array_key_exists( $category, $defaults ) ) {
-			return $defaults[ $category ];
-		}
 
-		return array();
+		return $defaults[ $category ] ?? [];
 	}
-} // End if().
+}
 
 if ( ! function_exists( 'activation_tinv_wishlist' ) ) {
-
 	/**
 	 * Activation plugin
 	 */
-	function activation_tinv_wishlist() {
+	function activation_tinv_wishlist(): void {
 		if ( dependency_tinv_wishlist( false ) ) {
 			TInvWL_Activator::activate();
 			flush_rewrite_rules();
@@ -142,21 +112,19 @@ if ( ! function_exists( 'activation_tinv_wishlist' ) ) {
 }
 
 if ( ! function_exists( 'deactivation_tinv_wishlist' ) ) {
-
 	/**
 	 * Deactivation plugin
 	 */
-	function deactivation_tinv_wishlist() {
+	function deactivation_tinv_wishlist(): void {
 		flush_rewrite_rules();
 	}
 }
 
 if ( ! function_exists( 'uninstall_tinv_wishlist' ) ) {
-
 	/**
 	 * Uninstall plugin
 	 */
-	function uninstall_tinv_wishlist() {
+	function uninstall_tinv_wishlist(): void {
 		if ( ! defined( 'TINVWL_LOAD_PREMIUM' ) ) {
 			TInvWL_Activator::uninstall();
 			flush_rewrite_rules();
@@ -166,7 +134,6 @@ if ( ! function_exists( 'uninstall_tinv_wishlist' ) ) {
 }
 
 if ( function_exists( 'spl_autoload_register' ) && ! function_exists( 'autoload_tinv_wishlist' ) ) {
-
 	/**
 	 * Autoloader class. If no function spl_autoload_register, then all the files will be required
 	 *
@@ -174,7 +141,7 @@ if ( function_exists( 'spl_autoload_register' ) && ! function_exists( 'autoload_
 	 *
 	 * @return boolean
 	 */
-	function autoload_tinv_wishlist( $_class ) {
+	function autoload_tinv_wishlist( string $_class ): bool {
 		$preffix = 'TInvWL';
 		$ext     = '.php';
 		$class   = explode( '_', $_class );
@@ -207,10 +174,9 @@ if ( function_exists( 'spl_autoload_register' ) && ! function_exists( 'autoload_
 	}
 
 	spl_autoload_register( 'autoload_tinv_wishlist' );
-} // End if().
+}
 
 if ( ! function_exists( 'dependency_tinv_wishlist' ) ) {
-
 	/**
 	 * Dependency plugin
 	 *
@@ -218,9 +184,10 @@ if ( ! function_exists( 'dependency_tinv_wishlist' ) ) {
 	 *
 	 * @return boolean
 	 */
-	function dependency_tinv_wishlist( $run = true ) {
+	function dependency_tinv_wishlist( bool $run = true ): bool {
 		$ext = new TInvWL_PluginExtend( null, __FILE__, TINVWL_PREFIX );
 		$ext->set_dependency( 'woocommerce/woocommerce.php', 'WooCommerce' )->need();
+
 		if ( $run ) {
 			$ext->run();
 		}
@@ -230,14 +197,12 @@ if ( ! function_exists( 'dependency_tinv_wishlist' ) ) {
 }
 
 if ( ! function_exists( 'run_tinv_wishlist' ) ) {
-
 	/**
 	 * Run plugin
 	 */
-	function run_tinv_wishlist() {
+	function run_tinv_wishlist(): void {
 		global $tinvwl_integrations;
-
-		$tinvwl_integrations = array();
+		$tinvwl_integrations = [];
 
 		require_once TINVWL_PATH . 'tinv-wishlists-function.php';
 
@@ -245,9 +210,6 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 			require_once $file;
 		}
 
-		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		}
 		if ( defined( 'TINVWL_LOAD_PREMIUM' ) && defined( 'TINVWL_LOAD_FREE' ) || defined( 'TINVWL_LOAD_PREMIUM' ) && is_plugin_active_for_network( TINVWL_LOAD_PREMIUM ) || defined( 'TINVWL_LOAD_FREE' ) && is_plugin_active_for_network( TINVWL_LOAD_FREE ) ) {
 			$redirect = tinv_wishlist_status( plugin_basename( __FILE__ ) );
 			if ( $redirect ) {
@@ -264,6 +226,7 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 add_action( 'before_woocommerce_init', function () {
 	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'product_block_editor', __FILE__, true );
 	}
 } );
 

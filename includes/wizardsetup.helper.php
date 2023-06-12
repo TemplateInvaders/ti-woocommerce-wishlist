@@ -6,69 +6,61 @@
  * @package           TInvWishlist
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Wizard installation plugin helper
+ * Wizard installation plugin helper.
  */
 class TInvWL_WizardSetup {
-
 	/**
-	 * Plugin name
+	 * Plugin name.
 	 *
 	 * @var string
 	 */
-	public $_name;
+	private string $_name;
 
 	/**
-	 * Plugin version
+	 * Plugin version.
 	 *
 	 * @var string
 	 */
-	public $_version;
+	private string $_version;
 
 	/**
-	 * Constructor
+	 * TInvWL_WizardSetup constructor.
 	 *
 	 * @param string $plugin_name Plugin name.
 	 * @param string $version Plugin version.
 	 */
-	function __construct( $plugin_name, $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 		$this->_name    = $plugin_name;
 		$this->_version = $version;
-		add_action( 'init', array( $this, 'load' ) );
-		add_action( 'admin_init', array( $this, 'redirect' ) );
+		add_action( 'init', [ $this, 'load' ] );
+		add_action( 'admin_init', [ $this, 'redirect' ] );
 	}
 
 	/**
-	 * Setup trigger for show wizard installation
+	 * Setup trigger for show wizard installation.
 	 */
-	public static function setup() {
+	public static function setup(): void {
 		set_transient( '_tinvwl_activation_redirect', 1, 30 );
 	}
 
 	/**
-	 * Load wizard
+	 * Load wizard.
 	 */
-	public function load() {
+	public function load(): void {
 		$page = filter_input( INPUT_GET, 'page' );
-		if ( ! empty( $page ) ) {
-			switch ( $page ) {
-				case 'tinvwl-wizard' :
-					new TInvWL_Wizard( $this->_name, $this->_version );
-			}
+		if ( ! empty( $page ) && 'tinvwl-wizard' === $page ) {
+			new TInvWL_Wizard( $this->_name, $this->_version );
 		}
 	}
 
 	/**
-	 * Apply redirect to wizard
-	 *
-	 * @return void
+	 * Apply redirect to wizard.
 	 */
-	public function redirect() {
+	public function redirect(): void {
 		if ( ! get_transient( '_tinvwl_activation_redirect' ) ) {
 			return;
 		}
@@ -76,7 +68,11 @@ class TInvWL_WizardSetup {
 
 		$page     = filter_input( INPUT_GET, 'page' );
 		$activate = filter_input( INPUT_GET, 'activate-multi' );
-		if ( in_array( $page, array( 'tinvwl-wizard' ) ) || is_network_admin() || ! is_null( $activate ) || apply_filters( 'tinvwl_prevent_automatic_wizard_redirect', false ) ) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
+
+		if ( in_array( $page, [ 'tinvwl-wizard' ], true ) ||
+		     is_network_admin() ||
+		     ! is_null( $activate ) ||
+		     apply_filters( 'tinvwl_prevent_automatic_wizard_redirect', false ) ) {
 			return;
 		}
 

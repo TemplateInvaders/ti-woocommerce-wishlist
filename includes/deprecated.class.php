@@ -1,72 +1,73 @@
 <?php
+
 /**
- * Deprecated hooks plugin class
+ * This class manages deprecated hooks for the plugin.
  *
- * @since             1.13.0
- * @package           TInvWishlist
+ * It handles all deprecated hooks and provides support for older hooks to work with the new ones.
+ *
+ * @package TInvWishlist
+ * @since 1.13.0
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Deprecated hooks plugin class
+ * Class TInvWL_Deprecated
+ *
+ * This class provides a mechanism to handle deprecated hooks.
  */
 abstract class TInvWL_Deprecated {
 
 	/**
-	 * Array of deprecated hooks we need to handle.
-	 *
-	 * @var array
+	 * @var array $deprecated_hooks List of deprecated hooks.
 	 */
-	protected $deprecated_hooks = array();
+	protected array $deprecated_hooks = [];
 
 	/**
-	 * Array of versions on each hook has been deprecated.
-	 *
-	 * @var array
+	 * @var array $deprecated_version Version number when hook was deprecated.
 	 */
-	protected $deprecated_version = array();
+	protected array $deprecated_version = [];
 
 	/**
-	 * Constructor.
+	 * TInvWL_Deprecated constructor.
+	 * Initialize hooks when the class is constructed.
 	 */
 	public function __construct() {
 		$new_hooks = array_keys( $this->deprecated_hooks );
-		array_walk( $new_hooks, array( $this, 'hook_in' ) );
+		array_walk( $new_hooks, [ $this, 'hook_in' ] );
 	}
 
 	/**
-	 * Hook into the new hook so we can handle deprecated hooks once fired.
+	 * Hooks into the new hook for handling deprecated hooks.
 	 *
-	 * @param string $hook_name Hook name.
+	 * @param string $hook_name Name of the hook.
 	 */
-	abstract public function hook_in( $hook_name );
+	abstract public function hook_in( string $hook_name ): void;
 
 	/**
-	 * Get old hooks to map to new hook.
+	 * Returns a list of old hooks mapped to a new hook.
 	 *
-	 * @param string $new_hook New hook name.
+	 * @param string $new_hook Name of the new hook.
 	 *
-	 * @return array
+	 * @return array List of old hooks.
 	 */
-	public function get_old_hooks( $new_hook ) {
-		$old_hooks = isset( $this->deprecated_hooks[ $new_hook ] ) ? $this->deprecated_hooks[ $new_hook ] : array();
-		$old_hooks = is_array( $old_hooks ) ? $old_hooks : array( $old_hooks );
+	public function get_old_hooks( string $new_hook ): array {
+		$old_hooks = $this->deprecated_hooks[ $new_hook ] ?? [];
 
-		return $old_hooks;
+		return is_array( $old_hooks ) ? $old_hooks : [ $old_hooks ];
 	}
 
 	/**
-	 * If the hook is Deprecated, call the old hooks here.
+	 * Handles the deprecated hook if it is triggered.
+	 *
+	 * @return mixed The return value of the handled deprecated hook.
 	 */
 	public function maybe_handle_deprecated_hook() {
 		$new_hook          = current_filter();
 		$old_hooks         = $this->get_old_hooks( $new_hook );
 		$new_callback_args = func_get_args();
 		$return_value      = $new_callback_args[0];
+
 		foreach ( $old_hooks as $old_hook ) {
 			$return_value = $this->handle_deprecated_hook( $new_hook, $old_hook, $new_callback_args, $return_value );
 		}
@@ -75,45 +76,45 @@ abstract class TInvWL_Deprecated {
 	}
 
 	/**
-	 * If the old hook is in-use, trigger it.
+	 * Triggers the old hook if it is in use.
 	 *
 	 * @param string $new_hook New hook name.
 	 * @param string $old_hook Old hook name.
 	 * @param array $new_callback_args New callback args.
 	 * @param mixed $return_value Returned value.
 	 *
-	 * @return mixed
+	 * @return mixed The return value after handling the deprecated hook.
 	 */
-	abstract public function handle_deprecated_hook( $new_hook, $old_hook, $new_callback_args, $return_value );
+	abstract public function handle_deprecated_hook( string $new_hook, string $old_hook, array $new_callback_args, $return_value );
 
 	/**
-	 * Get deprecated version.
+	 * Returns version number when the hook was deprecated.
 	 *
-	 * @param string $old_hook Old hook name.
+	 * @param string $old_hook Name of the old hook.
 	 *
-	 * @return string
+	 * @return string Version number.
 	 */
-	protected function get_deprecated_version( $old_hook ) {
-		return ! empty( $this->deprecated_version[ $old_hook ] ) ? $this->deprecated_version[ $old_hook ] : TINVWL_FVERSION;
+	protected function get_deprecated_version( string $old_hook ): string {
+		return $this->deprecated_version[ $old_hook ] ?? TINVWL_FVERSION;
 	}
 
 	/**
-	 * Display a deprecated notice for old hooks.
+	 * Displays notice for deprecated hooks.
 	 *
-	 * @param string $old_hook Old hook.
-	 * @param string $new_hook New hook.
+	 * @param string $old_hook Name of the old hook.
+	 * @param string $new_hook Name of the new hook.
 	 */
-	protected function display_notice( $old_hook, $new_hook ) {
+	protected function display_notice( string $old_hook, string $new_hook ): void {
 		_deprecated_hook( esc_html( $old_hook ), esc_html( $this->get_deprecated_version( $old_hook ) ), esc_html( $new_hook ) );
 	}
 
 	/**
-	 * Fire off a legacy hook with it's args.
+	 * Triggers the old hook with its arguments.
 	 *
 	 * @param string $old_hook Old hook name.
 	 * @param array $new_callback_args New callback args.
 	 *
-	 * @return mixed
+	 * @return mixed The return value of the triggered old hook.
 	 */
-	abstract protected function trigger_hook( $old_hook, $new_callback_args );
+	abstract protected function trigger_hook( string $old_hook, array $new_callback_args );
 }

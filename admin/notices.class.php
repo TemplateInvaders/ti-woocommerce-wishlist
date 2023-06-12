@@ -7,9 +7,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Admin notices plugin class
@@ -20,19 +18,19 @@ class TInvWL_Admin_Notices {
 	 *
 	 * @var TInvWL_Admin_Notices
 	 */
-	protected static $_instance = null;
+	protected static ?TInvWL_Admin_Notices $_instance = null;
 
 	/**
 	 * WordPress.org review URL
 	 */
-	const REVIEW_URL = 'https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/?filter=5';
+	const TINVWL_REVIEW_URL = 'https://wordpress.org/support/plugin/ti-woocommerce-wishlist/reviews/?filter=5';
 
 	/**
 	 * Get this class object
 	 *
 	 * @return TInvWL_Admin_Notices
 	 */
-	public static function instance() {
+	public static function instance(): TInvWL_Admin_Notices {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
 		}
@@ -43,11 +41,11 @@ class TInvWL_Admin_Notices {
 	/**
 	 * Constructor
 	 */
-	function __construct( $plugin_name = TINVWL_PREFIX ) {
+	public function __construct( string $plugin_name = TINVWL_PREFIX ) {
 		global $wpdb;
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			return false;
+			return;
 		}
 
 		$this->_name = $plugin_name;
@@ -57,9 +55,9 @@ class TInvWL_Admin_Notices {
 			$this->activation_date = $this->get_first_wishlist_date();
 		}
 
-		add_action( 'admin_notices', array( $this, 'add_notices' ) );
+		add_action( 'admin_notices', [ $this, 'add_notices' ] );
 
-		add_action( 'wp_ajax_tinvwl_admin_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
+		add_action( 'wp_ajax_tinvwl_admin_dismiss_notice', [ $this, 'ajax_dismiss_notice' ] );
 	}
 
 	/**
@@ -67,7 +65,7 @@ class TInvWL_Admin_Notices {
 	 *
 	 * @return void
 	 */
-	function ajax_dismiss_notice() {
+	public function ajax_dismiss_notice(): void {
 		if ( check_admin_referer( 'tinvwl_admin_dismiss_notice', 'nonce' ) && isset( $_REQUEST['tinvwl_type'] ) ) {
 
 			$notice_type = sanitize_key( $_REQUEST['tinvwl_type'] );
@@ -86,7 +84,7 @@ class TInvWL_Admin_Notices {
 	 *
 	 * @return false|int
 	 */
-	function get_first_wishlist_date() {
+	public function get_first_wishlist_date() {
 		global $wpdb;
 
 		$date = $wpdb->get_var( "SELECT `date` FROM `{$this->table}` ORDER BY `ID` ASC" );
@@ -103,7 +101,7 @@ class TInvWL_Admin_Notices {
 	 *
 	 * @return void
 	 */
-	function add_notices() {
+	public function add_notices() {
 		global $current_user;
 
 		if ( strtotime( '14 days', $this->activation_date ) > strtotime( 'now' ) ) {
@@ -176,7 +174,7 @@ class TInvWL_Admin_Notices {
 							<br/>
 							<?php _e( "Could you please give it a 5-star rating on WordPress? Your feedback will boost our motivation and help us promote and continue to improve this product.", 'ti-woocommerce-wishlist' ); ?>
 						</p>
-						<a href="<?php echo self::REVIEW_URL; ?>" target="_blank" data-link="follow"
+						<a href="<?php echo self::TINVWL_REVIEW_URL; ?>" target="_blank" data-link="follow"
 						   class="button-secondary tinvwl-notice-dismiss" style="margin-right: 10px;">
 							<span class="dashicons dashicons-star-filled"
 								  style="color: #E6B800;font-size: 14px;line-height: 1.9;margin-left: -4px;"></span>

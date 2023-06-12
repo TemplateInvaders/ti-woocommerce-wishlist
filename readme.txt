@@ -15,7 +15,7 @@ Let your customers save and share their favorite products!
 
 = Increase Sales and Conversions =
 
-Are you looking to **boost sales** on your WooCommerce site? Look no further than **WooCommerce Wishlist!** Our **powerful tool** is designed to **increase conversions** and **drive more traffic** to your site. By allowing customers to **save products for later**, they are more likely to return and make a purchase. Plus, the **easy and convenient process** of adding products to a wishlist can encourage customers to **buy even more products** than they planned. And with the ability to **share wishlists**, you can attract new potential customers and **increase your site's visibility**. Don't miss out on the opportunity to boost sales. Try **WooCommerce Wishlist** today and **watch your business grow!**
+Boost your WooCommerce sales with the TI WooCommerce Wishlist plugin. This powerful tool allows your customers to save their favorite products for later, increasing the likelihood of return visits and purchases. The wishlist feature is easy to use and can encourage customers to buy more products than they initially planned. Plus, the ability to share wishlists can attract new potential customers and increase your site’s visibility. 
 
 🔗 [Live Preview](https://wishlist2.templateinvaders.com/?utm_source=wordpressorg&utm_content=preview)
 
@@ -47,7 +47,7 @@ Are you looking to **boost sales** on your WooCommerce site? Look no further tha
 
 = Premium Features =
 
-TI WooCommerce Wishlist Premium version is a powerful marketing tool on top of a wishlist functionality!
+Upgrade to the TI WooCommerce Wishlist Premium version for even more powerful marketing tools!
 
 ➡ **[GET PREMIUM VERSION NOW!](https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=wordpressorg&utm_content=get_premium)**
 

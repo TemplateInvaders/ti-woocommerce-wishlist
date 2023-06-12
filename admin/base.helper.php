@@ -2,14 +2,12 @@
 /**
  * Basic admin helper class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin\Helper
+ * @package TInvWishlist\Admin\Helper
+ * @since 1.0.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Basic admin helper class
@@ -21,31 +19,32 @@ abstract class TInvWL_Admin_Base {
 	 *
 	 * @var string
 	 */
-	public $_name;
+	public string $_name;
+
 	/**
 	 * Plugin version
 	 *
 	 * @var string
 	 */
-	public $_version;
+	public string $_version;
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $plugin_name Plugin name.
-	 * @param string $version Plugin version.
+	 * @param string $_name Plugin name.
+	 * @param string $_version Plugin version.
 	 */
-	function __construct( $plugin_name, $version ) {
-		$this->_name    = $plugin_name;
-		$this->_version = $version;
+	public function __construct( string $_name, string $_version ) {
+		$this->_name    = $_name;
+		$this->_version = $_version;
 		$this->load_function();
 	}
 
 	/**
 	 * Load function
 	 */
-	function load_function() {
-
+	protected function load_function(): void {
+		// To be implemented in child classes
 	}
 
 	/**
@@ -57,13 +56,13 @@ abstract class TInvWL_Admin_Base {
 	 *
 	 * @return string
 	 */
-	public function admin_url( $page, $cat = '', $arg = array() ) {
+	public function admin_url( string $page, string $cat = '', array $arg = [] ): string {
 		$protocol = is_ssl() ? 'https' : 'http';
 		$glue     = '-';
-		$params   = array(
-			'page' => implode( $glue, array_filter( array( $this->_name, $page ) ) ),
+		$params   = [
+			'page' => implode( $glue, array_filter( [ $this->_name, $page ] ) ),
 			'cat'  => $cat,
-		);
+		];
 		if ( is_array( $arg ) ) {
 			$params = array_merge( $params, $arg );
 		}
@@ -79,23 +78,21 @@ abstract class TInvWL_Admin_Base {
 	/**
 	 * Basic print admin page. By attributes page and cat, determined sub function for print
 	 *
-	 * @return boolean
 	 */
 	public function _print_() {
-
 		$default = 'general';
-		$params  = filter_input_array( INPUT_GET, array(
+		$params  = filter_input_array( INPUT_GET, [
 			'page' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'cat'  => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'id'   => FILTER_VALIDATE_INT,
-		) );
-		extract( $params ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.extract
+		] );
+		extract( $params );
 
 		$glue      = '-';
 		$page      = explode( $glue, $page );
 		$page_last = array_shift( $page );
 		if ( $this->_name != $page_last ) { // WPCS: loose comparison ok.
-			return false;
+			return;
 		}
 
 		$cat  = empty( $cat ) ? $default : $cat;
@@ -109,10 +106,8 @@ abstract class TInvWL_Admin_Base {
 		} else {
 			$function_name = __FUNCTION__ . $default;
 			if ( method_exists( $this, $function_name ) ) {
-				return $this->$function_name( $cat );
+				return $this->$function_name( 0, $cat );
 			}
 		}
-
-		return false;
 	}
 }

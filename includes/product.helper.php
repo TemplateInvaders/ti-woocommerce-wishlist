@@ -148,13 +148,13 @@ class TInvWL_Product {
 			'price'        => 0,
 			'in_stock'     => 1,
 		);
-		$data    =  apply_filters( 'tinvwl_wishlist_product_add_field',filter_var_array( $data, array(
+		$data    = apply_filters( 'tinvwl_wishlist_product_add_field', filter_var_array( $data, array(
 			'author'       => FILTER_VALIDATE_INT,
 			'product_id'   => FILTER_VALIDATE_INT,
 			'quantity'     => FILTER_VALIDATE_INT,
 			'variation_id' => FILTER_VALIDATE_INT,
 			'wishlist_id'  => FILTER_VALIDATE_INT,
-		) ));
+		) ) );
 		$data    = array_filter( $data );
 
 		$data = tinv_array_merge( $default, $data );
@@ -583,7 +583,7 @@ class TInvWL_Product {
 			'product_id'   => $product_id,
 			'variation_id' => $variation_id,
 		];
-		$data['formdata'] = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
+		$data['formdata']      = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
 		$data['original_meta'] = $this->prepare_save_meta( $original_meta, $data['product_id'], $data['variation_id'] );
 
 		$sql  = "DELETE FROM $this->table WHERE `wishlist_id` = %d AND `product_id` = %d AND `variation_id` = %d";
@@ -635,7 +635,7 @@ class TInvWL_Product {
 	 *
 	 * @param integer $product_id Product id.
 	 *
-	 * @return boolean
+	 * @return bool|array
 	 * @global wpdb $wpdb
 	 *
 	 */
@@ -654,9 +654,7 @@ class TInvWL_Product {
 
 		$wl = new TInvWL_Wishlist();
 
-		$wishlist = $wl->get_by_id( $result[0]['wishlist_id'] );
-
-		return $wishlist;
+		return $wl->get_by_id( $result[0]['wishlist_id'] );
 	}
 
 	/**

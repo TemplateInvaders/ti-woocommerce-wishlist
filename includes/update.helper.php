@@ -6,81 +6,73 @@
  * @package           TInvWishlist
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Update plugin class
+ * Update plugin class.
  */
 class TInvWL_Update {
-
 	/**
-	 * Plugin name
+	 * Plugin name.
 	 *
 	 * @var string
 	 */
-	private $_name;
+	private string $_name;
 
 	/**
-	 * Version
+	 * Current version.
 	 *
 	 * @var string
 	 */
-	public $_version;
+	private string $_version;
 
 	/**
-	 * Previous Version
+	 * Previous version.
 	 *
 	 * @var string
 	 */
-	public $_prev;
+	private string $_prev;
 
 	/**
-	 * Regular expression for sorting version function
+	 * Regular expression for sorting version function.
 	 *
 	 * @var string
 	 */
-	const REGEXP = '/^up_/i';
+	private const REGEXP = '/^up_/i';
 
 	/**
-	 * Get update methods and apply
+	 * TInvWL_Update constructor.
 	 *
-	 * @param string $version Version.
-	 * @param string $previous_version Previous Version.
+	 * Get update methods and apply.
 	 *
-	 * @return boolean
+	 * @param string $version Current version.
+	 * @param string $previous_version Previous version.
 	 */
-	function __construct( $version, $previous_version = 0 ) {
-		$lists          = get_class_methods( $this );
+	public function __construct( string $version, string $previous_version = '0' ) {
 		$this->_name    = TINVWL_PREFIX;
 		$this->_version = $version;
 		$this->_prev    = $previous_version;
-		$lists          = array_filter( $lists, array( $this, 'filter' ) );
-		if ( empty( $lists ) ) {
-			return false;
-		}
-		uasort( $lists, array( $this, 'sort' ) );
-		foreach ( $lists as $method ) {
-			call_user_func( array( $this, $method ), $previous_version );
-		}
+		$methods        = array_filter( get_class_methods( $this ), [ $this, 'filter' ] );
 
-		return true;
+		if ( ! empty( $methods ) ) {
+			uasort( $methods, [ $this, 'sort' ] );
+			foreach ( $methods as $method ) {
+				call_user_func( [ $this, $method ], $previous_version );
+			}
+		}
 	}
 
 	/**
-	 * Filter methods
+	 * Filter methods.
 	 *
 	 * @param string $method Method name from this class.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function filter( $method ) {
-		if ( ! preg_match( self::REGEXP, $method ) ) {
-			return false;
-		}
-		if ( version_compare( $this->_prev, $this->prepare( $method ), 'ge' ) ) {
+	public function filter( string $method ): bool {
+		if ( ! preg_match( self::REGEXP, $method ) ||
+		     version_compare( $this->_prev, $this->prepare( $method ), 'ge' ) ) {
 			return false;
 		}
 
@@ -88,105 +80,101 @@ class TInvWL_Update {
 	}
 
 	/**
-	 * Sort methods
+	 * Sort methods.
 	 *
 	 * @param string $method1 Method name first from this class.
 	 * @param string $method2 Method name second from this class.
 	 *
-	 * @return bool
+	 * @return int
 	 */
-	public function sort( $method1, $method2 ) {
+	public function sort( string $method1, string $method2 ): int {
 		return version_compare( $this->prepare( $method1 ), $this->prepare( $method2 ) );
 	}
 
 	/**
-	 * Conver method name to version
+	 * Convert method name to version.
 	 *
 	 * @param string $method Method name from this class.
 	 *
 	 * @return string
 	 */
-	public function prepare( $method ) {
-		$method = preg_replace( self::REGEXP, '', $method );
-		$method = str_replace( '_', '.', $method );
-
-		return $method;
+	public function prepare( string $method ): string {
+		return str_replace( '_', '.', preg_replace( self::REGEXP, '', $method ) );
 	}
 
 	/**
-	 * Example of the method updating
+	 * Example of the method updating.
 	 *
-	 * @param string $previous_version Previous Version.
+	 * @param string $previous_version Previous version.
 	 */
-	function up_0_0_0( $previous_version = 0 ) {
-
+	public function up_0_0_0( string $previous_version = '0' ): void {
+		// Empty method used for demonstration.
 	}
 
 	/**
-	 * Set runed wizard
+	 * Set runed wizard.
 	 *
-	 * @param string $previous_version Previous version value.
+	 * @param string $previous_version Previous version.
 	 */
-	function up_1_1_10_1( $previous_version = 0 ) {
+	public function up_1_1_10_1( string $previous_version = '0' ): void {
 		update_option( 'tinvwl_wizard', true );
 	}
 
 	/**
-	 * Fix name field
+	 * Fix name field.
 	 */
-	function up_p_1_5_4() {
-		if ( $value = tinv_get_option( 'product_table', 'add_to_card' ) ) {
-			tinv_update_option( 'product_table', 'add_to_cart', $value );
-		}
-		if ( $value = tinv_get_option( 'product_table', 'text_add_to_card' ) ) {
-			tinv_update_option( 'product_table', 'text_add_to_cart', $value );
-		}
-		if ( $value = tinv_get_option( 'table', 'add_select_to_card' ) ) {
-			tinv_update_option( 'table', 'add_select_to_cart', $value );
-		}
-		if ( $value = tinv_get_option( 'table', 'text_add_select_to_card' ) ) {
-			tinv_update_option( 'table', 'text_add_select_to_cart', $value );
-		}
-		if ( $value = tinv_get_option( 'table', 'add_all_to_card' ) ) {
-			tinv_update_option( 'table', 'add_all_to_cart', $value );
-		}
-		if ( $value = tinv_get_option( 'table', 'text_add_all_to_card' ) ) {
-			tinv_update_option( 'table', 'text_add_all_to_cart', $value );
+	public function up_p_1_5_4(): void {
+		$options = [
+			'add_to_card'             => 'add_to_cart',
+			'text_add_to_card'        => 'text_add_to_cart',
+			'add_select_to_card'      => 'add_select_to_cart',
+			'text_add_select_to_card' => 'text_add_select_to_cart',
+			'add_all_to_card'         => 'add_all_to_cart',
+			'text_add_all_to_card'    => 'text_add_all_to_cart'
+		];
+
+		foreach ( $options as $oldOption => $newOption ) {
+			if ( $value = tinv_get_option( 'product_table', $oldOption ) ) {
+				tinv_update_option( 'product_table', $newOption, $value );
+			}
+			if ( $value = tinv_get_option( 'table', $oldOption ) ) {
+				tinv_update_option( 'table', $newOption, $value );
+			}
 		}
 	}
 
 	/**
 	 * Clean up empty wishlists.
 	 */
-	function up_p_1_6_1() {
+	public function up_p_1_6_1(): void {
 		global $wpdb;
-		$wishlists_table       = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
-		$wishlists_items_table = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
-		$sql                   = "DELETE FROM wl USING `{$wishlists_table}` AS wl WHERE NOT EXISTS( SELECT * FROM `{$wishlists_items_table}` WHERE {$wishlists_items_table}.wishlist_id = wl.ID ) AND wl.type='default'";
-		$wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+		$wishlistTable      = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'lists' );
+		$wishlistItemsTable = sprintf( '%s%s_%s', $wpdb->prefix, $this->_name, 'items' );
+		$sql                = "DELETE FROM wl USING `{$wishlistTable}` AS wl WHERE NOT EXISTS( SELECT * FROM `{$wishlistItemsTable}` WHERE {$wishlistItemsTable}.wishlist_id = wl.ID ) AND wl.type='default'";
+		$wpdb->get_results( $sql, ARRAY_A );
 	}
 
 	/**
 	 * Buttons class fallback.
 	 */
-	function up_p_1_8_9() {
-		$class = tinv_get_option( 'add_to_wishlist_catalog', 'class' );
-		if ( 'button' == tinv_get_option( 'add_to_wishlist_catalog', 'type' ) && empty( $class ) ) {
+	public function up_p_1_8_9(): void {
+		$catalogClass  = tinv_get_option( 'add_to_wishlist_catalog', 'class' );
+		$wishlistClass = tinv_get_option( 'add_to_wishlist', 'class' );
+
+		if ( 'button' == tinv_get_option( 'add_to_wishlist_catalog', 'type' ) && empty( $catalogClass ) ) {
 			tinv_update_option( 'add_to_wishlist_catalog', 'class', 'button tinvwl-button' );
 		}
 
-		$class = tinv_get_option( 'add_to_wishlist', 'class' );
-		if ( 'button' == tinv_get_option( 'add_to_wishlist', 'type' ) && empty( $class ) ) {
+		if ( 'button' == tinv_get_option( 'add_to_wishlist', 'type' ) && empty( $wishlistClass ) ) {
 			tinv_update_option( 'add_to_wishlist', 'class', 'button tinvwl-button' );
 		}
 	}
 
 	/**
-	 * Buttons class fallback.
+	 * Schedule event to flush rewrite rules.
 	 */
-	function up_1_16_1() {
-		{
-			wp_schedule_single_event( time(), 'tinvwl_flush_rewrite_rules' );
-		}
+	public function up_1_16_1(): void {
+		wp_schedule_single_event( time(), 'tinvwl_flush_rewrite_rules' );
 	}
+
 }

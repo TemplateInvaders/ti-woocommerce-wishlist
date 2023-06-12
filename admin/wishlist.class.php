@@ -2,52 +2,50 @@
 /**
  * Admin wishlists page class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin
+ * @package TInvWishlist\Admin
+ * @since 2.6.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Admin wishlists page class
  */
 class TInvWL_Admin_Wishlist extends TInvWL_Admin_BaseSection {
-
 	/**
 	 * Priority for admin menu
 	 *
-	 * @var integer
+	 * @var int
 	 */
-	public $priority = 30;
+	public int $priority = 30;
 
 	/**
-	 * Menu array
+	 * Returns menu array
 	 *
 	 * @return array
 	 */
-	function menu() {
-		return array(
+	public function menu(): array {
+		return [
 			'title'      => __( 'Wishlists', 'ti-woocommerce-wishlist' ),
-			'method'     => array( $this, '_print_' ),
+			'method'     => [ $this, '_print_' ],
 			'slug'       => 'wishlists',
 			'capability' => 'tinvwl_wishlists',
-			'roles'      => array( 'administrator', 'shop_manager' ),
-		);
+			'roles'      => [ 'administrator', 'shop_manager' ],
+		];
 	}
 
 	/**
 	 * General page wishlists
 	 *
-	 * @param integer $id Id parameter.
+	 * @param int $id Id parameter.
 	 * @param string $cat Category parameter.
 	 */
-	function _print_general( $id = 0, $cat = '' ) {
-		$data = array(
-			'_header' => __( 'Manage wishlists', 'ti-woocommerce-wishlist' ).'<sup>* '.__( 'premium only', 'ti-woocommerce-wishlist' ).'</sup>',
-		);
+	public function _print_general( int $id = 0, string $cat = '' ): void {
+		$data = [
+			'_header' => __( 'Manage wishlists', 'ti-woocommerce-wishlist' ) . '<sup>* ' . __( 'premium only', 'ti-woocommerce-wishlist' ) . '</sup>',
+		];
+
 		$data = apply_filters( 'tinvwl_wishlist_general', $data );
 		TInvWL_View::render( 'wishlists', $data );
 	}

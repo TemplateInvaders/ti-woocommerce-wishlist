@@ -1,45 +1,41 @@
 <?php
 /**
- * Social actions buttons functional
+ * Social actions buttons functionality.
  *
  * @since             1.0.0
  * @package           TInvWishlist\Public
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Social actions buttons functional
+ * Social actions buttons functionality.
  */
 class TInvWL_Public_Wishlist_Social {
-
 	/**
-	 * Share url this wishlist
+	 * Share URL of this wishlist.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
-	static $url;
+	private static ?string $url;
 
 	/**
-	 * Image url
+	 * Image URL.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
-	static $image;
+	private static ?string $image;
 
 	/**
-	 * First run method
+	 * First run method.
 	 *
 	 * @param array $wishlist Set from action.
 	 *
-	 * @return boolean
+	 * @return void
 	 */
-	public static function init( $wishlist ) {
+	public static function init( array $wishlist ): void {
 		if ( empty( $wishlist ) || 'private' === $wishlist['status'] ) {
-			return false;
+			return;
 		}
 
 		self::$image = TInvWL_Public_Wishlist_View::instance()->social_image;
@@ -49,7 +45,7 @@ class TInvWL_Public_Wishlist_Social {
 	}
 
 	/**
-	 * Output social buttons.
+	 * Outputs social buttons.
 	 *
 	 * @param array $wishlist Set from action.
 	 *
@@ -60,28 +56,25 @@ class TInvWL_Public_Wishlist_Social {
 
 		$share_on      = apply_filters( 'tinvwl_share_on_text', tinv_get_option( 'social', 'share_on' ) );
 		$social_titles = [];
+
 		foreach ( $social as $name => $soc_network ) {
-			if ( $soc_network && method_exists( __CLASS__, $name ) ) {
+			if ( $soc_network && method_exists( self::class, $name ) ) {
 				$social[ $name ]        = self::$name();
 				$social_titles[ $name ] = self::$name( true );
 				if ( 'clipboard' === $name ) {
 					wp_enqueue_script( 'tinvwl-clipboard' );
 				}
 			} else {
-				$social[ $name ] = '';
+				unset( $social[ $name ] );
 			}
 		}
 
-		$social = apply_filters(
-			'tinvwl_view_social',
-			$social,
-			[
-				'wishlist' => $wishlist,
-				'image'    => self::$image,
-				'url'      => self::$url,
-			]
-		);
-		$social = array_filter( $social );
+		$social = apply_filters( 'tinvwl_view_social', $social, [
+			'wishlist' => $wishlist,
+			'image'    => self::$image,
+			'url'      => self::$url
+		] );
+
 		if ( empty( $social ) ) {
 			return;
 		}
@@ -92,130 +85,75 @@ class TInvWL_Public_Wishlist_Social {
 			'share_on'      => $share_on,
 		];
 
-		tinv_wishlist_template(
-			'ti-wishlist-social.php',
-			apply_filters( 'tinvwl_social_share_data', $data, $wishlist )
-		);
+		tinv_wishlist_template( 'ti-wishlist-social.php', apply_filters( 'tinvwl_social_share_data', $data, $wishlist ) );
 	}
 
 	/**
-	 * Create facebook share url
+	 * Creates Facebook share URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function facebook( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'Facebook', 'ti-woocommerce-wishlist' );
-		}
-
-		$data = array(
-			'u' => self::$url,
-		);
-
-		$data = apply_filters( 'tinvwl_social_link_facebook', $data );
-
-		return 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( $data );
+	public static function facebook( bool $title = false ): string {
+		return $title ? esc_html__( 'Facebook', 'ti-woocommerce-wishlist' ) : 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( apply_filters( 'tinvwl_social_link_facebook', [ 'u' => self::$url ] ) );
 	}
 
 	/**
-	 * Create twitter share url
+	 * Creates Twitter share URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function twitter( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'Twitter', 'ti-woocommerce-wishlist' );
-		}
-
-		$data = array(
-			'url' => self::$url,
-		);
-
-		$data = apply_filters( 'tinvwl_social_link_twitter', $data );
-
-		return 'https://twitter.com/share?' . http_build_query( $data );
+	public static function twitter( bool $title = false ): string {
+		return $title ? esc_html__( 'Twitter', 'ti-woocommerce-wishlist' ) : 'https://twitter.com/share?' . http_build_query( apply_filters( 'tinvwl_social_link_twitter', [ 'url' => self::$url ] ) );
 	}
 
 	/**
-	 * Create pinterest share url
+	 * Creates Pinterest share URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function pinterest( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'Pinterest', 'ti-woocommerce-wishlist' );
-		}
-
-		$data = array(
-			'url'   => self::$url,
-			'media' => self::$image,
-		);
-
-		$data = apply_filters( 'tinvwl_social_link_pinterest', $data );
-
-		return 'http://pinterest.com/pin/create/button/?' . http_build_query( $data );
+	public static function pinterest( bool $title = false ): string {
+		return $title ? esc_html__( 'Pinterest', 'ti-woocommerce-wishlist' ) : 'http://pinterest.com/pin/create/button/?' . http_build_query( apply_filters( 'tinvwl_social_link_pinterest', [
+				'url'   => self::$url,
+				'media' => self::$image
+			] ) );
 	}
 
 	/**
-	 * Create email share url
+	 * Creates email share URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function email( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'Email', 'ti-woocommerce-wishlist' );
-		}
-
-		$data = array(
-			'body' => self::$url,
-		);
-
-		$data = apply_filters( 'tinvwl_social_link_email', $data );
-
-		return 'mailto:' . apply_filters( 'tinvwl_social_link_email_recepient', '' ) . '?' . http_build_query( $data );
+	public static function email( bool $title = false ): string {
+		return $title ? esc_html__( 'Email', 'ti-woocommerce-wishlist' ) : 'mailto:' . apply_filters( 'tinvwl_social_link_email_recepient', '' ) . '?' . http_build_query( apply_filters( 'tinvwl_social_link_email', [ 'body' => self::$url ] ) );
 	}
 
 	/**
-	 * Create copy to clipboard url
+	 * Creates clipboard URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function clipboard( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'Clipboard', 'ti-woocommerce-wishlist' );
-		}
-
-		return self::$url;
+	public static function clipboard( bool $title = false ): string {
+		return $title ? esc_html__( 'Clipboard', 'ti-woocommerce-wishlist' ) : self::$url;
 	}
 
 	/**
-	 * Create WhatsApp share url
+	 * Creates WhatsApp share URL.
 	 *
-	 * @param bool $title return title for translation.
+	 * @param bool $title Return title for translation.
 	 *
 	 * @return string
 	 */
-	public static function whatsapp( $title = false ) {
-		if ( $title ) {
-			return esc_html__( 'WhatsApp', 'ti-woocommerce-wishlist' );
-		}
-
-		$data = array(
-			'text' => self::$url,
-		);
-
-		$data = apply_filters( 'tinvwl_social_link_whatsapp', $data );
-
-		return 'https://api.whatsapp.com/send?' . http_build_query( $data );
+	public static function whatsapp( bool $title = false ): string {
+		return $title ? esc_html__( 'WhatsApp', 'ti-woocommerce-wishlist' ) : 'https://api.whatsapp.com/send?' . http_build_query( apply_filters( 'tinvwl_social_link_whatsapp', [ 'text' => self::$url ] ) );
 	}
 }

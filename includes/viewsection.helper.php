@@ -578,9 +578,6 @@ class TInvWL_ViewSection extends TInvWL_View {
 				}
 			}
 		}
-		if ( empty( $result ) ) {
-			return null;
-		}
 
 		return $result;
 	}

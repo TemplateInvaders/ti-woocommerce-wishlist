@@ -2,26 +2,23 @@
 /**
  * Basic admin section helper class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin\Helper
+ * @package TInvWishlist\Admin\Helper
+ * @since 1.0.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Basic admin section helper class
  */
 abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
-
 	/**
 	 * Priority for admin menu
 	 *
-	 * @var integer
+	 * @var int
 	 */
-	public $priority = 10;
+	public int $priority = 10;
 
 	/**
 	 * Constructor
@@ -29,12 +26,12 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 * @param string $plugin_name Plugin name.
 	 * @param string $version Plugin version.
 	 */
-	function __construct( $plugin_name, $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 		$this->_name    = $plugin_name;
 		$this->_version = $version;
 		$menu           = $this->menu();
 		if ( ! empty( $menu ) ) {
-			add_filter( 'tinvwl_admin_menu', array( $this, 'adminmenu' ), $this->priority );
+			add_filter( 'tinvwl_admin_menu', [ $this, 'adminmenu' ], $this->priority );
 		}
 		$this->load_function();
 	}
@@ -46,10 +43,9 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 *
 	 * @return array
 	 */
-	function adminmenu( $data ) {
-
+	public function adminmenu( array $data ): array {
 		if ( ! is_array( $data ) ) {
-			$data = array();
+			$data = [];
 		}
 
 		$data[] = $this->menu();
@@ -60,30 +56,28 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	/**
 	 * Menu array
 	 */
-	function menu() {
-
-	}
+	abstract public function menu(): array;
 
 	/**
 	 * Load function. Default load form for sections
 	 */
-	function load_function() {
+	public function load_function(): void {
 		$this->form();
 	}
 
 	/**
 	 * General print
 	 *
-	 * @param integer $id Id parameter.
+	 * @param int $id Id parameter.
 	 * @param string $cat Category parameter.
 	 */
-	function _print_general( $id = 0, $cat = '' ) {
+	public function _print_general( int $id = 0, string $cat = '' ): void {
 		$title  = $this->menu();
 		$slug   = $title['slug'];
-		$title  = isset( $title['page_title'] ) ? $title['page_title'] : $title['title'];
-		$data   = array(
+		$title  = $title['page_title'] ?? $title['title'];
+		$data   = [
 			'_header' => $title,
-		);
+		];
 		$method = $cat . '_data';
 		if ( ! method_exists( $this, $method ) ) {
 			$method = 'constructor_data';
@@ -122,8 +116,8 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 *
 	 * @return array
 	 */
-	function get_defaults( $sections ) {
-		$defaults = array();
+	public function get_defaults( array $sections ): array {
+		$defaults = [];
 		if ( ! is_array( $sections ) ) {
 			return $defaults;
 		}
@@ -140,7 +134,7 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 			}
 			$id = array_key_exists( 'id', $section ) ? $section['id'] : '';
 			if ( ! array_key_exists( $id, $defaults ) ) {
-				$defaults[ $id ] = array();
+				$defaults[ $id ] = [];
 			}
 			foreach ( $fields as $field ) {
 				$name = array_key_exists( 'name', $field ) ? $field['name'] : '';
@@ -159,19 +153,20 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	/**
 	 * Form for section
 	 */
-	function form() {
-		add_filter( 'tinvwl_section_before', array( $this, 'start_form' ) );
-		add_filter( 'tinvwl_section_after', array( $this, 'end_form' ) );
+	public function form(): void {
+		add_filter( 'tinvwl_section_before', [ $this, 'start_form' ] );
+		add_filter( 'tinvwl_section_after', [ $this, 'end_form' ] );
 	}
 
 	/**
 	 * Form start for section
 	 *
-	 * @param string $content Sections content.
+	 * @param string|null $content Sections content.
 	 *
 	 * @return string
 	 */
-	function start_form( $content ) {
+	function start_form( ?string $content = '' ): string {
+		$content = $content ?? '';
 		$content .= '<form method="POST" autocomplete="off">';
 
 		return $content;
@@ -184,7 +179,7 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 *
 	 * @return string
 	 */
-	function end_form( $content ) {
+	public function end_form( string $content = '' ): string {
 		$content .= '</form>';
 
 		return $content;
@@ -197,10 +192,10 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 *
 	 * @return array
 	 */
-	function constructor_load( $sections ) {
+	public function constructor_load( array $sections ): array {
 		$sections = $this->get_defaults( $sections );
 		$sections = array_keys( $sections );
-		$data     = array();
+		$data     = [];
 		foreach ( $sections as $section ) {
 			$data[ $section ] = tinv_get_option( $section );
 		}
@@ -213,9 +208,9 @@ abstract class TInvWL_Admin_BaseSection extends TInvWL_Admin_Base {
 	 *
 	 * @param array $data Post section data.
 	 */
-	function constructor_save( $data ) {
+	public function constructor_save( array $data ): void {
 		if ( empty( $data ) || ! is_array( $data ) ) {
-			return false;
+			return;
 		}
 		foreach ( $data as $key => $value ) {
 			tinv_update_option( $key, '', $value );

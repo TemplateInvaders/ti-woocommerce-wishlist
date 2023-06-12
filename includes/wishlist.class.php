@@ -289,12 +289,12 @@ class TInvWL_Wishlist {
 	 *
 	 * @param integer $id id database wishlist.
 	 *
-	 * @return array
+	 * @return array|bool
 	 */
 	function get_by_id( $id ) {
 		$id = absint( $id );
 		if ( empty( $id ) ) {
-			return null;
+			return false;
 		}
 
 		$wishlists = $this->get( array( 'ID' => $id ) );
@@ -312,7 +312,7 @@ class TInvWL_Wishlist {
 	 */
 	function get_by_share_key( $share_key ) {
 		if ( ! preg_match( '/[a-f0-9]{6}/i', $share_key ) ) {
-			return null;
+			return array();
 		}
 		$wishlists = $this->get( array( 'share_key' => $share_key ) );
 		$wishlist  = array_shift( $wishlists );

@@ -2,47 +2,44 @@
 /**
  * Admin settings class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin
- * @subpackage        Settings
+ * @package TInvWishlist\Admin
+ * @subpackage Settings
+ * @since 1.0.0
  */
 
 // If this file is called directly, abort.
-if (!defined('ABSPATH')) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Admin settings class
  */
-class TInvWL_Admin_Settings_Integrations extends TInvWL_Admin_BaseSection
-{
+class TInvWL_Admin_Settings_Integrations extends TInvWL_Admin_BaseSection {
 
 	/**
 	 * Priority for admin menu
 	 *
-	 * @var integer
+	 * @var int
 	 */
-	public $priority = 110;
+	public int $priority = 110;
 
 	/**
 	 * This class
 	 *
-	 * @var \TInvWL_Admin_Settings_Integrations
+	 * @var TInvWL_Admin_Settings_Integrations
 	 */
-	protected static $_instance = null;
+	protected static ?self $_instance = null;
 
 	/**
 	 * Get this class object
 	 *
 	 * @param string $plugin_name Plugin name.
+	 * @param string $plugin_version Plugin version.
 	 *
-	 * @return \TInvWL_Admin_Settings_Integrations
+	 * @return TInvWL_Admin_Settings_Integrations
 	 */
-	public static function instance($plugin_name = TINVWL_PREFIX, $plugin_version = TINVWL_FVERSION)
-	{
-		if (is_null(self::$_instance)) {
-			self::$_instance = new self($plugin_name, $plugin_version);
+	public static function instance( string $plugin_name = TINVWL_PREFIX, string $plugin_version = TINVWL_FVERSION ): self {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self( $plugin_name, $plugin_version );
 		}
 
 		return self::$_instance;
@@ -53,15 +50,14 @@ class TInvWL_Admin_Settings_Integrations extends TInvWL_Admin_BaseSection
 	 *
 	 * @return array
 	 */
-	function menu()
-	{
-		return array(
-			'title' => __('Integrations', 'ti-woocommerce-wishlist'),
-			'page_title' => __('Wishlist Integrations with 3rd party plugins and themes', 'ti-woocommerce-wishlist'),
-			'method' => array($this, '_print_'),
-			'slug' => 'integrations-settings',
+	public function menu(): array {
+		return [
+			'title'      => __( 'Integrations', 'ti-woocommerce-wishlist' ),
+			'page_title' => __( 'Wishlist Integrations with 3rd party plugins and themes', 'ti-woocommerce-wishlist' ),
+			'method'     => [ $this, '_print_' ],
+			'slug'       => 'integrations-settings',
 			'capability' => 'tinvwl_integrations_settings',
-		);
+		];
 	}
 
 	/**
@@ -69,59 +65,51 @@ class TInvWL_Admin_Settings_Integrations extends TInvWL_Admin_BaseSection
 	 *
 	 * @return array
 	 */
-	function constructor_data()
-	{
-
+	public function constructor_data(): array {
 		global $tinvwl_integrations;
-		$fields = array();
+		$fields = [];
 
-		if (is_array($tinvwl_integrations)) {
-			foreach ($tinvwl_integrations as $slug => $settings) {
+		if ( is_array( $tinvwl_integrations ) ) {
+			foreach ( $tinvwl_integrations as $slug => $settings ) {
+				$disabled = ( $settings['available'] ) ? [] : [ 'disabled' => 'disabled' ];
 
-				$disabled = ($settings['available']) ? array() : array('disabled' => 'disabled');
-
-				$fields[] = array(
-					'type' => 'checkboxonoff',
-					'name' => $slug,
-					'text' => $settings['name'],
-					'std' => true,
+				$fields[] = [
+					'type'  => 'checkboxonoff',
+					'name'  => $slug,
+					'text'  => $settings['name'],
+					'std'   => true,
 					'extra' => $disabled,
-				);
+				];
 			}
 		}
 
-		$settings = array(
-
-			array(
-				'id' => 'integrations',
-				'title' => __('Available Integrations', 'ti-woocommerce-wishlist'),
+		$settings = [
+			[
+				'id'         => 'integrations',
+				'title'      => __( 'Available Integrations', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
-				'fields' => $fields,
-				'desc' => __('You can disable built-in integrations with 3rd party plugins and themes.', 'ti-woocommerce-wishlist'),
-			),
-
-		);
-
-
-		// Buttons.
-		$settings[] = array(
-			'id' => 'save_buttons',
-			'class' => 'only-button',
-			'noform' => true,
-			'fields' => array(
-				array(
-					'type' => 'button_submit',
-					'name' => 'setting_save',
-					'std' => '<span><i class="ftinvwl ftinvwl-check"></i></span>' . __('Save Settings', 'ti-woocommerce-wishlist'),
-					'extra' => array('class' => 'tinvwl-btn split status-btn-ok'),
-				),
-				array(
-					'type' => 'button_submit_quick',
-					'name' => 'setting_save_quick',
-					'std' => '<span><i class="ftinvwl ftinvwl-floppy-o"></i></span>' . __('Save', 'ti-woocommerce-wishlist'),
-				),
-			),
-		);
+				'fields'     => $fields,
+				'desc'       => __( 'You can disable built-in integrations with 3rd party plugins and themes.', 'ti-woocommerce-wishlist' ),
+			],
+			[
+				'id'     => 'save_buttons',
+				'class'  => 'only-button',
+				'noform' => true,
+				'fields' => [
+					[
+						'type'  => 'button_submit',
+						'name'  => 'setting_save',
+						'std'   => '<span><i class="ftinvwl ftinvwl-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
+						'extra' => [ 'class' => 'tinvwl-btn split status-btn-ok' ],
+					],
+					[
+						'type' => 'button_submit_quick',
+						'name' => 'setting_save_quick',
+						'std'  => '<span><i class="ftinvwl ftinvwl-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
+					],
+				],
+			],
+		];
 
 		return $settings;
 	}

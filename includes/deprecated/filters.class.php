@@ -6,23 +6,19 @@
  * @package           TInvWishlist
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Deprecated filters plugin class
+ * Class TInvWL_Deprecated_Filters
+ *
+ * This class handles deprecated filters in the plugin.
  */
 class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 
 	/**
-	 * Array of deprecated hooks we need to handle.
-	 * Format of 'new' => 'old'.
-	 *
-	 * @var array
+	 * @var array $deprecated_hooks An array of deprecated hooks that need to be handled.
 	 */
-	protected $deprecated_hooks = array(
+	protected array $deprecated_hooks = [
 		'tinvwl_load_frontend'                       => 'tinvwl-load_frontend',
 		'tinvwl_default_wishlist_title'              => 'tinvwl-general-default_title',
 		'tinvwl_removed_from_wishlist_text'          => 'tinvwl-general-text_removed_from',
@@ -41,14 +37,12 @@ class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 		'tinvwl_remove_from_wishlist_text_loop'      => 'tinvwl-add_to_wishlist_catalog-text_remove',
 		'tinvwl_wishlist_get_item_data'              => 'tinv_wishlist_get_item_data',
 		'tinvwl_message_placeholders'                => 'tinvwl_addtowishlist_message_placeholders',
-	);
+	];
 
 	/**
-	 * Array of versions on each hook has been deprecated.
-	 *
-	 * @var array
+	 * @var array $deprecated_version An array of versions when each hook was deprecated.
 	 */
-	protected $deprecated_version = array(
+	protected array $deprecated_version = [
 		'tinvwl-load_frontend'                       => '1.13.0',
 		'tinvwl-general-default_title'               => '1.13.0',
 		'tinvwl-general-text_removed_from'           => '1.13.0',
@@ -67,28 +61,28 @@ class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 		'tinvwl-add_to_wishlist_catalog-text_remove' => '1.13.0',
 		'tinv_wishlist_get_item_data'                => '1.13.0',
 		'tinvwl_addtowishlist_message_placeholders'  => '2.5.0',
-	);
+	];
 
 	/**
-	 * Hook into the new hook so we can handle deprecated hooks once fired.
+	 * Hooks into the new hook so deprecated hooks can be handled once fired.
 	 *
-	 * @param string $hook_name Hook name.
+	 * @param string $hook_name The name of the hook.
 	 */
-	public function hook_in( $hook_name ) {
-		add_filter( $hook_name, array( $this, 'maybe_handle_deprecated_hook' ), - 1000, 8 );
+	public function hook_in( string $hook_name ): void {
+		add_filter( $hook_name, [ $this, 'maybe_handle_deprecated_hook' ], - 1000, 8 );
 	}
 
 	/**
-	 * If the old hook is in-use, trigger it.
+	 * Triggers the old hook if it is in use.
 	 *
 	 * @param string $new_hook New hook name.
 	 * @param string $old_hook Old hook name.
-	 * @param array $new_callback_args New callback args.
-	 * @param mixed $return_value Returned value.
+	 * @param array $new_callback_args New callback arguments.
+	 * @param mixed $return_value The return value.
 	 *
-	 * @return mixed
+	 * @return mixed The return value after handling the deprecated hook.
 	 */
-	public function handle_deprecated_hook( $new_hook, $old_hook, $new_callback_args, $return_value ) {
+	public function handle_deprecated_hook( string $new_hook, string $old_hook, array $new_callback_args, $return_value ) {
 		if ( has_filter( $old_hook ) ) {
 			$this->display_notice( $old_hook, $new_hook );
 			$return_value = $this->trigger_hook( $old_hook, $new_callback_args );
@@ -98,14 +92,14 @@ class TInvWL_Deprecated_Filters extends TInvWL_Deprecated {
 	}
 
 	/**
-	 * Fire off a legacy hook with it's args.
+	 * Triggers the old hook with its arguments.
 	 *
 	 * @param string $old_hook Old hook name.
-	 * @param array $new_callback_args New callback args.
+	 * @param array $new_callback_args New callback arguments.
 	 *
-	 * @return mixed
+	 * @return mixed The return value of the filter after all hooks are applied to it.
 	 */
-	protected function trigger_hook( $old_hook, $new_callback_args ) {
+	protected function trigger_hook( string $old_hook, array $new_callback_args ) {
 		return apply_filters_ref_array( $old_hook, $new_callback_args );
 	}
 }

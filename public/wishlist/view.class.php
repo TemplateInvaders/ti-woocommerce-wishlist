@@ -347,7 +347,6 @@ class TInvWL_Public_Wishlist_View {
 		if ( is_page( apply_filters( 'wpml_object_id', tinv_get_option( 'page', 'wishlist' ), 'page', true ) ) ) {
 			$wishlist = $this->get_current_wishlist();
 			if ( $wishlist && 0 < $wishlist['ID'] ) {
-				$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
 				if ( 'private' !== $wishlist['status'] && tinv_get_option( 'social', 'facebook' ) ) {
 					if ( is_user_logged_in() ) {
 						$user = get_user_by( 'id', $wishlist['author'] );
@@ -442,6 +441,9 @@ class TInvWL_Public_Wishlist_View {
 		if ( 'private' === $wishlist['status'] && ! $wishlist['is_owner'] ) {
 			return $this->wishlist_null();
 		}
+
+		$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
+
 		if ( 'default' !== $wishlist['type'] && ! tinv_get_option( 'general', 'multi' ) ) {
 			if ( $wishlist['is_owner'] ) {
 				printf( '<p><a href="%s">%s</p><script type="text/javascript">window.location.href="%s"</script>', esc_attr( tinv_url_wishlist_default() ), esc_html__( 'Return to Wishlist', 'ti-woocommerce-wishlist' ), esc_attr( tinv_url_wishlist_default() ) );

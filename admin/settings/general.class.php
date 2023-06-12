@@ -2,15 +2,13 @@
 /**
  * Admin settings class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin
- * @subpackage        Settings
+ * @package TInvWishlist\Admin
+ * @subpackage Settings
+ * @since 1.0.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Admin settings class
@@ -20,25 +18,26 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	/**
 	 * Priority for admin menu
 	 *
-	 * @var integer
+	 * @var int
 	 */
-	public $priority = 20;
+	public int $priority = 20;
 
 	/**
 	 * This class
 	 *
-	 * @var \TInvWL_Admin_Settings_General
+	 * @var TInvWL_Admin_Settings_General
 	 */
-	protected static $_instance = null;
+	protected static ?self $_instance = null;
 
 	/**
 	 * Get this class object
 	 *
 	 * @param string $plugin_name Plugin name.
+	 * @param string $plugin_version Plugin version.
 	 *
-	 * @return \TInvWL_Admin_Settings_General
+	 * @return TInvWL_Admin_Settings_General
 	 */
-	public static function instance( $plugin_name = TINVWL_PREFIX, $plugin_version = TINVWL_FVERSION ) {
+	public static function instance( string $plugin_name = TINVWL_PREFIX, string $plugin_version = TINVWL_FVERSION ): self {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name, $plugin_version );
 		}
@@ -52,11 +51,11 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 * @param string $plugin_name Plugin name.
 	 * @param string $version Plugin version.
 	 */
-	function __construct( $plugin_name, $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 		$this->_name    = $plugin_name;
 		$this->_version = $version;
 		parent::__construct( $plugin_name, $version );
-		add_action( 'tinvwl_section_before', array( $this, 'premium_features' ), 9 );
+		add_filter( 'tinvwl_section_before', [ $this, 'premium_features' ], 9 );
 	}
 
 	/**
@@ -64,13 +63,13 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function menu() {
-		return array(
+	public function menu(): array {
+		return [
 			'title'      => __( 'General Settings', 'ti-woocommerce-wishlist' ),
-			'method'     => array( $this, '_print_' ),
+			'method'     => [ $this, '_print_' ],
 			'slug'       => '',
 			'capability' => 'tinvwl_general_settings',
-		);
+		];
 	}
 
 	/**
@@ -78,9 +77,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	public function get_wp_menus() {
-		$menus     = array( '' => __( 'None', 'ti-woocommerce-wishlist' ) );
-		$get_menus = get_terms( 'nav_menu', array( 'hide_empty' => true ) );
+	public function get_wp_menus(): array {
+		$menus     = [ '' => __( 'None', 'ti-woocommerce-wishlist' ) ];
+		$get_menus = get_terms( 'nav_menu', [ 'hide_empty' => true ] );
 		foreach ( $get_menus as $menu ) {
 			$menus[ $menu->term_id ] = $menu->name;
 		}
@@ -93,9 +92,9 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function constructor_data() {
-		$lists     = get_pages( array( 'number' => 9999999 ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
-		$page_list = array( '' => '' );
+	public function constructor_data(): array {
+		$lists     = get_pages( [ 'number' => 9999999 ] ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.get_pages
+		$page_list = [ '' => '' ];
 		$menus     = $this->get_wp_menus();
 		foreach ( $lists as $list ) {
 			$page_list[ $list->ID ] = $list->post_title;
@@ -674,10 +673,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 				'show_names' => true,
 				'fields'     => array(
 					array(
-						'type'  => 'checkboxonoff',
-						'name'  => 'add_to_cart',
-						'text'  => __( 'Show "Add to Cart" button', 'ti-woocommerce-wishlist' ),
-						'std'   => true,
+						'type' => 'checkboxonoff',
+						'name' => 'add_to_cart',
+						'text' => __( 'Show "Add to Cart" button', 'ti-woocommerce-wishlist' ),
+						'std'  => true,
 					),
 					array(
 						'type'  => 'text',
@@ -974,7 +973,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					'type' => 'checkboxonoff',
 					'name' => 'enabled',
 					'text' => __( 'Enable support chat', 'ti-woocommerce-wishlist' ),
-					'std'  => false,
+					'std'  => true,
 				),
 			),
 		);
@@ -1016,7 +1015,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function constructor_load( $sections ) {
+	public function constructor_load( array $sections ): array {
 		$data                                            = parent::constructor_load( $sections );
 		$data['general']['page_wishlist']                = $data['page']['wishlist'];
 		$data['general']['processing_autoremove']        = $data['processing']['autoremove'];
@@ -1031,10 +1030,10 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	 *
 	 * @param array $data Post section data.
 	 */
-	function constructor_save( $data ) {
+	public function constructor_save( array $data ): void {
 		parent::constructor_save( $data );
 		if ( empty( $data ) || ! is_array( $data ) ) {
-			return false;
+			return;
 		}
 		tinv_update_option( 'page', 'wishlist', $data['general']['page_wishlist'] );
 		tinv_update_option( 'processing', 'autoremove', $data['general']['processing_autoremove'] );
@@ -1043,7 +1042,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 		tinv_update_option( 'processing', 'autoremove_status', 'tinvwl-addcart' );
 		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
 			foreach ( array_keys( $data ) as $key ) {
-				if ( ! in_array( $key, array( 'page' ) ) ) {
+				if ( $key != 'page' ) {
 					$data[ $key ] = array();
 				}
 			}
@@ -1055,7 +1054,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 	/**
 	 * Show Premium Features sections
 	 */
-	function premium_features() {
+	public function premium_features(): void {
 		global $current_screen;
 		if ( is_object( $current_screen ) && 'toplevel_page_tinvwl' === $current_screen->id ) {
 			TInvWL_View::view( 'premium-features' );

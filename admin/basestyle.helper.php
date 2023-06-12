@@ -2,14 +2,12 @@
 /**
  * Basic admin style helper class
  *
- * @since             1.0.0
- * @package           TInvWishlist\Admin\Helper
+ * @package TInvWishlist\Admin\Helper
+ * @since 1.0.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Basic admin style helper class
@@ -21,10 +19,10 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function prepare_sections() {
-		$fields_data = array();
+	public function prepare_sections(): array {
+		$fields_data = [];
 		$fields      = $this->default_style_settings();
-		$theme_file  = TINVWL_PATH . implode( DIRECTORY_SEPARATOR, array( 'assets', 'css', 'theme.css' ) );
+		$theme_file  = TINVWL_PATH . implode( DIRECTORY_SEPARATOR, [ 'assets', 'css', 'theme.css' ] );
 		if ( file_exists( $theme_file ) ) {
 			$fields_data = $this->break_css( file_get_contents( $theme_file ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.file_get_contents
 		}
@@ -51,93 +49,84 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function constructor_data() {
-		return array(
-			array(
+	public function constructor_data(): array {
+		return [
+			[
 				'id'         => 'style',
 				'title'      => __( 'Templates', 'ti-woocommerce-wishlist' ),
 				'desc'       => '',
 				'show_names' => false,
-				'fields'     => array(
-					array(
+				'fields'     => [
+					[
 						'type'  => 'checkboxonoff',
 						'name'  => 'customstyle',
 						'text'  => __( 'Use Theme style', 'ti-woocommerce-wishlist' ),
 						'std'   => true,
-						'extra' => array( 'tiwl-hide' => '.tinvwl-style-options' ),
+						'extra' => [ 'tiwl-hide' => '.tinvwl-style-options' ],
 						'class' => 'tinvwl-header-row',
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'         => 'style_options',
 				'title'      => __( 'Template Options', 'ti-woocommerce-wishlist' ),
 				'show_names' => true,
 				'class'      => 'tinvwl-style-options',
 				'fields'     => $this->prepare_sections(),
 				'skin'       => 'section-general',
-			),
-			array(
+			],
+			[
 				'id'         => 'style_plain',
 				'title'      => __( 'Template Custom CSS', 'ti-woocommerce-wishlist' ),
 				'desc'       => '',
 				'show_names' => false,
-				'fields'     => array(
-					array(
+				'fields'     => [
+					[
 						'type'  => 'checkboxonoff',
 						'name'  => 'allow',
 						'text'  => __( 'Template Custom CSS', 'ti-woocommerce-wishlist' ),
 						'std'   => false,
-						'extra' => array( 'tiwl-show' => '.tiwl-style-custom-allow' ),
+						'extra' => [ 'tiwl-show' => '.tiwl-style-custom-allow' ],
 						'class' => 'tinvwl-header-row',
-					),
-					array(
+					],
+					[
 						'type'  => 'group',
 						'id'    => 'custom',
 						'class' => 'tiwl-style-custom-allow',
-					),
-					array(
+					],
+					[
 						'type' => 'textarea',
 						'name' => 'css',
 						'text' => '',
 						'std'  => '',
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'     => 'save_buttons',
 				'class'  => 'only-button',
 				'noform' => true,
-				'fields' => array(
-					array(
+				'fields' => [
+					[
 						'type'  => 'button_submit',
 						'name'  => 'setting_save',
 						'std'   => '<span><i class="ftinvwl ftinvwl-check"></i></span>' . __( 'Save Settings', 'ti-woocommerce-wishlist' ),
-						'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok' ),
-					),
-					array(
+						'extra' => [ 'class' => 'tinvwl-btn split status-btn-ok' ],
+					],
+					[
 						'type'  => 'button_submit',
 						'name'  => 'setting_reset',
 						'std'   => '<span><i class="ftinvwl ftinvwl-times"></i></span>' . __( 'Reset', 'ti-woocommerce-wishlist' ),
-						'extra' => array( 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ),
-					),
-					array(
+						'extra' => [ 'class' => 'tinvwl-btn split status-btn-ok tinvwl-confirm-reset' ],
+					],
+					[
 						'type' => 'button_submit_quick',
 						'name' => 'setting_save_quick',
 						'std'  => '<span><i class="ftinvwl ftinvwl-floppy-o"></i></span>' . __( 'Save', 'ti-woocommerce-wishlist' ),
-					),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Basic function for default theme fields
-	 *
-	 * @return array
-	 */
-	function default_style_settings() {
-		return array();
+					],
+				],
+			],
+		];
 	}
 
 	/**
@@ -148,7 +137,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function prepare_fields( $fields = array(), $data = array() ) {
+	public function prepare_fields( array $fields = [], array $data = [] ): array {
 		foreach ( $fields as &$field ) {
 			if ( ! array_key_exists( 'selector', $field ) || ! array_key_exists( 'element', $field ) ) {
 				continue;
@@ -184,11 +173,11 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @param array $data Post section data.
 	 *
-	 * @return boolean
+	 * @return void
 	 */
-	function constructor_save( $data ) {
+	public function constructor_save( array $data ): void {
 		if ( empty( $data ) || ! is_array( $data ) ) {
-			return false;
+			return;
 		}
 		if ( array_key_exists( 'style', (array) $data ) && array_key_exists( 'style_options', (array) $data ) ) {
 			if ( false === $data['style']['customstyle'] ) {
@@ -206,7 +195,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 		}
 		if ( filter_input( INPUT_POST, 'save_buttons-setting_reset' ) ) {
 			foreach ( array_keys( $data ) as $key ) {
-				if ( ! in_array( $key, array( 'style' ) ) ) {
+				if ( $key != 'style' ) {
 					$data[ $key ] = array();
 				}
 			}
@@ -225,7 +214,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return string
 	 */
-	function create_selectorkey( $selector, $element ) {
+	public function create_selectorkey( string $selector, string $element ): string {
 		return md5( $selector . '||' . $element );
 	}
 
@@ -236,7 +225,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return array
 	 */
-	function break_css( $css ) {
+	public function break_css( string $css ): array {
 		$results = array();
 		$css     = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css );
 		$css     = preg_replace( '/(\r|\n|\t| {2,})/', '', $css );
@@ -261,7 +250,7 @@ abstract class TInvWL_Admin_BaseStyle extends TInvWL_Admin_BaseSection {
 	 *
 	 * @return string
 	 */
-	function convert_styles( $style = array() ) {
+	public function convert_styles( array $style = [] ): string {
 		$fields = $this->default_style_settings();
 		$styles = array();
 		foreach ( $fields as $field ) {

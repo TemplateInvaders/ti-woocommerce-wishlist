@@ -166,6 +166,7 @@ class TInvWL_Public_WishlistCounter {
 			}
 		}
 
+		return $items;
 	}
 
 	/**

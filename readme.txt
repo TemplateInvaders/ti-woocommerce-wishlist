@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 2.6.0
+Stable tag: 2.7.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -158,6 +158,15 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.7.0 =
+*Release Date - 20 June 2023*
+
+* Added support for WooCommerce 7.8
+* Required PHP 7.4 or greater
+* Added support of WooCommerce Feature "New product editor (Beta)"
+* Updated integration with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/)
+* Code refactoring
+
 = 2.6.0 =
 *Release Date - 5 June 2023*
 

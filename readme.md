@@ -136,6 +136,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.7.1 ###
+*Release Date - 20 June 2023*
+
+* Fixed WP Menu issue when wishlist product counter is activated for any menu
+
 ### 2.7.0 ###
 *Release Date - 20 June 2023*
 

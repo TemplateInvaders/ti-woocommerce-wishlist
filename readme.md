@@ -136,6 +136,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.7.2 ###
+*Release Date - 21 June 2023*
+
+* Fixed the issue with wishlist AJAX events for guests
+
 ### 2.7.1 ###
 *Release Date - 20 June 2023*
 

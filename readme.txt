@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 2.7.1
+Stable tag: 2.7.2
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -158,6 +158,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.7.2 =
+*Release Date - 21 June 2023*
+
+* Fixed the issue with wishlist AJAX events for guests
+
 = 2.7.1 =
 *Release Date - 20 June 2023*
 

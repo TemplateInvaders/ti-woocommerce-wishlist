@@ -240,7 +240,8 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$current_theme = wp_get_theme();
 		$parent_theme  = $current_theme->parent();
 
-		wp_add_inline_script( $this->_name, 'window.intercomSettings = {
+		if ( ! $disable_chat ) {
+			wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 					app_id: "zyh6v0pc",
 					hide_default_launcher: ' . ( ( $disable_chat ) ? 'true' : 'false' ) . ',
 					"Website": "' . get_site_url() . '",
@@ -272,10 +273,11 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 						partner:"' . TINVWL_UTM_SOURCE . '"
 					});
 			' );
+		}
 	}
 
 	/**
-	 * Add plugin footer copywriting
+	 * Add plugin footer copyrighting
 	 */
 	function footer_admin() {
 		do_action( 'tinvwl_admin_promo_footer' );

@@ -973,7 +973,7 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 					'type' => 'checkboxonoff',
 					'name' => 'enabled',
 					'text' => __( 'Enable support chat', 'ti-woocommerce-wishlist' ),
-					'std'  => true,
+					'std'  => false,
 				),
 			),
 		);

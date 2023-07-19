@@ -566,7 +566,7 @@ class TInvWL_Wizard
 	function wizard_5()
 	{
 		$data = array(
-			'chat_enabled' => 'on',
+			'chat_enabled' => 'off',
 		);
 		TInvWL_View::view('step-support', $data, 'wizard');
 	}

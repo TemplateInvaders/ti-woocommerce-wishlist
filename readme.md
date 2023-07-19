@@ -136,6 +136,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.7.3 ###
+*Release Date - 19 July 2023*
+
+* Added support for WooCommerce 7.9
+* Switched support chat to an opt-in model from an opt-out model
+* Removed admin inline JavaScript
+
 ### 2.7.2 ###
 *Release Date - 21 June 2023*
 

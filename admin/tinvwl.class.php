@@ -108,10 +108,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$this->scheduled_remove_wishlist();
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'woocommerce_blocks_editor' ), 10, 2 );
-
-		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'add_inline_scripts' ) );
-		add_action( 'elementor/app/init', array( $this, 'add_inline_scripts' ) );
-
 	}
 
 	/**
@@ -152,7 +148,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		global $wp_roles;
 		$page = add_menu_page( __( 'TI Wishlist', 'ti-woocommerce-wishlist' ), __( 'TI Wishlist', 'ti-woocommerce-wishlist' ), 'tinvwl_general_settings', $this->_name, null, TINVWL_URL . 'assets/img/icon_menu.png', '55.888' );
 		add_action( "load-$page", array( $this, 'onload' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_inline_scripts' ) );
 		wp_add_inline_style( 'admin-menu', '#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"] {font-weight: 600;background-color: #df4d57;color: #fff;margin: 3px 10px 0;display: block;text-align: center;border-radius: 3px;transition: all .3s }#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:focus,#adminmenu #toplevel_page_tinvwl a[href="admin.php?page=tinvwl-upgrade"]:hover {background-color: #f48460;box-shadow: none }' );
 		$menu = apply_filters( 'tinvwl_admin_menu', array() );
 		foreach ( $menu as $item ) {
@@ -212,13 +207,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		wp_enqueue_style( $this->_name . '-form', TINVWL_URL . 'assets/css/admin-form' . $suffix . '.css', array(), $this->_version, 'all' );
 		wp_style_add_data( $this->_name . '-form', 'rtl', 'replace' );
 		wp_style_add_data( $this->_name . '-form', 'suffix', $suffix );
-	}
-
-	/**
-	 * Load javascript
-	 */
-	function add_inline_scripts() {
-		wp_add_inline_script( 'jquery', '"use strict";function _typeof(e){return(_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}jQuery(function(l){l(document).ready(function(){var e="?aff=3955",t="https://r.freemius.com/3767/6941420/",r="https://be.elementor.com/visit/?bta=211953&nci=",i={woo:{urls:[{url:"//woocommerce.com",pattern:"{raw_url}"+e},{url:"//crowdsignal.com",pattern:"{raw_url}"+e},{url:"//jetpack.com",pattern:"{raw_url}"+e},{url:"//wpjobmanager.com",pattern:"{raw_url}"+e}]},woostify:{urls:[{url:"//woostify.com",pattern:"{raw_url}"+"/pros/335/"}]},astra:{urls:[{url:"//wpastra.com",pattern:"{raw_url}"+"?bsf=11452"}]},wpocean:{urls:[{url:"//oceanwp.org",pattern:t},{url:"//oceanwp.org/extension",pattern:t+"https://oceanwp.org/extensions/"},{url:"//oceanwp.org/demo",pattern:t+"https://oceanwp.org/demos/"},{url:"//oceanwp.org/extension/category/premium/",pattern:t+"https://oceanwp.org/extension/category/premium/"},{url:"//oceanwp.org/extension/category/free/",pattern:t+"https://oceanwp.org/extension/category/free/"},{url:"//oceanwp.org/core-extensions-bundle/",pattern:t+"https://oceanwp.org/core-extensions-bundle"}]},elem:{urls:[{url:"/elementor.com/?",pattern:r+"5349"},{url:"/elementor.com/blog",pattern:r+"5363"},{url:"/go.elementor.com/overview-widget-blog",pattern:r+"5363"},{url:"/go.elementor.com/overview-widget-docs",pattern:r+"5517"},{url:"/go.elementor.com/docs-admin-plugins",pattern:r+"5517"},{url:"/go.elementor.com/yt-admin-plugins",pattern:r+"5359"},{url:"//go.elementor.com/go-pro",pattern:r+"5352"},{url:"//elementor.com/pro",pattern:r+"5352"}]},yith:{urls:[{url:"//yithemes.com",pattern:"{raw_url}"+"?refer_id=1161007"}]},barn2:{urls:[{url:"//barn2.com",pattern:"{raw_url}"+"/ref/1007/"}]}},o=[],n=[];function a(e){for(var t in e){var r,o;Object.prototype.hasOwnProperty.call(e,t)&&("string"==typeof(r=e[t])?"string"==typeof(o=p(r))&&""!==o&&(e[t]=o):"object"===_typeof(r)&&a(r))}}function p(e){if(e&&"string"==typeof e)for(var t in i)for(var r=i[t].urls,o=0;o<r.length;o++){var n=r[o].url,a=r[o].pattern;if(e.includes(n))return a.replace("{raw_url}",e.split("?")[0].replace(/\/$/,""))}return""}"undefined"!=typeof astraSitesVars&&astraSitesVars&&"object"===("undefined"==typeof astraSitesVars?"undefined":_typeof(astraSitesVars))&&a(astraSitesVars),"undefined"!=typeof ElementorConfig&&ElementorConfig&&"object"===("undefined"==typeof ElementorConfig?"undefined":_typeof(ElementorConfig))&&a(ElementorConfig),"undefined"!=typeof elementorAppConfig&&elementorAppConfig&&"object"===("undefined"==typeof elementorAppConfig?"undefined":_typeof(elementorAppConfig))&&a(elementorAppConfig),l(document).on("mouseover","a",function(){var r,e=l("a").index(this);o[e]?l(this).attr("href",n[e]):(r=p(l(this).attr("href")))&&l(this).on("click.tiafl",function(){var e=l(this).attr("href"),t=(l(this).attr("href",r),setTimeout(function(){l(this).attr("href",e)}.bind(this),1),l("a").index(this));o[t]||(o[t]=!0,n[t]=e),l(this).off("click.tiafl")})})})});' );
 	}
 
 	/**

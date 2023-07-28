@@ -136,6 +136,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.7.4 ###
+*Release Date - 28 July 2023*
+
+* Fixed blind SQL injection vulnerability in a REST API endpoint
+
 ### 2.7.3 ###
 *Release Date - 19 July 2023*
 

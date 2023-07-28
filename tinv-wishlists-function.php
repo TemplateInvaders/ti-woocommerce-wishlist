@@ -922,22 +922,6 @@ if ( ! function_exists( 'tinvwl_add_to_cart_item_meta_post' ) ) {
 	add_action( 'woocommerce_add_cart_item', 'tinvwl_add_to_cart_item_meta_post', 10, 2 );
 } // End if().
 
-/**
- * Filters the Astra React admin localization data and adds an upgrade URL.
- *
- * @param array $data The localization data.
- *
- * @return array The modified localization data with the upgrade URL.
- */
-function tinvwl_astra_upgrade_url( $data ) {
-	$data['upgrade_url'] = 'https://wpastra.com/pro/?bsf=11452';
-
-	return $data;
-}
-
-add_filter( 'astra_react_admin_localize', 'tinvwl_astra_upgrade_url', 9999, 1 );
-
-
 if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 
 	/**
@@ -946,31 +930,13 @@ if ( ! function_exists( 'tinvwl_set_utm' ) ) {
 	function tinvwl_set_utm() {
 
 		// Set a source.
-		$source = get_option( TINVWL_PREFIX . '_utm_source' );
-		if ( ! $source || $source !== defined( 'TINVWL_PARTNER' ) ) {
-			$source = defined( 'TINVWL_PARTNER' ) ? TINVWL_PARTNER : 'wordpress_org';
-			update_option( TINVWL_PREFIX . '_utm_source', $source );
-		}
-
-		define( 'TINVWL_UTM_SOURCE', $source );
+		define( 'TINVWL_UTM_SOURCE', 'wordpress_org' );
 
 		// Set a medium.
-		$medium = get_option( TINVWL_PREFIX . '_utm_medium' );
-		if ( ! $medium || ( 'organic' === $medium && defined( 'TINVWL_PARTNER' ) ) ) {
-			$medium = defined( 'TINVWL_PARTNER' ) ? 'integration' : 'organic';
-			update_option( TINVWL_PREFIX . '_utm_medium', $medium );
-		}
-
-		define( 'TINVWL_UTM_MEDIUM', $medium );
+		define( 'TINVWL_UTM_MEDIUM', 'organic' );
 
 		// Set a campaign.
-		$campaign = get_option( TINVWL_PREFIX . '_utm_campaign' );
-		if ( ! $campaign || $campaign !== defined( 'TINVWL_CAMPAIGN' ) ) {
-			$campaign = defined( 'TINVWL_PARTNER' ) ? ( defined( 'TINVWL_CAMPAIGN' ) ? TINVWL_CAMPAIGN : TINVWL_PARTNER ) : 'organic';
-			update_option( TINVWL_PREFIX . '_utm_campaign', $campaign );
-		}
-
-		define( 'TINVWL_UTM_CAMPAIGN', $campaign );
+		define( 'TINVWL_UTM_CAMPAIGN', 'organic' );
 	}
 } // End if().
 
@@ -1057,15 +1023,6 @@ function tinvwl_handle_external_redirects() {
 	}
 	if ( 'tinvwl-upgrade' === $_GET['page'] ) {
 		wp_redirect( 'https://templateinvaders.com/product/ti-woocommerce-wishlist-wordpress-plugin/?utm_source=' . TINVWL_UTM_SOURCE . '&utm_campaign=' . TINVWL_UTM_CAMPAIGN . '&utm_medium=' . TINVWL_UTM_MEDIUM . '&utm_content=wp_menu&partner=' . TINVWL_UTM_SOURCE );
-		die;
-	}
-
-	if ( 'go_elementor_pro' === $_GET['page'] ) {
-		wp_redirect( 'https://be.elementor.com/visit/?bta=211953&nci=5383' );
-		die;
-	}
-	if ( 'go_knowledge_base_site' === $_GET['page'] ) {
-		wp_redirect( 'https://be.elementor.com/visit/?bta=211953&nci=5517' );
 		die;
 	}
 }

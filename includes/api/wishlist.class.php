@@ -102,7 +102,7 @@ class TInvWL_Includes_API_Wishlist {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function wishlist_get_by_user( WP_REST_Request $request ) {
-		$user_id = $request->get_param( 'user_id' );
+		$user_id = absint( $request->get_param( 'user_id' ) );
 
 		if ( empty( $user_id ) || ! $this->user_id_exists( $user_id ) ) {
 			return new WP_Error( 'ti_woocommerce_wishlist_api_wishlist_user_not_exists', __( 'WordPress user does not exist.', 'ti-woocommerce-wishlist' ), [ 'status' => 400 ] );
@@ -141,8 +141,8 @@ class TInvWL_Includes_API_Wishlist {
 		$wl        = $result['wl'];
 
 		$data = array_filter( [
-			'title'  => $request->get_param( 'title' ),
-			'author' => $request->get_param( 'user_id' ),
+			'title'  => sanitize_text_field( $request->get_param( 'title' ) ),
+			'author' => absint( $request->get_param( 'user_id' ) ),
 		] );
 
 		if ( empty( $data ) || ! ( current_user_can( 'tinvwl_general_settings' ) || $wishlist['author'] === get_current_user_id() ) ) {
@@ -212,8 +212,8 @@ class TInvWL_Includes_API_Wishlist {
 		$args = [
 			'wishlist_id'  => $wishlist['ID'],
 			'author'       => $wishlist['author'],
-			'product_id'   => $request->get_param( 'product_id' ),
-			'variation_id' => $request->get_param( 'variation_id' ),
+			'product_id'   => absint( $request->get_param( 'product_id' ) ),
+			'variation_id' => absint( $request->get_param( 'variation_id' ) ),
 		];
 		$meta = $request->get_param( 'meta' ) ?? [];
 
@@ -239,7 +239,7 @@ class TInvWL_Includes_API_Wishlist {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function wishlist_remove_product( WP_REST_Request $request ) {
-		$item_id = $request->get_param( 'item_id' );
+		$item_id = absint( $request->get_param( 'item_id' ) );
 
 		if ( empty( $item_id ) ) {
 			return new WP_Error( 'ti_woocommerce_wishlist_api_invalid_item_id', __( 'Invalid item ID.', 'ti-woocommerce-wishlist' ), [ 'status' => 400 ] );

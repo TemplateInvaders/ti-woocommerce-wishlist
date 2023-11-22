@@ -311,7 +311,7 @@ class TInvWL_Wishlist {
 	 * @return array
 	 */
 	function get_by_share_key( $share_key ) {
-		if ( ! preg_match( '/[a-f0-9]{6}/i', $share_key ) ) {
+		if ( empty( $share_key ) || ! is_string( $share_key ) || ! preg_match( '/[a-f0-9]{6}/i', $share_key ) ) {
 			return array();
 		}
 		$wishlists = $this->get( array( 'share_key' => $share_key ) );

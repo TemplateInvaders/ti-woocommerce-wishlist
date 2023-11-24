@@ -2,7 +2,7 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
-Tested up to: 6.2
+Tested up to: 6.4
 Stable tag: 2.7.4
 Requires PHP: 7.4
 License: GPLv3

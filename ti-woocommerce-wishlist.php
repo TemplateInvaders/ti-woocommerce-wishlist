@@ -6,10 +6,10 @@
  * Description:       Wishlist functionality for your WooCommerce store.
  * Version:           2.7.4
  * Requires at least: 6.1
- * Tested up to: 6.2
+ * Tested up to: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 3.2
- * WC tested up to: 7.9
+ * WC tested up to: 8.3
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+

@@ -333,7 +333,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @return boolean
 	 */
 	function product_allow_add_to_cart( $allow, $wlproduct, $product ) {
-		if ( ! $allow ) {
+		if ( ! $allow || 'variable' === $product->get_type() ) {
 			return false;
 		}
 

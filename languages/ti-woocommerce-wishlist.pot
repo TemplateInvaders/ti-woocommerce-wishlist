@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.7.4
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.7.4 package.
+# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.8.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.8.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.7.4\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.7.4\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.0\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -36,44 +36,60 @@ msgstr ""
 msgid "Template Custom CSS"
 msgstr ""
 
-#: admin/basestyle.helper.php:113, admin/settings/general.class.php:991, admin/settings/integrations.class.php:102
+#: admin/basestyle.helper.php:113, admin/settings/general.class.php:1006, admin/settings/integrations.class.php:102
 msgid "Save Settings"
 msgstr ""
 
-#: admin/basestyle.helper.php:119, admin/settings/general.class.php:997
+#: admin/basestyle.helper.php:119, admin/settings/general.class.php:1012
 msgid "Reset"
 msgstr ""
 
-#: admin/basestyle.helper.php:125, admin/settings/general.class.php:1003, admin/settings/integrations.class.php:108
+#: admin/basestyle.helper.php:125, admin/settings/general.class.php:1018, admin/settings/integrations.class.php:108
 msgid "Save"
 msgstr ""
 
-#: admin/notices.class.php:170
+#: admin/notices.class.php:296
 msgid "Hey %s, it's Stan from %s. You have used this free plugin for some time now, and I hope you like it!"
 msgstr ""
 
-#: admin/notices.class.php:175
+#: admin/notices.class.php:301
 msgid "Could you please give it a 5-star rating on WordPress? Your feedback will boost our motivation and help us promote and continue to improve this product."
 msgstr ""
 
-#: admin/notices.class.php:181
+#: admin/notices.class.php:307
 msgid "Review %s"
 msgstr ""
 
-#: admin/notices.class.php:186
+#: admin/notices.class.php:312
 msgid "No thanks"
 msgstr ""
 
-#: admin/notices.class.php:208
+#: admin/notices.class.php:334
 msgid "Hello! We have a special gift!"
 msgstr ""
 
-#: admin/notices.class.php:210
+#: admin/notices.class.php:336
 msgid "Today we want to make you a special gift. Using the %s coupon code before the next 48 hours you can get a %s on the premium version of the %s plugin."
 msgstr ""
 
-#: admin/notices.class.php:221
+#: admin/notices.class.php:347
 msgid "More info"
+msgstr ""
+
+#: admin/notices.class.php:547
+msgid "Black friday deal"
+msgstr ""
+
+#: admin/notices.class.php:552, admin/notices.class.php:734, admin/notices.class.php:915
+msgid "Get %s on %s!"
+msgstr ""
+
+#: admin/notices.class.php:557, admin/notices.class.php:739, admin/notices.class.php:920
+msgid "Use code:"
+msgstr ""
+
+#: admin/notices.class.php:910
+msgid "Winter wonders sale"
 msgstr ""
 
 #: admin/settings/general.class.php:68, admin/settings/general.class.php:106
@@ -92,7 +108,7 @@ msgstr ""
 msgid "Default Wishlist Name"
 msgstr ""
 
-#: admin/settings/general.class.php:119, admin/tinvwl.class.php:426
+#: admin/settings/general.class.php:119, admin/tinvwl.class.php:453
 msgid "Wishlist Page"
 msgstr ""
 
@@ -588,15 +604,27 @@ msgstr ""
 msgid "Do not show the \"0\" value in a counter if the wishlist is empty."
 msgstr ""
 
-#: admin/settings/general.class.php:968
+#: admin/settings/general.class.php:967
+msgid "Plugin Data Settings"
+msgstr ""
+
+#: admin/settings/general.class.php:973
+msgid "Erase All Data on Uninstall"
+msgstr ""
+
+#: admin/settings/general.class.php:975
+msgid "This option will remove all plugin-related data from your database when the plugin is uninstalled. Ideal for keeping your database clean, but irreversible – consider backing up first"
+msgstr ""
+
+#: admin/settings/general.class.php:983
 msgid "Support Chat Settings"
 msgstr ""
 
-#: admin/settings/general.class.php:969, views/wizard/step-support.php:22
+#: admin/settings/general.class.php:984, views/wizard/step-support.php:22
 msgid "Enable the support chat to get the most from our service and get answers to your questions promptly. We optimized the support process to get the required details from your current setup to solve your issues faster. Dedicated to your Care."
 msgstr ""
 
-#: admin/settings/general.class.php:975, views/wizard/step-support.php:26
+#: admin/settings/general.class.php:990, views/wizard/step-support.php:26
 msgid "Enable support chat"
 msgstr ""
 
@@ -880,15 +908,15 @@ msgstr ""
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:301, views/admin/wishlists.php:159, views/wizard/finish.php:33
+#: admin/tinvwl.class.php:328, views/admin/wishlists.php:159, views/wizard/finish.php:33
 msgid "Upgrade to Premium"
 msgstr ""
 
-#: admin/tinvwl.class.php:340
+#: admin/tinvwl.class.php:367
 msgid "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:366
+#: admin/tinvwl.class.php:393
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
@@ -1024,7 +1052,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:317, includes/wizard.class.php:349, integrations/theme-flatsome.php:119, integrations/theme-flatsome.php:161, integrations/theme-flatsome.php:238, integrations/theme-flatsome.php:279, integrations/theme-flatsome.php:304, public/tinvwl.class.php:693, views/header.php:25
+#: includes/wizard.class.php:317, includes/wizard.class.php:349, integrations/theme-flatsome.php:119, integrations/theme-flatsome.php:161, integrations/theme-flatsome.php:238, integrations/theme-flatsome.php:279, integrations/theme-flatsome.php:304, public/tinvwl.class.php:691, views/header.php:25
 msgid "Wishlist"
 msgstr ""
 
@@ -1184,7 +1212,7 @@ msgstr ""
 msgid "Custom Title"
 msgstr ""
 
-#: integrations/woo-product-bundle.php:113, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:134, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:144, templates/ti-wishlist.php:152
+#: integrations/woo-product-bundle.php:122, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:112, integrations/woocommerce-product-bundles.php:134, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:144, templates/ti-wishlist.php:152
 msgid "In stock"
 msgstr ""
 
@@ -1294,19 +1322,19 @@ msgid_plural "Products: &quot;%s&quot; could not be added to the cart because so
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/tinvwl.class.php:527
+#: public/tinvwl.class.php:525
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:531
+#: public/tinvwl.class.php:529
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:532
+#: public/tinvwl.class.php:530
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:533
+#: public/tinvwl.class.php:531
 msgid "Copied!"
 msgstr ""
 

@@ -136,6 +136,20 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.8.0 ###
+*Release Date - 24 November 2023*
+
+- **Added**: Support for WordPress 6.4
+- **Added**: Support for WooCommerce 8.3
+- **Added**: Option to erase all data on uninstall
+- **Updated**: Integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/)
+- **Fixed**: Issue with `alt` attribute of a custom image for products counter icon
+- **Fixed**: 'Add to Cart' button issue for parent product
+- **Fixed**: Scheduled event hooks issue
+- **Fixed**: PHP 8.1 deprecation warnings
+- **Fixed**: Missing space in HTML markup
+- **Fixed**: REST API wishlist data inconsistencies
+
 ### 2.7.4 ###
 *Release Date - 28 July 2023*
 

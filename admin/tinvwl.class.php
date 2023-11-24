@@ -104,7 +104,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		add_filter( 'display_post_states', array( $this, 'add_display_post_states' ), 10, 2 );
 
 		add_action( 'tinvwl_admin_promo_footer', array( $this, 'promo_footer' ) );
-		add_action( 'tinvwl_remove_without_author_wishlist', array( $this, 'remove_old_wishlists' ) );
+
 		$this->scheduled_remove_wishlist();
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'woocommerce_blocks_editor' ), 10, 2 );
@@ -235,12 +235,35 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 
 		$disable_chat = ! $chat_option || in_array( $country_code, $restricted_codes );
 
-		$user_id       = get_current_user_id();
-		$user_info     = get_userdata( $user_id );
-		$current_theme = wp_get_theme();
-		$parent_theme  = $current_theme->parent();
-
 		if ( ! $disable_chat ) {
+
+			global $wpdb;
+
+			$user_id       = get_current_user_id();
+			$user_info     = get_userdata( $user_id );
+			$current_theme = wp_get_theme();
+			$parent_theme  = $current_theme->parent();
+
+			$lists_table = sprintf( '%s%s_%s', $wpdb->prefix, TINVWL_PREFIX, 'lists' );
+
+			$total_wishlists = $wpdb->get_var( "SELECT COUNT(*) FROM `{$lists_table}`" );
+
+			$first_wishlist_date = $wpdb->get_var( "SELECT `date` FROM `{$lists_table}` ORDER BY `ID` ASC" );
+
+			$timestamp = $first_wishlist_date ? strtotime( $first_wishlist_date ) : time();
+
+			$date1 = new DateTime(); // current date
+			$date2 = ( new DateTime() )->setTimestamp( $timestamp ); // your timestamp
+
+			$interval = $date1->diff( $date2 );
+
+			$days_used = $interval->days;
+
+			// If the difference is 0 days, show as 1 day
+			if ( $days_used === 0 ) {
+				$days_used = 1;
+			}
+
 			wp_add_inline_script( $this->_name, 'window.intercomSettings = {
 					app_id: "zyh6v0pc",
 					hide_default_launcher: ' . ( ( $disable_chat ) ? 'true' : 'false' ) . ',
@@ -271,6 +294,10 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 						plugin_name:"WooCommerce Wishlist Plugin",
 						plugin_version:"' . TINVWL_FVERSION . '",
 						partner:"' . TINVWL_UTM_SOURCE . '"
+					});
+					Intercom("trackEvent", "lists-data", {
+						wishlists:' . $total_wishlists . ',
+						days_used:' . $days_used . '
 					});
 			' );
 		}
@@ -401,7 +428,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	/**
 	 * Removing old wishlist without a user older than 34 days
 	 */
-	public function remove_old_wishlists() {
+	public static function remove_old_wishlists() {
 		global $wpdb;
 		$wishlists = $wpdb->get_results( 'SELECT t1.wishlist_id ID FROM ' . $wpdb->prefix . 'tinvwl_items t1 JOIN( SELECT wishlist_id, MAX(DATE) DATE FROM ' . $wpdb->prefix . 'tinvwl_items GROUP BY wishlist_id ) t2 ON t1.wishlist_id = t2.wishlist_id AND t1.date = t2.date WHERE t1.author = 0 AND t1.date < DATE_SUB(CURDATE(), INTERVAL ' . (int) tinv_get_option( 'general', 'guests_timeout' ) . ' DAY)', ARRAY_A );
 

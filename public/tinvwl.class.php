@@ -89,8 +89,6 @@ class TInvWL_Public_TInvWL {
 			}
 		}
 
-		add_action( 'tinvwl_flush_rewrite_rules', array( __CLASS__, 'apply_rewrite_rules' ) );
-
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );

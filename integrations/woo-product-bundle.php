@@ -4,7 +4,7 @@
  *
  * @name WPC Product Bundles for WooCommerce
  *
- * @version 6.2.0
+ * @version 7.3.3
  *
  * @slug woo-product-bundle
  *
@@ -49,9 +49,18 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 
 		if ( $loop && 'woosb' === $product->get_type() ) {
 			$ids_str = '';
-
 			if ( get_post_meta( $product->get_id(), 'woosb_ids', true ) ) {
-				$ids_str = get_post_meta( $product->get_id(), 'woosb_ids', true );
+				$ids = get_post_meta( $product->get_id(), 'woosb_ids', true );
+				if ( is_array( $ids ) ) {
+					foreach ( $ids as $item ) {
+						if ( ! empty( $item['id'] ) ) {
+							$ids_arr[] = $item['id'] . '/' . $item['qty'];
+						}
+					}
+					$ids_str = implode( ',', $ids_arr );
+				} else {
+					$ids_str = $ids;
+				}
 			}
 
 			$ids_str = ( version_compare( WOOSB_VERSION, '6.2.0', '<' ) ) ? WPCleverWoosb_Helper::woosb_clean_ids( $ids_str ) : WPCleverWoosb_Helper::clean_ids( $ids_str );

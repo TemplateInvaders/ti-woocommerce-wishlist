@@ -962,6 +962,21 @@ class TInvWL_Admin_Settings_General extends TInvWL_Admin_BaseSection {
 			),
 		);
 
+		$settings[] = array(
+			'id'         => 'uninstall',
+			'title'      => __( 'Plugin Data Settings', 'ti-woocommerce-wishlist' ),
+			'show_names' => true,
+			'fields'     => array(
+				array(
+					'type' => 'checkboxonoff',
+					'name' => 'delete_data',
+					'text' => __( 'Erase All Data on Uninstall', 'ti-woocommerce-wishlist' ),
+					'std'  => false,
+					'desc' => __( 'This option will remove all plugin-related data from your database when the plugin is uninstalled. Ideal for keeping your database clean, but irreversible – consider backing up first', 'ti-woocommerce-wishlist' ),
+				),
+			),
+		);
+
 
 		$settings[] = array(
 			'id'         => 'chat',

@@ -175,11 +175,19 @@ class TInvWL_Includes_API_Wishlist {
 		$wlp  = new TInvWL_Product();
 		$args = [
 			'wishlist_id' => $wishlist['wishlist']['ID'],
-			'external'    => false,
-			'count'       => $request->get_param( 'count' ),
-			'offset'      => $request->get_param( 'offset' ),
-			'order'       => $request->get_param( 'order' ),
+			'external'    => false
 		];
+
+		if ( null !== ( $count = $request->get_param( 'count' ) ) ) {
+			$args['count'] = $count;
+		}
+		if ( null !== ( $offset = $request->get_param( 'offset' ) ) ) {
+			$args['offset'] = $offset;
+		}
+		if ( null !== ( $order = $request->get_param( 'order' ) ) ) {
+			$args['order'] = $order;
+		}
+
 
 		$products = $wlp->get( $args );
 

@@ -212,6 +212,9 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 		foreach ( glob( TINVWL_PATH . 'integrations' . DIRECTORY_SEPARATOR . '*.php' ) as $file ) {
 			require_once $file;
 		}
+if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+    require_once ABSPATH . '/wp-admin/includes/plugin.php';
+}
 
 		if ( defined( 'TINVWL_LOAD_PREMIUM' ) && defined( 'TINVWL_LOAD_FREE' ) || defined( 'TINVWL_LOAD_PREMIUM' ) && is_plugin_active_for_network( TINVWL_LOAD_PREMIUM ) || defined( 'TINVWL_LOAD_FREE' ) && is_plugin_active_for_network( TINVWL_LOAD_FREE ) ) {
 			$redirect = tinv_wishlist_status( plugin_basename( __FILE__ ) );

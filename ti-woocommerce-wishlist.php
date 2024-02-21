@@ -213,7 +213,7 @@ if ( ! function_exists( 'run_tinv_wishlist' ) ) {
 			require_once $file;
 		}
 
-		if ( defined( 'TINVWL_LOAD_PREMIUM' ) && defined( 'TINVWL_LOAD_FREE' ) || defined( 'TINVWL_LOAD_PREMIUM' ) && is_plugin_active_for_network( TINVWL_LOAD_PREMIUM ) || defined( 'TINVWL_LOAD_FREE' ) && is_plugin_active_for_network( TINVWL_LOAD_FREE ) ) {
+		if ( defined( 'TINVWL_LOAD_PREMIUM' ) && defined( 'TINVWL_LOAD_FREE' ) ) {
 			$redirect = tinv_wishlist_status( plugin_basename( __FILE__ ) );
 			if ( $redirect ) {
 				header( 'Location: ' . $redirect );

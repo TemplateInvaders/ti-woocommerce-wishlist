@@ -9,7 +9,7 @@
  * Tested up to: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 3.2
- * WC tested up to: 8.3
+ * WC tested up to: 8.6
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+

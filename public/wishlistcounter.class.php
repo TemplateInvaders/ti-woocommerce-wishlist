@@ -225,13 +225,15 @@ class TInvWL_Public_WishlistCounter {
 		if ( is_user_logged_in() ) {
 			$wishlist = $this->get_user_wishlists();
 			$wlp      = new TInvWL_Product();
-			$counts   = $wlp->get( array(
-				'external'    => false,
-				'wishlist_id' => $wishlist['ID'],
-				'sql'         => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status IN ("publish","private") WHERE {where} ',
-			) );
-			$counts   = array_shift( $counts );
-			$count    = absint( $counts['quantity'] );
+			if ( $wishlist ) {
+				$counts = $wlp->get( array(
+					'external'    => false,
+					'wishlist_id' => $wishlist['ID'],
+					'sql'         => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status IN ("publish","private") WHERE {where} ',
+				) );
+				$counts = array_shift( $counts );
+				$count  = absint( $counts['quantity'] );
+			}
 		} else {
 			$wishlist = $this->get_guest_wishlist();
 			if ( ! empty( $wishlist ) ) {
@@ -246,7 +248,7 @@ class TInvWL_Public_WishlistCounter {
 			}
 		}
 
-		return $count ? $count : ( tinv_get_option( 'topline', 'hide_zero_counter' ) ? false : 0 );
+		return $count ?: ( tinv_get_option( 'topline', 'hide_zero_counter' ) ? false : 0 );
 	}
 
 	/**

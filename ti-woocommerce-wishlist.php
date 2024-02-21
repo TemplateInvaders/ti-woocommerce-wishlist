@@ -127,6 +127,9 @@ if ( ! function_exists( 'uninstall_tinv_wishlist' ) ) {
 	 */
 	function uninstall_tinv_wishlist(): void {
 		if ( ! defined( 'TINVWL_LOAD_PREMIUM' ) ) {
+
+			require_once TINVWL_PATH . 'tinv-wishlists-function.php';
+
 			if ( tinv_get_option( 'uninstall', 'delete_data' ) ) {
 				TInvWL_Activator::uninstall();
 			}

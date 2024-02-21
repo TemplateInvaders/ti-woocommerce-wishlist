@@ -597,7 +597,7 @@ class TInvWL_Public_TInvWL {
 	}
 
 	function logout( $user_id ) {
-		set_transient( '_tinvwl_update_wishlists_data', '1' );
+//		set_transient( '_tinvwl_update_wishlists_data', '1' );
 	}
 
 	/**
@@ -607,7 +607,7 @@ class TInvWL_Public_TInvWL {
 	 */
 	function transfert_local_to_user_register( $user_id ) {
 
-		set_transient( '_tinvwl_update_wishlists_data', '1' );
+//		set_transient( '_tinvwl_update_wishlists_data', '1' );
 
 		$wl       = new TInvWL_Wishlist( $this->_name );
 		$wishlist = $wl->get_by_sharekey_default();

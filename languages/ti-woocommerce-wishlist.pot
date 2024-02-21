@@ -1,8 +1,8 @@
-# Copyright (C) 2023 TI WooCommerce Wishlist Plugin - 2.8.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.8.0 package.
+# Copyright (C) 2024 TI WooCommerce Wishlist Plugin - 2.8.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.8.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
 "MIME-Version: 1.0\n"
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.8.1\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -932,7 +932,7 @@ msgstr ""
 msgid "premium only"
 msgstr ""
 
-#: includes/api/wishlist.class.php:83, includes/api/wishlist.class.php:89, includes/api/wishlist.class.php:279, includes/api/wishlist.class.php:286
+#: includes/api/wishlist.class.php:83, includes/api/wishlist.class.php:89, includes/api/wishlist.class.php:293, includes/api/wishlist.class.php:300
 msgid "Invalid wishlist share key."
 msgstr ""
 
@@ -940,31 +940,31 @@ msgstr ""
 msgid "WordPress user does not exist."
 msgstr ""
 
-#: includes/api/wishlist.class.php:115
+#: includes/api/wishlist.class.php:121
 msgid "No wishlists found for this user."
 msgstr ""
 
-#: includes/api/wishlist.class.php:149, includes/api/wishlist.class.php:153
+#: includes/api/wishlist.class.php:155, includes/api/wishlist.class.php:159
 msgid "Update wishlist data failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:208, includes/api/wishlist.class.php:223
+#: includes/api/wishlist.class.php:222, includes/api/wishlist.class.php:237
 msgid "Add product to wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:245
+#: includes/api/wishlist.class.php:259
 msgid "Invalid item ID."
 msgstr ""
 
-#: includes/api/wishlist.class.php:252, includes/api/wishlist.class.php:262
+#: includes/api/wishlist.class.php:266, includes/api/wishlist.class.php:276
 msgid "Product not found."
 msgstr ""
 
-#: includes/api/wishlist.class.php:256
+#: includes/api/wishlist.class.php:270
 msgid "Remove product from wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:265
+#: includes/api/wishlist.class.php:279
 msgid "Product removed from a wishlist."
 msgstr ""
 

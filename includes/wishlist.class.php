@@ -511,7 +511,7 @@ class TInvWL_Wishlist {
 		if ( ! empty( $sharekey ) ) {
 			self::$default_sharekey = $tinvwl_wishlist_sharekey = $sharekey;
 			@setcookie( 'tinv_wishlistkey', self::$default_sharekey, time() + 31 * DAY_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN );
-			set_transient( '_tinvwl_update_wishlists_data', '1' );
+//			set_transient( '_tinvwl_update_wishlists_data', '1' );
 		}
 
 		return self::$default_sharekey;

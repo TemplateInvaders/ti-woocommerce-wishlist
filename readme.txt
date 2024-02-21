@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.4
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -158,6 +158,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.8.1 =
+*Release Date - 21 February 2024*
+
+- **Added**: Support for WooCommerce 8.6.x
+- **Added**: Wishlist creation for guests via REST API. Use the route wp-json/wc/v3/wishlist/get_by_user/0
+- **Fixed**: PHP warning in wishlist products counter
+- **Fixed**: PHP error on plugin uninstall
+- **Removed**: Network activation restriction
+- **Fixed**: Issue with REST API get products request arguments
+
+
 = 2.8.0 =
 *Release Date - 24 November 2023*
 

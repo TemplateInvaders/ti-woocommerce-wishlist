@@ -136,6 +136,12 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+### 2.8.2 ###
+*Release Date - 3 March 2024*
+
+- **Added**: Support for PHP 8.3
+- **Added**: Integration with [WP Armour - Honeypot Anti Spam](https://wordpress.org/plugins/honeypot/) plugin
+
 ### 2.8.1 ###
 *Release Date - 21 February 2024*
 

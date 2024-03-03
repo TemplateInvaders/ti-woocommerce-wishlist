@@ -18,23 +18,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 class TInvWL_ViewSection extends TInvWL_View {
 
 	/**
-	 * Array form fields
+	 * Holds form fields data.
 	 *
 	 * @var array
 	 */
 	private $data;
+
 	/**
-	 * Array form value fields
+	 * Holds form values.
 	 *
 	 * @var array
 	 */
 	private $value;
+
 	/**
-	 * Helper show flag
+	 * Indicates if the helper should be shown.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $helper;
+
+	/**
+	 * Current section ID.
+	 *
+	 * @var string
+	 */
+	private $section_id;
+
+	/**
+	 * Current group ID within the section.
+	 *
+	 * @var string
+	 */
+	private $group_id;
+
 
 	/**
 	 * Constructor

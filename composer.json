@@ -1,5 +1,5 @@
 {
   "require": {
-    "imangazaliev/didom": "^1.16.4"
+    "imangazaliev/didom": "^2.0.1"
   }
 }

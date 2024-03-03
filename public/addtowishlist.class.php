@@ -1,70 +1,86 @@
 <?php
 /**
- * Add to wishlists shortcode and hooks
+ * Handles adding products to wishlists, including hooks and shortcodes.
  *
- * @since             1.0.0
- * @package           TInvWishlist\Public
+ * @since 1.0.0
+ * @package TInvWishlist\Public
  */
 
-// If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
-	die;
+	exit; // Exit if accessed directly.
 }
 
 use DiDom\Document;
 
 /**
- * Add to wishlists shortcode and hooks
+ * Manages the addition of products to wishlists.
  */
 class TInvWL_Public_AddToWishlist {
-
 	/**
-	 * Plugin name
+	 * The plugin name.
 	 *
 	 * @var string
 	 */
 	private $_name;
+
 	/**
-	 * Global product
+	 * The global product.
 	 *
 	 * @var object
 	 */
 	private $product;
+
 	/**
-	 * This user wishlists
+	 * User's wishlists.
 	 *
 	 * @var array
 	 */
 	private $user_wishlist;
+
 	/**
-	 * This wishlists and product
+	 * Wishlist and product association.
 	 *
 	 * @var array
 	 */
 	private $wishlist;
 
 	/**
-	 * This wishlist all products
+	 * All products in the wishlist.
 	 *
 	 * @var array
 	 */
 	private $all_products;
 
 	/**
-	 * Check is loop button
+	 * Indicates if the button is in a loop.
 	 *
 	 * @var bool
 	 */
 	private $is_loop;
+
 	/**
-	 * This class
+	 * Singleton instance of the class.
 	 *
 	 * @var TInvWL_Public_AddToWishlist
 	 */
 	protected static $_instance = null;
 
 	/**
-	 * Get this class object
+	 * Variation ID for variable products.
+	 *
+	 * @var mixed
+	 */
+	private $variation_id;
+
+	/**
+	 * Variation IDs for variable products in loops.
+	 *
+	 * @var array
+	 */
+	private $variation_ids;
+
+	/**
+	 * Returns the singleton instance.
 	 *
 	 * @param string $plugin_name Plugin name.
 	 *

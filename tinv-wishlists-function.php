@@ -128,81 +128,143 @@ if ( ! function_exists( 'tinv_update_option' ) ) {
 }
 
 /**
- * Rename class
+ * Handles the dynamic renaming of "wishlist" terminology across the plugin.
+ *
+ * @since             1.x.x
+ * @package           TInvWishlist
+ */
+
+/**
+ * Manages dynamic renaming of "wishlist" based on settings.
  */
 class TInvWLRename {
+	/**
+	 * Whether renaming is enabled.
+	 *
+	 * @var bool
+	 */
+	private $rename;
 
 	/**
-	 * Rename "wishlist" word across the plugin.
+	 * The singular form of the custom name for "wishlist".
+	 *
+	 * @var string
 	 */
-	function rename() {
+	private $rename_single;
+
+	/**
+	 * The plural form of the custom name for "wishlist".
+	 *
+	 * @var string
+	 */
+	private $rename_plural;
+
+	/**
+	 * Sets up the renaming functionality by fetching options and adding filters.
+	 */
+	public function __construct() {
 		$this->rename        = tinv_get_option( 'rename', 'rename' );
 		$this->rename_single = tinv_get_option( 'rename', 'rename_single' );
 		$this->rename_plural = tinv_get_option( 'rename', 'rename_plural' );
 
 		if ( $this->rename && $this->rename_single ) {
-			add_filter( 'gettext', array( $this, 'translations' ), 999, 3 );
-			add_filter( 'ngettext', array( $this, 'translations_n' ), 999, 5 );
+			add_filter( 'gettext', [ $this, 'translations' ], 999, 3 );
+			add_filter( 'ngettext', [ $this, 'translations_n' ], 999, 5 );
 		}
 	}
 
-
-	function translations_n( $translation, $single, $plural, $number, $domain ) {
+	/**
+	 * Handles plural translations.
+	 *
+	 * @param string $translation The translated text.
+	 * @param string $single The singular form of the text.
+	 * @param string $plural The plural form of the text.
+	 * @param int $number The number to compare to decide if singular or plural.
+	 * @param string $domain The text-domain.
+	 *
+	 * @return string The potentially modified translation.
+	 */
+	public function translations_n( $translation, $single, $plural, $number, $domain ) {
 		return $this->translation_update( $translation, $domain );
 	}
 
-	function translations( $translation, $text, $domain ) {
+	/**
+	 * Handles singular translations.
+	 *
+	 * @param string $translation The translated text.
+	 * @param string $text The text to translate.
+	 * @param string $domain The text-domain.
+	 *
+	 * @return string The potentially modified translation.
+	 */
+	public function translations( $translation, $text, $domain ) {
 		return $this->translation_update( $translation, $domain );
 	}
 
+	/**
+	 * Updates translations based on renaming settings.
+	 *
+	 * @param string $text The text to potentially modify.
+	 * @param string $domain The text-domain.
+	 *
+	 * @return string The potentially modified text.
+	 */
 	private function translation_update( $text, $domain ) {
 		if ( 'ti-woocommerce-wishlist' === $domain ) {
-
 			if ( strpos( $text, '{wishlist_title}' ) !== false ) {
-				// If $text contains "{wishlist_title}", skip the replacement
-				return $text;
+				return $text; // Skip replacement for special placeholders.
 			}
 
 			$translations = [
 				'wishlist' => [
 					$this->rename_single,
-					$this->rename_plural ? $this->rename_plural : $this->rename_single . 's'
+					$this->rename_plural ?: $this->rename_single . 's'
 				]
 			];
 
-			$text = preg_replace_callback( '~\b[a-z]+(?:(?<=(s)))?~i', function ( $m ) use ( $translations ) {
-				$lower = strtolower( $m[0] );
-				$rep   = $m[0];
-				if ( isset( $translations[ $lower ] ) ) {
-					$rep = is_array( $translations[ $lower ] ) ? $translations[ $lower ][0] : $translations[ $lower ];
-				} elseif ( isset( $m[1] ) ) {
-					$sing = substr( $lower, 0, - 1 );
-					if ( isset( $translations[ $sing ] ) ) {
-						$rep = is_array( $translations[ $sing ] ) ? $translations[ $sing ][1] : $translations[ $sing ] . 's';
-					}
-				} else {
-					return $rep;
-				}
-
-				if ( $m[0] == $lower ) {
-					return $rep;
-				} elseif ( $m[0] == strtoupper( $lower ) ) {
-					return strtoupper( $rep );
-				} elseif ( $m[0] == ucfirst( $lower ) ) {
-					return ucfirst( $rep );
-				}
-
-				return $rep;
+			$text = preg_replace_callback( '~\b[a-z]+(?:(?<=(s)))?~i', function ( $matches ) use ( $translations ) {
+				return $this->replaceText( $matches, $translations );
 			}, $text );
-
 		}
 
 		return $text;
 	}
+
+	/**
+	 * Replaces text based on matched patterns and translations.
+	 *
+	 * @param array $matches Matches from the regular expression.
+	 * @param array $translations Translations array.
+	 *
+	 * @return string Replaced text.
+	 */
+	private function replaceText( $matches, $translations ) {
+		$lower = strtolower( $matches[0] );
+		$rep   = $matches[0];
+		if ( isset( $translations[ $lower ] ) ) {
+			$rep = is_array( $translations[ $lower ] ) ? $translations[ $lower ][0] : $translations[ $lower ];
+		} elseif ( isset( $matches[1] ) ) {
+			$sing = substr( $lower, 0, - 1 );
+			if ( isset( $translations[ $sing ] ) ) {
+				$rep = is_array( $translations[ $sing ] ) ? $translations[ $sing ][1] : $translations[ $sing ] . 's';
+			}
+		} else {
+			return $rep;
+		}
+
+		if ( $matches[0] == $lower ) {
+			return $rep;
+		} elseif ( $matches[0] == strtoupper( $lower ) ) {
+			return strtoupper( $rep );
+		} elseif ( $matches[0] == ucfirst( $lower ) ) {
+			return ucfirst( $rep );
+		}
+
+		return $rep;
+	}
 }
 
 $tinvwl_rename = new TInvWLRename();
-$tinvwl_rename->rename();
 
 if ( ! function_exists( 'tinv_wishlist_template' ) ) {
 

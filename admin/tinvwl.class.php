@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 
+	private $wishlist;
+
 	/**
 	 * Constructor
 	 *
@@ -53,7 +55,6 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 */
 	function load_function(): void {
 		$this->wishlist = new TInvWL_Admin_Wishlist( $this->_name, $this->_version );
-//		$this->product  = new TInvWL_Admin_Product( $this->_name, $this->_version );
 		$this->load_settings();
 
 		$this->define_hooks();

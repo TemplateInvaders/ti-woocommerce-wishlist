@@ -36,6 +36,42 @@ class TInvWL_Public_TInvWL {
 	 * @var array
 	 */
 	public static $rules_raw;
+
+	/**
+	 * Instance of TInvWL_Public_AddToWishlist.
+	 *
+	 * @var TInvWL_Public_AddToWishlist
+	 */
+	public $addto;
+
+	/**
+	 * Instance of TInvWL_Public_Wishlist_View.
+	 *
+	 * @var TInvWL_Public_Wishlist_View
+	 */
+	public $view;
+
+	/**
+	 * Instance of TInvWL_Public_Wishlist_Ajax.
+	 *
+	 * @var TInvWL_Public_Wishlist_Ajax
+	 */
+	public $ajax;
+
+	/**
+	 * Instance of TInvWL_Public_Cart.
+	 *
+	 * @var TInvWL_Public_Cart
+	 */
+	public $cart;
+
+	/**
+	 * Instance of TInvWL_Public_WishlistCounter.
+	 *
+	 * @var TInvWL_Public_WishlistCounter
+	 */
+	public $topwishlist;
+
 	/**
 	 * This class
 	 *

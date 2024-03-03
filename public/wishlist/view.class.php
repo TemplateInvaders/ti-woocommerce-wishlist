@@ -31,6 +31,13 @@ class TInvWL_Public_Wishlist_View {
 	private $lists_per_page;
 
 	/**
+	 * Current page
+	 *
+	 * @var integer
+	 */
+	private $paged;
+
+	/**
 	 * Current wishlist
 	 *
 	 * @var array

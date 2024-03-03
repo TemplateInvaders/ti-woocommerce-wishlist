@@ -9,6 +9,7 @@ class TINVWL_AutomateWoo_Wishlist extends AutomateWoo\Wishlist {
 	public $id;
 	public $owner_id;
 	public $items;
+	public $date;
 
 
 	/**

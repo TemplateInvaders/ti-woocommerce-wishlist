@@ -16,6 +16,13 @@ defined( 'ABSPATH' ) || exit;
 class TInvWL_Public_Wishlist_Ajax {
 
 	/**
+	 * The plugin name.
+	 *
+	 * @var string
+	 */
+	private $_name;
+
+	/**
 	 * This class instance
 	 *
 	 * @var TInvWL_Public_Wishlist_Ajax|null

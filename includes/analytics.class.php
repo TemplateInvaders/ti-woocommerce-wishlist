@@ -31,6 +31,13 @@ class TInvWL_Analytics {
 	private $_name;
 
 	/**
+	 * The wishlist data.
+	 *
+	 * @var array
+	 */
+	private $wishlist;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $wishlist Array wishlist.
@@ -94,8 +101,6 @@ class TInvWL_Analytics {
 		if ( ! $product_data || 'trash' === $product_data->post->post_status ) {
 			return null;
 		}
-
-		$product_data->variation_id = absint( $product_data->variation_id );
 
 		return $product_data;
 	}

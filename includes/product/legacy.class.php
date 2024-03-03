@@ -364,8 +364,6 @@ class TInvWL_Product_Legacy {
 			return null;
 		}
 
-		$product_data->variation_id = absint( ( $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0 ) );
-
 		return $product_data;
 	}
 

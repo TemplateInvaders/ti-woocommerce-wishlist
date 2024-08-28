@@ -105,7 +105,8 @@ class TInvWL_Includes_API_Wishlist {
 		$user_id = absint( $request->get_param( 'user_id' ) );
 
 		if ( $user_id && ! $this->user_id_exists( $user_id ) ) {
-			return new WP_Error( 'ti_woocommerce_wishlist_api_wishlist_user_not_exists', __( 'WordPress user does not exist.', 'ti-woocommerce-wishlist' ), [ 'status' => 400 ] );
+			//don't expose which user_ids exist by not returning an error that says that
+			return new WP_Error( 'ti_woocommerce_wishlist_api_wishlist_not_found', __( 'No wishlists found for this user.', 'ti-woocommerce-wishlist' ), [ 'status' => 400 ] );
 		}
 		$wl = new TInvWL_Wishlist();
 
@@ -184,16 +185,21 @@ class TInvWL_Includes_API_Wishlist {
 			'external'    => false
 		];
 
+		//proper sanitizing
 		if ( null !== ( $count = $request->get_param( 'count' ) ) ) {
-			$args['count'] = $count;
+			$args['count'] = absint( $count );
 		}
 		if ( null !== ( $offset = $request->get_param( 'offset' ) ) ) {
-			$args['offset'] = $offset;
+			$args['offset'] = absint( $offset );
 		}
+		//the order value is passed directly to the db so it needs to be protected against sql_injections
 		if ( null !== ( $order = $request->get_param( 'order' ) ) ) {
-			$args['order'] = $order;
+			$order = strtoupper( $order );
+			$valid_order_values = array('ASC','DESC');
+			if( in_array( $order, $valid_order_values, true ) ) {
+				$args['order'] = $order;
+			}
 		}
-
 
 		$products = $wlp->get( $args );
 

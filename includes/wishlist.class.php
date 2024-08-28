@@ -356,6 +356,15 @@ class TInvWL_Wishlist {
 			}
 		}
 
+		//proper sanitizing
+		$default['offset'] = absint( $default['offset'] );
+		$default['count']  = absint( $default['count'] );
+		//the order value is passed directly to the db so it needs to be protected against sql_injections
+		$valid_order_values = array('ASC','DESC');
+		if( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
+			$default['order'] = 'ASC';
+		}
+
 		if ( is_array( $default['field'] ) ) {
 			$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
 		} elseif ( is_string( $default['field'] ) ) {

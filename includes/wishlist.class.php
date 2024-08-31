@@ -246,7 +246,9 @@ class TInvWL_Wishlist {
 		if ( empty( $sharekey ) ) {
 			$sharekey = $this->get_sharekey();
 		}
-		if ( empty( $sharekey ) ) {
+
+		//validate sharekey
+		if ( empty( $sharekey ) || ! is_string( $sharekey ) || ! preg_match( '/[a-f0-9]{6}/i', $sharekey ) ) {
 			return array();
 		}
 

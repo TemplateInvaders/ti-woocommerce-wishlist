@@ -479,7 +479,6 @@ gulp.task('readme', function () {
 	return gulp.src(['readme.txt'])
 		.pipe(readme({
 			details: false,
-			screenshot_url: 'https://ps.w.org/{plugin}/assets/{screenshot}.png',
 			slug: pkg.name
 		}))
 		.pipe(gulp.dest('.'))

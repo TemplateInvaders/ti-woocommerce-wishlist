@@ -4,12 +4,13 @@
  * Plugin Name:       TI WooCommerce Wishlist
  * Plugin URI:        https://wordpress.org/plugins/ti-woocommerce-wishlist/
  * Description:       Wishlist functionality for your WooCommerce store.
- * Version:           2.8.2
+ * Version:           2.9.0
  * Requires at least: 6.1
- * Tested up to: 6.4
+ * Tested up to: 6.6
  * Requires PHP: 7.4
+ * Requires Plugins: woocommerce
  * WC requires at least: 3.2
- * WC tested up to: 8.6
+ * WC tested up to: 9.3
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+
@@ -28,7 +29,7 @@ defined( 'TINVWL_URL' ) || define( 'TINVWL_URL', plugins_url( '/', __FILE__ ) );
 defined( 'TINVWL_PATH' ) || define( 'TINVWL_PATH', plugin_dir_path( __FILE__ ) );
 defined( 'TINVWL_PREFIX' ) || define( 'TINVWL_PREFIX', 'tinvwl' );
 defined( 'TINVWL_DOMAIN' ) || define( 'TINVWL_DOMAIN', 'ti-woocommerce-wishlist' );
-defined( 'TINVWL_FVERSION' ) || define( 'TINVWL_FVERSION', '2.8.2' );
+defined( 'TINVWL_FVERSION' ) || define( 'TINVWL_FVERSION', '2.9.0' );
 defined( 'TINVWL_LOAD_FREE' ) || define( 'TINVWL_LOAD_FREE', plugin_basename( __FILE__ ) );
 defined( 'TINVWL_NAME' ) || define( 'TINVWL_NAME', 'TI WooCommerce Wishlist' );
 

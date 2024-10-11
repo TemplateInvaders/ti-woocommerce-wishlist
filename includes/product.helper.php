@@ -148,14 +148,14 @@ class TInvWL_Product {
 			'price'        => 0,
 			'in_stock'     => 1,
 		);
-		$data    = apply_filters( 'tinvwl_wishlist_product_add_field', filter_var_array( $data, array(
+		$data = apply_filters( 'tinvwl_wishlist_product_add_field', filter_var_array( $data, array(
 			'author'       => FILTER_VALIDATE_INT,
 			'product_id'   => FILTER_VALIDATE_INT,
 			'quantity'     => FILTER_VALIDATE_INT,
 			'variation_id' => FILTER_VALIDATE_INT,
 			'wishlist_id'  => FILTER_VALIDATE_INT,
 		) ) );
-		$data    = array_filter( $data );
+		$data = array_filter( $data );
 
 		$data = tinv_array_merge( $default, $data );
 
@@ -295,6 +295,12 @@ class TInvWL_Product {
 
 		$default['offset'] = absint( $default['offset'] );
 		$default['count']  = absint( $default['count'] );
+		//the order value is passed directly to the db so it needs to be protected against sql_injections
+		$valid_order_values = array('ASC','DESC');
+		if( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
+			$default['order'] = 'DESC';
+		}
+
 		if ( is_array( $default['field'] ) ) {
 			$default['field'] = '`' . implode( '`,`', $default['field'] ) . '`';
 		} elseif ( is_string( $default['field'] ) ) {
@@ -643,8 +649,8 @@ class TInvWL_Product {
 		}
 
 		global $wpdb;
-		$sql    = "SELECT `wishlist_id` FROM `{$this->table}` WHERE `ID`={$product_id}";
-		$result = $wpdb->get_results( $sql, ARRAY_A );
+		$prepared_sql = $wpdb->prepare( "SELECT `wishlist_id` FROM `{$this->table}` WHERE `ID`=%d", $product_id );
+		$result = $wpdb->get_results( $prepared_sql, ARRAY_A );
 
 		if ( ! $result ) {
 			return false;

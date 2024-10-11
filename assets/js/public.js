@@ -800,7 +800,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     // Get wishlist data from REST API.
     var tinvwl_products = [],
       tinvwl_counter = false;
-    $('a.tinvwl_add_to_wishlist_button').each(function () {
+    $('.tinvwl_add_to_wishlist_button').each(function () {
       if ('undefined' !== $(this).data('tinv-wl-product') && $(this).data('tinv-wl-product')) {
         tinvwl_products.push($(this).data('tinv-wl-product'));
       }
@@ -967,7 +967,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
    */
   function mark_products(data) {
     var g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
-    $('a.tinvwl_add_to_wishlist_button').each(function () {
+    $('.tinvwl_add_to_wishlist_button').each(function () {
       $(this).removeClass('tinvwl-product-make-remove').removeClass('tinvwl-product-in-list').attr('data-tinv-wl-action', 'addto').attr('data-tinv-wl-list', '[]');
       if (data && data.stats) {
         $(this).find('span.tinvwl-product-stats').remove();
@@ -976,7 +976,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     $('body').trigger('tinvwl_wishlist_mark_products', [data]);
     $.each(data.products, function (i, item) {
       var id = i,
-        e = $('a.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]');
+        e = $('.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]');
       e.each(function () {
         var vid = parseInt($(this).attr('data-tinv-wl-productvariation')),
           vids = $(this).data('tinv-wl-productvariations') || [],
@@ -995,7 +995,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     if (data && data.stats && tinvwl_add_to_wishlist.stats) {
       $.each(data.stats, function (i, item) {
         var id = i,
-          e = $('a.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]');
+          e = $('.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]');
         e.each(function () {
           $(this).attr('data-tinv-wl-product-stats', JSON.stringify(item));
           var vid = parseInt($(this).attr('data-tinv-wl-productvariation')),

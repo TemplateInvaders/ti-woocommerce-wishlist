@@ -389,6 +389,8 @@ class TInvWL_Analytics {
 	 * @global wpdb $wpdb
 	 */
 	function get( $data = array() ) {
+		global $wpdb;
+
 		$default = array(
 			'count'    => 10,
 			'field'    => null,
@@ -409,8 +411,8 @@ class TInvWL_Analytics {
 		$default['offset'] = absint( $default['offset'] );
 		$default['count']  = absint( $default['count'] );
 		//the order value is passed directly to the db so it needs to be protected against sql_injections
-		$valid_order_values = array('ASC','DESC');
-		if( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
+		$valid_order_values = array( 'ASC', 'DESC' );
+		if ( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
 			$default['order'] = 'ASC';
 		}
 
@@ -429,10 +431,13 @@ class TInvWL_Analytics {
 			foreach ( $data as $f => $v ) {
 				$s = is_array( $v ) ? ' IN ' : '=';
 				if ( is_array( $v ) ) {
-					$v = "'" . implode( "','", $v ) . "'";
+					foreach ( $v as $_f => $_v ) {
+						$v[ $_f ] = $wpdb->prepare( '%s', $_v );
+					}
+					$v = implode( ',', $v );
 					$v = "($v)";
 				} else {
-					$v = "'$v'";
+					$v = $wpdb->prepare( '%s', $v );
 				}
 				$data[ $f ] = sprintf( '`%s`%s%s', $f, $s, $v );
 			}
@@ -457,7 +462,7 @@ class TInvWL_Analytics {
 
 			$sql = str_replace( $replace, $replacer, $default['sql'] );
 		}
-		global $wpdb;
+
 		$products = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 
 		if ( empty( $products ) ) {

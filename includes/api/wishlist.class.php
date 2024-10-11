@@ -194,9 +194,9 @@ class TInvWL_Includes_API_Wishlist {
 		}
 		//the order value is passed directly to the db so it needs to be protected against sql_injections
 		if ( null !== ( $order = $request->get_param( 'order' ) ) ) {
-			$order = strtoupper( $order );
-			$valid_order_values = array('ASC','DESC');
-			if( in_array( $order, $valid_order_values, true ) ) {
+			$order              = strtoupper( $order );
+			$valid_order_values = array( 'ASC', 'DESC' );
+			if ( in_array( $order, $valid_order_values, true ) ) {
 				$args['order'] = $order;
 			}
 		}
@@ -358,7 +358,7 @@ class TInvWL_Includes_API_Wishlist {
 	 */
 	public function user_id_exists( int $user_id ): bool {
 		global $wpdb;
-
+		$user_id = absint( $user_id );
 		// Check cache:
 		if ( wp_cache_get( $user_id, 'users' ) ) {
 			return true;

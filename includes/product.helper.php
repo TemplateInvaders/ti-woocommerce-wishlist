@@ -148,14 +148,14 @@ class TInvWL_Product {
 			'price'        => 0,
 			'in_stock'     => 1,
 		);
-		$data = apply_filters( 'tinvwl_wishlist_product_add_field', filter_var_array( $data, array(
+		$data    = apply_filters( 'tinvwl_wishlist_product_add_field', filter_var_array( $data, array(
 			'author'       => FILTER_VALIDATE_INT,
 			'product_id'   => FILTER_VALIDATE_INT,
 			'quantity'     => FILTER_VALIDATE_INT,
 			'variation_id' => FILTER_VALIDATE_INT,
 			'wishlist_id'  => FILTER_VALIDATE_INT,
 		) ) );
-		$data = array_filter( $data );
+		$data    = array_filter( $data );
 
 		$data = tinv_array_merge( $default, $data );
 
@@ -296,8 +296,8 @@ class TInvWL_Product {
 		$default['offset'] = absint( $default['offset'] );
 		$default['count']  = absint( $default['count'] );
 		//the order value is passed directly to the db so it needs to be protected against sql_injections
-		$valid_order_values = array('ASC','DESC');
-		if( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
+		$valid_order_values = array( 'ASC', 'DESC' );
+		if ( ! in_array( strtoupper( $default['order'] ), $valid_order_values, true ) ) {
 			$default['order'] = 'DESC';
 		}
 
@@ -548,7 +548,7 @@ class TInvWL_Product {
 			 * */
 			do_action( 'tinvwl_product_updated', $data );
 
-			return ( $id ) ? $id : true;
+			return ( $id ) ?: true;
 		}
 
 		return false;
@@ -566,6 +566,11 @@ class TInvWL_Product {
 	 */
 	function remove_product_from_wl( int $wishlist_id = 0, int $product_id = 0, int $variation_id = 0, array $meta = [] ): bool {
 		global $wpdb;
+
+		$wishlist_id  = absint( $wishlist_id );
+		$product_id   = absint( $product_id );
+		$variation_id = absint( $variation_id );
+
 		if ( empty( $wishlist_id ) ) {
 			$wishlist_id = $this->wishlist_id();
 		}
@@ -621,11 +626,12 @@ class TInvWL_Product {
 	 *
 	 */
 	function remove_product( $product_id = 0 ) {
+		global $wpdb;
 		if ( empty( $product_id ) ) {
 			return false;
 		}
+		$product_id = absint( $product_id );
 
-		global $wpdb;
 		$result = false !== $wpdb->delete( $this->table, array( 'product_id' => $product_id ) ); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
 		if ( $result ) {
 			do_action( 'tinvwl_wishlist_product_removed_by_product', $product_id );
@@ -644,13 +650,14 @@ class TInvWL_Product {
 	 *
 	 */
 	function get_wishlist_by_product_id( $product_id = 0 ) {
+		global $wpdb;
 		if ( empty( $product_id ) ) {
 			return false;
 		}
+		$product_id = absint( $product_id );
 
-		global $wpdb;
 		$prepared_sql = $wpdb->prepare( "SELECT `wishlist_id` FROM `{$this->table}` WHERE `ID`=%d", $product_id );
-		$result = $wpdb->get_results( $prepared_sql, ARRAY_A );
+		$result       = $wpdb->get_results( $prepared_sql, ARRAY_A );
 
 		if ( ! $result ) {
 			return false;

@@ -83,7 +83,8 @@ class TInvWL {
 			new TInvWL_WizardSetup( $this->_name, $this->_version );
 			new TInvWL_Export( $this->_name, $this->_version );
 			TInvWL_Admin_Notices::instance();
-			$this->object_admin->load_function();
+
+			add_action( 'init', array( $this->object_admin, 'load_function' ) );
 		} else {
 			// Allow to disable wishlist for frontend conditionally. Must be hooked on 'plugins_loaded' action.
 			if ( apply_filters( 'tinvwl_load_frontend', true ) && $this->object_public ) {

@@ -132,7 +132,7 @@ class TInvWL_Public_Wishlist_View {
 		add_filter( 'tinvwl_wishlist_item_add_to_cart', array( $this, 'variable_text' ), 10, 3 );
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'get_per_page' ) );
 
-		TInvWL_Public_Wishlist_Buttons::init( $this->_name );
+		add_action( 'init', array( 'TInvWL_Public_Wishlist_Buttons', 'init' ) );
 
 		add_action( 'tinvwl_before_wishlist_template', array( $this, 'refresh_wishlist_after_action' ) );
 	}

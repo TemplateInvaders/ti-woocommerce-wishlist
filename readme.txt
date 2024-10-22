@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.6
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -159,6 +159,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 == Changelog ==
 
+= 2.9.1 =
+*Release Date - 22 October 2024*
+
+- **Fixed**: SQL Injection vulnerability related to multilingual plugins
+
 = 2.9.0 =
 *Release Date - 11 October 2024*
 
@@ -170,5 +175,5 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 == Upgrade Notice ==
 
-= 2.9.0 =
-Fixed SQL Injection vulnerability
+= 2.9.1 =
+**Fixed**: SQL Injection vulnerability related to multilingual plugins

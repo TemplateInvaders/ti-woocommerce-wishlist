@@ -437,22 +437,24 @@ class TInvWL_Public_AddToWishlist {
 	}
 
 	/**
-	 * @param $share_key
+	 * @param string $share_key
 	 *
 	 * @return array
 	 */
 	function get_wishlists_data( $share_key ) {
-
 		global $wpdb;
 
-		$table              = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_items' );
-		$table_lists        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_lists' );
-		$table_stats        = sprintf( '%s%s', $wpdb->prefix, 'tinvwl_analytics' );
-		$table_translations = sprintf( '%s%s', $wpdb->prefix, 'icl_translations' );
-		$table_languages    = sprintf( '%s%s', $wpdb->prefix, 'icl_languages' );
-		$lang               = filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$lang_default       = filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$stats              = filter_input( INPUT_POST, 'stats', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$table              = $wpdb->prefix . 'tinvwl_items';
+		$table_lists        = $wpdb->prefix . 'tinvwl_lists';
+		$table_stats        = $wpdb->prefix . 'tinvwl_analytics';
+		$table_translations = $wpdb->prefix . 'icl_translations';
+		$table_languages    = $wpdb->prefix . 'icl_languages';
+
+		// Sanitize inputs
+		$lang         = sanitize_text_field( filter_input( INPUT_POST, 'lang', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$lang_default = sanitize_text_field( filter_input( INPUT_POST, 'lang_default', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$stats        = sanitize_text_field( filter_input( INPUT_POST, 'stats', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$share_key    = sanitize_text_field( $share_key );
 
 		$data = $products = $wishlists = $results = $analytics = array();
 
@@ -461,7 +463,6 @@ class TInvWL_Public_AddToWishlist {
 		}
 
 		if ( ( isset( $data['author'] ) && $data['author'] ) || $share_key ) {
-
 			$default = array(
 				'count'    => 99999,
 				'field'    => null,
@@ -472,6 +473,10 @@ class TInvWL_Public_AddToWishlist {
 				'sql'      => '',
 			);
 
+			// Validate order and order_by parameters
+			$allowed_orders          = array( 'ASC', 'DESC' );
+			$allowed_order_by_fields = array( 'date', 'title', 'ID' ); // Add other allowed fields
+
 			foreach ( $default as $_k => $_v ) {
 				if ( array_key_exists( $_k, $data ) ) {
 					$default[ $_k ] = $data[ $_k ];
@@ -479,113 +484,104 @@ class TInvWL_Public_AddToWishlist {
 				}
 			}
 
+			// Sanitize order parameters
+			$default['order']    = in_array( strtoupper( $default['order'] ), $allowed_orders ) ? strtoupper( $default['order'] ) : 'DESC';
+			$default['order_by'] = in_array( $default['order_by'], $allowed_order_by_fields ) ? $default['order_by'] : 'date';
+
 			$default['offset'] = absint( $default['offset'] );
 			$default['count']  = absint( $default['count'] );
 
+			// Build the base SELECT clause
 			if ( $lang ) {
-				$default['field'] = $table . '.ID, t.element_id AS product_id, t2.element_id AS variation_id, ' . $table . '.formdata,' . $table . '.author,' . $table . '.date,' . $table . '.quantity,' . $table . '.price,' . $table . '.in_stock,';
+				$select_fields = "{$table}.ID, t.element_id AS product_id, t2.element_id AS variation_id,
+                            {$table}.formdata, {$table}.author, {$table}.date, {$table}.quantity,
+                            {$table}.price, {$table}.in_stock";
 			} else {
-				$default['field'] = $table . '.*, ';
+				$select_fields = "{$table}.*";
 			}
 
-			$default['field'] .= $table_lists . '.ID as wishlist_id, ' . $table_lists . '.status as wishlist_status, ' . $table_lists . '.title as wishlist_title, ' . $table_lists . '.share_key as wishlist_share_key';
+			// Add the wishlist fields to the SELECT clause
+			$select_fields .= ", {$table_lists}.ID as wishlist_id, {$table_lists}.status as wishlist_status,
+                           {$table_lists}.title as wishlist_title, {$table_lists}.share_key as wishlist_share_key";
 
-			$sql = "SELECT {$default[ 'field' ]} FROM `{$table}` INNER JOIN `{$table_lists}` ON `{$table}`.`wishlist_id` = `{$table_lists}`.`ID` AND `{$table_lists}`.`type` = 'default'";
+			// Build base query
+			$sql = "SELECT {$select_fields}
+                FROM {$table}
+                INNER JOIN {$table_lists} ON {$table}.wishlist_id = {$table_lists}.ID
+                AND {$table_lists}.type = 'default'";
 
+			// Add share key condition if present
 			if ( $share_key ) {
-				$sql .= " AND `{$table_lists}`.`share_key` = '{$share_key}'";
+				$sql .= $wpdb->prepare( " AND {$table_lists}.share_key = %s", $share_key );
 			}
+
+			// Add language joins if needed
 			if ( $lang ) {
+				$language_conditions = array( $lang );
 				if ( $lang_default ) {
-					$languages = sprintf( "'%s'", implode( "', '", array( $lang, $lang_default ) ) );
-				} else {
-					$languages = "'" . $lang . "'";
+					$language_conditions[] = $lang_default;
 				}
 
-				$sql .= "LEFT JOIN {$table_translations} tr ON
-    {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
-LEFT JOIN {$table_translations} tr2 ON
-    {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
-		LEFT JOIN {$table_translations} t ON
-    tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code IN ({$languages})
-LEFT JOIN {$table_translations} t2 ON
-    {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code IN ({$languages})
-JOIN {$table_languages} l ON
-    (
-        t.language_code = l.code OR t2.language_code = l.code
-    ) AND l.active = 1";
-			}
-			$where = '1';
+				$languages_in = "'" . implode( "','", array_map( 'esc_sql', $language_conditions ) ) . "'";
 
+				$sql .= " LEFT JOIN {$table_translations} tr ON
+                        {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
+                    LEFT JOIN {$table_translations} tr2 ON
+                        {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id
+                        AND tr2.element_type = 'post_product_variation'
+                    LEFT JOIN {$table_translations} t ON
+                        tr.trid = t.trid AND t.element_type = 'post_product'
+                        AND t.language_code IN ({$languages_in})
+                    LEFT JOIN {$table_translations} t2 ON
+                        {$table}.variation_id != 0 AND tr2.trid = t2.trid
+                        AND t2.element_type = 'post_product_variation'
+                        AND t2.language_code IN ({$languages_in})
+                    JOIN {$table_languages} l ON
+                        (t.language_code = l.code OR t2.language_code = l.code) AND l.active = 1";
+			}
+
+			// Build WHERE clause
+			$where_conditions = array( '1=1' );
 			if ( ! empty( $data ) && is_array( $data ) ) {
-
-				if ( array_key_exists( 'meta', $data ) ) {
-					$product_id = $variation_id = 0;
-					if ( array_key_exists( 'product_id', $data ) ) {
-						$product_id = $data['product_id'];
-					}
-					if ( array_key_exists( 'variation_id', $data ) ) {
-						$variation_id = $data['variation_id'];
-					}
-					$data['formdata'] = '';
-					unset( $data['meta'] );
-				}
-
-				foreach ( $data as $f => $v ) {
-					$s = is_array( $v ) ? ' IN ' : '=';
-					if ( is_array( $v ) ) {
-						foreach ( $v as $_f => $_v ) {
-							$v[ $_f ] = $wpdb->prepare( '%s', $_v );
-						}
-						$v = implode( ',', $v );
-						$v = "($v)";
+				foreach ( $data as $field => $value ) {
+					if ( is_array( $value ) ) {
+						$placeholders       = array_fill( 0, count( $value ), '%s' );
+						$where_conditions[] = $wpdb->prepare(
+							"{$table}.{$field} IN (" . implode( ',', $placeholders ) . ")",
+							$value
+						);
 					} else {
-						$v = $wpdb->prepare( '%s', $v );
+						$where_conditions[] = $wpdb->prepare(
+							"{$table}.{$field} = %s",
+							$value
+						);
 					}
-					$data[ $f ] = sprintf( $table . '.' . '`%s`%s%s', $f, $s, $v );
 				}
-
-				$where = implode( ' AND ', $data );
-
-				$sql .= ' WHERE ' . $where;
 			}
 
-			$sql .= sprintf( ' GROUP BY `%s`.ID ORDER BY `%s` %s LIMIT %d,%d;', $table, $default['order_by'], $default['order'], $default['offset'], $default['count'] );
+			$sql .= " WHERE " . implode( ' AND ', $where_conditions );
 
-			if ( ! empty( $default['sql'] ) ) {
-				$replacer    = $replace = array();
-				$replace[0]  = '{table}';
-				$replacer[0] = $table;
-				$replace[1]  = '{where}';
-				$replacer[1] = $where;
+			// Add GROUP BY, ORDER BY, and LIMIT
+			$sql .= " GROUP BY {$table}.ID";
+			$sql .= " ORDER BY {$default['order_by']} {$default['order']}";
+			$sql .= $wpdb->prepare( " LIMIT %d, %d", $default['offset'], $default['count'] );
 
-				foreach ( $default as $key => $value ) {
-					$i = count( $replace );
-
-					$replace[ $i ]  = '{' . $key . '}';
-					$replacer[ $i ] = $value;
-				}
-
-				$sql = str_replace( $replace, $replacer, $default['sql'] );
-			}
-
+			// Execute query
 			$results = $wpdb->get_results( $sql, ARRAY_A );
 
+			// Process results
 			if ( ! empty( $results ) ) {
 				foreach ( $results as $product ) {
 					$wishlists[ $product['wishlist_id'] ] = array(
 						'ID'        => (int) $product['wishlist_id'],
-						'title'     => $product['wishlist_title'],
-						'status'    => $product['wishlist_status'],
-						'share_key' => $product['wishlist_share_key'],
+						'title'     => sanitize_text_field( $product['wishlist_title'] ),
+						'status'    => sanitize_text_field( $product['wishlist_status'] ),
+						'share_key' => sanitize_text_field( $product['wishlist_share_key'] ),
 					);
-
 				}
 
 				foreach ( $wishlists as $wishlist ) {
-
 					foreach ( $results as $product ) {
-
 						if ( (int) $wishlist['ID'] !== (int) $product['wishlist_id'] ) {
 							continue;
 						}
@@ -596,24 +592,34 @@ JOIN {$table_languages} l ON
 							$products[ $product['product_id'] ][ $wishlist['ID'] ]         = $wishlist;
 							$products[ $product['product_id'] ][ $wishlist['ID'] ]['in'][] = (int) $product['variation_id'];
 						}
-
 					}
 				}
 			}
-
 		}
 
+		// Handle statistics query
 		if ( $stats ) {
 			$stats_count = 0;
 			$analytics   = array();
-			$stats_sql   = "SELECT `A`.`product_id`, `A`.`variation_id`, COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999";
+
+			$stats_sql = "SELECT A.product_id, A.variation_id, COUNT(B.ID) AS count
+                      FROM {$table_stats} AS A
+                      LEFT JOIN {$table} AS C ON C.wishlist_id = A.wishlist_id
+                          AND C.product_id = A.product_id
+                          AND C.variation_id = A.variation_id
+                      LEFT JOIN {$table_lists} AS B ON C.wishlist_id = B.ID
+                      LEFT JOIN {$table_lists} AS G ON C.wishlist_id = G.ID AND G.author = 0
+                      WHERE A.product_id > 0
+                      GROUP BY A.product_id, A.variation_id
+                      HAVING count > 0
+                      LIMIT 0, 9999999";
 
 			$stats_results = $wpdb->get_results( $stats_sql, ARRAY_A );
 
 			if ( ! empty( $stats_results ) ) {
 				foreach ( $stats_results as $product_stats ) {
-					$analytics[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = $product_stats['count'];
-					$stats_count                                                                 = $stats_count + $product_stats['count'];
+					$analytics[ $product_stats['product_id'] ][ $product_stats['variation_id'] ] = (int) $product_stats['count'];
+					$stats_count                                                                 += (int) $product_stats['count'];
 				}
 			}
 		}
@@ -626,16 +632,16 @@ JOIN {$table_languages} l ON
 		);
 
 		if ( $lang ) {
-			$response['lang'] = $lang;
+			$response['lang'] = sanitize_text_field( $lang );
 		}
 
 		if ( $lang_default ) {
-			$response['lang_default'] = $lang_default;
+			$response['lang_default'] = sanitize_text_field( $lang_default );
 		}
 
 		if ( $stats ) {
 			$response['stats']       = $analytics;
-			$response['stats_count'] = $stats_count;
+			$response['stats_count'] = (int) $stats_count;
 		}
 
 		return $response;

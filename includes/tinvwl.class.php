@@ -80,7 +80,9 @@ class TInvWL {
 		TInvWL_Form::_init( $this->_name );
 
 		if ( is_admin() ) {
-			new TInvWL_WizardSetup( $this->_name, $this->_version );
+			if ( current_user_can( 'manage_options' ) ) {
+				new TInvWL_WizardSetup( $this->_name, $this->_version );
+			}
 			new TInvWL_Export( $this->_name, $this->_version );
 			TInvWL_Admin_Notices::instance();
 

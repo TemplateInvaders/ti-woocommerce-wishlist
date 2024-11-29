@@ -2,8 +2,8 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
-Tested up to: 6.6
-Stable tag: 2.9.1
+Tested up to: 6.7
+Stable tag: 2.9.2
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -158,6 +158,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.9.2 =
+*Release Date - 29 November 2024*
+
+- **Added**: Support for WordPress 6.7.x
+- **Added**: Support for WooCommerce 9.4.x
+- **Fixed**: issue with early loaded translation for WP 6.7.x
+- **Fixed**: unauthorized access to the setup wizard page
 
 = 2.9.1 =
 *Release Date - 22 October 2024*

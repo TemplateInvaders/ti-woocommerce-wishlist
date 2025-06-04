@@ -4,7 +4,7 @@
  *
  * @name WC Fields Factory
  *
- * @version 4.1.5
+ * @version 4.1.8
  *
  * @slug wc-fields-factory
  *
@@ -379,7 +379,6 @@ function tinvwl_upload_file_wc_fields_factory( $file ) {
 		$file,
 		[
 			'test_form' => false,
-			'test_type' => false,
 		]
 	);
 

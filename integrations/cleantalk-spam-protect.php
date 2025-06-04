@@ -4,7 +4,7 @@
  *
  * @name Anti-Spam by CleanTalk
  *
- * @version 5.173
+ * @version 6.56
  *
  * @slug cleantalk-spam-protect
  *
@@ -56,7 +56,7 @@ if ( ! function_exists( 'tinvwl_wishlist_item_meta_post_cleantalk_spam_protect' 
 	function tinvwl_wishlist_item_meta_post_cleantalk_spam_protect( $item_data, $product_id, $variation_id ) {
 
 		foreach ( array_keys( $item_data ) as $key ) {
-			if ( strpos( $key, 'apbct_' ) === 0 ) {
+			if ( strpos( $key, 'apbct_' ) === 0 || $key === "ct_bot_detector_event_token" ) {
 				unset( $item_data[ $key ] );
 			}
 		}

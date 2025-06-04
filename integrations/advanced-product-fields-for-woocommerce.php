@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields (Product Addons) for WooCommerce
  *
- * @version 1.6.1
+ * @version 1.6.13
  *
  * @slug advanced-product-fields-for-woocommerce
  *
@@ -45,9 +45,29 @@ if ( ! $available ) {
 use SW_WAPF\Includes\Classes\Enumerable;
 use SW_WAPF\Includes\Classes\Field_Groups;
 use SW_WAPF\Includes\Classes\Fields;
-use SW_WAPF\Includes\Classes\Helper;
-use SW_WAPF\Includes\Controllers\Product_Controller;
 use SW_WAPF\Includes\Models\Field;
+
+if ( ! function_exists( 'tinv_wishlist_item_meta_hidden_fields_wapf' ) ) {
+
+	/**
+	 * Filter hidden fields data
+	 *
+	 * @param array $hidden_fields Fields names array.
+	 *
+	 * @return array
+	 */
+
+	function tinv_wishlist_item_meta_hidden_fields_wapf( $hidden_fields ) {
+		if ( class_exists( 'SW_WAPF\WAPF' ) ) {
+			$hidden_fields = array_values( array_diff( $hidden_fields, [ 'wapf', 'wapf_field_groups' ] ) );
+		}
+
+		return $hidden_fields;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_meta_hidden_fields', 'tinv_wishlist_item_meta_hidden_fields_wapf', 10, 1 );
+}
+
 
 if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 
@@ -235,7 +255,7 @@ function tinvwl_add_to_cart_meta_wapf( $wl_product ) {
 
 		}
 		if ( $wapf_data ) {
-			$wl_product['meta']['wapf'] = $wapf_data;
+			$wl_product['meta']['wapf'] = array_merge( $wl_product['meta']['wapf'], $wapf_data );
 		}
 
 	}

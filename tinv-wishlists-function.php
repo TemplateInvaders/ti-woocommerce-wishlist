@@ -869,7 +869,7 @@ if ( ! function_exists( 'tinv_wishlist_print_meta' ) ) {
 			}
 		}
 		if ( array_key_exists( 'tinvwl-hidden-fields', $meta ) ) {
-			$hiddenFields = json_decode( $meta['tinvwl-hidden-fields'], true );
+			$hiddenFields = apply_filters( 'tinvwl_wishlist_item_meta_hidden_fields', json_decode( $meta['tinvwl-hidden-fields'], true ) );
 			if ( $hiddenFields !== null ) {
 				foreach ( $hiddenFields as $hiddenKey ) {
 					if ( isset( $meta[ $hiddenKey ] ) ) {

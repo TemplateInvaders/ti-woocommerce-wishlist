@@ -4,7 +4,7 @@
  *
  * @name PPOM for WooCommerce
  *
- * @version 21.2
+ * @version 33.0.12
  *
  * @slug woocommerce-product-addon
  *
@@ -13,7 +13,7 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -24,46 +24,25 @@ $slug = "woocommerce-product-addon";
 
 $name = "PPOM for WooCommerce";
 
-$available = defined('PPOM_VERSION');
+$available = defined( 'PPOM_VERSION' );
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 
-$tinvwl_integrations[$slug] = array(
-	'name' => $name,
+$tinvwl_integrations[ $slug ] = array(
+	'name'      => $name,
 	'available' => $available,
 );
 
-if (!tinv_get_option('integrations', $slug)) {
+if ( ! tinv_get_option( 'integrations', $slug ) ) {
 	return;
 }
 
-if (!$available) {
+if ( ! $available ) {
 	return;
 }
 
-if (!function_exists('tinv_wishlist_metasupport_woocommerce_product_add_on')) {
 
-	/**
-	 * Set description for meta WooCommerce Product Add-on
-	 *
-	 * @param array $meta Meta array.
-	 * @param integer $product_id Product ID.
-	 *
-	 * @return array
-	 */
-	function tinv_wishlist_metasupport_woocommerce_product_add_on($meta, $product_id)
-	{
-		if (isset($meta['ppom'])) {
-			$meta = array();
-		}
-
-		return $meta;
-	}
-
-	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_woocommerce_product_add_on', 10, 2);
-} // End if().
-
-if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
+if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) ) {
 
 	/**
 	 * Set description for meta WooCommerce Product Add-on
@@ -74,56 +53,55 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_item_meta_woocommerce_product_add_on($meta, $wl_product, $product)
-	{
-		if (isset($wl_product['meta']) && isset($wl_product['meta']['ppom']) && class_exists('NM_PersonalizedProduct')) {
+	function tinv_wishlist_item_meta_woocommerce_product_add_on( $meta, $wl_product, $product ) {
+		if ( isset( $wl_product['meta'] ) && isset( $wl_product['meta']['ppom'] ) && class_exists( 'NM_PersonalizedProduct' ) ) {
 
-			$ppom = json_decode($wl_product['meta']['ppom']);
+			$ppom         = json_decode( $wl_product['meta']['ppom'] );
 			$product_meta = $ppom->fields ? $ppom->fields : '';
 
 			$item_meta = array();
 
-			if ($product_meta) {
+			if ( $product_meta ) {
 
-				foreach ($product_meta as $key => $value) {
+				foreach ( $product_meta as $key => $value ) {
 
-					if (empty($value)) {
+					if ( empty( $value ) ) {
 						continue;
 					}
 
 					$product_id = $wl_product['product_id'];
-					$field_meta = ppom_get_field_meta_by_dataname($product_id, $key);
+					$field_meta = ppom_get_field_meta_by_dataname( $product_id, $key );
 
-					if (empty($field_meta)) {
+					if ( empty( $field_meta ) ) {
 						continue;
 					}
 
-					$field_type = $field_meta['type'];
+					$field_type  = $field_meta['type'];
 					$field_title = $field_meta['title'];
 
 
-					switch ($field_type) {
+					switch ( $field_type ) {
 						case 'quantities':
 							$total_qty = 0;
-							foreach ($value as $label => $qty) {
-								if (!empty($qty)) {
+							foreach ( $value as $label => $qty ) {
+								if ( ! empty( $qty ) ) {
 									$item_meta[] = array(
-										'key' => $label,
+										'key'     => $label,
 										'display' => $qty,
 									);
-									$total_qty += $qty;
+									$total_qty   += $qty;
 								}
 							}
 							break;
 
 						case 'file':
 							$file_thumbs_html = '';
-							foreach ($value as $file_id => $file_uploaded) {
-								$file_name = $file_uploaded['org'];
-								$file_thumbs_html .= ppom_show_file_thumb($file_name);
+							foreach ( $value as $file_id => $file_uploaded ) {
+								$file_name        = $file_uploaded['org'];
+								$file_thumbs_html .= ppom_show_file_thumb( $file_name );
 							}
 							$item_meta[] = array(
-								'key' => $field_title,
+								'key'     => $field_title,
 								'display' => $file_thumbs_html,
 							);
 
@@ -131,26 +109,26 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 
 						case 'cropper':
 							$file_thumbs_html = '';
-							foreach ($value as $file_id => $file_cropped) {
+							foreach ( $value as $file_id => $file_cropped ) {
 
-								$file_name = $file_cropped['org'];
-								$file_thumbs_html .= ppom_show_file_thumb($file_name, true);
+								$file_name        = $file_cropped['org'];
+								$file_thumbs_html .= ppom_show_file_thumb( $file_name, true );
 							}
 							$item_meta[] = array(
-								'key' => $field_title,
+								'key'     => $field_title,
 								'display' => $file_thumbs_html,
 							);
 							break;
 
 						case 'image':
-							if ($value) {
-								foreach ($value as $id => $images_meta) {
-									$images_meta = json_decode(stripslashes($images_meta), true);
-									$image_url = stripslashes($images_meta['link']);
-									$image_html = '<img class="img-thumbnail" style="width:' . esc_attr(ppom_get_thumbs_size()) . '" src="' . esc_url($image_url) . '" title="' . esc_attr($images_meta['title']) . '">';
-									$meta_key = $field_title . '(' . $images_meta['title'] . ')';
+							if ( $value ) {
+								foreach ( $value as $id => $images_meta ) {
+									$images_meta = json_decode( stripslashes( $images_meta ), true );
+									$image_url   = stripslashes( $images_meta['link'] );
+									$image_html  = '<img class="img-thumbnail" style="width:' . esc_attr( ppom_get_thumbs_size() ) . '" src="' . esc_url( $image_url ) . '" title="' . esc_attr( $images_meta['title'] ) . '">';
+									$meta_key    = $field_title . '(' . $images_meta['title'] . ')';
 									$item_meta[] = array(
-										'key' => $meta_key,
+										'key'     => $meta_key,
 										'display' => $image_html,
 									);
 								}
@@ -158,15 +136,15 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 							break;
 
 						case 'audio':
-							if ($value) {
+							if ( $value ) {
 								$ppom_file_count = 1;
-								foreach ($value as $id => $audio_meta) {
-									$audio_meta = json_decode(stripslashes($audio_meta), true);
-									$audio_url = stripslashes($audio_meta['link']);
-									$audio_html = '<a href="' . esc_url($audio_url) . '" title="' . esc_attr($audio_meta['title']) . '">' . $audio_meta['title'] . '</a>';
-									$meta_key = $field_title . ': ' . $ppom_file_count++;
+								foreach ( $value as $id => $audio_meta ) {
+									$audio_meta  = json_decode( stripslashes( $audio_meta ), true );
+									$audio_url   = stripslashes( $audio_meta['link'] );
+									$audio_html  = '<a href="' . esc_url( $audio_url ) . '" title="' . esc_attr( $audio_meta['title'] ) . '">' . $audio_meta['title'] . '</a>';
+									$meta_key    = $field_title . ': ' . $ppom_file_count ++;
 									$item_meta[] = array(
-										'key' => $meta_key,
+										'key'     => $meta_key,
 										'display' => $audio_html,
 									);
 								}
@@ -175,16 +153,16 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 
 						case 'bulkquantity':
 							$item_meta[] = array(
-								'key' => $key,
+								'key'     => $key,
 								'display' => $value['option'] . ' (' . $value['qty'] . ')',
 							);
 							break;
 
 						default:
-							$value = is_object($value) ? implode(",", (array)$value) : $value;
+							$value       = is_object( $value ) ? implode( ",", (array) $value ) : $value;
 							$item_meta[] = array(
-								'key' => $field_title,
-								'display' => stripcslashes($value),
+								'key'     => $field_title,
+								'display' => stripcslashes( $value ),
 							);
 							break;
 					}
@@ -192,9 +170,9 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 				} // End foreach().
 			} // End if().
 
-			if (0 < count($item_meta)) {
+			if ( 0 < count( $item_meta ) ) {
 				ob_start();
-				tinv_wishlist_template('ti-wishlist-item-data.php', array('item_data' => $item_meta));
+				tinv_wishlist_template( 'ti-wishlist-item-data.php', array( 'item_data' => $item_meta ) );
 				$meta .= ob_get_clean();
 			}
 		} // End if().
@@ -202,5 +180,70 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_add_on')) {
 		return $meta;
 	}
 
-	add_filter('tinvwl_wishlist_item_meta_data', 'tinv_wishlist_item_meta_woocommerce_product_add_on', 10, 3);
+	add_filter( 'tinvwl_wishlist_item_meta_data', 'tinv_wishlist_item_meta_woocommerce_product_add_on', 10, 3 );
+} // End if().
+
+function tinvwl_add_to_cart_meta_woocommerce_product_add_on( $wl_product ) {
+
+	if ( isset( $wl_product['action'] ) && 'add' === $wl_product['action'] && isset( $wl_product['meta']['ppom'] ) ) {
+
+		$decoded = json_decode( $wl_product['meta']['ppom'], true );
+
+		if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) {
+			$wl_product['meta']['ppom'] = $decoded;
+		}
+	}
+
+	return $wl_product;
+}
+
+add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_woocommerce_product_add_on' );
+
+if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_add_on' ) ) {
+
+	/**
+	 * Modify price for PPOM for WooCommerce
+	 *
+	 * @param string $price Returned price.
+	 * @param array $wl_product Wishlist Product.
+	 * @param \WC_Product $product Woocommerce Product.
+	 *
+	 * @return string
+	 */
+	function tinvwl_item_price_woocommerce_product_add_on( $price, $wl_product, $product ) {
+
+		if ( defined( 'PPOM_VERSION' ) ) {
+
+			if ( isset( $wl_product['meta'] ) && isset( $wl_product['meta']['ppom'] ) ) {
+				$decoded = json_decode( $wl_product['meta']['ppom'], true );
+
+				if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) && isset( $decoded['ppom_option_price'] ) ) {
+					$option_price = json_decode( $decoded['ppom_option_price'], true );
+
+					if ( JSON_ERROR_NONE === json_last_error() && is_array( $option_price ) && ! empty( $option_price ) ) {
+
+						$options_total = 0;
+
+						foreach ( $option_price as $option ) {
+
+							$options_total = $options_total + $option['price'];
+						}
+
+
+						if ( $options_total > 0 ) {
+							$price = wc_price( floatval( $product->get_price() ) + floatval( $options_total ) );
+						}
+
+					}
+				}
+
+				return $price;
+			}
+		}
+
+
+		return $price;
+	}
+
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_add_on', 10, 3 );
 } // End if().

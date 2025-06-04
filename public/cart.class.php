@@ -83,9 +83,12 @@ class TInvWL_Public_Cart {
 			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data_cart_session' ) );
 		}
 
-		add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta' ) );
+		add_action( 'woocommerce_checkout_order_created', array( $this, 'add_order_item_meta' ) );
+		add_action( 'woocommerce_store_api_checkout_update_order_meta', array( $this, 'add_order_item_meta' ) );
 
-		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'purchased_items' ) );
+		add_action( 'woocommerce_checkout_order_created', array( $this, 'purchased_items' ) );
+		add_action( 'woocommerce_store_api_checkout_update_order_meta', array( $this, 'purchased_items' ) );
+
 		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
 	}
 
@@ -349,15 +352,10 @@ class TInvWL_Public_Cart {
 	/**
 	 *  Run action when purchased product from a wishlist.
 	 *
-	 * @param int $order Order ID.
+	 * @param \WC_Order $order Order object.
 	 */
-	public function purchased_items( $order_id ) {
-		$order = wc_get_order( $order_id );
-		if ( ! $order ) {
-			return;
-		}
+	public function purchased_items( $order ) {
 		foreach ( $order->get_items() as $item ) {
-
 			$_wishlist_cart = self::get_order_item_meta( $item, '_tinvwl_wishlist_cart' );
 
 			if ( $_wishlist_cart ) {

@@ -1,14 +1,14 @@
-# Copyright (C) 2024 TI WooCommerce Wishlist Plugin - 2.9.2
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.9.2 package.
+# Copyright (C) 2025 TI WooCommerce Wishlist Plugin - 2.10.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.10.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.9.2\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.10.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
-"POT-Creation-Date: 2024-11-29 15:00+0000\n"
+"POT-Creation-Date: 2025-06-05 07:30+0000\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1273,43 +1273,43 @@ msgstr ""
 msgid "Something went wrong"
 msgstr ""
 
-#: public/cart.class.php:609
+#: public/cart.class.php:607
 msgid "Sorry, the &quot;%s&quot; cannot be purchased."
 msgid_plural "Sorry, the following products cannot be purchased: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:620
+#: public/cart.class.php:618
 msgid "You cannot add &quot;%s&quot; to the cart because the product is out of stock."
 msgid_plural "You cannot add the following products to the cart because they are out of stock: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:631
+#: public/cart.class.php:629
 msgid "External product &quot;%s&quot; cannot be bought."
 msgid_plural "The following external products cannot be bought: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:642
+#: public/cart.class.php:640
 msgid "Please choose product options for &quot;%s&quot;."
 msgid_plural "Please choose options for the following products: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:653
+#: public/cart.class.php:651
 msgid "You cannot add another &quot;%s&quot; to your cart."
 msgid_plural "You cannot add &quot;%s&quot; more to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:664
+#: public/cart.class.php:662
 msgid "You cannot add that amount of &quot;%s&quot; to the cart because there is not enough stock."
 msgid_plural "You cannot add the following products to the cart because there is not enough stock: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:675
+#: public/cart.class.php:673
 msgid "Product &quot;%s&quot; could not be added to the cart because some requirements are not met."
 msgid_plural "Products: &quot;%s&quot; could not be added to the cart because some requirements are not met."
 msgstr[0] ""

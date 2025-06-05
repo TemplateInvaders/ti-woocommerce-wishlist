@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.8
-Stable tag: 2.9.2
+Stable tag: 2.10.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -158,6 +158,32 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.10.0 =
+*Release Date - 5 June 2025*
+
+- **Added**: Support for WordPress 6.8.x
+- **Added**: Support for WooCommerce 9.8.x
+- **Added**: filter 'tinvwl_wishlist_item_meta_hidden_fields'
+- **Updated**: Integration with [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/) plugin
+- **Updated**: Integration with [YITH WooCommerce Quick View](https://wordpress.org/plugins/yith-woocommerce-quick-view/) plugin
+- **Updated**: Integration with [WPC Variations Radio Buttons for WooCommerce](https://wordpress.org/plugins/wpc-variations-radio-buttons/) plugin
+- **Updated**: Integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+- **Updated**: Integration with [WP Multilang – Translation and Multilingual Plugin](https://wordpress.org/plugins/wp-multilang/)
+- **Updated**: Integration with [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin
+- **Updated**: Integration with [WP Armour – Honeypot Anti Spam](https://wordpress.org/plugins/honeypot/) plugin
+- **Updated**: Integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+- **Updated**: Integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
+- **Updated**: Integration with [PPOM – Product Addons & Custom Fields for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
+- **Updated**: Integration with [Payment Plugins Braintree For WooCommerce](https://wordpress.org/plugins/woo-payment-gateway/) plugin
+- **Updated**: Integration with [myCred – Points Management System For Gamification, Ranks, Badges, and Loyalty Rewards Program](https://wordpress.org/plugins/mycred/) plugin
+- **Updated**: Integration with [Min Max Step Quantity Limits Manager for WooCommerce](https://wordpress.org/plugins/product-quantity-for-woocommerce/) plugin
+- **Updated**: Integration with [GTM4WP – A Google Tag Manager (GTM) plugin for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) plugin
+- **Updated**: Integration with [Extra Product Options For WooCommerce | Custom Product Addons and Fields](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+- **Updated**: Integration with [ELEX WooCommerce Catalog Mode](https://wordpress.org/plugins/elex-woocommerce-catalog-mode/) plugin
+- **Updated**: Integration with [Spam protection, Anti-Spam, FireWall by CleanTalk](https://wordpress.org/plugins/cleantalk-spam-protect/) plugin
+- **Updated**: Integration with [Advanced Product Fields (Product Addons) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+- **Fixed**: Vulnerability CVE-2025-47577 by updating integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+
 = 2.9.2 =
 *Release Date - 29 November 2024*
 
@@ -182,5 +208,5 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 == Upgrade Notice ==
 
-= 2.9.1 =
-**Fixed**: SQL Injection vulnerability related to multilingual plugins
+= 2.10.0 =
+**Fixed**: Vulnerability CVE-2025-47577 by updating integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin

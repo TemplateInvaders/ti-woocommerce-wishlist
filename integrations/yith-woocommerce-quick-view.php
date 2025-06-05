@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Quick View
  *
- * @version 1.3.13
+ * @version 2.4.0
  *
  * @slug yith-woocommerce-quick-view
  *
@@ -13,7 +13,7 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -24,26 +24,26 @@ $slug = "yith-woocommerce-quick-view";
 
 $name = "YITH WooCommerce Quick View";
 
-$available = defined('YITH_WCQV');
+$available = defined( 'YITH_WCQV' );
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 
-$tinvwl_integrations[$slug] = array(
-	'name' => $name,
+$tinvwl_integrations[ $slug ] = array(
+	'name'      => $name,
 	'available' => $available,
 );
 
-if (!tinv_get_option('integrations', $slug)) {
+if ( ! tinv_get_option( 'integrations', $slug ) ) {
 	return;
 }
 
-if (!$available) {
+if ( ! $available ) {
 	return;
 }
 
-if (defined('YITH_WCQV')) {
+if ( defined( 'YITH_WCQV' ) ) {
 
-	if (!function_exists('tinv_wishlist_meta_support_yith_wcqv')) {
+	if ( ! function_exists( 'tinv_wishlist_meta_support_yith_wcqv' ) ) {
 
 		/**
 		 * Clear custom meta
@@ -52,19 +52,18 @@ if (defined('YITH_WCQV')) {
 		 *
 		 * @return array
 		 */
-		function tinv_wishlist_meta_support_yith_wcqv($meta)
-		{
+		function tinv_wishlist_meta_support_yith_wcqv( $meta ) {
 
-			foreach ($meta as $k => $v) {
+			foreach ( $meta as $k => $v ) {
 				$prefix = 'yith_';
-				if (0 === strpos($k, $prefix)) {
-					unset($meta[$k]);
+				if ( 0 === strpos( $k, $prefix ) ) {
+					unset( $meta[ $k ] );
 				}
 			}
 
 			return $meta;
 		}
 
-		add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_yith_wcqv');
+		add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_meta_support_yith_wcqv' );
 	} // End if().
 }

@@ -4,7 +4,7 @@
  *
  * @name All in One Product Quantity for WooCommerce
  *
- * @version 5.1.0
+ * @version 5.1.1
  *
  * @slug product-quantity-for-woocommerce
  *

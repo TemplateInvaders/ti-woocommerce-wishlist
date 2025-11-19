@@ -451,7 +451,8 @@ gulp.task('bump', function () {
 gulp.task('zip', function () {
 	return gulp.src([
 			'./**/*',
-			'!./{node_modules,node_modules/**/*}',
+			'!./node_modules/**',
+			'!./node_modules/**/*',
 			'!./.git',
 			'!./assets/js/dev/**',
 			'!./assets/js/dev.**',

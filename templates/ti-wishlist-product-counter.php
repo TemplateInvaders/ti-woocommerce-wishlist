@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-product-counter.php.
  *
- * @version             2.8.0
+ * @version             2.11.0
  * @package           TInvWishlist\Template
  */
 

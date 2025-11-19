@@ -42,7 +42,7 @@ if (!function_exists('tinv_array_merge')) {
 	 *
 	 * @return array
 	 */
-	function tinv_array_merge(array $array1, array $_ = null): array
+	function tinv_array_merge(array $array1, ?array $_ = null): array
 	{
 		$args = func_get_args();
 		array_shift($args);

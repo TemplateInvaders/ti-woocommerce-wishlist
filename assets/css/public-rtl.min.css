@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 2.10.0
+ * @version 2.11.0
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 .tinv-wishlist form,.tinv-wishlist p:last-child,.tinv-wishlist table{margin-bottom:0}
@@ -231,8 +231,8 @@ span.tinvwl-product-stats{background-color:#ebe9eb;border-radius:50%;padding:.2e
 .tinv-wishlist .wishlist-action{width:60px}
 .tinv-wishlist tfoot .tinvwl-to-left:not(:empty){float:none;width:auto}
 .tinv-wishlist tfoot .tinvwl-to-right{float:none;width:auto;text-align:right}
-.tinv-wishlist .social-buttons{float:none;width:auto;text-align:right;margin-top:20px}
 .tinv-wishlist .social-buttons+.tinv-wishlist-clear+.navigation-button{margin-top:30px}
+.tinv-wishlist .social-buttons{float:none;width:auto;text-align:right;margin-top:20px}
 .tinv-wishlist .tinv-login form input[name=login]{min-width:auto}
 .tinv-wishlist .tinvwl-table-manage-list .product-remove{display:table-cell}
 }@media only screen and (max-width:1023px){.tinv-wishlist .tinv-lists-nav a.tinv-prev>i,.tinv-wishlist .tinv-lists-nav a.tinv-next>i{margin:0}

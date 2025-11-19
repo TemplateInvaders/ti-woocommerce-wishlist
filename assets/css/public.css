@@ -677,14 +677,14 @@ ul.products li.product .tinvwl_add_to_wishlist_button {
   }
 }
 @media only screen and (max-width: 1024px) {
+  .tinv-wishlist .social-buttons + .tinv-wishlist-clear + .navigation-button {
+    margin-top: 30px;
+  }
   .tinv-wishlist .social-buttons {
     float: none;
     width: auto;
     text-align: left;
     margin-top: 20px;
-  }
-  .tinv-wishlist .social-buttons + .tinv-wishlist-clear + .navigation-button {
-    margin-top: 30px;
   }
   .tinv-wishlist .tinv-login form input[name=login] {
     min-width: auto;

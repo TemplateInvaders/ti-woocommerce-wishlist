@@ -1,14 +1,14 @@
-# Copyright (C) 2025 TI WooCommerce Wishlist Plugin - 2.10.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.10.0 package.
+# Copyright (C) 2025 TI WooCommerce Wishlist Plugin - 2.11.0
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.11.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.10.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.11.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
-"POT-Creation-Date: 2025-06-05 07:30+0000\n"
+"POT-Creation-Date: 2025-11-19 18:33+0000\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -929,36 +929,44 @@ msgstr ""
 msgid "premium only"
 msgstr ""
 
-#: includes/api/wishlist.class.php:83, includes/api/wishlist.class.php:89, includes/api/wishlist.class.php:299, includes/api/wishlist.class.php:306
+#: includes/api/wishlist.class.php:113, includes/api/wishlist.class.php:123, includes/api/wishlist.class.php:422, includes/api/wishlist.class.php:433
 msgid "Invalid wishlist share key."
 msgstr ""
 
-#: includes/api/wishlist.class.php:109, includes/api/wishlist.class.php:122
+#: includes/api/wishlist.class.php:148, includes/api/wishlist.class.php:164
 msgid "No wishlists found for this user."
 msgstr ""
 
-#: includes/api/wishlist.class.php:156, includes/api/wishlist.class.php:160
+#: includes/api/wishlist.class.php:218, includes/api/wishlist.class.php:227, includes/api/wishlist.class.php:235
 msgid "Update wishlist data failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:228, includes/api/wishlist.class.php:243
+#: includes/api/wishlist.class.php:333
 msgid "Add product to wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:265
+#: includes/api/wishlist.class.php:374
 msgid "Invalid item ID."
 msgstr ""
 
-#: includes/api/wishlist.class.php:272, includes/api/wishlist.class.php:282
+#: includes/api/wishlist.class.php:386, includes/api/wishlist.class.php:400
 msgid "Product not found."
 msgstr ""
 
-#: includes/api/wishlist.class.php:276
-msgid "Remove product from wishlist failed."
+#: includes/api/wishlist.class.php:405
+msgid "Product removed from a wishlist."
 msgstr ""
 
-#: includes/api/wishlist.class.php:285
-msgid "Product removed from a wishlist."
+#: includes/api/wishlist.class.php:513, includes/api/wishlist.class.php:583
+msgid "Authentication is required."
+msgstr ""
+
+#: includes/api/wishlist.class.php:531
+msgid "You are not allowed to view this wishlist."
+msgstr ""
+
+#: includes/api/wishlist.class.php:571, includes/api/wishlist.class.php:594
+msgid "You are not allowed to modify this wishlist."
 msgstr ""
 
 #: includes/export.class.php:147
@@ -1261,15 +1269,15 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
-#: public/addtowishlist.class.php:251
+#: public/addtowishlist.class.php:257
 msgid "Please, login to add products to Wishlist"
 msgstr ""
 
-#: public/addtowishlist.class.php:253
+#: public/addtowishlist.class.php:259
 msgid "Login"
 msgstr ""
 
-#: public/addtowishlist.class.php:272, public/wishlist/ajax.class.php:96, public/wishlist/ajax.class.php:139, public/wishlist/ajax.class.php:152, public/wishlist/ajax.class.php:160, public/wishlist/ajax.class.php:196, public/wishlist/ajax.class.php:204, public/wishlist/ajax.class.php:259, public/wishlist/ajax.class.php:270
+#: public/addtowishlist.class.php:278, public/wishlist/ajax.class.php:96, public/wishlist/ajax.class.php:139, public/wishlist/ajax.class.php:152, public/wishlist/ajax.class.php:160, public/wishlist/ajax.class.php:196, public/wishlist/ajax.class.php:204, public/wishlist/ajax.class.php:259, public/wishlist/ajax.class.php:270
 msgid "Something went wrong"
 msgstr ""
 

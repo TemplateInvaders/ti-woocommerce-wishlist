@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 2.10.0
+ * @version 2.11.0
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 *{-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -68,8 +68,8 @@ h6{font-size:12px}
 .tinvwl-content .tablenav .tinvwl-select-wrap+input[type=submit]{float:right;margin-left:8px !important}
 .tinvwl-content .tablenav input[type=search]+input[type=submit],.tinvwl-content .tablenav input[type=search]+button[type=submit]{float:right;margin-left:8px !important}
 .tinvwl-content input[type=text]:disabled,.tinvwl-content input[type=password]:disabled,.tinvwl-content input[type=color]:disabled,.tinvwl-content input[type=date]:disabled,.tinvwl-content input[type=datetime]:disabled,.tinvwl-content input[type=datetime-local]:disabled,.tinvwl-content input[type=email]:disabled,.tinvwl-content input[type=month]:disabled,.tinvwl-content input[type=number]:disabled,.tinvwl-content input[type=tel]:disabled,.tinvwl-content input[type=time]:disabled,.tinvwl-content input[type=url]:disabled,.tinvwl-content input[type=week]:disabled,.tinvwl-content input[type=search]:disabled{font-size:15px;font-family:"Open Sans","Helvetica Neue",sans-serif;font-weight:600;color:#291c09;background-color:#f6f3ed;border-color:#f6f3ed}
-.tinvwl-content select{font-family:Arial,sans-serif;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer;padding:9px 40px 9px 13px;background-color:#fff;background-image:url("../img/select_caret.png");background-repeat:no-repeat;background-position:96% center;background-position:calc(100% - 15px) center;max-width:100%}
 .tinvwl-content select:disabled{font-size:15px;font-family:"Open Sans","Helvetica Neue",sans-serif;font-weight:600;color:#291c09;background-color:#f6f3ed;border-color:#f6f3ed}
+.tinvwl-content select{font-family:Arial,sans-serif;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer;padding:9px 40px 9px 13px;background-color:#fff;background-image:url("../img/select_caret.png");background-repeat:no-repeat;background-position:96% center;background-position:calc(100% - 15px) center;max-width:100%}
 .tinvwl-content select[multiple=multiple]{padding:9px 13px;background:#fff}
 .tinvwl-content .tinvwl-select.grey{font-size:14px;font-family:"Arial","Helvetica Neue",Helvetica,sans-serif;padding:8px 11px;height:35px;border:0;color:#5d5d5d;background:#f4f3ef}
 .tinvwl-select-wrap{position:relative;display:inline-block;vertical-align:middle;cursor:pointer}
@@ -144,7 +144,6 @@ a.tinvwl-btn{padding:11px 19px 12px 18px;font-weight:800;text-align:center;text-
 .tinvwl-btn.split span i{font-size:17px}
 .tinvwl-btn:not(:disabled):hover,.tinvwl-btn:not(:disabled):active,.tinvwl-btn:not(:disabled):focus{color:#fff;background-color:#515151}
 a.tinvwl-btn:not(:disabled):hover,a.tinvwl-btn:not(:disabled):active,a.tinvwl-btn:not(:disabled):focus{color:#fff;background-color:#515151}
-.tinvwl-header{padding:21px 40px;margin-bottom:40px;background:#fff}
 .tinvwl-header .icon.border-grey{position:relative;display:inline-block;width:45px;height:45px;line-height:45px;text-align:center;background:#fff;border:2px solid #f1f1f1;border-radius:50%;color:#3e3e3e}
 .tinvwl-header .icon.border-grey:hover{border-color:#515151}
 .tinvwl-header .icon.w-lines{position:relative;padding:0 30px}
@@ -152,6 +151,7 @@ a.tinvwl-btn:not(:disabled):hover,a.tinvwl-btn:not(:disabled):active,a.tinvwl-bt
 .tinvwl-header .icon.w-lines:before{left:0}
 .tinvwl-header .icon.w-lines:after{right:0}
 .tinvwl-header .icon .badge{position:absolute;top:-5px;right:-10px;display:inline-block;min-width:26px;height:26px;font-size:11px;line-height:19px;font-weight:bold;background:#ff5739;border:3px solid #fff;color:#fff;border-radius:50%}
+.tinvwl-header{padding:21px 40px;margin-bottom:40px;background:#fff}
 .tinwl-logo i.logo_heart{min-width:54px}
 .tinwl-logo h2{font-size:18px;font-weight:bold;text-transform:uppercase;line-height:1;padding-left:10px}
 .tinvwl-header .tinvwl-title{padding-left:28px;margin-left:28px;border-left:1px solid #dcddde}
@@ -199,8 +199,8 @@ a.tinvwl-btn:not(:disabled):hover,a.tinvwl-btn:not(:disabled):active,a.tinvwl-bt
 .tinvwl-content .widefat thead td.check-column,.tinvwl-content .widefat tbody th.check-column{width:50px;padding:28px 0 28px 28px;vertical-align:middle}
 .tinvwl-content .widefat thead td.check-column{padding:28px 0 28px 28px}
 .tinvwl-content .widefat tbody th.check-column{padding:13px 0 13px 28px}
-.tinvwl-content .widefat thead td.check-column+th{padding-left:21px}
 .tinvwl-content .widefat thead td.check-column+th.sortable:first-of-type>a,.tinvwl-content .widefat thead td.check-column+th.sorted:first-of-type>a{padding-left:21px}
+.tinvwl-content .widefat thead td.check-column+th{padding-left:21px}
 .tinvwl-content .widefat tbody th.check-column+td{padding-left:21px}
 .tinvwl-content .widefat thead td.check-column+th.sortable:first-of-type>.tinvwl-info-wrap.tinvwl-in-table,.tinvwl-content .widefat thead td.check-column+th.sorted:first-of-type>.tinvwl-info-wrap.tinvwl-in-table{padding-left:21px}
 .tinvwl-content .widefat thead td.pause-play-column{padding:0;width:53px;text-align:center}
@@ -229,8 +229,8 @@ a.tinvwl-btn:not(:disabled):hover,a.tinvwl-btn:not(:disabled):active,a.tinvwl-bt
 .tinvwl-content .widefat.users thead th.column-preference,.tinvwl-content .widefat.users tbody td.column-preference{width:165px;min-width:165px}
 .tinvwl-content .widefat tbody .column-name strong{font-weight:normal}
 .tinvwl-content .widefat tbody .column-name>a{display:table}
-.tinvwl-content .widefat tbody .column-name .product-image{display:table-cell;vertical-align:middle}
 .tinvwl-content .widefat tbody .column-name .product-image img{max-width:66px}
+.tinvwl-content .widefat tbody .column-name .product-image{display:table-cell;vertical-align:middle}
 .tinvwl-content .widefat tbody .column-name .product-title{display:table-cell;vertical-align:middle;padding-left:15px}
 .tinvwl-content .widefat thead th.column-preference,.tinvwl-content .widefat tbody td.column-preference{padding-right:20px}
 .tinvwl-content .widefat.products tbody td.column-preference>a{margin-right:10px;float:left}
@@ -242,8 +242,8 @@ a.tinvwl-btn:not(:disabled):hover,a.tinvwl-btn:not(:disabled):active,a.tinvwl-bt
 .tinvwl-content .tablenav .tablenav-pages .pagination-links>.tinvwl-page-number.space{background:0;color:#3e3e3e}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links>a:hover{background:#3e3e3e;color:#fff}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links .next-page:hover{background:#3e3e3e;color:#fff}
-.tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page{margin-right:20px}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page:hover{background:#3e3e3e;color:#fff}
+.tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page{margin-right:20px}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links .next-page{margin-left:20px}
 .tinvwl-content .tablenav .tablenav-pages .tinvwl-chevron{display:inline-block;vertical-align:middle;width:9px;height:16px}
 .tinvwl-content .tablenav .tablenav-pages .pagination-links .prev-page .tinvwl-chevron{background:url("../img/chevron_icon.png") no-repeat center;background-position:0 -16px}
@@ -321,8 +321,9 @@ textarea[name=style_plain-css]{height:150px}
 .popover.left{margin-left:-10px}
 .popover-title{padding:30px 30px 0;margin:0;font-family:"Open Sans",Arial,sans-serif;font-size:14px;font-weight:600;line-height:1.714;text-transform:uppercase;letter-spacing:-0.35px}
 .popover-content{padding:25px 30px 30px;color:#5d5d5d;font-family:Arial,sans-serif;font-size:14px;line-height:1.429}
-.popover>.arrow{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;border-width:11px;margin-left:0;overflow:visible}
+.popover>.arrow{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid}
 .popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:none;z-index:9999;background:0;-webkit-box-shadow:none;box-shadow:none;position:absolute;left:auto;top:auto;width:auto;height:auto;-webkit-transform:none;transform:none;content:"";border-width:10px}
+.popover>.arrow{border-width:11px;margin-left:0;overflow:visible}
 .popover.top>.arrow{bottom:-11px;left:50%;margin-left:-11px;border-bottom-width:0}
 .popover.top>.arrow:after{bottom:1px;margin-left:-10px;content:" ";border-top-color:#fff;border-bottom-width:0}
 .popover.right>.arrow{top:50%;left:-11px;margin-top:-11px;border-left-width:0}
@@ -386,8 +387,8 @@ textarea[name=style_plain-css]{height:150px}
 .tinvwl-overlay{position:fixed;top:0;left:0;width:100%;height:100%;visibility:hidden;opacity:0;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease;background:#191919}
 .tinvwl-modal.tinvwl-modal-open .tinvwl-overlay{visibility:visible;opacity:.5}
 .admin-bar .tinvwl-content .tinvwl-modal{padding-top:32px !important}
-.tinvwl-content .tinvwl-modal{overflow-y:auto;overflow-x:hidden;top:0;left:0;width:0;height:0;z-index:9999;position:fixed;outline:none !important;-webkit-backface-visibility:hidden;visibility:hidden;opacity:0;text-align:left;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease}
 .tinvwl-content .tinvwl-modal .tinvwl-modal-inner{position:relative;margin:0 auto;background:#fff;border-radius:4px}
+.tinvwl-content .tinvwl-modal{overflow-y:auto;overflow-x:hidden;top:0;left:0;width:0;height:0;z-index:9999;position:fixed;outline:none !important;-webkit-backface-visibility:hidden;visibility:hidden;opacity:0;text-align:left;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease}
 .tinvwl-content .tinvwl-modal.tinvwl-modal-open{visibility:visible;opacity:1;width:100%;height:100%}
 .tinvwl-modal .tinvwl-table{height:100%}
 .tinvwl-content .tinvwl-modal .tinvwl-modal-inner{max-width:415px;padding:40px 45px}
@@ -711,11 +712,12 @@ div.error,div.updated{margin-top:20px;margin-left:20px;margin-right:20px}
 .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-sign span{display:none}
 .tinvwl-table .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-sign .tinvwl-help{display:block;margin:0 auto}
 .tinvwl-info-wrap.tinvwl-in-section .tinvwl-info-desc{display:none}
-}@media(max-width:1199px){.tinvwl-header{text-align:center;padding:18px 0 25px}
-.tinvwl-header .tinvwl-table,.tinvwl-header .tinvwl-cell,.tinvwl-header .tinvwl-cell-3{display:block}
+}@media(max-width:1199px){.tinvwl-header .tinvwl-table,.tinvwl-header .tinvwl-cell,.tinvwl-header .tinvwl-cell-3{display:block}
+.tinvwl-header{text-align:center}
 .tinvwl-header h1+.tinvwl-status-panel{margin-top:25px}
 .tinvwl-header .tinvwl-status-panel{text-align:center;margin-top:15px}
 .tinvwl-header .tinvwl-status-panel>a+a{margin-left:9px}
+.tinvwl-header{padding:18px 0 25px}
 .tinwl-logo{display:block;margin:0 auto}
 .tinwl-logo h2,.tinwl-logo img{display:block;margin:0 auto}
 .tinvwl-header .tinvwl-title{display:block;margin:0 auto}
@@ -776,8 +778,8 @@ input,textarea{font-size:14px}
 .tinvwl-content .widefat thead td.check-column{padding-top:14px;padding-bottom:15px;padding-left:20px;width:45px}
 .tinvwl-content .widefat tbody th.check-column{padding-top:14px;padding-bottom:15px;padding-left:20px;width:45px;padding-top:11px;padding-bottom:11px;vertical-align:top}
 .tinvwl-content .widefat.wishlists thead td.check-column,.tinvwl-content .widefat.wishlists tbody th.check-column{width:23px}
-.tinvwl-content .widefat thead td.check-column+th{padding-left:10px}
 .tinvwl-content .widefat thead td.check-column+th.sortable:first-of-type>a,.tinvwl-content .widefat thead td.check-column+th.sorted:first-of-type>a{padding-left:10px}
+.tinvwl-content .widefat thead td.check-column+th{padding-left:10px}
 .tinvwl-content .widefat tbody th.check-column+td{padding-left:10px}
 .tinvwl-content .widefat thead td.check-column+th.sortable:first-of-type>.tinvwl-info-wrap.tinvwl-in-table,.tinvwl-content .widefat thead td.check-column+th.sorted:first-of-type>.tinvwl-info-wrap.tinvwl-in-table{padding-left:13px;display:inline-block;margin-top:5px;margin-bottom:0}
 .wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before{text-align:left}

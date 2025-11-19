@@ -110,9 +110,6 @@
   font-size: 14px;
 }
 
-.tinv-wishlist {
-  color: #1a1a1a;
-}
 .tinv-wishlist a i.ftinvwl-chevron-left, .tinv-wishlist a i.ftinvwl-chevron-right {
   font-size: 10px;
 }
@@ -215,6 +212,9 @@
 }
 .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + a button, .tinv-wishlist .tinv-modal .tinvwl-buttons-group button + button {
   margin: 0 10px 0 0;
+}
+.tinv-wishlist {
+  color: #1a1a1a;
 }
 .tinv-wishlist .tinv-header h2 {
   font-family: inherit;

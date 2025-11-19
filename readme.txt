@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 6.8
-Stable tag: 2.10.0
+Stable tag: 2.11.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -124,6 +124,9 @@ There are several ways to install TI WooCommerce Wishlist:
 + After the installation is complete, click the "Activate" link (Plugins > Installed Plugins).
 
 == Frequently Asked Questions ==
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the TI WooCommerce Wishlist plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/093f0b5c-b04d-4943-8308-f249da70ddad). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 = Where can I find documentation? =
 
@@ -158,6 +161,17 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.11.0 =
+*Release Date - 19 November 2025*
+
+* **Added:** Support for WooCommerce 10.3.x
+* **Fixed:** REST API — secure guest wishlist write access using `share_key` + nonce, enforce owner-only access for user wishlists, update routes, and improve WPCS compliance
+* **Fixed:** Deferred loading of the wishlist textdomain to the `init` hook to avoid the early `_load_textdomain_just_in_time` notice
+* **Fixed:** Prevented `share_key` access to authenticated-user wishlists and stripped HTML from item meta
+* **Fixed:** Restricted the REST API `get_by_user` endpoint to authorized users only
+* **Fixed:** XSS vulnerability in the wishlist counter shortcode and template
+* **Fixed:** Various PHP warnings for compatibility with PHP 7.4–8.4
+
 = 2.10.0 =
 *Release Date - 5 June 2025*
 
@@ -208,5 +222,5 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 == Upgrade Notice ==
 
-= 2.10.0 =
-**Fixed**: Vulnerability CVE-2025-47577 by updating integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+= 2.11.0 =
+**Fixed**: Latest vulnerabilities patched

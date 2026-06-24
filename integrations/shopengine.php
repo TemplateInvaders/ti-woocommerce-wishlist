@@ -4,7 +4,7 @@
  *
  * @name ShopEngine
  *
- * @version 2.5.1
+ * @version 4.9.0
  *
  * @slug shopengine
  *

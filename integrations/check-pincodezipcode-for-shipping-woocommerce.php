@@ -4,7 +4,7 @@
  *
  * @name Check Pincode/Zipcode for Shipping Woocommerce
  *
- * @version 1.0
+ * @version 1.0.1
  *
  * @slug check-pincodezipcode-for-shipping-woocommerce
  *

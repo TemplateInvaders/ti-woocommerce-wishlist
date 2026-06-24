@@ -4,7 +4,7 @@
  *
  * @name AutomateWoo
  *
- * @version 5.3.0
+ * @version 6.5.0
  *
  * @slug automatewoo
  *

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Waitlist
  *
- * @version 2.3.2
+ * @version 2.6.0
  *
  * @slug woocommerce-waitlist
  *

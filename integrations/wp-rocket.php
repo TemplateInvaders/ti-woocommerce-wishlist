@@ -4,7 +4,7 @@
  *
  * @name WP Rocket
  *
- * @version 3.5.4
+ * @version 3.22.0.1
  *
  * @slug wp-rocket
  *

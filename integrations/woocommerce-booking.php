@@ -4,7 +4,7 @@
  *
  * @name Booking & Appointment Plugin for WooCommerce
  *
- * @version 4.14.0
+ * @version 7.10.0
  *
  * @slug woocommerce-booking
  *

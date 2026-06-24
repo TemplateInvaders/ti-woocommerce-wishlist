@@ -4,7 +4,7 @@
  *
  * @name WP Grid Builder
  *
- * @version 1.1.7
+ * @version 2.3.3
  *
  * @slug wp-grid-builder
  *

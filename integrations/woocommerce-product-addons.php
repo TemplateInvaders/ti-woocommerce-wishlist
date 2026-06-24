@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Add-ons
  *
- * @version 3.3.1
+ * @version 8.3.1
  *
  * @slug woocommerce-product-addons
  *

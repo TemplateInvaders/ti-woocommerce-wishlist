@@ -4,7 +4,7 @@
  *
  * @name WPML Multilingual CMS
  *
- * @version 4.2.7.1
+ * @version 4.9.5
  *
  * @slug sitepress-multilingual-cms
  *

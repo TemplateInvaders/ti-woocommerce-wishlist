@@ -4,7 +4,7 @@
  *
  * @name Woocommerce Variations Table - Grid
  *
- * @version 1.3.10
+ * @version 1.5.1
  *
  * @slug woo-variations-table-grid
  *

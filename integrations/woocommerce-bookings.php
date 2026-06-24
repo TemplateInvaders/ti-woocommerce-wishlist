@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Bookings
  *
- * @version 1.15.5
+ * @version 3.6.0
  *
  * @slug woocommerce-bookings
  *

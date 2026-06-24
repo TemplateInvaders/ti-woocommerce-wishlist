@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Fast Cart
  *
- * @version 1.1.7
+ * @version 1.4.1
  *
  * @slug woocommerce-fast-cart
  *

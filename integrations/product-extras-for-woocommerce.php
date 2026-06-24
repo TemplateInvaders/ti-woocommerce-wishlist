@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Add-Ons Ultimate
  *
- * @version 3.9.4
+ * @version 4.3.14
  *
  * @slug product-extras-for-woocommerce
  *

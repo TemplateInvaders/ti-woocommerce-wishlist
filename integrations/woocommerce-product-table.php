@@ -4,11 +4,11 @@
  *
  * @name WooCommerce Product Table
  *
- * @version 2.6.3
+ * @version 4.3.9
  *
  * @slug woocommerce-product-table
  *
- * @url https://barn2.co.uk/wordpress-plugins/woocommerce-product-table/
+ * @url https://barn2.com/wordpress-plugins/woocommerce-product-table/
  *
  */
 
@@ -24,7 +24,7 @@ $slug = "woocommerce-product-table";
 
 $name = "WooCommerce Product Table";
 
-$available = class_exists('Barn2\Plugin\WC_Product_Table');
+$available = class_exists('Barn2\Plugin\WC_Product_Table\Data\Abstract_Product_Data') || class_exists('Abstract_Product_Table_Data');
 
 $tinvwl_integrations = is_array($tinvwl_integrations) ? $tinvwl_integrations : [];
 
@@ -46,16 +46,32 @@ if (!$available) {
  *
  * @license   GPL-3.0
  */
-class TINVWL_Product_Table_Data_Wishlist extends Abstract_Product_Table_Data
-{
-
-	public function get_data()
+if (class_exists('Barn2\Plugin\WC_Product_Table\Data\Abstract_Product_Data')) {
+	class TINVWL_Product_Table_Data_Wishlist extends \Barn2\Plugin\WC_Product_Table\Data\Abstract_Product_Data
 	{
-		return apply_filters('wc_product_table_data_wishlist', do_shortcode('[ti_wishlists_addtowishlist loop="yes"]'), $this->product);
-	}
 
+		public function get_data()
+		{
+			return apply_filters('wc_product_table_data_wishlist', do_shortcode('[ti_wishlists_addtowishlist loop="yes"]'), $this->product);
+		}
+
+	}
+} elseif (class_exists('Abstract_Product_Table_Data')) {
+	class TINVWL_Product_Table_Data_Wishlist extends \Abstract_Product_Table_Data
+	{
+
+		public function get_data()
+		{
+			return apply_filters('wc_product_table_data_wishlist', do_shortcode('[ti_wishlists_addtowishlist loop="yes"]'), $this->product);
+		}
+
+	}
 }
 
 add_filter('wc_product_table_custom_table_data_wishlist', function ($data_obj, $product, $args) {
-	return new TINVWL_Product_Table_Data_Wishlist($product);
+	if (class_exists('TINVWL_Product_Table_Data_Wishlist', false)) {
+		return new TINVWL_Product_Table_Data_Wishlist($product);
+	}
+
+	return $data_obj;
 }, 10, 3);

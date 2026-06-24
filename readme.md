@@ -164,35 +164,35 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 ### 2.12.0 ###
 *Release Date - 25 June 2026*
 
-* **Added:** Support for WordPress 7.0.x
-* **Added:** Support for WooCommerce 10.8.x
-* **Fixed:** Various PHP compatibility warnings for PHP 7.4-8.4
-* **Updated:** Integration with Woo Custom Product Addons plugin
-* **Updated:** Integration with LiteSpeed Cache plugin
-* **Updated:** Integration with ShopEngine plugin
-* **Updated:** Integration with Comet Cache plugin
-* **Updated:** Integration with Product Quantity for WooCommerce plugin
-* **Updated:** Integration with Check Pincode/Zipcode for Shipping WooCommerce plugin
-* **Updated:** Integration with Gift Cards For WooCommerce plugin
-* **Updated:** Integration with iOne360 Configurator plugin
-* **Updated:** Integration with AutomateWoo plugin
-* **Updated:** Integration with Quick Buy Now Button for WooCommerce plugin
-* **Updated:** Integration with WooCommerce Show Single Variations by Iconic plugin
-* **Updated:** Integration with WooCommerce Product Add-Ons Ultimate plugin
-* **Updated:** Integration with WPML Multilingual CMS plugin
-* **Updated:** Integration with Woocommerce Variations Table - Grid plugin
-* **Updated:** Integration with Booking & Appointment Plugin for WooCommerce plugin
-* **Updated:** Integration with WooCommerce Bookings plugin
-* **Updated:** Integration with WooCommerce Composite Products plugin
-* **Updated:** Integration with WooCommerce Fast Cart plugin
-* **Updated:** Integration with WooCommerce Mix and Match Products plugin
-* **Updated:** Integration with WooCommerce Product Add-Ons plugin
-* **Updated:** Integration with WooCommerce Product Bundles plugin
-* **Updated:** Integration with WooCommerce Product Table plugin
-* **Updated:** Integration with WooCommerce Square plugin
-* **Updated:** Integration with WooCommerce Waitlist plugin
-* **Updated:** Integration with WP Grid Builder plugin
-* **Updated:** Integration with WP Rocket plugin
+- **Added**: Support for WordPress 7.0.x
+- **Added**: Support for WooCommerce 10.8.x
+- **Fixed**: Various PHP compatibility warnings for PHP 7.4-8.4
+- **Updated**: Integration with [Woo Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin
+- **Updated**: Integration with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/) plugin
+- **Updated**: Integration with [ShopEngine](https://wordpress.org/plugins/shopengine/) plugin
+- **Updated**: Integration with [Comet Cache](https://wordpress.org/plugins/comet-cache/) plugin
+- **Updated**: Integration with [Product Quantity for WooCommerce](https://wordpress.org/plugins/product-quantity-for-woocommerce/) plugin
+- **Updated**: Integration with [Check Pincode/Zipcode for Shipping WooCommerce](https://wordpress.org/plugins/check-pincodezipcode-for-shipping-woocommerce/) plugin
+- **Updated**: Integration with [Gift Cards For WooCommerce](https://wordpress.org/plugins/gift-cards-for-woocommerce/) plugin
+- **Updated**: Integration with [iOne360 Configurator](https://wordpress.org/plugins/ione360-configurator/) plugin
+- **Updated**: Integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/) plugin
+- **Updated**: Integration with [Quick Buy Now Button for WooCommerce](https://woocommerce.com/products/quick-buy-now-button-for-woocommerce/) plugin
+- **Updated**: Integration with [WooCommerce Show Single Variations by Iconic](https://iconicwp.com/products/woocommerce-show-single-variations/) plugin
+- **Updated**: Integration with [WooCommerce Product Add-Ons Ultimate](https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/) plugin
+- **Updated**: Integration with [WPML Multilingual CMS](https://wpml.org/) plugin
+- **Updated**: Integration with [Woocommerce Variations Table - Grid](http://codecanyon.net/item/woocommerce-variations-to-table-grid/10494620) plugin
+- **Updated**: Integration with [Booking & Appointment Plugin for WooCommerce](https://www.tychesoftwares.com/products/woocommerce-booking-and-appointment-plugin/) plugin
+- **Updated**: Integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/) plugin
+- **Updated**: Integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/) plugin
+- **Updated**: Integration with [WooCommerce Fast Cart](https://barn2.com/wordpress-plugins/woocommerce-fast-cart/) plugin
+- **Updated**: Integration with [WooCommerce Mix and Match Products](https://woocommerce.com/products/woocommerce-mix-and-match-products/) plugin
+- **Updated**: Integration with [WooCommerce Product Add-Ons](https://woocommerce.com/products/product-add-ons/) plugin
+- **Updated**: Integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/) plugin
+- **Updated**: Integration with [WooCommerce Product Table](https://barn2.com/wordpress-plugins/woocommerce-product-table/) plugin
+- **Updated**: Integration with [WooCommerce Square](https://woocommerce.com/products/square/) plugin
+- **Updated**: Integration with [WooCommerce Waitlist](https://woocommerce.com/document/woocommerce-waitlist/) plugin
+- **Updated**: Integration with [WP Grid Builder](https://www.wpgridbuilder.com/) plugin
+- **Updated**: Integration with [WP Rocket](https://wp-rocket.me/) plugin
 
 ### 2.11.1 ###
 *Release Date - 19 November 2025*

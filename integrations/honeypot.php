@@ -4,7 +4,7 @@
  *
  * @name WP Armour - Honeypot Anti Spam
  *
- * @version 2.2.11
+ * @version 2.3.04
  *
  * @slug honeypot
  *

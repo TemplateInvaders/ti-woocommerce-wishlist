@@ -24,7 +24,7 @@ $slug = "comet-cache";
 
 $name = "Comet Cache";
 
-$available = class_exists( 'WebSharks\CometCache' );
+$available = class_exists( 'WebSharks\CometCache\Classes\Plugin' ) || class_exists( 'WebSharks\CometCache' );
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 
@@ -41,7 +41,7 @@ if ( ! $available ) {
 	return;
 }
 
-if ( function_exists( 'tinvwl_comet_cache_reject' ) ) {
+if ( ! function_exists( 'tinvwl_comet_cache_reject' ) ) {
 
 	/**
 	 * Set define disabled for Comet Cache

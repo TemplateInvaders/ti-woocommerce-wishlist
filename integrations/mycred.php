@@ -4,7 +4,7 @@
  *
  * @name myCRED
  *
- * @version 2.9.4.3
+ * @version 3.1.2
  *
  * @slug mycred
  *

@@ -4,7 +4,7 @@
  *
  * @name Google Tag Manager for WordPress
  *
- * @version 1.21.1
+ * @version 1.22.3
  *
  * @slug duracelltomi-google-tag-manager
  *

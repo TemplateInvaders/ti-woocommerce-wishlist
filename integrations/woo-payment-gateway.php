@@ -4,7 +4,7 @@
  *
  * @name Braintree For WooCommerce
  *
- * @version 3.2.70
+ * @version 3.2.83
  *
  * @slug woo-payment-gateway
  *

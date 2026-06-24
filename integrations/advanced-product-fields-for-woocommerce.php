@@ -4,7 +4,7 @@
  *
  * @name Advanced Product Fields (Product Addons) for WooCommerce
  *
- * @version 1.6.13
+ * @version 1.7
  *
  * @slug advanced-product-fields-for-woocommerce
  *

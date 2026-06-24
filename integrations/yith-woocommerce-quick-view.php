@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Quick View
  *
- * @version 2.4.0
+ * @version 2.15.0
  *
  * @slug yith-woocommerce-quick-view
  *

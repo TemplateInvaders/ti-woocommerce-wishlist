@@ -4,7 +4,7 @@
  *
  * @name WPC Product Bundles for WooCommerce
  *
- * @version 8.2.8
+ * @version 8.5.7
  *
  * @slug woo-product-bundle
  *

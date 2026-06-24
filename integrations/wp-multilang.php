@@ -4,7 +4,7 @@
  *
  * @name WP Multilang
  *
- * @version 2.4.19.1
+ * @version 2.4.29
  *
  * @slug wp-multilang
  *

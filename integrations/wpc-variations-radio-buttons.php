@@ -4,7 +4,7 @@
  *
  * @name WPC Variations Radio Buttons for WooCommerce
  *
- * @version 3.6.1
+ * @version 3.8.1
  *
  * @slug wpc-variations-radio-buttons
  *

@@ -4,7 +4,7 @@
  *
  * @name PPOM for WooCommerce
  *
- * @version 33.0.12
+ * @version 34.0.4
  *
  * @slug woocommerce-product-addon
  *

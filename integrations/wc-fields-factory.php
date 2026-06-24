@@ -4,7 +4,7 @@
  *
  * @name WC Fields Factory
  *
- * @version 4.1.8
+ * @version 4.1.9
  *
  * @slug wc-fields-factory
  *

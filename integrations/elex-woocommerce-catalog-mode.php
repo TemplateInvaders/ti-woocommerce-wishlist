@@ -4,7 +4,7 @@
  *
  * @name ELEX WooCommerce Catalog Mode
  *
- * @version 1.5.0
+ * @version 1.5.3
  *
  * @slug elex-woocommerce-catalog-mode
  *

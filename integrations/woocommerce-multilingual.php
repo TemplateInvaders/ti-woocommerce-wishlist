@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Multilingual
  *
- * @version 4.10.2
+ * @version 5.5.6
  *
  * @slug woocommerce-multilingual
  *

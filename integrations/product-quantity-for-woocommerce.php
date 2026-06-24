@@ -4,7 +4,7 @@
  *
  * @name All in One Product Quantity for WooCommerce
  *
- * @version 5.1.1
+ * @version 5.4.3
  *
  * @slug product-quantity-for-woocommerce
  *
@@ -24,7 +24,7 @@ $slug = "product-quantity-for-woocommerce";
 
 $name = "All in One Product Quantity for WooCommerce";
 
-$available = class_exists( 'Alg_WC_PQ' );
+$available = class_exists( 'Alg_WC_PQ' ) || class_exists( 'WPFMMSQ' );
 
 $tinvwl_integrations = is_array( $tinvwl_integrations ) ? $tinvwl_integrations : [];
 

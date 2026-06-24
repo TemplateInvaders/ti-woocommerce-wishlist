@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 2.11.1
+Stable tag: 2.12.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,39 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.12.0 =
+*Release Date - 25 June 2026*
+
+* **Added:** Support for WordPress 7.0.x
+* **Added:** Support for WooCommerce 10.8.x
+* **Fixed:** Various PHP compatibility warnings for PHP 7.4-8.4
+* **Updated:** Integration with Woo Custom Product Addons plugin
+* **Updated:** Integration with LiteSpeed Cache plugin
+* **Updated:** Integration with ShopEngine plugin
+* **Updated:** Integration with Comet Cache plugin
+* **Updated:** Integration with Product Quantity for WooCommerce plugin
+* **Updated:** Integration with Check Pincode/Zipcode for Shipping WooCommerce plugin
+* **Updated:** Integration with Gift Cards For WooCommerce plugin
+* **Updated:** Integration with iOne360 Configurator plugin
+* **Updated:** Integration with AutomateWoo plugin
+* **Updated:** Integration with Quick Buy Now Button for WooCommerce plugin
+* **Updated:** Integration with WooCommerce Show Single Variations by Iconic plugin
+* **Updated:** Integration with WooCommerce Product Add-Ons Ultimate plugin
+* **Updated:** Integration with WPML Multilingual CMS plugin
+* **Updated:** Integration with Woocommerce Variations Table - Grid plugin
+* **Updated:** Integration with Booking & Appointment Plugin for WooCommerce plugin
+* **Updated:** Integration with WooCommerce Bookings plugin
+* **Updated:** Integration with WooCommerce Composite Products plugin
+* **Updated:** Integration with WooCommerce Fast Cart plugin
+* **Updated:** Integration with WooCommerce Mix and Match Products plugin
+* **Updated:** Integration with WooCommerce Product Add-Ons plugin
+* **Updated:** Integration with WooCommerce Product Bundles plugin
+* **Updated:** Integration with WooCommerce Product Table plugin
+* **Updated:** Integration with WooCommerce Square plugin
+* **Updated:** Integration with WooCommerce Waitlist plugin
+* **Updated:** Integration with WP Grid Builder plugin
+* **Updated:** Integration with WP Rocket plugin
+
 = 2.11.1 =
 *Release Date - 19 November 2025*
 

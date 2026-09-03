@@ -1058,9 +1058,11 @@
 			}
 
 			if ( tinvwl_add_to_wishlist.block_ajax_wishlists_data ) {
-				setTimeout( function() {
-					mark_products( data );
-				}, 500 );
+				if ( data ) {
+					setTimeout( function() {
+						mark_products( data );
+					}, 500 );
+				}
 
 				return;
 			}

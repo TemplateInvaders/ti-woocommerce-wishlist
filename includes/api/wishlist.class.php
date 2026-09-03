@@ -40,7 +40,7 @@ class TInvWL_Includes_API_Wishlist
 			array(
 				'methods' => WP_REST_Server::READABLE,
 				'callback' => array($this, 'wishlist_get_by_share_key'),
-				'permission_callback' => '__return_true',
+				'permission_callback' => array($this, 'permission_view_wishlist_by_share_key'),
 			)
 		);
 
@@ -70,7 +70,7 @@ class TInvWL_Includes_API_Wishlist
 			array(
 				'methods' => WP_REST_Server::READABLE,
 				'callback' => array($this, 'wishlist_get_products'),
-				'permission_callback' => '__return_true',
+				'permission_callback' => array($this, 'permission_view_wishlist_by_share_key'),
 			)
 		);
 
@@ -94,6 +94,45 @@ class TInvWL_Includes_API_Wishlist
 				'permission_callback' => array($this, 'permission_modify_wishlist'),
 			)
 		);
+	}
+
+	/**
+	 * Permission callback for viewing a wishlist by share key.
+	 *
+	 * Public and shared wishlists can be read by anyone. A private wishlist is
+	 * only available to its logged-in owner, an administrator, or the browser
+	 * that owns a guest wishlist through its stored share-key cookie.
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 *
+	 * @return bool|WP_Error
+	 */
+	public function permission_view_wishlist_by_share_key(WP_REST_Request $request)
+	{
+		$result = $this->get_wishlist_by_share_key($request);
+		if (is_wp_error($result)) {
+			return $this->wishlist_not_found_error();
+		}
+
+		$wishlist = $result['wishlist'];
+		if ('private' !== $wishlist['status']) {
+			return true;
+		}
+
+		if (is_user_logged_in()) {
+			if (
+				(int) $wishlist['author'] === get_current_user_id()
+				|| current_user_can('tinvwl_general_settings')
+				|| current_user_can('manage_woocommerce')
+				|| current_user_can('manage_options')
+			) {
+				return true;
+			}
+		} elseif (empty($wishlist['author']) && $result['wl']->get_sharekey() === $wishlist['share_key']) {
+			return true;
+		}
+
+		return $this->wishlist_not_found_error();
 	}
 
 	/**
@@ -439,6 +478,22 @@ class TInvWL_Includes_API_Wishlist
 			'wishlist' => $wishlist,
 			'share_key' => $share_key,
 			'wl' => $wl,
+		);
+	}
+
+	/**
+	 * Return a generic not-found response for read-by-share-key routes.
+	 *
+	 * This keeps private wishlists indistinguishable from missing wishlists.
+	 *
+	 * @return WP_Error
+	 */
+	private function wishlist_not_found_error()
+	{
+		return new WP_Error(
+			'ti_woocommerce_wishlist_api_wishlist_not_found',
+			__('Wishlist is not found!', 'ti-woocommerce-wishlist'),
+			array('status' => 404)
 		);
 	}
 

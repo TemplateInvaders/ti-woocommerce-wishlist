@@ -53,9 +53,28 @@
 
 	$( document ).ready( function() {
 
+		var wishlistCheckboxes = '.product-cb input[type=checkbox]:not(.global-cb), .wishlist-cb input[type=checkbox]:not(.global-cb)';
+
+		function syncGlobalCheckbox( table ) {
+			var checkboxes = table.find( wishlistCheckboxes );
+			var selected = checkboxes.filter( ':checked' ).length;
+			var globalCheckbox = table.find( '.global-cb' );
+
+			globalCheckbox.prop( 'checked', checkboxes.length && selected === checkboxes.length );
+			globalCheckbox.prop( 'indeterminate', selected > 0 && selected < checkboxes.length );
+		}
+
 		// Wishlist table bulk action checkbox
 		$( 'body' ).on( 'click', '.global-cb', function() {
-			$( this ).closest( 'table' ).eq( 0 ).find( '.product-cb input[type=checkbox], .wishlist-cb input[type=checkbox]' ).prop( 'checked', $( this ).is( ':checked' ) );
+			var table = $( this ).closest( 'table' ).eq( 0 );
+
+			table.find( wishlistCheckboxes ).prop( 'checked', $( this ).is( ':checked' ) );
+			$( this ).prop( 'indeterminate', false );
+		});
+
+		// Keep the bulk action checkbox in sync with individual wishlist items.
+		$( 'body' ).on( 'change', wishlistCheckboxes, function() {
+			syncGlobalCheckbox( $( this ).closest( 'table' ).eq( 0 ) );
 		});
 
 		var hash_key = tinvwl_add_to_wishlist.hash_key + '_refresh';

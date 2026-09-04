@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 2.12.0
+Stable tag: 2.12.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,13 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+= 2.12.1 =
+*Release Date - 4 September 2026*
+
+- **Security**: Protected private wishlist data from unauthorized REST API access
+- **Fixed**: JavaScript error when marking wishlist products without cached data
+- **Fixed**: Bulk selection checkbox not reflecting individual wishlist item selections
+
 = 2.12.0 =
 *Release Date - 25 June 2026*
 

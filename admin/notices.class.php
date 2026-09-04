@@ -303,12 +303,12 @@ class TInvWL_Admin_Notices {
 						<a href="<?php echo self::TINVWL_REVIEW_URL; ?>" target="_blank" data-link="follow"
 						   class="button-secondary tinvwl-notice-dismiss" style="margin-right: 10px;">
 							<span class="dashicons dashicons-star-filled"
-								  style="color: #E6B800;font-size: 14px;line-height: 1.9;margin-left: -4px;"></span>
+								  style="color: #E6B800;line-height: 1.9;margin-left: -4px;"></span>
 							<?php printf( __( "Review %s", 'ti-woocommerce-wishlist' ), TINVWL_NAME ); ?>
 						</a>
 						<a href="#" class="button-secondary tinvwl-notice-dismiss">
 							<span class="dashicons dashicons-no-alt"
-								  style="color: rgb(220, 58, 58);line-height: 2;font-size: 14px;margin-left: -4px;"></span>
+								  style="color: rgb(220, 58, 58);line-height: 2;margin-left: -4px;"></span>
 							<?php _e( "No thanks", 'ti-woocommerce-wishlist' ); ?>
 						</a>
 					</div>

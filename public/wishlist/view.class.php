@@ -274,6 +274,11 @@ class TInvWL_Public_Wishlist_View {
 	 * @return array
 	 */
 	function get_current_products( $wishlist = null, $external = true, $lists_per_page = null, $paged = 1 ) {
+		$wishlist = $wishlist ?: $this->get_current_wishlist();
+		$wl = new TInvWL_Wishlist( $this->_name );
+		if ( ! $wl->can_view( $wishlist ) ) {
+			return array();
+		}
 		if ( empty( $wishlist ) || $wishlist === $this->get_current_wishlist() ) {
 			$wishlist = $this->get_current_wishlist();
 
@@ -445,9 +450,11 @@ class TInvWL_Public_Wishlist_View {
 			return $this->wishlist_null();
 		}
 
-		if ( 'private' === $wishlist['status'] && ! $wishlist['is_owner'] ) {
+		$wl = new TInvWL_Wishlist( $this->_name );
+		if ( ! $wl->can_view( $wishlist ) ) {
 			return $this->wishlist_null();
 		}
+		$wishlist['is_owner'] = $wl->is_owner( $wishlist );
 
 		$this->wishlist_url = tinv_url_wishlist( $wishlist['share_key'] );
 

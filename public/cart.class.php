@@ -105,6 +105,11 @@ class TInvWL_Public_Cart {
 		if ( empty( $wishlist ) ) {
 			$wishlist = tinv_wishlist_get();
 		}
+		$wl = new TInvWL_Wishlist();
+		if ( ! $wl->can_view( $wishlist ) ) {
+			return false;
+		}
+		$wishlist['is_owner'] = $wl->is_owner( $wishlist );
 		$wlp = null;
 		if ( 0 === $wishlist['ID'] ) {
 			$wlp = TInvWL_Product_Local::instance();
@@ -366,7 +371,8 @@ class TInvWL_Public_Cart {
 					$share_key = key( $_wishlist_cart );
 
 					$wl       = new TInvWL_Wishlist();
-					$wishlist = $wl->get_by_share_key( $share_key );
+					// Trusted order metadata is processed without returning list contents.
+					$wishlist = $wl->get( array( 'share_key' => $share_key ) )[0] ?? null;
 				}
 
 				/* Run a 3rd party code when product purchased from wishlist.
@@ -391,7 +397,11 @@ class TInvWL_Public_Cart {
 	private function get_order_wishlist( $key, $user_id = 0 ) {
 		$wl = new TInvWL_Wishlist( self::$_name );
 		if ( ! empty( $key ) ) {
-			$wishlist = $wl->get_by_share_key( $key );
+			// Order callbacks may run without the owner's browser or login session.
+			$wishlist = $wl->get( array( 'share_key' => $key ) )[0] ?? null;
+			if ( ! $wishlist ) {
+				return null;
+			}
 			if ( ! empty( $user_id ) && ( $wishlist['author'] !== $user_id && ! ( ( tinv_get_option( 'processing', 'autoremove_anyone_type' ) ? tinv_get_option( 'processing', 'autoremove_anyone_type' ) === $wishlist['status'] : 'private' !== $wishlist['status'] ) && tinv_get_option( 'processing', 'autoremove_anyone' ) ) ) ) {
 				return null;
 			}

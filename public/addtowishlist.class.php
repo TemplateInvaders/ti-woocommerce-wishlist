@@ -469,6 +469,14 @@ class TInvWL_Public_AddToWishlist
 		$lang_default = sanitize_text_field(filter_input(INPUT_POST, 'lang_default', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 		$stats = sanitize_text_field(filter_input(INPUT_POST, 'stats', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 		$share_key = sanitize_text_field($share_key);
+		if ($share_key) {
+			$wl = new TInvWL_Wishlist($this->_name);
+			$wishlist = $wl->get_by_share_key($share_key);
+			// This payload describes the caller's lists, including private items.
+			if (!$wl->is_owner($wishlist)) {
+				$share_key = '';
+			}
+		}
 
 		$data = $products = $wishlists = $results = $analytics = array();
 

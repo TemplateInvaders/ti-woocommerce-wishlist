@@ -236,7 +236,8 @@ class TInvWL_Public_Wishlist_Buttons {
 	 * @return array
 	 */
 	public static function get_current_products( ?array $wishlist = null, ?int $per_page = null ): array {
-		if ( empty( $wishlist ) ) {
+		$wl = new TInvWL_Wishlist();
+		if ( ! $wl->can_view( $wishlist ) ) {
 			return [];
 		}
 

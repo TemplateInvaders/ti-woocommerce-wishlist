@@ -104,6 +104,43 @@ class TInvWL_Wishlist
 	}
 
 	/**
+	 * Check ownership using account identity or the guest share-key cookie.
+	 *
+	 * @param array $wishlist Wishlist data.
+	 * @return bool
+	 */
+	public function is_owner($wishlist)
+	{
+		if (empty($wishlist['ID']) || !isset($wishlist['author'], $wishlist['share_key'])) {
+			return false;
+		}
+		if (!empty($wishlist['author'])) {
+			return is_user_logged_in() && (int) $wishlist['author'] === get_current_user_id();
+		}
+
+		return !is_user_logged_in() && $this->get_sharekey() === $wishlist['share_key'];
+	}
+
+	/**
+	 * Apply the same privacy policy wherever a wishlist is read.
+	 *
+	 * @param array $wishlist Wishlist data.
+	 * @return bool
+	 */
+	public function can_view($wishlist)
+	{
+		if (empty($wishlist['ID']) || !isset($wishlist['status'])) {
+			return false;
+		}
+
+		return in_array($wishlist['status'], array('public', 'share'), true)
+			|| $this->is_owner($wishlist)
+			|| current_user_can('tinvwl_general_settings')
+			|| current_user_can('manage_woocommerce')
+			|| current_user_can('manage_options');
+	}
+
+	/**
 	 * Get/Create default wishlist
 	 *
 	 * @param integer $user_id Can put 0.
@@ -323,7 +360,7 @@ class TInvWL_Wishlist
 		$wishlists = $this->get(array('ID' => $id));
 		$wishlist = array_shift($wishlists);
 
-		return $wishlist;
+		return $this->can_view($wishlist) ? $wishlist : null;
 	}
 
 	/**
@@ -341,19 +378,17 @@ class TInvWL_Wishlist
 		$wishlists = $this->get(array('share_key' => $share_key));
 		$wishlist = array_shift($wishlists);
 		if (is_array($wishlist)) {
-			$wishlist['is_owner'] = false;
-			if (is_user_logged_in()) {
-				$wishlist['is_owner'] = get_current_user_id() == $wishlist['author']; // WPCS: loose comparison ok.
-			} else {
-				$wishlist['is_owner'] = $this->get_sharekey() === $wishlist['share_key']; // WPCS: loose comparison ok.
-			}
+			$wishlist['is_owner'] = $this->is_owner($wishlist);
 		}
 
-		return $wishlist;
+		return $this->can_view($wishlist) ? $wishlist : null;
 	}
 
 	/**
 	 * Get wishlist
+	 *
+	 * Low-level query for trusted internal callers. Request-controlled lookups
+	 * must use get_by_id() or get_by_share_key(), which enforce privacy.
 	 *
 	 * @param array $data Requset.
 	 *
@@ -453,11 +488,7 @@ class TInvWL_Wishlist
 			}
 
 			if (is_array($wl)) {
-				if (is_user_logged_in()) {
-					$wl['is_owner'] = get_current_user_id() == $wl['author']; // WPCS: loose comparison ok.
-				} else {
-					$wl['is_owner'] = $this->get_sharekey() === $wl['share_key']; // WPCS: loose comparison ok.
-				}
+				$wl['is_owner'] = $this->is_owner($wl);
 			}
 
 			$wls[$k] = apply_filters('tinvwl_wishlist_get', $wl);
@@ -501,8 +532,9 @@ class TInvWL_Wishlist
 		$data = array_filter($data);
 		$data = apply_filters('tinvwl_wishlist_update', $data, $id);
 		if (!array_key_exists('title', $data)) {
-			$wishlist = $this->get_by_id($id);
-			if ('default' === $wishlist['type']) {
+			// Internal updates may run without the owner's browser session.
+			$wishlist = $this->get(array('ID' => $id))[0] ?? null;
+			if ($wishlist && 'default' === $wishlist['type']) {
 				$data['title'] = '';
 			}
 		}

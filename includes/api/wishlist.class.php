@@ -99,9 +99,7 @@ class TInvWL_Includes_API_Wishlist
 	/**
 	 * Permission callback for viewing a wishlist by share key.
 	 *
-	 * Public and shared wishlists can be read by anyone. A private wishlist is
-	 * only available to its logged-in owner, an administrator, or the browser
-	 * that owns a guest wishlist through its stored share-key cookie.
+	 * Use the wishlist's privacy policy in every handler.
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -114,25 +112,7 @@ class TInvWL_Includes_API_Wishlist
 			return $this->wishlist_not_found_error();
 		}
 
-		$wishlist = $result['wishlist'];
-		if ('private' !== $wishlist['status']) {
-			return true;
-		}
-
-		if (is_user_logged_in()) {
-			if (
-				(int) $wishlist['author'] === get_current_user_id()
-				|| current_user_can('tinvwl_general_settings')
-				|| current_user_can('manage_woocommerce')
-				|| current_user_can('manage_options')
-			) {
-				return true;
-			}
-		} elseif (empty($wishlist['author']) && $result['wl']->get_sharekey() === $wishlist['share_key']) {
-			return true;
-		}
-
-		return $this->wishlist_not_found_error();
+		return $result['wl']->can_view($result['wishlist']) ? true : $this->wishlist_not_found_error();
 	}
 
 	/**
@@ -157,11 +137,7 @@ class TInvWL_Includes_API_Wishlist
 		$wishlist = tinv_wishlist_get($share_key);
 
 		if (!$wishlist) {
-			return new WP_Error(
-				'ti_woocommerce_wishlist_api_invalid_share_key',
-				__('Invalid wishlist share key.', 'ti-woocommerce-wishlist'),
-				array('status' => 400)
-			);
+			return $this->wishlist_not_found_error();
 		}
 
 		$response = $this->prepare_wishlist_data($wishlist, 'get_by_share_key', $request->get_params());
@@ -467,11 +443,7 @@ class TInvWL_Includes_API_Wishlist
 		$wishlist = $wl->get_by_share_key($share_key);
 
 		if (!$wishlist) {
-			return new WP_Error(
-				'ti_woocommerce_wishlist_api_invalid_share_key',
-				__('Invalid wishlist share key.', 'ti-woocommerce-wishlist'),
-				array('status' => 400)
-			);
+			return $this->wishlist_not_found_error();
 		}
 
 		return array(

@@ -205,6 +205,10 @@ class TInvWL_Public_TInvWL {
 			return false;
 		}
 		$wishlist = tinv_wishlist_get( $item['wishlist_id'] );
+		if ( ! $wishlist ) {
+			wp_redirect( remove_query_arg( 'tiwp' ) );
+			return;
+		}
 
 		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
 		if ( $wishlist['is_owner'] ) {

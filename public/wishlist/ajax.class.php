@@ -83,10 +83,13 @@ class TInvWL_Public_Wishlist_Ajax {
 			return;
 		}
 
-		$wl       = new TInvWL_Wishlist( $this->_name );
-		$wishlist = $wl->get_by_share_key( $post['tinvwl-sharekey'] ) ?? $wl->get_by_user_default()[0] ?? null;
-
-		$guest_wishlist = ! is_user_logged_in() && ( $wl->get_by_sharekey_default()[0] ?? false ) ? $wl->get_by_sharekey_default()[0] : [];
+		$wl             = new TInvWL_Wishlist( $this->_name );
+		$guest_wishlist = ! is_user_logged_in() ? ( $wl->get_by_sharekey_default()[0] ?? [] ) : [];
+		// An explicit inaccessible key must never fall back to a different list.
+		$wishlist = ! empty( $post['tinvwl-sharekey'] )
+			? $wl->get_by_share_key( $post['tinvwl-sharekey'] )
+			: ( is_user_logged_in() ? ( $wl->get_by_user_default()[0] ?? null ) : $guest_wishlist );
+		$wishlist = $wishlist ?: [];
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $post['tinvwl-security'] ) && wp_verify_nonce( $post['tinvwl-security'], 'wp_rest' ) ) {
 			$this->wishlist_ajax_actions( $wishlist, $post, $guest_wishlist );
@@ -122,9 +125,23 @@ class TInvWL_Public_Wishlist_Ajax {
 	 * @return void
 	 */
 	public function wishlist_ajax_actions( array $wishlist, array $post, array $guest_wishlist = [] ): void {
-		do_action( 'tinvwl_ajax_actions_before', $wishlist, $post, $guest_wishlist );
+		$wl = new TInvWL_Wishlist( $this->_name );
+		if ( ! $wishlist && empty( $post['tinvwl-sharekey'] ) ) {
+			$wishlist = $guest_wishlist;
+		}
+		// Check before hooks, product queries, cart changes, and response rendering.
+		if ( ! $wl->can_view( $wishlist ) ) {
+			wp_send_json( [
+				'status' => false,
+				'msg'    => __( 'Wishlist is not found!', 'ti-woocommerce-wishlist' ),
+				'icon'   => 'icon_big_times',
+			], 404 );
+			return;
+		}
+		$wishlist['is_owner'] = $wl->is_owner( $wishlist );
+		$guest_wishlist = $wl->is_owner( $guest_wishlist ) ? $guest_wishlist : [];
 
-		$wishlist = ( ! $wishlist && $guest_wishlist ) ? $guest_wishlist : $wishlist;
+		do_action( 'tinvwl_ajax_actions_before', $wishlist, $post, $guest_wishlist );
 
 		$post['wishlist_qty'] = 1;
 		$action               = $post['tinvwl-action'];

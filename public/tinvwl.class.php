@@ -288,6 +288,13 @@ class TInvWL_Public_TInvWL {
 	 * Create rewrite url for wishlist
 	 */
 	public static function add_rewrite_rules() {
+		// Refresh persisted rules once so new keys work without saving permalinks.
+		if ( 128 !== (int) get_option( 'tinvwl_share_key_bits' ) ) {
+			update_option( 'tinvwl_share_key_bits', 128, false );
+			add_action( 'wp_loaded', static function () {
+				flush_rewrite_rules( false );
+			} );
+		}
 		if ( tinv_get_option( 'general', 'my_account_endpoint' ) ) {
 			return;
 		}
@@ -326,10 +333,10 @@ class TInvWL_Public_TInvWL {
 				$page_slug = $page->post_name;
 
 				if ( $language_codes && ( defined( 'POLYLANG_VERSION' ) || defined( 'ICL_PLUGIN_PATH' ) ) ) {
-					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
-					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
-					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&lang=$matches[1]', 'top' );
-					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&lang=$matches[1]';
+					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]', 'top' );
+					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&wl_paged=$matches[5]&lang=$matches[1]';
+					add_rewrite_rule( '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$', 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&lang=$matches[1]', 'top' );
+					self::$rules_raw[ '^(' . $language_codes . ')/(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$' ] = 'index.php?pagename=$matches[2]&tinvwlID=$matches[4]&lang=$matches[1]';
 				}
 
 				// Wishlist on frontpage.
@@ -340,28 +347,28 @@ class TInvWL_Public_TInvWL {
 						'disable_canonical_redirect_for_front_page',
 					) );
 					// Match the front page and pass item value as a query var.
-					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );
-					self::$rules_raw['^([A-Fa-f0-9]{6})?/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]';
-					add_rewrite_rule( '^([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-					self::$rules_raw['^([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+					add_rewrite_rule( '^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );
+					self::$rules_raw['^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]';
+					add_rewrite_rule( '^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
+					self::$rules_raw['^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]';
 				}
 
-				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]';
-				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]', 'top' );
-				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]';
+				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
+				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]', 'top' );
+				self::$rules_raw[ '(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$' ] = 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]';
 
 				// Wishlist on shop page.
 				$shop_page_id = wc_get_page_id( 'shop' );
 				if ( $shop_page_id && $page->ID === $shop_page_id ) {
 					$shop      = get_post( $shop_page_id );
 					$shop_slug = $shop->post_name;
-					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]', 'top' );
-					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]';
-					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]';
-					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]', 'top' );
-					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/([A-Fa-f0-9]{6})?/page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]';
+					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]', 'top' );
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]';
+					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+					add_rewrite_rule( '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/page/([0-9]{1,})/{0,1}$', 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]', 'top' );
+					self::$rules_raw[ '(([^/]+/)*' . $shop_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/page/([0-9]{1,})/{0,1}$' ] = 'index.php?post_type=product&tinvwlID=$matches[3]&paged=$matches[4]';
 				}
 			}
 		}

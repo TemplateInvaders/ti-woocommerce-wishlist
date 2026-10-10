@@ -139,7 +139,8 @@ class TInvWL {
 
 		if ( apply_filters( 'tinvwl_allow_data_cookies', true ) ) {
 			add_action( 'wp_logout', [ $this, 'reset_cookie' ] );
-			add_action( 'wp_login', [ $this, 'reset_cookie' ] );
+			// Transfer the signed guest list before clearing its credentials.
+			add_action( 'wp_login', [ $this, 'reset_cookie' ], 20 );
 		}
 	}
 
@@ -151,6 +152,10 @@ class TInvWL {
 	public function reset_cookie(): void {
 		wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
 		unset( $_COOKIE['tinv_wishlistkey'] );
+		wc_setcookie( 'tinv_wishlist_owner', '', time() - HOUR_IN_SECONDS, is_ssl(), true );
+		unset( $_COOKIE['tinv_wishlist_owner'] );
+		TInvWL_Wishlist::$default_sharekey = null;
+		$GLOBALS['tinvwl_wishlist_sharekey'] = null;
 		wc_setcookie( 'tinvwl_wishlists_data_counter', 0, time() - HOUR_IN_SECONDS );
 		unset( $_COOKIE['tinvwl_wishlists_data_counter'] );
 		wc_setcookie( 'tinvwl_update_data', 1, time() + HOUR_IN_SECONDS );

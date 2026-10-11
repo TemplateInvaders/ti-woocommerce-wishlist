@@ -103,6 +103,14 @@ class TInvWL {
 	 * Set the locale for the plugin.
 	 */
 	private function set_locale(): void {
+		// Load translations before init consumers, after WordPress and locale filters are ready.
+		if ( ! did_action( 'init' ) ) {
+			add_action( 'init', function () {
+				$this->set_locale();
+			}, 0 );
+			return;
+		}
+
 		if ( function_exists( 'determine_locale' ) ) {
 			$locale = determine_locale();
 		} else {

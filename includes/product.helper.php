@@ -374,7 +374,10 @@ class TInvWL_Product {
 					'date'         => FILTER_DEFAULT,
 					'formdata'     => FILTER_DEFAULT,
 					'quantity'     => FILTER_VALIDATE_INT,
-					'price'        => FILTER_SANITIZE_NUMBER_FLOAT | FILTER_FLAG_ALLOW_FRACTION,
+					'price'        => array(
+						'filter' => FILTER_SANITIZE_NUMBER_FLOAT,
+						'flags'  => FILTER_FLAG_ALLOW_FRACTION,
+					),
 					'in_stock'     => FILTER_VALIDATE_BOOLEAN,
 				) );
 				$product['quantity'] = 1;

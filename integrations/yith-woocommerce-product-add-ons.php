@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Product Add-Ons
  *
- * @version 4.31.0
+ * @version 4.34.1
  *
  * @slug yith-woocommerce-product-add-ons
  *
@@ -75,6 +75,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 
 			}
 			if ( ! empty( $item_data['yith_wapo'] ) ) {
+				$base_product_price = is_object( $base_product ) ? (float) yit_get_display_price( $base_product ) : 0;
 				// $total_options_price = 0;
 				$cart_data_array          = array();
 				$first_free_options_count = 0;
@@ -97,8 +98,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 							if ( $info['price_type'] == 'percentage' ) {
 								$option_percentage      = floatval( $info['price'] );
 								$option_percentage_sale = floatval( $info['price_sale'] );
-								$option_price           = ( $product_price / 100 ) * $option_percentage;
-								$option_price_sale      = ( $product_price / 100 ) * $option_percentage_sale;
+								$option_price           = ( $base_product_price / 100 ) * $option_percentage;
+								$option_price_sale      = ( $base_product_price / 100 ) * $option_percentage_sale;
 							} else if ( $info['price_type'] == 'multiplied' ) {
 								$option_price      = $info['price'] * $value;
 								$option_price_sale = $info['price'] * $value;

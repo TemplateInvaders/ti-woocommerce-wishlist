@@ -4,7 +4,7 @@
  *
  * @name WP Fastest Cache
  *
- * @version 1.4.9
+ * @version 1.5.3
  *
  * @slug wp-fastest-cache
  *

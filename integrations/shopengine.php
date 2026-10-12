@@ -4,7 +4,7 @@
  *
  * @name ShopEngine
  *
- * @version 4.9.0
+ * @version 4.9.7
  *
  * @slug shopengine
  *
@@ -97,7 +97,7 @@ function tinv_shop_engine_loop_disable() {
 	remove_filter( 'woocommerce_loop_add_to_cart_link', 'tinv_shop_engine_loop', 10, 3 );
 }
 
-add_action( 'tinvwl_wishlist_contents_after', 'tinv_shop_engine_loop_disable' );
+add_action( 'tinvwl_wishlist_contents_after', 'tinv_shop_engine_loop_enable' );
 
 function tinv_shop_engine_loop_enable() {
 	add_filter( 'woocommerce_loop_add_to_cart_link', 'tinv_shop_engine_loop', 10, 3 );

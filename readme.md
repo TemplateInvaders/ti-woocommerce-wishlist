@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 7.1.3
-Stable tag: 2.12.1
+Stable tag: 2.13.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,50 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+
+### 2.13.0 ###
+*Release Date - 12 October 2026*
+
+- **Added**: Support for WordPress 7.1.x
+- **Added**: Support for WooCommerce 11.2.x
+- **Security**: Enforced private wishlist access checks across frontend, AJAX and cart actions
+- **Security**: Protected guest wishlist ownership with signed cookies and stronger share keys for new wishlists
+- **Fixed**: Early translation loading by deferring wishlist translations to the WordPress init hook
+- **Fixed**: PHP filter_var_array() warnings caused by invalid numeric filter definitions
+- **Fixed**: ShopEngine wishlist buttons missing from product loops after rendering a wishlist
+- **Fixed**: Missing product option details when WP Armour has no configured honeypot field
+- **Fixed**: PHP warnings on pages without a product in the ELEX WooCommerce Catalog Mode integration
+- **Fixed**: Deprecated API usage in the Product Quantity for WooCommerce integration
+- **Fixed**: PPOM wishlist-to-cart errors when product options are already decoded
+- **Fixed**: Percentage-based add-on prices in YITH WooCommerce Product Add-Ons wishlist item details
+- **Fixed**: Technical CleanTalk anti-spam fields appearing in wishlist item details
+- **Updated**: Integration with [Advanced Product Fields (Product Addons) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+- **Updated**: Integration with [Spam protection, Anti-Spam, FireWall by CleanTalk](https://wordpress.org/plugins/cleantalk-spam-protect/) plugin
+- **Updated**: Integration with [GTM4WP – A Google Tag Manager (GTM) plugin for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) plugin
+- **Updated**: Integration with [ELEX WooCommerce Catalog Mode](https://wordpress.org/plugins/elex-woocommerce-catalog-mode/) plugin
+- **Updated**: Integration with [WP Armour – Honeypot Anti Spam](https://wordpress.org/plugins/honeypot/) plugin
+- **Updated**: Integration with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/) plugin
+- **Updated**: Integration with [myCred – Points Management System For Gamification, Ranks, Badges, and Loyalty Rewards Program](https://wordpress.org/plugins/mycred/) plugin
+- **Updated**: Integration with [Product Quantity for WooCommerce](https://wordpress.org/plugins/product-quantity-for-woocommerce/) plugin
+- **Updated**: Integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+- **Updated**: Integration with [ShopEngine](https://wordpress.org/plugins/shopengine/) plugin
+- **Updated**: Integration with [Product Options and Price Calculation Formulas for WooCommerce – Uni CPO](https://wordpress.org/plugins/uni-woo-custom-product-options/) plugin
+- **Updated**: Integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+- **Updated**: Integration with [Woo Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin
+- **Updated**: Integration with [Extra Product Options For WooCommerce | Custom Product Addons and Fields](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+- **Updated**: Integration with [Payment Plugins Braintree For WooCommerce](https://wordpress.org/plugins/woo-payment-gateway/) plugin
+- **Updated**: Integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+- **Updated**: Integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/) plugin
+- **Updated**: Integration with [WooCommerce Multilingual](https://wordpress.org/plugins/woocommerce-multilingual/) plugin
+- **Updated**: Integration with [PPOM – Product Addons & Custom Fields for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
+- **Updated**: Integration with [WooCommerce Square](https://woocommerce.com/products/square/) plugin
+- **Updated**: Integration with [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin
+- **Updated**: Integration with [WP Multilang – Translation and Multilingual Plugin](https://wordpress.org/plugins/wp-multilang/) plugin
+- **Updated**: Integration with [WPC Variations Radio Buttons for WooCommerce](https://wordpress.org/plugins/wpc-variations-radio-buttons/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/) plugin
+- **Updated**: Integration with [YITH WooCommerce Quick View](https://wordpress.org/plugins/yith-woocommerce-quick-view/) plugin
+
 ### 2.12.1 ###
 *Release Date - 4 September 2026*
 

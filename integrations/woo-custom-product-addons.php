@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Custom Product Addons
  *
- * @version 3.1.4
+ * @version 3.1.8
  *
  * @slug woo-custom-product-addons
  *

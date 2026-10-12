@@ -10,7 +10,7 @@
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
  * WC requires at least: 3.2
- * WC tested up to: 10.8.1
+ * WC tested up to: 11.2.1
  * Author:            TemplateInvaders
  * Author URI:        https://templateinvaders.com/
  * License:           GPL-2.0+

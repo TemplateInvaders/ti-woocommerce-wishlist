@@ -4,7 +4,7 @@
  *
  * @name Extra product options For WooCommerce | Custom Product Addons and Fields
  *
- * @version 3.3.6
+ * @version 3.3.9
  *
  * @slug woo-extra-product-options
  *

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Gravity Forms Product Add-Ons
  *
- * @version 3.3.26
+ * @version 3.7.7
  *
  * @slug woocommerce-gravityforms-product-addons
  *

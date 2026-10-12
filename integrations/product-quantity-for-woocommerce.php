@@ -4,7 +4,7 @@
  *
  * @name All in One Product Quantity for WooCommerce
  *
- * @version 5.4.3
+ * @version 5.4.5
  *
  * @slug product-quantity-for-woocommerce
  *
@@ -53,7 +53,8 @@ if ( ! function_exists( 'tinv_wishlist_cart_quantity_alg_wc_pq' ) ) {
 	 */
 	function tinv_wishlist_cart_quantity_alg_wc_pq( $qty, $wl_product ) {
 
-		$qty = alg_wc_pq()->core->get_product_qty_min_max( $wl_product['product_id'], alg_wc_pq()->core->get_product_qty_default( $wl_product['product_id']), 'min', $wl_product['variation_id'] );
+		$quantity_plugin = function_exists( 'wpfmmsq' ) ? wpfmmsq() : alg_wc_pq();
+		$qty = $quantity_plugin->core->get_product_qty_min_max( $wl_product['product_id'], $quantity_plugin->core->get_product_qty_default( $wl_product['product_id'] ), 'min', $wl_product['variation_id'] );
 
 		return $qty;
 	}

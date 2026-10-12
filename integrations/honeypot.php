@@ -4,7 +4,7 @@
  *
  * @name WP Armour - Honeypot Anti Spam
  *
- * @version 2.3.04
+ * @version 2.4.02
  *
  * @slug honeypot
  *
@@ -56,6 +56,9 @@ if ( ! function_exists( 'tinvwl_wishlist_item_meta_post_honeypot' ) ) {
 	function tinvwl_wishlist_item_meta_post_honeypot( $item_data, $product_id, $variation_id ) {
 
 		$honeypot_field_name = get_option( 'wpa_field_name' );
+		if ( ! is_string( $honeypot_field_name ) || '' === $honeypot_field_name ) {
+			return $item_data;
+		}
 
 		foreach ( array_keys( $item_data ) as $key ) {
 			if ( strpos( $key, $honeypot_field_name ) === 0 ) {

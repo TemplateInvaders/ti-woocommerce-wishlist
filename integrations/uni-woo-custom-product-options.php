@@ -4,7 +4,7 @@
  *
  * @name Product Options and Price Calculation Formulas for WooCommerce – Uni CPO
  *
- * @version 4.9.62
+ * @version 4.9.67
  *
  * @slug uni-woo-custom-product-options
  *

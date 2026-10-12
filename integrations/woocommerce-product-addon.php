@@ -4,7 +4,7 @@
  *
  * @name PPOM for WooCommerce
  *
- * @version 34.0.4
+ * @version 34.0.11
  *
  * @slug woocommerce-product-addon
  *
@@ -185,7 +185,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 
 function tinvwl_add_to_cart_meta_woocommerce_product_add_on( $wl_product ) {
 
-	if ( isset( $wl_product['action'] ) && 'add' === $wl_product['action'] && isset( $wl_product['meta']['ppom'] ) ) {
+	if ( isset( $wl_product['action'] ) && 'add' === $wl_product['action'] && isset( $wl_product['meta']['ppom'] ) && is_string( $wl_product['meta']['ppom'] ) ) {
 
 		$decoded = json_decode( $wl_product['meta']['ppom'], true );
 

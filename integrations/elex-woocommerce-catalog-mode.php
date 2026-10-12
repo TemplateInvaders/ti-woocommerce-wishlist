@@ -4,7 +4,7 @@
  *
  * @name ELEX WooCommerce Catalog Mode
  *
- * @version 1.5.3
+ * @version 1.5.4
  *
  * @slug elex-woocommerce-catalog-mode
  *
@@ -49,6 +49,9 @@ function tinvwl_elex_init() {
 	if ( defined( 'ELEX_CATALOG_MODE_MAIN_URL_PATH' ) ) {
 
 		global $post;
+		if ( ! is_product() || empty( $post->ID ) ) {
+			return;
+		}
 		$product = wc_get_product( $post->ID );
 		if ( ! empty( $product ) ) {
 			if ( 'yes' == get_option( 'eh_pricing_discount_cart_catalog_mode' ) && 'yes' == get_option( 'elex_catalog_remove_addtocart_product' ) ) {

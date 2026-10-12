@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Square
  *
- * @version 5.4.0
+ * @version 5.5.1
  *
  * @slug woocommerce-square
  *

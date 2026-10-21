@@ -46,14 +46,15 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 	/**
 	 * Set description for meta WooCommerce Product Add-Ons Ultimate
 	 *
-	 * @param array $meta Meta array.
-	 * @param array $wl_product Wishlist Product.
-	 * @param \WC_Product $product Woocommerce Product.
+	 * @param array $item_data Display metadata.
+	 * @param int $product_id Product ID.
+	 * @param int $variation_id Variation ID.
+	 * @param array $form_meta Original saved field values.
 	 *
 	 * @return array
 	 */
 
-	function tinv_wishlist_item_meta_pewc( $item_data, $product_id, $variation_id ) {
+	function tinv_wishlist_item_meta_pewc( $item_data, $product_id, $variation_id, $form_meta = array() ) {
 
 		if ( defined( 'PEWC_FILE' ) ) {
 			// Check for product_extra groups
@@ -63,7 +64,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 			$posted_data = array();
 
 			foreach ( $item_data as $values ) {
-				$posted_data[ $values['key'] ] = $values['display'];
+				$posted_data[ $values['key'] ] = array_key_exists( $values['key'], $form_meta ) ? $form_meta[ $values['key'] ] : $values['display'];
 			}
 
 			if ( $product_extra_groups ) {
@@ -134,18 +135,48 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 								$item['label'] = ! empty( $item['field_label'] ) ? sanitize_text_field( $item['field_label'] ) : '';
 
 								$value = ( isset( $item_data[ $item['id'] ] ) && isset( $item_data[ $item['id'] ]['display'] ) ) ? $item_data[ $item['id'] ]['display'] : '';
-
-								if ( $item['field_type'] == 'textarea' ) {
-									$value = sanitize_textarea_field( stripslashes( $value ) );
-								} else if ( in_array( $item['field_type'], array(
-									'image_swatch',
-									'radio',
-									'upload'
-								) ) ) {
-									$value = isset( $value[0] ) ? wp_kses_post( stripslashes( $value[0] ) ) : '';
-								} else {
-									$value = sanitize_text_field( stripslashes( $value ) );
+								if ( isset( $item_data[ $item['id'] ] ) && array_key_exists( $item['id'], $form_meta ) ) {
+									$value = $form_meta[ $item['id'] ];
 								}
+
+								// Older renderers encoded selection arrays as JSON before calling this filter.
+								// Decode only array-valued field types; literal JSON in text fields stays text.
+								$is_literal_option = false;
+								foreach ( isset( $item['field_options'] ) ? $item['field_options'] : array() as $option ) {
+									if ( is_string( $value ) && ( ( isset( $option['value'] ) && $option['value'] === $value ) || ( isset( $option['key'] ) && $option['key'] === $value ) ) ) {
+										$is_literal_option = true;
+										break;
+									}
+								}
+								if ( ! $is_literal_option && is_string( $value ) && in_array( $item['field_type'], array( 'radio', 'image_swatch', 'checkbox_group', 'upload' ), true ) ) {
+									$decoded = json_decode( $value, true );
+									if ( is_array( $decoded ) && ( empty( $decoded ) || array_keys( $decoded ) === range( 0, count( $decoded ) - 1 ) ) ) {
+										$value = $decoded;
+									}
+								}
+
+								$selections = is_array( $value ) ? $value : array( $value );
+								$values     = array();
+								foreach ( $selections as $selection ) {
+									if ( ! is_scalar( $selection ) ) {
+										continue;
+									}
+									foreach ( isset( $item['field_options'] ) ? $item['field_options'] : array() as $option ) {
+										if ( isset( $option['key'], $option['value'] ) && (string) $option['key'] === (string) $selection ) {
+											$selection = $option['value'];
+											break;
+										}
+									}
+									// Saved metadata is already unslashed; preserve literal backslashes.
+									if ( $item['field_type'] == 'textarea' ) {
+										$values[] = sanitize_textarea_field( (string) $selection );
+									} else if ( in_array( $item['field_type'], array( 'image_swatch', 'radio', 'upload' ), true ) ) {
+										$values[] = wp_kses_post( (string) $selection );
+									} else {
+										$values[] = sanitize_text_field( (string) $selection );
+									}
+								}
+								$value = implode( ' | ', $values );
 
 								$item['value'] = $value;
 
@@ -165,7 +196,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 									);
 								} else if ( $item['field_type'] == 'checkbox_group' ) {
 
-									$display = str_replace( ' | ', '<br>', $item['value'] );
+									$display = $item['value'];
 									if ( pewc_show_field_prices_in_cart( $item ) ) {
 										$display .= '<span class="pewc-price pewc-cart-item-price">' . sanitize_text_field( $price ) . '</span>';
 									}
@@ -215,7 +246,25 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 		return $item_data;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_pewc', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_pewc', 10, 4 );
+}
+
+if ( ! function_exists( 'tinvwl_prepare_cart_data_pewc' ) ) {
+	/** Let native PEWC build cart identity from configured fields in the prepared request. */
+	function tinvwl_prepare_cart_data_pewc( $meta, $product ) {
+		if ( empty( $product['product_id'] ) ) {
+			return $meta;
+		}
+		foreach ( (array) pewc_get_extra_fields( $product['product_id'] ) as $group ) {
+			foreach ( isset( $group['items'] ) ? $group['items'] : array() as $item ) {
+				if ( ! empty( $item['id'] ) ) {
+					unset( $meta[ $item['id'] ] );
+				}
+			}
+		}
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_cart_data', 'tinvwl_prepare_cart_data_pewc', 10, 2 );
 }
 
 if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
@@ -229,12 +278,14 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_pewc( $price, $wl_product, $product ) {
+	function tinvwl_item_price_pewc( $price, $wl_product, $product, $raw = false ) {
 
 		if ( defined( 'PEWC_FILE' ) ) {
 
 			$product_price = $product->get_price();
-			$product_id    = $product->get_id();
+			$product_id    = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+			$variation_id  = $product->is_type( 'variation' ) ? $product->get_id() : 0;
+			$quantity      = isset( $wl_product['quantity'] ) ? (float) $wl_product['quantity'] : 1;
 			$extra_price   = 0;
 
 			$product_extra_groups = pewc_get_extra_fields( $product_id );
@@ -268,7 +319,11 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 								$is_percentage = ! empty( $item['field_percentage'] ) ? true : false;
 
 								// Only add item if it's visible
-								if ( ! empty( $wl_product['meta'][ $id ] ) ) {
+								if ( ! empty( $wl_product['meta'][ $id ] ) || 0 === $value || '0' === $value ) {
+									// The vendor visibility helper needs a live cart; preserve no-cart export/cron pricing.
+									if ( WC()->cart instanceof WC_Cart && ! pewc_get_conditional_field_visibility( $id, $item, $group['items'], $product_id, $wl_product['meta'], $variation_id, array(), $quantity, $group_id, $group ) ) {
+										continue;
+									}
 
 									$field_price = pewc_get_field_price( $item, $product );
 
@@ -278,7 +333,7 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 									}
 
 									// Check for Name Your Price
-									if ( $field_type == 'name_price' ) {
+									if ( $field_type == 'name_price' && empty( $item['multiply'] ) ) {
 										if ( ! $is_flat_rate ) {
 											$price = $value;
 										}
@@ -384,20 +439,16 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 							}
 						}
 
-						// Ensure price can't be less than 0
-						$new_price = floatval( $product_price ) + floatval( $extra_price );
-						if ( $new_price < 0 ) {
-							$new_price = 0;
-						}
-
-						return wc_price( $new_price );
 					}
 				}
+				// Calculate the unit price after every group has contributed.
+				$new_price = max( 0, floatval( $product_price ) + floatval( $extra_price ) );
+				return $raw ? $new_price : wc_price( $new_price );
 			}
 		}
 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_pewc', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_pewc', 10, 4 );
 } // End if().

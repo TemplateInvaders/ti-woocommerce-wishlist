@@ -41,6 +41,36 @@ if (!$available) {
 	return;
 }
 
+if ( ! function_exists( 'tinvwl_product_addons_list_value' ) ) {
+	/** Keep native selections intact while accepting legacy JSON containers. */
+	function tinvwl_product_addons_list_value( $value ) {
+		if ( is_string( $value ) ) {
+			$decoded = json_decode( $value, true );
+			if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) {
+				return $decoded;
+			}
+		}
+		return $value;
+	}
+}
+
+if ( ! function_exists( 'tinvwl_product_addons_prepare_cart_data' ) ) {
+	/** Native Add-ons rebuilds its cart configuration from the prepared request. */
+	function tinvwl_product_addons_prepare_cart_data( $meta, $product ) {
+		$product_id = empty( $product['variation_id'] ) ? $product['product_id'] : $product['variation_id'];
+		$addons = function_exists( 'get_product_addons' ) ? get_product_addons( $product_id ) : WC_Product_Addons_Helper::get_product_addons( $product_id );
+		foreach ( (array) $addons as $addon ) {
+			if ( empty( $addon['field_name'] ) ) {
+				continue;
+			}
+			$name = 'addon-' . $addon['field_name'];
+			unset( $meta[ $name ], $meta[ $name . '-wc-pao-date' ], $meta[ $name . '-wc-pao-date-gmt-offset' ] );
+		}
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_cart_data', 'tinvwl_product_addons_prepare_cart_data', 10, 2 );
+}
+
 if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_addons')) {
 
 	/**
@@ -52,7 +82,7 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_addons')) {
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_item_meta_woocommerce_product_addons($item_data, $product_id, $variation_id)
+	function tinv_wishlist_item_meta_woocommerce_product_addons($item_data, $product_id, $variation_id, $form_meta = array())
 	{
 
 		if (class_exists('WC_Product_Addons')) {
@@ -70,75 +100,79 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_addons')) {
 				$field = null;
 
 				foreach ($product_addons as $addon) {
-					foreach ($addon['options'] as $option) {
-						$original_data = 'addon-' . $addon['field_name'];
+					$field = null;
+					$original_data = 'addon-' . $addon['field_name'];
 
-						$value = isset($item_data[$original_data]) ? $item_data[$original_data]['display'] : '';
+					$value = isset($item_data[$original_data]) ? $item_data[$original_data]['display'] : '';
 
-						if ($value == '') {
+					if ($value == '') {
+						continue;
+					}
+
+					if ('checkbox' === $addon['type'] || ('multiple_choice' === $addon['type'] && 'radiobutton' === $addon['display'])) {
+						$value = tinvwl_product_addons_list_value($value);
+					}
+					include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php');
+					switch ($addon['type']) {
+						case 'checkbox':
+							$value = tinvwl_product_addons_list_value($value);
+							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
+							$field = new WC_Product_Addons_Field_List($addon, $value);
+							break;
+						case 'multiple_choice':
+							switch ($addon['display']) {
+								case 'radiobutton':
+									$value = tinvwl_product_addons_list_value($value);
+									include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
+									$field = new WC_Product_Addons_Field_List($addon, $value);
+									break;
+								case 'images':
+								case 'select':
+									include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-select.php');
+									$field = new WC_Product_Addons_Field_Select($addon, $value);
+									break;
+							}
+							break;
+						case 'custom_text':
+						case 'custom_textarea':
+						case 'custom_price':
+						case 'input_multiplier':
+							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-custom.php');
+							$field = new WC_Product_Addons_Field_Custom($addon, $value);
+							break;
+						case 'datepicker':
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-datepicker.php' );
+							$field = new WC_Product_Addons_Field_Datepicker( $addon, $value, $form_meta[ $original_data . '-wc-pao-date' ] ?? '', $form_meta[ $original_data . '-wc-pao-date-gmt-offset' ] ?? 0 );
+							break;
+						case 'file_upload':
+							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php');
+							$field = new WC_Product_Addons_Field_File_Upload($addon, $value);
+							if ($field && isset($field->value)) {
+								$field->value = basename($field->value);
+							}
+							break;
+						default:
+							// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
+							break;
+					}
+
+					if ($field) {
+						$data = $field->get_cart_item_data();
+						if ( ! is_array( $data ) ) {
 							continue;
 						}
+						unset($item_data[$original_data]);
+						foreach ($data as $opt) {
+							$name = $opt['name'];
 
-						if (is_array($value)) {
-							$value = array_map('stripslashes', $value);
-						} else {
-							$value = stripslashes($value);
-						}
-						include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php');
-						switch ($addon['type']) {
-							case 'checkbox':
-								$value = json_decode($value, true);
-								include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
-								$field = new WC_Product_Addons_Field_List($addon, $value);
-								break;
-							case 'multiple_choice':
-								switch ($addon['display']) {
-									case 'radiobutton':
-										$value = json_decode($value, true);
-										include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
-										$field = new WC_Product_Addons_Field_List($addon, $value);
-										break;
-									case 'images':
-									case 'select':
-										include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-select.php');
-										$field = new WC_Product_Addons_Field_Select($addon, $value);
-										break;
-								}
-								break;
-							case 'custom_text':
-							case 'custom_textarea':
-							case 'custom_price':
-							case 'input_multiplier':
-								include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-custom.php');
-								$field = new WC_Product_Addons_Field_Custom($addon, $value);
-								break;
-							case 'file_upload':
-								include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php');
-								$field = new WC_Product_Addons_Field_File_Upload($addon, $value);
-								if ($field && isset($field->value)) {
-									$field->value = basename($field->value);
-								}
-								break;
-							default:
-								// Continue to the next field in case the type is not recognized (instead of causing a fatal error)
-								break;
-						}
-
-						if ($field) {
-							$data = $field->get_cart_item_data();
-							unset($item_data[$original_data]);
-							foreach ($data as $opt) {
-								$name = $opt['name'];
-
-								if ($opt['price'] && apply_filters('woocommerce_addons_add_price_to_name', '__return_true')) {
-									$name .= ' (' . wc_price(WC_Product_Addons_Helper::get_product_addon_price_for_display($opt['price'])) . ')';
-								}
-
-								$item_data[] = array(
-									'key' => $name,
-									'display' => $opt['value'],
-								);
+							if ($opt['price'] && apply_filters('woocommerce_addons_add_price_to_name', '__return_true')) {
+								$name .= ' (' . wp_strip_all_tags(wc_price(WC_Product_Addons_Helper::get_product_addon_price_for_display($opt['price']))) . ')';
 							}
+
+							$item_data[] = array(
+								'key' => $name,
+								'display' => $opt['value'],
+							);
 						}
 					}
 				}
@@ -148,7 +182,7 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_product_addons')) {
 		return $item_data;
 	}
 
-	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_product_addons', 10, 3);
+	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_item_meta_woocommerce_product_addons', 10, 4);
 } // End if().
 
 if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
@@ -176,9 +210,12 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 			if ($product_addons) {
 
 				$price = 0;
+				$base_price = (float) $product->get_price();
+				$quantity = isset($wl_product['quantity']) && is_numeric($wl_product['quantity']) ? (float) $wl_product['quantity'] : 1;
 				$field = null;
 
 				foreach ($product_addons as $addon) {
+					$field = null;
 
 					$original_data = 'addon-' . $addon['field_name'];
 
@@ -187,22 +224,20 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 						continue;
 					}
 
-					if (is_array($value)) {
-						$value = array_map('stripslashes', $value);
-					} else {
-						$value = stripslashes($value);
+					if ('checkbox' === $addon['type'] || ('multiple_choice' === $addon['type'] && 'radiobutton' === $addon['display'])) {
+						$value = tinvwl_product_addons_list_value($value);
 					}
 					include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php');
 					switch ($addon['type']) {
 						case 'checkbox':
-							$value = json_decode($value, true);
+							$value = tinvwl_product_addons_list_value($value);
 							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
 							$field = new WC_Product_Addons_Field_List($addon, $value);
 							break;
 						case 'multiple_choice':
 							switch ($addon['display']) {
 								case 'radiobutton':
-									$value = json_decode($value, true);
+									$value = tinvwl_product_addons_list_value($value);
 									include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-list.php');
 									$field = new WC_Product_Addons_Field_List($addon, $value);
 									break;
@@ -220,6 +255,10 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-custom.php');
 							$field = new WC_Product_Addons_Field_Custom($addon, $value);
 							break;
+						case 'datepicker':
+							include_once( WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-datepicker.php' );
+							$field = new WC_Product_Addons_Field_Datepicker( $addon, $value, $wl_product['meta'][ $original_data . '-wc-pao-date' ] ?? '', $wl_product['meta'][ $original_data . '-wc-pao-date-gmt-offset' ] ?? 0 );
+							break;
 						case 'file_upload':
 							include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/class-wc-product-addons-field-file-upload.php');
 							$field = new WC_Product_Addons_Field_File_Upload($addon, $value);
@@ -231,9 +270,19 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 
 					if ($field) {
 						$data = $field->get_cart_item_data();
+						if ( ! is_array( $data ) ) {
+							continue;
+						}
 						foreach ($data as $option) {
 							if ($option['price']) {
-								$price += (float)$option['price'];
+								$option_price = (float) $option['price'];
+								$price_type = $option['price_type'] ?? 'quantity_based';
+								if ('percentage_based' === $price_type) {
+									$option_price = $base_price * ($option_price / 100);
+								} elseif ('flat_fee' === $price_type) {
+									$option_price = $quantity > 0 ? $option_price / $quantity : 0;
+								}
+								$price += $option_price;
 							}
 						}
 					}
@@ -300,7 +349,19 @@ function tinvwl_cart_meta_woocommerce_product_addons($meta)
 }
 
 
-add_filter('tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_woocommerce_product_addons');
+add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_prepare_cart_meta_woocommerce_product_addons', 10, 2 );
+
+/** Encode only the native request copy: Product Add-Ons applies wp_unslash itself. */
+function tinvwl_prepare_cart_meta_woocommerce_product_addons( $meta, $wl_product ) {
+	$wl_product['meta'] = $meta;
+	$prepared = tinvwl_add_to_cart_meta_woocommerce_product_addons( $wl_product );
+	foreach ( $prepared['meta'] as $key => $value ) {
+		if ( 0 === strpos( (string) $key, 'addon-' ) ) {
+			$prepared['meta'][ $key ] = wp_slash( $value );
+		}
+	}
+	return $prepared['meta'];
+}
 
 function tinvwl_add_to_cart_meta_woocommerce_product_addons($wl_product)
 {
@@ -319,40 +380,33 @@ function tinvwl_add_to_cart_meta_woocommerce_product_addons($wl_product)
 			$field = null;
 
 			foreach ($product_addons as $addon) {
-				foreach ($addon['options'] as $option) {
-					$original_data = 'addon-' . $addon['field_name'];
+				$field = null;
+				$original_data = 'addon-' . $addon['field_name'];
 
-					$value = isset($wl_product['meta'][$original_data]) ? $wl_product['meta'][$original_data] : '';
+				$value = isset($wl_product['meta'][$original_data]) ? $wl_product['meta'][$original_data] : '';
 
-					if ($value == '') {
-						continue;
-					}
+				if ($value == '') {
+					continue;
+				}
 
-					if (is_array($value)) {
-						$value = array_map('stripslashes', $value);
-					} else {
-						$value = stripslashes($value);
-					}
-					include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php');
-					switch ($addon['type']) {
-						case 'checkbox':
-							if (!is_array($value)) {
-								$wl_product['meta'][$original_data] = json_decode($value, true);
-							}
-							break;
-						case 'multiple_choice':
-							switch ($addon['display']) {
-								case 'radiobutton':
-									if (!is_array($value)) {
-										$wl_product['meta'][$original_data] = json_decode($value, true);
-									}
-									break;
-							}
-							break;
-						default:
+				if ('checkbox' === $addon['type'] || ('multiple_choice' === $addon['type'] && 'radiobutton' === $addon['display'])) {
+					$value = tinvwl_product_addons_list_value($value);
+				}
+				include_once(WP_PLUGIN_DIR . '/woocommerce-product-addons/includes/fields/abstract-wc-product-addons-field.php');
+				switch ($addon['type']) {
+					case 'checkbox':
+						$wl_product['meta'][$original_data] = $value;
+						break;
+					case 'multiple_choice':
+						switch ($addon['display']) {
+							case 'radiobutton':
+								$wl_product['meta'][$original_data] = $value;
+								break;
+						}
+						break;
+					default:
 
-							break;
-					}
+						break;
 				}
 			}
 		}

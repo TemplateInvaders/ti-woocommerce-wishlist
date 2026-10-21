@@ -4,7 +4,7 @@
  *
  * @name myCRED
  *
- * @version 3.2.6
+ * @version 4.0.0
  *
  * @slug mycred
  *
@@ -105,6 +105,8 @@ if ( defined( 'myCRED_VERSION' ) ) {
 			public function run() {
 				add_action( 'tinvwl_product_added', array( $this, 'added' ) );
 				add_action( 'tinvwl_product_purchased', array( $this, 'purchased' ), 10, 3 );
+				add_action( 'woocommerce_payment_complete', array( $this, 'paid_order' ) );
+				add_action( 'woocommerce_order_status_changed', array( $this, 'paid_order' ), 20 );
 			}
 
 			/**
@@ -121,30 +123,51 @@ if ( defined( 'myCRED_VERSION' ) ) {
 
 				$user_id = get_current_user_id();
 
-				// Award the user adding to wishlist
-				if ( $this->prefs['tinvwl_added']['creds'] !== 0 && ! $this->core->exclude_user( $user_id ) ) {
-
-					// Limit
-					if ( ! $this->over_hook_limit( 'tinvwl_added', 'added_to_wishlist', $user_id ) ) {
-
-						// Make sure this is unique event
-						if ( ! $this->core->has_entry( 'added_to_wishlist', $data['product_id'], $user_id ) ) {
-
-							// Execute
-							$this->core->add_creds(
-								'added_to_wishlist',
-								$user_id,
-								$this->prefs['tinvwl_added']['creds'],
-								$this->prefs['tinvwl_added']['log'],
-								$data['product_id'],
-								array( 'ref_type' => 'post' ),
-								$this->mycred_type
-							);
-
-						}
-
+				global $wpdb;
+				// Share the purchase lock: both native award paths read and then write this balance.
+				$lock = 'tinvwl_mycred_' . md5( $wpdb->dbname . '|' . $wpdb->prefix . '|' . $user_id . '|' . $this->mycred_type );
+				if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) {
+					return;
+				}
+				try {
+					if ( ! $this->refresh_purchase_balances( $user_id ) || $wpdb->last_error || $this->prefs['tinvwl_added']['creds'] === 0 || $this->core->exclude_user( $user_id ) ) {
+						return;
 					}
+					$limited = $this->over_hook_limit( 'tinvwl_added', 'added_to_wishlist', $user_id );
+					if ( $wpdb->last_error || $limited ) {
+						return;
+					}
+					$exists = $this->core->has_entry( 'added_to_wishlist', $data['product_id'], $user_id );
+					if ( $wpdb->last_error || $exists ) {
+						return;
+					}
+					$this->core->add_creds(
+						'added_to_wishlist',
+						$user_id,
+						$this->prefs['tinvwl_added']['creds'],
+						$this->prefs['tinvwl_added']['log'],
+						$data['product_id'],
+						array( 'ref_type' => 'post' ),
+						$this->mycred_type
+					);
+				} finally {
+					$error = $wpdb->last_error;
+					$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
+					$wpdb->last_error = $error;
+				}
+			}
 
+			/** Award purchase points after payment using the source already saved on order items. */
+			public function paid_order( $order_id ) {
+				$order = wc_get_order( $order_id );
+				if ( ! $order instanceof WC_Order || ! $order->is_paid() ) {
+					return;
+				}
+
+				foreach ( $order->get_items() as $item ) {
+					if ( $item instanceof WC_Order_Item_Product && $item->get_meta( '_tinvwl_wishlist_cart', true ) ) {
+						$this->purchased( $order, $item, null );
+					}
 				}
 			}
 
@@ -156,36 +179,102 @@ if ( defined( 'myCRED_VERSION' ) ) {
 			 * @param array $wishlist A wishlist data where product added from.
 			 */
 			public function purchased( $order, $item, $wishlist ) {
-
-				// Must be logged in
-				if ( ! is_user_logged_in() ) {
+				if ( ! $order instanceof WC_Order || ! $item instanceof WC_Order_Item_Product || ! $order->is_paid() ) {
 					return;
 				}
 
-				$user_id = get_current_user_id();
+				// Payment callbacks may run without the buyer's browser session.
+				$user_id = (int) $order->get_customer_id();
+				if ( ! $user_id || ! get_user_by( 'id', $user_id ) ) {
+					return;
+				}
 
-				// Award the user adding to wishlist
-				if ( $this->prefs['tinvwl_purchased']['creds'] !== 0 && ! $this->core->exclude_user( $user_id ) ) {
-
-					// Limit
-					if ( ! $this->over_hook_limit( 'tinvwl_purchased', 'purchased_from_wishlist', $user_id ) ) {
-
-						// Make sure this is a unique event
-						if ( ! $this->core->has_entry( 'purchased_from_wishlist', $item->get_id(), $user_id ) ) {
-
-							// Execute
-							$this->core->add_creds(
-								'purchased_from_wishlist',
-								$user_id,
-								$this->prefs['tinvwl_purchased']['creds'],
-								$this->prefs['tinvwl_purchased']['log'],
-								$item->get_id(),
-								array( 'ref_type' => 'post' ),
-								$this->mycred_type
-							);
-
-						}
+				global $wpdb;
+				// The vendor updates balances by reading and writing, so serialize this buyer's awards.
+				$lock = 'tinvwl_mycred_' . md5( $wpdb->dbname . '|' . $wpdb->prefix . '|' . $user_id . '|' . $this->mycred_type );
+				if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) {
+					return;
+				}
+				try {
+					if ( ! $this->refresh_purchase_balances( $user_id ) || $wpdb->last_error || $this->prefs['tinvwl_purchased']['creds'] === 0 || $this->core->exclude_user( $user_id ) ) {
+						return;
 					}
+					$limited = $this->over_hook_limit( 'tinvwl_purchased', 'purchased_from_wishlist', $user_id );
+					if ( $wpdb->last_error || $limited ) {
+						return;
+					}
+					$exists = $this->has_purchase_receipt( $item->get_id(), $user_id );
+					if ( $wpdb->last_error || $exists ) {
+						return;
+					}
+					$this->core->add_creds(
+						'purchased_from_wishlist',
+						$user_id,
+						$this->prefs['tinvwl_purchased']['creds'],
+						$this->prefs['tinvwl_purchased']['log'],
+						$item->get_id(),
+						array( 'ref_type' => 'post' ),
+						$this->mycred_type
+					);
+				} finally {
+					$error = $wpdb->last_error;
+					$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
+					$wpdb->last_error = $error;
+				}
+			}
+
+			/** Refresh only this recipient's native caches after waiting for another award. */
+			private function refresh_purchase_balances( $user_id ) {
+				global $wpdb;
+				wp_cache_delete( $user_id, 'user_meta' );
+				$balances = array();
+				foreach ( array( 'mycred_current_account', 'mycred_account' ) as $name ) {
+					$account = $GLOBALS[ $name ] ?? null;
+					if ( $account instanceof myCRED_Account && $account->user_id === $user_id && isset( $account->balance[ $this->mycred_type ] ) && $account->balance[ $this->mycred_type ] instanceof myCRED_Balance ) {
+						$balances[] = array( $account, $account->balance[ $this->mycred_type ] );
+						// Both native balance getters recognize false as an uncached balance.
+						$account->balance[ $this->mycred_type ] = false;
+					}
+				}
+				if ( ! $balances ) {
+					return true;
+				}
+				try {
+					$current = $this->core->get_users_balance( $user_id, $this->mycred_type );
+					if ( $wpdb->last_error ) {
+						return false;
+					}
+					$total = $this->core->get_users_total_balance( $user_id, $this->mycred_type );
+					if ( $wpdb->last_error ) {
+						return false;
+					}
+				} finally {
+					foreach ( $balances as list( $account, $balance ) ) {
+						$account->balance[ $this->mycred_type ] = $balance;
+					}
+				}
+				foreach ( $balances as list( $account, $balance ) ) {
+					$balance->set( 'current', $current );
+					$balance->set( 'accumulated', $total );
+				}
+				return true;
+			}
+
+			/** Keep the vendor receipt/filter contract, using a current read inside a caller transaction. */
+			private function has_purchase_receipt( $item_id, $user_id ) {
+				global $wpdb;
+				$query = $wpdb->prepare(
+					"SELECT id FROM {$this->core->log_table} WHERE ref = %s AND ref_id = %d AND user_id = %d AND ctype = %s;",
+					'purchased_from_wishlist', $item_id, $user_id, $this->mycred_type
+				);
+				$current_read = static function ( $sql ) use ( $query ) {
+					return $sql === $query ? substr( $sql, 0, -1 ) . ' FOR UPDATE;' : $sql;
+				};
+				add_filter( 'query', $current_read, PHP_INT_MAX );
+				try {
+					return $this->core->has_entry( 'purchased_from_wishlist', $item_id, $user_id, null, $this->mycred_type );
+				} finally {
+					remove_filter( 'query', $current_read, PHP_INT_MAX );
 				}
 			}
 

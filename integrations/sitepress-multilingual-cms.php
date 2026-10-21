@@ -57,7 +57,7 @@ if (!function_exists('tinvwl_wpml_product_get')) {
 			$_variation_id = $variation_id = $product['variation_id'];
 			$_product_id = apply_filters('wpml_object_id', $_product_id, 'product', true);
 			if (!empty($_variation_id)) {
-				$_variation_id = apply_filters('wpml_object_id', $_variation_id, 'product', true);
+				$_variation_id = apply_filters('wpml_object_id', $_variation_id, 'product_variation', true);
 			}
 			if ($_product_id !== $product_id || $_variation_id !== $variation_id) {
 				$product['data'] = wc_get_product($variation_id ? $_variation_id : $_product_id);
@@ -83,19 +83,24 @@ if (!function_exists('tinvwl_wpml_filter_link')) {
 	function tinvwl_wpml_filter_link($full_link, $l)
 	{
 		$share_key = get_query_var('tinvwlID', null);
-		if (!empty($share_key)) {
+		if (!empty($share_key) && is_scalar($share_key)) {
 			if (get_option('permalink_structure')) {
-				$suffix = '';
-				if (preg_match('/([^\?]+)\?*?(.*)/i', $full_link, $_full_link)) {
-					$full_link = $_full_link[1];
-					$suffix = $_full_link[2];
+				// Insert the key in the path without rewriting query strings or fragments.
+				$path_end = strcspn($full_link, '?#');
+				$suffix = substr($full_link, $path_end);
+				$full_link = substr($full_link, 0, $path_end);
+				$pagination = '';
+				if (preg_match('~/(?:wl_page|page)/[0-9]+/?$~', $full_link, $matches)) {
+					$pagination = $matches[0];
+					$full_link = substr($full_link, 0, -strlen($pagination));
 				}
-				if (!preg_match('/\/$/', $full_link)) {
-					$full_link .= '/';
+				$key = rawurlencode((string)$share_key);
+				if (!preg_match('~/' . preg_quote($key, '~') . '/?$~', $full_link)) {
+					$full_link = rtrim($full_link, '/') . '/' . $key;
 				}
-				$full_link .= $share_key . '/' . $suffix;
+				$full_link = rtrim($full_link, '/') . ($pagination ?: '/') . $suffix;
 			} else {
-				$full_link .= add_query_arg('tinvwlID', $share_key, $full_link);
+				$full_link = add_query_arg('tinvwlID', $share_key, $full_link);
 			}
 		}
 

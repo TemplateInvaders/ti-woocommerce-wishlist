@@ -76,10 +76,12 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product, $discount_extra = 0 ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
-			$product_id    = WC_PB_Core_Compatibility::get_id( $product );
+			$product_id    = $product->get_id();
 			$bundled_items = $product->get_bundled_items();
 			if ( ! empty( $bundled_items ) ) {
 				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
+					// A selected variation belongs to this row, not the cached bundle item.
+					$bundled_item = clone $bundled_item;
 
 					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
 					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
@@ -101,7 +103,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 							$bundled_product_qty = 0;
 						}
 					}
-					if ( 0 === $bundled_product_qty || 'visible' != $bundled_item->cart_visibility ) {
+					if ( 0 === $bundled_product_qty || ! $bundled_item->is_visible( 'cart' ) ) {
 						continue;
 					}
 
@@ -113,9 +115,10 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					) ) ? $bundled_item->get_name() : $bundled_item->get_title() : $bundled_item->get_raw_title();
 
 					$product_price     = $bundled_item->product->get_price_html();
-					$product_price_raw = $bundled_item->product->get_regular_price();
-					$discount          = $bundled_item->get_discount();
-					$discount          = empty( $discount ) ? $discount_extra : ( 100 - $discount ) / $discount_extra + $discount;
+					$product_price_raw = $bundled_item->is_discount_allowed_on_sale_price() ? $bundled_item->product->get_price() : $bundled_item->product->get_regular_price();
+					$discount          = (float) $bundled_item->get_discount();
+					// Match Product Bundles' composition of item and component discounts.
+					$discount          = $discount + (float) $discount_extra - $discount * (float) $discount_extra / 100;
 					$product_price     = empty( $discount ) ? $product_price : wc_price( WC_PB_Product_Prices::get_discounted_price( $product_price_raw, $discount ) );
 
 					if ( $bundled_item->product->is_visible() ) {
@@ -175,7 +178,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
 			$bundle_price  = $product->get_price();
-			$product_id    = WC_PB_Core_Compatibility::get_id( $product );
+			$product_id    = $product->get_id();
 			$bundled_items = $product->get_bundled_items();
 
 			if ( ! empty( $bundled_items ) ) {
@@ -208,10 +211,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 					}
 
 					if ( $bundled_item->is_priced_individually() ) {
-						$product_price = $_bundled_product->get_price();
-
-						$discount      = $bundled_item->get_discount();
-						$product_price = empty( $discount ) ? $product_price : WC_PB_Product_Prices::get_discounted_price( $product_price, $discount );
+						$product_price = $bundled_item->get_raw_price( $_bundled_product );
 
 						$bundled_item_price = (double) $product_price * (int) $bundled_product_qty;
 
@@ -229,5 +229,5 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_bundles', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_bundles', 10, 4 );
 } // End if().

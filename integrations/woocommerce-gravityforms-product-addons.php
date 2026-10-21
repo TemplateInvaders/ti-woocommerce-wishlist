@@ -292,7 +292,7 @@ if ( ! function_exists( 'tinvwl_wc_gf_addons_edit_link' ) ) {
 			if ( false === $wl_product_id ) {
 				return $form;
 			}
-			$wlp           = new TInvWL_Product();
+			$wlp           = new TInvWL_Product( array(), TINVWL_PREFIX, true );
 			$wl_product    = $wlp->get( array( 'ID' => $wl_product_id ) );
 			$wl_product    = array_shift( $wl_product );
 
@@ -442,12 +442,12 @@ if ( ! function_exists( 'tinv_wishlist_metaprepare_wc_gf_addons' ) ) {
 
 function tinv_add_to_wishlist_wc_gf_addons() {
 	wp_add_inline_script( 'tinvwl', "
-						jQuery('body').on('tinvwl_add_to_wishlist_button_click', function(e, el){
+						jQuery('body').off('tinvwl_add_to_wishlist_button_click.tinvwlGfAddons').on('tinvwl_add_to_wishlist_button_click.tinvwlGfAddons', function(e, el){
 							jQuery(el).closest('form.cart').each(function(){
 								if (jQuery(this).find('.gform_variation_wrapper').length) {
 
-								jQuery(this).on('change input', function(){
-									tinv_add_to_wishlist_wc_gf_addons(jQuery(this), jQuery(el));
+								jQuery(this).off('change.tinvwlGfAddons input.tinvwlGfAddons').on('change.tinvwlGfAddons input.tinvwlGfAddons', function(){
+									tinv_add_to_wishlist_wc_gf_addons(jQuery(this), jQuery(this).find('.tinvwl_add_to_wishlist_button'));
 								});
 
 								tinv_add_to_wishlist_wc_gf_addons(jQuery(this), jQuery(el));

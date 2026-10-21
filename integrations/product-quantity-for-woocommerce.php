@@ -46,17 +46,20 @@ if ( ! function_exists( 'tinv_wishlist_cart_quantity_alg_wc_pq' ) ) {
 	/**
 	 * Set description for meta All in One Product Quantity for WooCommerce
 	 *
-	 * @param int $qty product quantity.
+	 * @param int|float $qty Product quantity.
 	 * @param array $wl_product Wishlist product data.
 	 *
-	 * @return array
+	 * @return int|float
 	 */
 	function tinv_wishlist_cart_quantity_alg_wc_pq( $qty, $wl_product ) {
 
 		$quantity_plugin = function_exists( 'wpfmmsq' ) ? wpfmmsq() : alg_wc_pq();
-		$qty = $quantity_plugin->core->get_product_qty_min_max( $wl_product['product_id'], $quantity_plugin->core->get_product_qty_default( $wl_product['product_id'] ), 'min', $wl_product['variation_id'] );
 
-		return $qty;
+		// Free supplies one when no quantity is chosen; retain its configured default.
+		$default_quantity = 1 == $qty ? $quantity_plugin->core->get_product_qty_default( $wl_product['product_id'] ) : $qty;
+		$minimum = $quantity_plugin->core->get_product_qty_min_max( $wl_product['product_id'], $default_quantity, 'min', $wl_product['variation_id'] );
+
+		return max( $qty, $minimum );
 	}
 
 	add_filter( 'tinvwl_wishlist_product_add_cart_qty', 'tinv_wishlist_cart_quantity_alg_wc_pq', 10, 2 );

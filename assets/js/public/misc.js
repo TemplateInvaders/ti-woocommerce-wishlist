@@ -75,11 +75,22 @@
 }( jQuery ) );
 
 function showTooltip( elem, msg ) {
-	elem.setAttribute( 'class', 'social social-clipboard tooltipped tooltipped-s' );
-	elem.setAttribute( 'aria-label', msg );
+	if (!Object.prototype.hasOwnProperty.call(elem, 'tinvwlTooltipLabel')) {
+		elem.tinvwlTooltipLabel = elem.getAttribute('aria-label');
+	}
+	jQuery(elem).addClass('tooltipped tooltipped-s');
+	elem.setAttribute('aria-label', msg);
 }
 
 function clearTooltip( e ) {
-	e.currentTarget.setAttribute( 'class', 'social social-clipboard ' );
-	e.currentTarget.removeAttribute( 'aria-label' );
+	var elem = e.currentTarget;
+	jQuery(elem).removeClass('tooltipped tooltipped-s');
+	if (Object.prototype.hasOwnProperty.call(elem, 'tinvwlTooltipLabel')) {
+		if (null === elem.tinvwlTooltipLabel) {
+			elem.removeAttribute('aria-label');
+		} else {
+			elem.setAttribute('aria-label', elem.tinvwlTooltipLabel);
+		}
+		delete elem.tinvwlTooltipLabel;
+	}
 }

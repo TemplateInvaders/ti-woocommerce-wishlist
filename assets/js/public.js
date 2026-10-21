@@ -141,6 +141,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }
     return formEl;
   }
+  function updateProductActionLabel(element) {
+    var button = $(element),
+      remove = 'remove' === button.attr('data-tinv-wl-action'),
+      label = $.trim(button.find(remove ? '.tinvwl_remove_from_wishlist-text' : '.tinvwl_add_to_wishlist-text').first().text()) || button.attr(remove ? 'data-tinv-wl-remove-label' : 'data-tinv-wl-add-label');
+    if (label) {
+      button.attr('aria-label', label);
+    }
+  }
   function variationFormButtons(form) {
     var productId = $(form).data('product_id');
     return $('.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + productId + '"]').filter(function () {
@@ -409,7 +417,17 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           formData.append(key, value);
         }
       });
+      var mutationKey = JSON.stringify(data),
+        pending = a.tinvwlPendingMutations || (a.tinvwlPendingMutations = Object.create(null));
+      if (pending[mutationKey]) {
+        return;
+      }
+      pending[mutationKey] = true;
+      function finishProductRequest() {
+        delete pending[mutationKey];
+      }
       function receiveResponse(body) {
+        finishProductRequest();
         $('body').trigger('tinvwl_wishlist_ajax_response', [this, body]);
         s.onDialogHide.call(a.tinvwl_dialog, a);
         if ('object' === _typeof(body)) {
@@ -425,6 +443,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         }
       }
       function requestFailed(xhr) {
+        finishProductRequest();
         var body = $.extend({
           error: 'request_failed'
         }, xhr && xhr.responseJSON, {
@@ -1215,6 +1234,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         });
       });
     }
+    $('a.tinvwl_add_to_wishlist_button').each(function () {
+      updateProductActionLabel(this);
+    });
     update_product_counter(data.counter);
   }
 
@@ -1548,12 +1570,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   });
 })(jQuery);
 function showTooltip(elem, msg) {
-  elem.setAttribute('class', 'social social-clipboard tooltipped tooltipped-s');
+  if (!Object.prototype.hasOwnProperty.call(elem, 'tinvwlTooltipLabel')) {
+    elem.tinvwlTooltipLabel = elem.getAttribute('aria-label');
+  }
+  jQuery(elem).addClass('tooltipped tooltipped-s');
   elem.setAttribute('aria-label', msg);
 }
 function clearTooltip(e) {
-  e.currentTarget.setAttribute('class', 'social social-clipboard ');
-  e.currentTarget.removeAttribute('aria-label');
+  var elem = e.currentTarget;
+  jQuery(elem).removeClass('tooltipped tooltipped-s');
+  if (Object.prototype.hasOwnProperty.call(elem, 'tinvwlTooltipLabel')) {
+    if (null === elem.tinvwlTooltipLabel) {
+      elem.removeAttribute('aria-label');
+    } else {
+      elem.setAttribute('aria-label', elem.tinvwlTooltipLabel);
+    }
+    delete elem.tinvwlTooltipLabel;
+  }
 }
 "use strict";
 

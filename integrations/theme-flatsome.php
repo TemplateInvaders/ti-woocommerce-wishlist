@@ -143,7 +143,7 @@ function tinvwl_flatsome() {
 					'wishlist_icon_style',
 					'header_wishlist_label'
 				),
-				'render_callback'     => tinvwl_flatsome_render_header_wishlist(),
+				'render_callback'     => 'tinvwl_flatsome_render_header_wishlist',
 			) );
 
 		}
@@ -221,8 +221,8 @@ function tinvwl_flatsome() {
 
 
 	function tinvwl_flatsome_render_header_wishlist() {
-		$icon       = get_theme_mod( 'wishlist_icon', flatsome_defaults( 'wishlist_icon' ) );
-		$icon_style = get_theme_mod( 'wishlist_icon_style', flatsome_defaults( 'wishlist_icon_style' ) );
+		$icon       = get_theme_mod( 'wishlist_icon', 'heart' );
+		$icon_style = get_theme_mod( 'wishlist_icon_style', '' );
 		ob_start();
 		?>
 		<li class="header-wishlist-icon">
@@ -230,10 +230,10 @@ function tinvwl_flatsome() {
 			<div class="header-button"><?php } ?>
 				<a href="<?php echo tinv_url_wishlist_default(); ?>"
 				   class="wishlist-link <?php echo get_flatsome_icon_class( $icon_style, 'small' ); ?>">
-					<?php if ( get_theme_mod( 'wishlist_title', flatsome_defaults( 'wishlist_title' ) ) ) { ?>
+					<?php if ( get_theme_mod( 'wishlist_title', 1 ) ) { ?>
 						<span class="hide-for-medium header-wishlist-title">
-						  <?php if ( get_theme_mod( 'header_wishlist_label', flatsome_defaults( 'header_wishlist_label' ) ) ) {
-							  echo get_theme_mod( 'header_wishlist_label', flatsome_defaults( 'header_wishlist_label' ) );
+						  <?php if ( get_theme_mod( 'header_wishlist_label', '' ) ) {
+							  echo get_theme_mod( 'header_wishlist_label', '' );
 						  } else {
 							  _e( 'Wishlist', 'ti-woocommerce-wishlist' );
 						  } ?>

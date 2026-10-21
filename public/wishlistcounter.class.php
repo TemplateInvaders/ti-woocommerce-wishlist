@@ -187,6 +187,7 @@ class TInvWL_Public_WishlistCounter
 			'icon_style' => ($atts['show_icon'] && tinv_get_option('topline', 'icon')) ? esc_attr('top_wishlist-' . tinv_get_option('topline', 'icon_style')) : '',
 			'icon_upload' => tinv_get_option('topline', 'icon_upload'),
 			'text' => $atts['show_text'] ? $atts['text'] : '',
+			'aria_label' => wp_strip_all_tags( $atts['text'] ),
 			'counter' => $atts['show_counter'],
 			'show_counter' => $atts['show_counter'],
 		);
@@ -222,7 +223,7 @@ class TInvWL_Public_WishlistCounter
 	{
 		$wl = new TInvWL_Wishlist();
 
-		return $wl->add_user_default();
+		return $wl->get_default();
 	}
 
 	/**

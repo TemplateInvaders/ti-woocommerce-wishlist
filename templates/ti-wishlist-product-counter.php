@@ -25,10 +25,14 @@ if ($icon_class && 'custom' === $icon && !empty($icon_upload)) {
 	);
 }
 $text_attr = wp_strip_all_tags($text_plain);
+$accessible_label = isset( $aria_label ) ? wp_strip_all_tags( $aria_label ) : $text_attr;
+if ( '' === trim( $accessible_label ) ) {
+	$accessible_label = __( 'Wishlist', 'ti-woocommerce-wishlist' );
+}
 ?>
 <a href="<?php echo esc_url(tinv_url_wishlist_default()); ?>"
    name="<?php echo esc_attr(sanitize_title($text_attr)); ?>"
-   aria-label="<?php echo esc_attr($text_attr); ?>"
+   aria-label="<?php echo esc_attr($accessible_label); ?>"
    class="wishlist_products_counter<?php echo ' ' . $icon_class . ' ' . $icon_style . (empty($text_attr) ? ' no-txt' : '') . (0 < $counter ? ' wishlist-counter-with-products' : ''); ?>">
 	<?php
 	if ($icon_img_html) {

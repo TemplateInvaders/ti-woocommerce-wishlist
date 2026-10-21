@@ -88,14 +88,22 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 				return $item_data;
 			}
 
+			$field_values = $item_data['wapf']['display'] ?? null;
+			if ( is_string( $field_values ) ) {
+				$field_values = json_decode( $field_values, true );
+			}
+			if ( ! is_array( $field_values ) ) {
+				return $item_data;
+			}
+
 			$field_groups = SW_WAPF\Includes\Classes\Field_Groups::get_by_ids( explode( ',', sanitize_text_field( $item_data['wapf_field_groups']['display'] ) ) );
 
 			$fields = SW_WAPF\Includes\Classes\Enumerable::from( $field_groups )->merge( function ( $x ) {
 				return $x->fields;
 			} )->toArray();
 
-			foreach ( $item_data['wapf']['display'] as $key => $field ) {
-				if ( empty( $field ) ) {
+			foreach ( $field_values as $key => $field ) {
+				if ( ! is_numeric( $field ) && empty( $field ) ) {
 					continue;
 				}
 				$field_id = str_replace( 'field_', '', $key );
@@ -103,6 +111,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 				$field_obj      = SW_WAPF\Includes\Classes\Enumerable::from( $fields )->firstOrDefault( function ( $x ) use ( $field_id ) {
 					return $x->id === $field_id;
 				} );
+				if ( ! $field_obj ) {
+					continue;
+				}
 				$product        = wc_get_product( $product_id );
 				$price_addition = array();
 
@@ -112,7 +123,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wapf' ) ) {
 
 				$item_data[ $key ] = array(
 					'key'     => $field_obj->label,
-					'display' => SW_WAPF\Includes\Classes\Fields::value_to_string( $field_obj, $field, $price_addition > 0, $product, 'cart' ),
+					'display' => SW_WAPF\Includes\Classes\Fields::value_to_string( $field_obj, $field, ! empty( $price_addition ), $product, 'cart' ),
 				);
 			}
 
@@ -139,9 +150,11 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
-	 * @return string
+	 * @param bool $raw Whether a numeric unit price is required.
+	 *
+	 * @return float|string
 	 */
-	function tinvwl_item_price_wapf( $price, $wl_product, $product ) {
+	function tinvwl_item_price_wapf( $price, $wl_product, $product, $raw = false ) {
 
 		if ( class_exists( 'SW_WAPF\WAPF' ) ) {
 
@@ -167,6 +180,9 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 				$field_obj = SW_WAPF\Includes\Classes\Enumerable::from( $fields )->firstOrDefault( function ( $x ) use ( $field_id ) {
 					return $x->id === $field_id;
 				} );
+				if ( ! $field_obj ) {
+					continue;
+				}
 
 				$price_addition = array();
 
@@ -175,20 +191,21 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 				}
 
 				if ( ! empty( $price_addition ) ) {
-					foreach ( $price_addition as $price ) {
+					foreach ( $price_addition as $addition ) {
 
-						if ( $price['value'] === 0 ) {
+						if ( $addition['value'] === 0 ) {
 							continue;
 						}
 
-						$options_total = $options_total + SW_WAPF\Includes\Classes\Fields::do_pricing( $price['value'], $quantity );
+						$options_total = $options_total + SW_WAPF\Includes\Classes\Fields::do_pricing( $addition['value'], $quantity );
 
 					}
 				}
 			}
 
 			if ( $options_total > 0 ) {
-				return wc_price( $base + $options_total );
+				$unit_price = $base + $options_total;
+				return $raw ? $unit_price : wc_price( $unit_price );
 			}
 
 		}
@@ -196,7 +213,7 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wapf', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wapf', 10, 4 );
 } // End if().
 
 if ( ! function_exists( 'tinv_wishlist_metaprepare_wapf' ) ) {
@@ -223,7 +240,31 @@ if ( ! function_exists( 'tinv_wishlist_metaprepare_wapf' ) ) {
 	add_filter( 'tinvwl_product_prepare_meta', 'tinv_wishlist_metaprepare_wapf' );
 }
 
-add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_wapf' );
+add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_prepare_request_meta_wapf', 10, 2 );
+add_filter( 'tinvwl_addproduct_tocart_prepare_cart_data', 'tinvwl_prepare_cart_data_wapf', 10, 2 );
+
+/** Derived cart records from older saves do not belong in the posted field map. */
+function tinvwl_prepare_request_meta_wapf( $meta, $product ) {
+	if ( isset( $meta['wapf'] ) && is_array( $meta['wapf'] ) ) {
+		foreach ( $meta['wapf'] as $key => $value ) {
+			if ( is_int( $key ) && is_array( $value ) && isset( $value['id'], $value['raw'], $value['price'], $value['value_cart'] ) ) {
+				unset( $meta['wapf'][ $key ] );
+			}
+		}
+		// WAPF reads WordPress request values with stripslashes; saved values stay raw.
+		$meta['wapf'] = wp_slash( $meta['wapf'] );
+	}
+	return $meta;
+}
+
+/** Keep the saved/request field map separate from WAPF's native cart records. */
+function tinvwl_prepare_cart_data_wapf( $meta, $product ) {
+	// The installed native cart hook builds its complete records from the prepared
+	// request. Duplicate raw fields or manually copied records change Woo cart IDs.
+	// Missing or invalid group data must also leave the native cart key empty.
+	unset( $meta['wapf'], $meta['wapf_field_groups'] );
+	return $meta;
+}
 
 function tinvwl_add_to_cart_meta_wapf( $wl_product ) {
 
@@ -254,9 +295,7 @@ function tinvwl_add_to_cart_meta_wapf( $wl_product ) {
 			$wapf_data[] = tinvwl_to_cart_fields_wapf( $field, $product, $field_value );
 
 		}
-		if ( $wapf_data ) {
-			$wl_product['meta']['wapf'] = array_merge( $wl_product['meta']['wapf'], $wapf_data );
-		}
+		$wl_product['meta']['wapf'] = $wapf_data;
 
 	}
 
@@ -278,8 +317,8 @@ function tinvwl_to_cart_fields_wapf( Field $field, $product, $raw_value = null )
 	return [
 		'id'         => $field->id,
 		'raw'        => is_string( $raw_value ) ? sanitize_textarea_field( $raw_value ) : array_map( 'sanitize_textarea_field', $raw_value ),
-		'value'      => Fields::value_to_string( $field, $raw_value, $price_addition > 0, $product ),
-		'value_cart' => Fields::value_to_string( $field, $raw_value, $price_addition > 0, $product, 'cart' ),
+		'value'      => Fields::value_to_string( $field, $raw_value, ! empty( $price_addition ), $product ),
+		'value_cart' => Fields::value_to_string( $field, $raw_value, ! empty( $price_addition ), $product, 'cart' ),
 		'price'      => $price_addition,
 		'label'      => esc_html( $field->label )
 	];

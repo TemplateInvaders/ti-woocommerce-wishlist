@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Custom Product Addons
  *
- * @version 3.1.8
+ * @version 3.1.9
  *
  * @slug woo-custom-product-addons
  *
@@ -78,14 +78,14 @@ if ( ! function_exists( 'tinvwl_wcpa_is_empty_value' ) ) {
 }
 
 if ( ! function_exists( 'tinvwl_wcpa_decode_meta_value' ) ) {
-	function tinvwl_wcpa_decode_meta_value( $value ) {
+	function tinvwl_wcpa_decode_meta_value( $value, $decode_json = true ) {
 		if ( is_array( $value ) && array_key_exists( 'display', $value ) ) {
 			$value = $value['display'];
 		}
 
-		if ( is_string( $value ) ) {
+		if ( $decode_json && is_string( $value ) ) {
 			$decoded = json_decode( $value, true );
-			if ( JSON_ERROR_NONE === json_last_error() ) {
+			if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) {
 				return $decoded;
 			}
 		}
@@ -156,6 +156,60 @@ if ( ! function_exists( 'tinvwl_wcpa_current_field_name' ) ) {
 	}
 }
 
+if ( ! function_exists( 'tinvwl_wcpa_current_field_value' ) ) {
+	/** Decode browser containers only for native fields that accept arrays. */
+	function tinvwl_wcpa_current_field_value( $field, $value ) {
+		$type = (string) tinvwl_wcpa_read_value( $field, 'type', '' );
+		$decode_json = in_array( $type, array( 'checkbox-group', 'date', 'datetime-local', 'time' ), true )
+			|| ( 'select' === $type && tinvwl_wcpa_read_value( $field, 'multiple', false ) );
+		return tinvwl_wcpa_decode_meta_value( $value, $decode_json );
+	}
+}
+
+if ( ! function_exists( 'tinvwl_wcpa_current_request_field_names' ) ) {
+	function tinvwl_wcpa_current_request_field_names( $product ) {
+		$names = array();
+		if ( ! empty( $product['product_id'] ) ) {
+			tinvwl_wcpa_current_each_field( $product['product_id'], function ( $field ) use ( &$names ) {
+				$name = tinvwl_wcpa_current_field_name( $field );
+				if ( '' !== $name ) {
+					$names[ $name ] = true;
+				}
+			} );
+		}
+		return array_keys( $names );
+	}
+}
+
+if ( ! function_exists( 'tinvwl_wcpa_prepare_request_meta' ) ) {
+	/** Current WCPA reads WordPress request values with wp_unslash(). */
+	function tinvwl_wcpa_prepare_request_meta( $meta, $product ) {
+		if ( ! empty( $product['product_id'] ) ) {
+			$prepared = array();
+			tinvwl_wcpa_current_each_field( $product['product_id'], function ( $field ) use ( &$meta, &$prepared ) {
+				$name = tinvwl_wcpa_current_field_name( $field );
+				if ( '' !== $name && array_key_exists( $name, $meta ) && ! isset( $prepared[ $name ] ) ) {
+					$meta[ $name ] = wp_slash( tinvwl_wcpa_current_field_value( $field, $meta[ $name ] ) );
+					$prepared[ $name ] = true;
+				}
+			} );
+		}
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_wcpa_prepare_request_meta', 10, 2 );
+}
+
+if ( ! function_exists( 'tinvwl_wcpa_prepare_cart_data' ) ) {
+	/** Native WCPA builds cart identity from the prepared request, not duplicate raw form keys. */
+	function tinvwl_wcpa_prepare_cart_data( $meta, $product ) {
+		foreach ( tinvwl_wcpa_current_request_field_names( $product ) as $name ) {
+			unset( $meta[ $name ] );
+		}
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_cart_data', 'tinvwl_wcpa_prepare_cart_data', 10, 2 );
+}
+
 if ( ! function_exists( 'tinvwl_wcpa_current_field_label' ) ) {
 	function tinvwl_wcpa_current_field_label( $field ) {
 		$label = tinvwl_wcpa_read_value( $field, 'label', '' );
@@ -177,6 +231,16 @@ if ( ! function_exists( 'tinvwl_wcpa_current_build_field_data' ) ) {
 		$type      = (string) tinvwl_wcpa_read_value( $field, 'type', '' );
 		$form_data = $field;
 		$extract   = 'Acowebs\\WCPA\\Free\\extractFormData';
+
+		if ( in_array( $type, array( 'select', 'radio-group', 'checkbox-group' ), true ) && class_exists( 'Acowebs\\WCPA\\Free\\ReadForm' ) ) {
+			try {
+				$reader_class = 'Acowebs\\WCPA\\Free\\ReadForm';
+				$reader       = new $reader_class();
+				$value        = $reader->readOptionsField( $field, wp_slash( $value ) );
+			} catch ( \Throwable $e ) {
+				// Retain the raw value if the installed reader cannot handle this field.
+			}
+		}
 
 		if ( function_exists( $extract ) ) {
 			$form_data = $extract( $field );
@@ -299,7 +363,7 @@ if ( ! function_exists( 'tinvwl_wcpa_current_item_meta_from_raw_fields' ) ) {
 				);
 			}
 
-			$value      = tinvwl_wcpa_decode_meta_value( $item_data[ $name ] );
+			$value      = tinvwl_wcpa_current_field_value( $field, $item_data[ $name ] );
 			$field_data = tinvwl_wcpa_current_build_field_data( $field, $value );
 
 			$item_data[ $name ]['key']     = tinvwl_wcpa_current_field_label( $field );
@@ -426,14 +490,91 @@ if ( ! function_exists( 'tinvwl_wcpa_current_options_price' ) ) {
 	}
 }
 
+if ( ! function_exists( 'tinvwl_wcpa_validation_preview_restore' ) ) {
+	function tinvwl_wcpa_validation_preview_restore( $callbacks ) {
+		if ( is_array( $callbacks ) && class_exists( 'Acowebs\\WCPA\\Free\\Main' ) ) {
+			$errors = \Acowebs\WCPA\Free\Main::$cartError;
+			$callbacks[] = static function () use ( $errors ) { \Acowebs\WCPA\Free\Main::$cartError = $errors; };
+		}
+		return $callbacks;
+	}
+	add_filter( 'tinvwl_cart_validation_preview_restore', 'tinvwl_wcpa_validation_preview_restore' );
+}
+
+if ( ! function_exists( 'tinvwl_wcpa_current_visible_fields' ) ) {
+	/** Read native conditional visibility without registering cart hooks or validating a cart. */
+	function tinvwl_wcpa_current_visible_fields( $wl_product, $product ) {
+		if ( ! $product || ! class_exists( 'Acowebs\\WCPA\\Free\\Process' ) ) {
+			return null;
+		}
+
+		$post    = $_POST;
+		$request = $_REQUEST;
+		$keep_empty = static function ( $config ) {
+			// Empty visible fields must remain distinguishable from hidden fields.
+			$config['hide_empty_data'] = false;
+			return $config;
+		};
+		add_filter( 'wcpa_configurations', $keep_empty, PHP_INT_MAX );
+		try {
+			$meta = isset( $wl_product['meta'] ) && is_array( $wl_product['meta'] ) ? $wl_product['meta'] : array();
+			$_POST = tinvwl_wcpa_prepare_request_meta( $meta, $wl_product );
+			$_REQUEST = $_POST;
+			$processor = new class extends \Acowebs\WCPA\Free\Process {
+				// The native constructor only installs global callbacks; this reader is local.
+				public function __construct() {}
+			};
+			$product_id = ! empty( $wl_product['product_id'] ) ? absint( $wl_product['product_id'] ) : $product->get_id();
+			$variation_id = ! empty( $wl_product['variation_id'] ) ? absint( $wl_product['variation_id'] ) : 0;
+			$quantity = isset( $wl_product['quantity'] ) ? wc_stock_amount( $wl_product['quantity'] ) : 1;
+			$processor->setFields( $product_id );
+			$processor->set_product( $product_id, $variation_id, $quantity );
+			if ( false === $processor->read_form() ) {
+				return null;
+			}
+			$processor->process_cl_logic();
+			$data = $processor->add_cart_item_data( array(), $product_id, $variation_id, $quantity );
+			if ( ! isset( $data[ WCPA_CART_ITEM_KEY ] ) || ! is_array( $data[ WCPA_CART_ITEM_KEY ] ) ) {
+				return null;
+			}
+			$visible = array();
+			foreach ( $data[ WCPA_CART_ITEM_KEY ] as $section ) {
+				foreach ( $section['fields'] ?? array() as $row ) {
+					foreach ( $row as $field ) {
+						$visible[ tinvwl_wcpa_current_field_name( $field ) ] = true;
+					}
+				}
+			}
+			return $visible;
+		} catch ( \Throwable $e ) {
+			return null;
+		} finally {
+			remove_filter( 'wcpa_configurations', $keep_empty, PHP_INT_MAX );
+			$_POST = $post;
+			$_REQUEST = $request;
+		}
+	}
+}
+
 if ( ! function_exists( 'tinvwl_wcpa_current_required_missing' ) ) {
 	function tinvwl_wcpa_current_required_missing( $wl_product, $product ) {
 		$meta       = isset( $wl_product['meta'] ) && is_array( $wl_product['meta'] ) ? $wl_product['meta'] : array();
-		$product_id = $product ? $product->get_id() : 0;
+		// WCPA assigns forms to the parent; visibility still needs the selected variation.
+		$is_variation = $product && $product->is_type( 'variation' );
+		$product_id = ! empty( $wl_product['product_id'] ) ? absint( $wl_product['product_id'] ) : 0;
+		if ( ! $product_id && $product ) {
+			$product_id = $is_variation ? $product->get_parent_id() : $product->get_id();
+		}
+		$wl_product['product_id'] = $product_id;
+		if ( $is_variation && empty( $wl_product['variation_id'] ) ) {
+			$wl_product['variation_id'] = $product->get_id();
+		}
 		$missing    = false;
 		$cart_data  = defined( 'WCPA_CART_ITEM_KEY' ) && isset( $meta[ WCPA_CART_ITEM_KEY ] ) ? $meta[ WCPA_CART_ITEM_KEY ] : array();
+		$visible_fields = null;
+		$visibility_checked = false;
 
-		tinvwl_wcpa_current_each_field( $product_id, function ( $field ) use ( &$missing, $meta, $cart_data ) {
+		tinvwl_wcpa_current_each_field( $product_id, function ( $field ) use ( &$missing, $meta, $cart_data, $wl_product, $product, &$visible_fields, &$visibility_checked ) {
 			if ( $missing ) {
 				return;
 			}
@@ -450,6 +591,16 @@ if ( ! function_exists( 'tinvwl_wcpa_current_required_missing' ) ) {
 
 			if ( tinvwl_wcpa_current_cart_data_has_value( $cart_data, $name ) ) {
 				return;
+			}
+
+			if ( tinvwl_wcpa_read_value( $field, 'enableCl', false ) ) {
+				if ( ! $visibility_checked ) {
+					$visible_fields = tinvwl_wcpa_current_visible_fields( $wl_product, $product );
+					$visibility_checked = true;
+				}
+				if ( is_array( $visible_fields ) && ! isset( $visible_fields[ $name ] ) ) {
+					return;
+				}
 			}
 
 			$missing = true;

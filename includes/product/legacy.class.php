@@ -28,6 +28,8 @@ class TInvWL_Product_Legacy {
 	 * @var array
 	 */
 	private $products;
+	/** Original cookie entries for the current migration, before display filters run. */
+	private $transfer_snapshot = array();
 	/**
 	 * Autoincremet
 	 *
@@ -230,6 +232,40 @@ class TInvWL_Product_Legacy {
 	 */
 	function get_wishlist( $data = array() ) {
 		return $this->get( $data );
+	}
+
+	/** Read every legacy entry for migration without changing ordinary query pagination. */
+	function get_transfer_products() {
+		$snapshot = $this->products;
+		$products = $this->get_wishlist( array(
+			'count'    => count( $snapshot ),
+			'external' => false,
+		) );
+		$this->transfer_snapshot = $snapshot;
+		$keys = array_keys( $snapshot );
+		$transfer = array();
+		foreach ( array_values( $products ) as $index => $product ) {
+			// array_slice() reindexes numeric keys; filter-provided IDs are not source identities.
+			$transfer[ $keys[ $index ] ] = $product;
+		}
+		return $transfer;
+	}
+
+	/** Consume only acknowledged original entries, retaining any entry changed by an extension. */
+	function consume_transferred( $keys ) {
+		$changed = false;
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $this->products ) && array_key_exists( $key, $this->transfer_snapshot )
+				&& $this->products[ $key ] === $this->transfer_snapshot[ $key ] ) {
+				unset( $this->products[ $key ] );
+				$changed = true;
+			}
+		}
+		$this->transfer_snapshot = array();
+		if ( $changed ) {
+			$this->update_cookie();
+		}
+		return $changed;
 	}
 
 	/**

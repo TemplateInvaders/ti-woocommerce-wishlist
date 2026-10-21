@@ -48,10 +48,7 @@ class TInvWL_Public_Widget_WishlistCounter extends WC_Widget {
 	 * @param array $instance Instance of the widget.
 	 */
 	public function widget( $args, $instance ): void {
-		if ( $this->get_cached_widget( $args ) ) {
-			return;
-		}
-
+		// Render the current counter together with the theme wrappers on every request.
 		array_walk( $instance, function ( &$value ) {
 			$value = 'on' === $value ? 1 : $value;
 		} );
@@ -65,6 +62,5 @@ class TInvWL_Public_Widget_WishlistCounter extends WC_Widget {
 
 		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		$this->widget_end( $args, $instance );
-		$this->cache_widget( $args, $content );
 	}
 }

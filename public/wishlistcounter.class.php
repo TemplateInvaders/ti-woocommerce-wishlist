@@ -236,12 +236,12 @@ class TInvWL_Public_WishlistCounter
 		$count = 0;
 		if (is_user_logged_in()) {
 			$wishlist = $this->get_user_wishlists();
-			$wlp = new TInvWL_Product();
+			$wlp = new TInvWL_Product( array(), TINVWL_PREFIX, true );
 			if ($wishlist) {
 				$counts = $wlp->get(array(
 					'external' => false,
 					'wishlist_id' => $wishlist['ID'],
-					'sql' => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status IN ("publish","private") WHERE {where} ',
+					'sql' => 'SELECT COUNT(`quantity`) AS `quantity` FROM {table} t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID WHERE {where} ',
 				));
 				$counts = array_shift($counts);
 				$count = absint($counts['quantity']);
@@ -250,10 +250,10 @@ class TInvWL_Public_WishlistCounter
 			$wishlist = $this->get_guest_wishlist();
 			if (!empty($wishlist)) {
 				$wishlist = array_shift($wishlist);
-				$wlp = new TInvWL_Product($wishlist);
+				$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 				$counts = $wlp->get_wishlist(array(
 					'external' => false,
-					'sql' => sprintf('SELECT %s(`quantity`) AS `quantity` FROM {table}  t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID AND t2.post_status IN ("publish","private") WHERE {where}', 'COUNT'),
+					'sql' => sprintf('SELECT %s(`quantity`) AS `quantity` FROM {table}  t1 INNER JOIN ' . $wpdb->prefix . 'posts t2 on t1.product_id = t2.ID WHERE {where}', 'COUNT'),
 				));
 				$counts = array_shift($counts);
 				$count = absint($counts['quantity']);

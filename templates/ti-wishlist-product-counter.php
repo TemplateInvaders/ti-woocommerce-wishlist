@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-product-counter.php.
  *
- * @version             2.11.0
+ * @version             2.13.0
  * @package           TInvWishlist\Template
  */
 
@@ -20,7 +20,7 @@ $icon_img_html = '';
 if ($icon_class && 'custom' === $icon && !empty($icon_upload)) {
 	$icon_img_html = sprintf(
 		'<img alt="%s" src="%s" /> ',
-		apply_filters('tinvwl_default_wishlist_title', tinv_get_option('general', 'default_title')),
+		tinvwl_esc_html_text( apply_filters('tinvwl_default_wishlist_title', tinv_get_option('general', 'default_title')) ),
 		esc_url($icon_upload)
 	);
 }

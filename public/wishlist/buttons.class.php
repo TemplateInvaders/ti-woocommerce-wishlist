@@ -242,9 +242,9 @@ class TInvWL_Public_Wishlist_Buttons {
 		}
 
 		if ( $wishlist['ID'] === 0 ) {
-			$wlp = TInvWL_Product_Local::instance();
+			$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 		} else {
-			$wlp = new TInvWL_Product( $wishlist );
+			$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 		}
 
 		if ( empty( $wlp ) ) {

@@ -151,7 +151,7 @@ class TInvWL_View {
 	public static function set_attentions( $msg = '' ) {
 		$_attentions   = self::get_session_arr( '_attentions' );
 		$_attentions[] = $msg;
-		self::set_session_arr( '_tips', $_attentions );
+		self::set_session_arr( '_attentions', $_attentions );
 	}
 
 	/**

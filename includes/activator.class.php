@@ -64,7 +64,9 @@ class TInvWL_Activator
 		if (is_null(get_option(self::$_name . '_db_ver', null))) {
 			TInvWL_WizardSetup::setup();
 		}
-		self::database();
+		if ( ! self::database() ) {
+			return false;
+		}
 		self::load_data();
 		TInvWL_Public_TInvWL::update_rewrite_rules();
 	}
@@ -86,7 +88,9 @@ class TInvWL_Activator
 	{
 		$current_version = get_option(self::$_name . '_db_ver', self::$_version);
 		if (version_compare(self::$_version, $current_version, 'gt')) {
-			self::database('upgrade', $current_version);
+			if ( ! self::database( 'upgrade', $current_version ) ) {
+				return true; // An attempted upgrade must not fall through to a fresh activation.
+			}
 			self::upgrade_data();
 			TInvWL_Public_TInvWL::update_rewrite_rules();
 
@@ -117,9 +121,7 @@ class TInvWL_Activator
 		foreach ($lists as $method) {
 			$tables = self::merge_database($tables, $method);
 		}
-		if (!empty($tables) && is_array($tables)) {
-			self::$action($tables);
-		}
+		return self::$action( $tables );
 	}
 
 	/**
@@ -232,8 +234,8 @@ class TInvWL_Activator
 			'post' => FILTER_DEFAULT,
 		));
 
-		$table['charset'] = (empty($table['charset'])) ? 'utf8' : $table['charset'];
-		$table['charset'] = sprintf('DEFAULT CHARSET=%s', $table['charset']);
+		global $wpdb;
+		$table['charset'] = empty( $table['charset'] ) ? $wpdb->get_charset_collate() : sprintf( 'DEFAULT CHARSET=%s', $table['charset'] );
 
 		$keys = array_keys($fields);
 		if (!in_array($table['key'], $keys)) { // @codingStandardsIgnoreLine WordPress.PHP.StrictInArray.MissingTrueStrict
@@ -350,22 +352,26 @@ class TInvWL_Activator
 	 * @global wpdb $wpdb
 	 *
 	 */
-	public static function create($tables)
-	{
+	public static function create( $tables, $checkpoint = true ) {
 		global $wpdb;
 		self::$wpdb_prefix = $wpdb->prefix;
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-		foreach ($tables as $name => $table) {
-			if (array_key_exists('field', $table) && !empty($table['field'])) {
-				$table = self::table($name, $table);
-				$tables[$name] = dbDelta($table);
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		foreach ( $tables as $name => $table ) {
+			if ( ! empty( $table['field'] ) ) {
+				dbDelta( self::table( $name, $table ) );
 			}
 		}
-
-		add_option(self::$_name . '_db_ver', self::$_version);
-
-		return true;
+		if ( ! $checkpoint ) {
+			return true; // Existing upgrade actions may still need to add or modify fields.
+		}
+		if ( ! self::schema_matches( $tables ) ) {
+			return false;
+		}
+		if ( ! self::schema_matches( self::current_tables() ) ) {
+			return false;
+		}
+		add_option( self::$_name . '_db_ver', self::$_version );
+		return (string) get_option( self::$_name . '_db_ver', '' ) === (string) self::$_version;
 	}
 
 	/**
@@ -377,17 +383,221 @@ class TInvWL_Activator
 	 * @global wpdb $wpdb
 	 *
 	 */
-	public static function upgrade($tables)
-	{
-
-		self::create($tables);
-
-		foreach ($tables as $name => $table) {
-			self::upgrade_action($name, $table);
+	public static function upgrade( $tables ) {
+		if ( ! self::create( $tables, false ) ) {
+			return false;
 		}
+		foreach ( $tables as $name => $table ) {
+			if ( isset( $table['upgrade'] ) && ! self::upgrade_action( $name, $table ) ) {
+				return false;
+			}
+		}
+		if ( ! self::schema_matches( self::current_tables() ) ) {
+			return false;
+		}
+		update_option( self::$_name . '_db_ver', self::$_version );
+		return (string) get_option( self::$_name . '_db_ver', '' ) === (string) self::$_version;
+	}
 
-		update_option(self::$_name . '_db_ver', self::$_version);
+	/** Collect the current descriptors without replaying historical migration actions. */
+	private static function current_tables() {
+		$methods = array_filter( get_class_methods( __CLASS__ ), static function ( $method ) {
+			return preg_match( self::REGEXP, $method ) && version_compare( self::$_version, self::pre_database( $method ), 'ge' );
+		} );
+		uasort( $methods, array( __CLASS__, 'sort_database' ) );
+		$tables = array();
+		foreach ( $methods as $method ) {
+			$tables = self::merge_database( $tables, $method );
+		}
+		return $tables;
+	}
 
+	/** Upgrade existing tables even when the plugin release version is unchanged. */
+	public static function maybe_upgrade_charset() {
+		global $wpdb;
+		if ( 'utf8mb4' !== $wpdb->charset || ! $wpdb->has_cap( 'utf8mb4' ) ) {
+			return false;
+		}
+		$marker = self::$_name . '_utf8mb4_schema_f';
+		if ( '1' === (string) get_option( $marker ) ) {
+			return true;
+		}
+		$lock = 'tinvwl_schema_' . md5( $wpdb->prefix . '|' . self::$_name );
+		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock ) ) ) {
+			return false;
+		}
+		$previous_prefix = self::$wpdb_prefix;
+		self::$wpdb_prefix = $wpdb->prefix;
+		try {
+			$tables = self::current_tables();
+			if ( ! self::schema_matches( $tables ) ) {
+				return false;
+			}
+			foreach ( $tables as $name => $table ) {
+				if ( ! empty( $table['field'] ) && ! self::upgrade_table_charset( $name, $table ) ) {
+					return false;
+				}
+			}
+			if ( ! self::schema_matches( $tables ) ) {
+				return false;
+			}
+			update_option( $marker, '1', false );
+			$stored = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM `$wpdb->options` WHERE option_name = %s", $marker ) );
+			return ! $wpdb->last_error && '1' === (string) $stored;
+		} finally {
+			$error = $wpdb->last_error;
+			self::$wpdb_prefix = $previous_prefix;
+			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
+			$wpdb->last_error = $error;
+		}
+	}
+
+	/** Change only known UTF-8 fields; retain types, indexes and extension columns. */
+	private static function upgrade_table_charset( $name, $table ) {
+		global $wpdb;
+		$name = self::$wpdb_prefix . self::$_name . '_' . $name;
+		$quoted = str_replace( '`', '``', $name );
+		$status = $wpdb->get_row( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name = %s', $name ), ARRAY_A );
+		if ( $wpdb->last_error || ! $status ) {
+			return false;
+		}
+		$columns = $wpdb->get_results( "SHOW FULL COLUMNS FROM `$quoted`", ARRAY_A );
+		if ( $wpdb->last_error || ! $columns ) {
+			return false;
+		}
+		$charset = strtolower( explode( '_', (string) $status['Collation'] )[0] );
+		if ( ! in_array( $charset, array( 'utf8', 'utf8mb3', 'utf8mb4' ), true ) ) {
+			return false;
+		}
+		$collate = $wpdb->collate ? $wpdb->collate : 'utf8mb4_unicode_ci';
+		if ( ! preg_match( '/\Autf8mb4_[a-z0-9_]+\z/i', $collate ) ) {
+			return false;
+		}
+		$changes = 'utf8mb4' === $charset ? array() : array( "DEFAULT CHARACTER SET utf8mb4 COLLATE $collate" );
+		$aliases = self::column_database();
+		foreach ( $columns as $column ) {
+			$field = $column['Field'];
+			if ( ! isset( $table['field'][ $field ] ) || ! $column['Collation'] ) {
+				continue;
+			}
+			$charset = strtolower( explode( '_', $column['Collation'] )[0] );
+			if ( 'utf8mb4' === $charset ) {
+				continue;
+			}
+			if ( ! in_array( $charset, array( 'utf8', 'utf8mb3' ), true ) ) {
+				return false;
+			}
+			$flags = $table['field'][ $field ];
+			$flags = is_string( $flags ) ? $aliases[ $flags ] : $flags;
+			$flags = array_replace( array( 'TEXT', null, false, null, false ), $flags );
+			$type = $flags[0] . ( null === $flags[1] ? '' : '(' . $flags[1] . ')' );
+			$flags[0] = "$type CHARACTER SET utf8mb4 COLLATE $collate";
+			$flags[1] = null;
+			$definition = self::field( $field, $flags );
+			if ( '' !== $column['Comment'] ) {
+				$definition .= $wpdb->prepare( ' COMMENT %s', $column['Comment'] );
+			}
+			$changes[] = 'MODIFY ' . $definition;
+		}
+		if ( $changes && false === $wpdb->query( "ALTER TABLE `$quoted` " . implode( ', ', $changes ) ) ) {
+			return false;
+		}
+		$status = $wpdb->get_row( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name = %s', $name ), ARRAY_A );
+		if ( $wpdb->last_error || ! $status || 0 !== strpos( $status['Collation'], 'utf8mb4_' ) ) {
+			return false;
+		}
+		$columns = $wpdb->get_results( "SHOW FULL COLUMNS FROM `$quoted`", ARRAY_A );
+		if ( $wpdb->last_error || ! $columns ) {
+			return false;
+		}
+		foreach ( $columns as $column ) {
+			if ( isset( $table['field'][ $column['Field'] ] ) && $column['Collation'] && 0 !== strpos( $column['Collation'], 'utf8mb4_' ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	/** MySQL 8 omits integer display widths that MariaDB still reports. */
+	private static function schema_type( $type ) {
+		$type = strtolower( preg_replace( '/\s+/', ' ', trim( $type ) ) );
+		return preg_replace( '/\b(tinyint|smallint|mediumint|int|integer|bigint)\(\d+\)/', '$1', $type );
+	}
+
+	/** Verify required definitions; leave unrelated extension columns/indexes untouched. */
+	private static function schema_matches( $tables ) {
+		global $wpdb;
+		$aliases = self::column_database();
+		foreach ( $tables as $name => $table ) {
+			if ( empty( $table['field'] ) ) {
+				continue;
+			}
+			$name = self::$wpdb_prefix . self::$_name . '_' . $name;
+			$columns = self::upgrade_get_columns( $name );
+			if ( $wpdb->last_error || ! $columns ) {
+				return false;
+			}
+			$primary = isset( $table['key'] ) && isset( $table['field'][ $table['key'] ] ) ? $table['key'] : '';
+			foreach ( $table['field'] as $field => $flags ) {
+				$flags = is_string( $flags ) ? ( $aliases[ $flags ] ?? $aliases['text'] ) : $flags;
+				$flags = array_replace( array( 'TEXT', null, false, null, false ), $flags );
+				if ( ! isset( $columns[ $field ] ) ) {
+					return false;
+				}
+				$column = $columns[ $field ];
+				$type = $flags[0] . ( null === $flags[1] ? '' : '(' . $flags[1] . ')' );
+				$default = $column['Default'];
+				if ( is_string( $default ) && strlen( $default ) >= 2 && "'" === $default[0] && "'" === substr( $default, -1 ) ) {
+					$default = str_replace( "''", "'", substr( $default, 1, -1 ) );
+				}
+				$expected_default = $flags[3];
+				if ( 'CURRENT_TIMESTAMP' === $expected_default ) {
+					$default = strtoupper( str_replace( '()', '', (string) $default ) );
+				}
+				if ( self::schema_type( $column['Type'] ) !== self::schema_type( $type )
+					|| ( 'YES' === $column['Null'] ) !== (bool) $flags[2]
+					|| ( null === $default ? null : (string) $default ) !== ( null === $expected_default ? null : (string) $expected_default )
+					|| ( false !== stripos( $column['Extra'], 'auto_increment' ) ) !== (bool) $flags[4] ) {
+					return false;
+				}
+				if ( ! $primary && $flags[4] ) {
+					$primary = $field;
+				}
+			}
+			if ( ! $primary ) {
+				foreach ( array_keys( $table['field'] ) as $field ) {
+					if ( preg_match( '/id$/i', $field ) ) {
+						$primary = $field;
+						break;
+					}
+				}
+			}
+			$rows = $wpdb->get_results( "SHOW INDEX FROM `$name`", ARRAY_A );
+			if ( $wpdb->last_error || ! is_array( $rows ) ) {
+				return false;
+			}
+			$indexes = $index_flags = array();
+			foreach ( $rows as $row ) {
+				$indexes[ $row['Key_name'] ][ (int) $row['Seq_in_index'] ] = $row['Column_name'];
+				$index_flags[ $row['Key_name'] ] = min( $index_flags[ $row['Key_name'] ] ?? 1, (int) $row['Non_unique'] );
+				if ( null !== $row['Sub_part'] ) { $index_flags[ $row['Key_name'] ] = -1; }
+			}
+			$required = $table['index'] ?? array();
+			if ( $primary ) {
+				$required['PRIMARY'] = $primary;
+			}
+			foreach ( $required as $index => $fields ) {
+				$expected = array_map( static fn( $field ) => trim( $field, " `\t\n\r" ), explode( ',', $fields ) );
+				if ( ! isset( $indexes[ $index ] ) ) {
+					return false;
+				}
+				ksort( $indexes[ $index ] );
+				if ( array_values( $indexes[ $index ] ) !== $expected || $index_flags[ $index ] !== ( 'PRIMARY' === $index ? 0 : 1 ) ) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -430,6 +640,7 @@ class TInvWL_Activator
 			return false;
 		}
 
+		global $wpdb;
 		$t = self::column_database();
 		foreach ($table['field'] as $key => $flags) {
 			if (is_string($flags)) {
@@ -459,10 +670,14 @@ class TInvWL_Activator
 				}
 
 				if (method_exists(__CLASS__, __FUNCTION__ . '_' . $action)) {
-					call_user_func(array(__CLASS__, __FUNCTION__ . '_' . $action), $name, $table, $upgrade);
+					$result = call_user_func(array(__CLASS__, __FUNCTION__ . '_' . $action), $name, $table, $upgrade);
+					if ( false === $result || $wpdb->last_error ) {
+						return false;
+					}
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -538,13 +753,18 @@ class TInvWL_Activator
 		global $wpdb;
 
 		$_fields = self::upgrade_get_columns($name);
+		if ( $wpdb->last_error ) {
+			return false;
+		}
 		$fields = $table['field'];
 
 		// Search excess fields.
 		foreach ($_fields as $field => $attr) {
 			if (!array_key_exists($field, $fields)) {
 				$sql = sprintf('ALTER TABLE `%s` DROP COLUMN `%s`;', $name, $field);
-				$wpdb->query($sql); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+				if ( false === $wpdb->query( $sql ) ) {
+					return false;
+				}
 			}
 		}
 
@@ -558,10 +778,13 @@ class TInvWL_Activator
 				$_prev_field = empty($prev_field) ? '' : " AFTER `{$prev_field}`";
 				$sql = sprintf('ALTER TABLE `%s` ADD %s;', $name, $attr . $_prev_field);
 			}
-			$wpdb->query($sql); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
+			if ( false === $wpdb->query( $sql ) ) {
+				return false;
+			}
 
 			$prev_field = $field;
 		}
+		return true;
 	}
 
 	/**
@@ -574,19 +797,32 @@ class TInvWL_Activator
 	 * @global wpdb $wpdb
 	 *
 	 */
-	public static function upgrade_action_add_index($name, $table)
-	{
+	public static function upgrade_action_add_index( $name, $table ) {
 		global $wpdb;
-
-		$indexes = isset( $table['index'] ) ? $table['index'] : array();
-
-		foreach ($indexes as $index => $columns) {
-
-			$sql = sprintf('ALTER TABLE `%s` ADD INDEX %s (%s);', $name, $index, $columns);
-
-			$wpdb->query($sql); // WPCS: db call ok; no-cache ok; unprepared SQL ok.
-
+		$rows = $wpdb->get_results( "SHOW INDEX FROM `$name`", ARRAY_A );
+		if ( $wpdb->last_error || ! is_array( $rows ) ) {
+			return false;
 		}
+		$existing = $flags = array();
+		foreach ( $rows as $row ) {
+			$existing[ $row['Key_name'] ][ (int) $row['Seq_in_index'] ] = $row['Column_name'];
+			$flags[ $row['Key_name'] ] = min( $flags[ $row['Key_name'] ] ?? 1, (int) $row['Non_unique'] );
+			if ( null !== $row['Sub_part'] ) { $flags[ $row['Key_name'] ] = -1; }
+		}
+		foreach ( ( $table['index'] ?? array() ) as $index => $columns ) {
+			$expected = array_map( static fn( $field ) => trim( $field, " `\t\n\r" ), explode( ',', $columns ) );
+			if ( isset( $existing[ $index ] ) ) {
+				ksort( $existing[ $index ] );
+				if ( array_values( $existing[ $index ] ) !== $expected || 1 !== $flags[ $index ] ) {
+					return false;
+				}
+				continue;
+			}
+			if ( false === $wpdb->query( sprintf( 'ALTER TABLE `%s` ADD INDEX %s (%s);', $name, $index, $columns ) ) ) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -610,6 +846,9 @@ class TInvWL_Activator
 		$name_field = $upgrade['field'];
 
 		$_fields = self::upgrade_get_columns($name);
+		if ( $wpdb->last_error ) {
+			return false;
+		}
 		$fields = $table['field'];
 
 		$sql = '';
@@ -662,6 +901,9 @@ class TInvWL_Activator
 		$new_field = $upgrade['to'];
 
 		$_fields = self::upgrade_get_columns($name);
+		if ( $wpdb->last_error ) {
+			return false;
+		}
 		$fields = $table['field'];
 
 		if (!array_key_exists($old_field, $_fields) || !array_key_exists($new_field, $fields)) {
@@ -725,6 +967,7 @@ class TInvWL_Activator
 		}
 
 		delete_option(self::$_name . '_db_ver');
+		delete_option( self::$_name . '_utf8mb4_schema_f' );
 
 		return true;
 	}
@@ -946,6 +1189,14 @@ class TInvWL_Activator
 				),
 			),
 		);
+	}
+
+	/** Add a covering index for statistics scoped to displayed products. */
+	private static function database_2_14_0() {
+		$table = self::database_1_9_16()['items'];
+		$table['index'] = array( 'product_stats' => 'product_id, variation_id, wishlist_id' );
+		$table['upgrade'] = array( array( 'action' => 'add_index' ) );
+		return array( 'items' => $table );
 	}
 
 	/**

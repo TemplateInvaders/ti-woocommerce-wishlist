@@ -21,6 +21,7 @@ class TInvWL_Product_Local extends TInvWL_Product {
 	 * @var \TInvWL_Product_Local
 	 */
 	private static $_instance;
+	private static $_public_instance;
 
 	/**
 	 * Get this class object
@@ -29,7 +30,13 @@ class TInvWL_Product_Local extends TInvWL_Product {
 	 *
 	 * @return \TInvWL_Product_Local
 	 */
-	public static function instance( $plugin_name = TINVWL_PREFIX ) {
+	public static function instance( $plugin_name = TINVWL_PREFIX, $public_context = false ) {
+		if ( $public_context ) {
+			if ( is_null( self::$_public_instance ) ) {
+				self::$_public_instance = new self( $plugin_name, true );
+			}
+			return self::$_public_instance;
+		}
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_name );
 		}
@@ -42,9 +49,9 @@ class TInvWL_Product_Local extends TInvWL_Product {
 	 *
 	 * @param string $plugin_name Plugin name.
 	 */
-	function __construct( $plugin_name = TINVWL_PREFIX ) {
+	function __construct( $plugin_name = TINVWL_PREFIX, $public_context = false ) {
 		$wl       = new TInvWL_Wishlist( $plugin_name );
-		$wishlist = $wl->add_sharekey_default();
-		parent::__construct( $wishlist, $plugin_name );
+		$wishlist = $wl->get_default() ?: array();
+		parent::__construct( $wishlist, $plugin_name, $public_context );
 	}
 }

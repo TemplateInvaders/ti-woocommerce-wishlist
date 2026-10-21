@@ -338,6 +338,35 @@ if (!function_exists('tinv_wishlist_locate_template')) {
 	}
 } // End if().
 
+if ( ! function_exists( 'tinvwl_esc_html_text' ) ) {
+
+	/** Escape native plain text without interpreting existing HTML entities. */
+	function tinvwl_esc_html_text( $text ): string {
+		return htmlspecialchars( (string) $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', true );
+	}
+}
+
+if ( ! function_exists( 'tinvwl_get_wishlist_header_title' ) ) {
+
+	/**
+	 * Keep native plain-text names literal while allowing custom header markup.
+	 *
+	 * Filters receive the original title and wishlist. Only changed filter output
+	 * is treated as custom markup by the calling template.
+	 *
+	 * @param array $wishlist Wishlist data.
+	 * @return string
+	 */
+	function tinvwl_get_wishlist_header_title( $wishlist ) {
+		$title = apply_filters( 'tinvwl_wishlist_header_title', $wishlist['title'], $wishlist );
+		if ( $title === $wishlist['title'] ) {
+			return htmlspecialchars( (string) $title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', true );
+		}
+
+		return (string) $title;
+	}
+}
+
 if (!function_exists('tinv_wishlist_template_html')) {
 
 	/**
@@ -483,9 +512,11 @@ if (!function_exists('tinv_wishlist_get')) {
 				$wishlist['is_owner'] = $wl->is_owner($wishlist);
 			}
 		} elseif (is_user_logged_in() && $toend) {
-			$wishlist = $wl->add_user_default();
+			$wishlist = $wl->get_default();
 
-			$wishlist['is_owner'] = true;
+			if ( is_array( $wishlist ) ) {
+				$wishlist['is_owner'] = $wl->is_owner( $wishlist );
+			}
 		} elseif ($toend) {
 			$wishlist = $wl->get_by_sharekey_default();
 			if (!empty($wishlist)) {
@@ -793,7 +824,7 @@ if (!function_exists('tinvwl_add_to_cart_need_redirect')) {
 
 		$need_url_data = array_filter($need_url_data);
 
-		$need_url = apply_filters('tinvwl_product_add_to_cart_redirect_slug_original', remove_query_arg('added-to-cart', (version_compare(WC_VERSION, '3.8.0', '<') ? add_query_arg($need_url_data) : add_query_arg($need_url_data, ''))), $_product);
+		$need_url = apply_filters('tinvwl_product_add_to_cart_redirect_slug_original', remove_query_arg('added-to-cart', add_query_arg($need_url_data)), $_product);
 		$need_url_full = apply_filters('tinvwl_product_add_to_cart_redirect_url_original', remove_query_arg('added-to-cart', add_query_arg($need_url_data, $_product->get_permalink())), $_product);
 
 		global $product;
@@ -821,6 +852,16 @@ if (!function_exists('tinvwl_add_to_cart_need_redirect')) {
 	add_filter('tinvwl_product_add_to_cart_need_redirect', 'tinvwl_add_to_cart_need_redirect', 10, 3);
 } // End if().
 
+if (!function_exists('tinvwl_is_wishlist_page')) {
+
+	/** Match an assigned wishlist page; WordPress treats is_page(0) as any page. */
+	function tinvwl_is_wishlist_page() {
+		$page_id = apply_filters('wpml_object_id', tinv_get_option('page', 'wishlist'), 'page', true);
+		$page_id = is_scalar($page_id) && !is_bool($page_id) ? filter_var($page_id, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))) : false;
+		return false !== $page_id && is_page($page_id);
+	}
+}
+
 if (!function_exists('tinvwl_meta_validate_cart_add')) {
 
 	/**
@@ -835,31 +876,20 @@ if (!function_exists('tinvwl_meta_validate_cart_add')) {
 	 */
 	function tinvwl_meta_validate_cart_add($redirect, $product, $redirect_url, $wl_product)
 	{
-		if ($redirect && array_key_exists('meta', $wl_product) && !empty($wl_product['meta'])) {
-
-			$wl_product = apply_filters('tinvwl_addproduct_tocart', $wl_product);
-
-			TInvWL_Public_Cart::prepare_post($wl_product);
-
-			$product_id = apply_filters('woocommerce_add_to_cart_product_id', absint($wl_product['product_id']));
-			$quantity = empty($wl_product['quantity']) ? 1 : wc_stock_amount($wl_product['quantity']);
-			$variation_id = $wl_product['variation_id'];
-			$variations = $product->is_type('variation') ? wc_get_product_variation_attributes($product->get_id()) : array();
-			$passed_validation = $product->is_purchasable() && ($product->is_in_stock() || $product->backorders_allowed()) && 'external' !== $product->get_type();
-			ob_start();
-			if (function_exists('wc_clear_notices')) {
-				wc_clear_notices();
-			}
-			$passed_validation = apply_filters('woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations);
-			if (function_exists('wc_get_notices')) {
-				$wc_errors = wc_get_notices('error');
-			}
-			$wc_output = ob_get_clean();
-			if ($passed_validation && empty($wc_errors) && empty($wc_output)) {
+		if ($redirect && !empty($wl_product['meta'])) {
+			// Rendering is read-only. WooCommerce validation belongs to the actual cart add;
+			// third-party validators may mutate carts, sessions and external state.
+			$eligible = $product->is_purchasable()
+				&& ($product->is_in_stock() || $product->backorders_allowed())
+				&& !in_array($product->get_type(), array('external', 'variable', 'variable-subscription', 'grouped'), true);
+			/**
+			 * Read-only eligibility of an already saved product configuration.
+			 * Adapters can require the product form without running add-to-cart validators.
+			 * Actual cart additions always perform their normal validation separately.
+			 */
+			if (apply_filters('tinvwl_wishlist_product_configuration_valid', $eligible, $wl_product, $product, $redirect_url)) {
 				$redirect = false;
 			}
-
-			TInvWL_Public_Cart::unprepare_post($wl_product);
 		}
 
 		return $redirect;
@@ -883,6 +913,7 @@ if (!function_exists('tinv_wishlist_print_meta')) {
 		if (!is_array($meta)) {
 			$meta = array();
 		}
+		$form_meta = $meta;
 		$product_id = $variation_id = 0;
 		if (array_key_exists('product_id', $meta)) {
 			$product_id = $meta['product_id'];
@@ -906,7 +937,9 @@ if (!function_exists('tinv_wishlist_print_meta')) {
 			}
 			unset($meta['tinvwl-hidden-fields']);
 		}
-		$meta = array_filter($meta);
+		$meta = array_filter($meta, static function ($value) {
+			return is_numeric($value) || !empty($value);
+		});
 		if (empty($meta)) {
 			return '';
 		}
@@ -950,7 +983,7 @@ if (!function_exists('tinv_wishlist_print_meta')) {
 			}
 		}
 
-		$item_data = apply_filters('tinvwl_wishlist_item_meta_post', $item_data, $product_id, $variation_id);
+		$item_data = apply_filters('tinvwl_wishlist_item_meta_post', $item_data, $product_id, $variation_id, $form_meta);
 		foreach ($item_data as $key => $data) {
 			if (is_object($data['display']) || is_array($data['display'])) {
 				$item_data[$key]['display'] = json_encode($data['display']);
@@ -1067,7 +1100,7 @@ if (!function_exists('is_wishlist')) {
 	 */
 	function is_wishlist()
 	{
-		return (is_page(apply_filters('wpml_object_id', tinv_get_option('page', 'wishlist'), 'page', true)));
+		return tinvwl_is_wishlist_page();
 	}
 }
 
@@ -1086,7 +1119,7 @@ if (!function_exists('tinvwl_get_wishlist_products')) {
 		if (empty($wishlist)) {
 			return false;
 		}
-		$wlp = new TInvWL_Product($wishlist);
+		$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 		$products = $wlp->get_wishlist($data);
 
 		if (empty($products)) {
@@ -1169,9 +1202,10 @@ add_action('init', function () {
  * @param WC_Product|null $product (Optional) The product to get the message placeholders for.
  * @param array|null $wishlist (Optional) The wishlist to get the message placeholders for.
  *
+ * @param bool $html Escape the unchanged wishlist-name placeholder for HTML; filters still receive raw values.
  * @return string The message string with replaced placeholders.
  */
-function tinvwl_message_placeholders(string $string, ?WC_Product $product = null, ?array $wishlist = null): string
+function tinvwl_message_placeholders(string $string, ?WC_Product $product = null, ?array $wishlist = null, bool $html = false): string
 {
 	$placeholders = [];
 
@@ -1183,7 +1217,7 @@ function tinvwl_message_placeholders(string $string, ?WC_Product $product = null
 	}
 
 	if (is_array($wishlist)) {
-		$wishlist_title = empty($wishlist['title'])
+		$wishlist_title = '' === (string) ($wishlist['title'] ?? '')
 			? apply_filters('tinvwl_default_wishlist_title', tinv_get_option('general', 'default_title'))
 			: $wishlist['title'];
 		$placeholders['{wishlist_title}'] = $wishlist_title;
@@ -1196,7 +1230,15 @@ function tinvwl_message_placeholders(string $string, ?WC_Product $product = null
 	 * @param WC_Product|null $product The product to get the message placeholders for.
 	 * @param array|null $wishlist The wishlist to get the message placeholders for.
 	 */
+	$native_placeholders = $placeholders;
 	$placeholders = apply_filters('tinvwl_addtowishlist_message_placeholders', $placeholders, $product, $wishlist);
+	if ($html) {
+		foreach ($native_placeholders as $key => $value) {
+			if ('{wishlist_title}' === $key && array_key_exists($key, $placeholders) && $placeholders[$key] === $value) {
+				$placeholders[$key] = tinvwl_esc_html_text($value);
+			}
+		}
+	}
 
 	$find = array_keys($placeholders);
 	$replace = array_values($placeholders);

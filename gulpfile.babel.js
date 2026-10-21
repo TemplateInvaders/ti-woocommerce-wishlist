@@ -429,7 +429,7 @@ var banner = ['/**',
 gulp.task('bump', function () {
 	const constant = 'TINVWL_FVERSION';
 
-	gulp.src('./ti-woocommerce-wishlist.php')
+	const pluginStream = gulp.src('./ti-woocommerce-wishlist.php')
 		.pipe(bump({version: pkg.version}))
 		.pipe(bump({
 			regex: new RegExp('([<|\'|"]?(' + constant + ')[>|\'|"]?[ ]*[:=,]?[ ]*[\'|"]?[a-z]?)(\\d+\\.\\d+\\.\\d+)(-[0-9A-Za-z\.-]+)?(\\+[0-9A-Za-z\.-]+)?([\'|"|<]?)', 'i'),
@@ -437,9 +437,11 @@ gulp.task('bump', function () {
 		}))
 		.pipe(gulp.dest('./'));
 
-	return gulp.src('./readme.txt')
+	const readmeStream = gulp.src('./readme.txt')
 		.pipe(bump({key: 'Stable tag', version: pkg.version}))
-		.pipe(gulp.dest('./'))
+		.pipe(gulp.dest('./'));
+
+	return merge(pluginStream, readmeStream)
 		.pipe(notify({message: '\n\n✅  ===> Bump — completed!\n', onLast: true}));
 });
 
@@ -454,6 +456,7 @@ gulp.task('zip', function () {
 			'!./node_modules/**',
 			'!./node_modules/**/*',
 			'!./.git',
+			'!./tests/**',
 			'!./assets/js/dev/**',
 			'!./assets/js/dev.**',
 			'!./sass/**',

@@ -1,5 +1,123 @@
 // Add to wishlist
 ( function( $ ) {
+	// Optional client storage never grants access or prevents a live server update.
+	$.tinvwlStorage = {
+		get: function( storage, key ) {
+			try { return 'string' === typeof key && key ? window[storage].getItem( key ) : null; } catch ( error ) { return null; }
+		},
+		set: function( storage, key, value ) {
+			try { if ( 'string' !== typeof key || ! key ) { return false; } window[storage].setItem( key, value ); return true; } catch ( error ) { return false; }
+		},
+		remove: function( storage, key ) {
+			try { if ( 'string' !== typeof key || ! key ) { return false; } window[storage].removeItem( key ); return true; } catch ( error ) { return false; }
+		}
+	};
+
+	function parseWishlistJSON( value ) {
+		if ( 'string' !== typeof value ) { return value; }
+		try { return JSON.parse( value ); } catch ( error ) { return null; }
+	}
+
+	function owns( object, key ) {
+		return Object.prototype.hasOwnProperty.call( object, key );
+	}
+
+	function wishlistData( value ) {
+		var data = parseWishlistJSON( value );
+		if ( ! data || 'object' !== typeof data || Array.isArray( data ) || ( ! owns( data, 'products' ) && ! owns( data, 'counter' ) ) ) { return null; }
+		if ( owns( data, 'products' ) && ( ! data.products || 'object' !== typeof data.products ) ) { return null; }
+		return data;
+	}
+
+	function wishlistActionScope( element ) {
+		var button = $( element ), form = button.closest( 'form' ),
+			modalState = button.closest( '.tinv-modal' ).data( 'tinvwlModalState' );
+		if ( ! form.length && modalState && modalState.opener ) {
+			form = $( modalState.opener ).closest( 'form' );
+		}
+		return { form: form, container: form.closest( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ), sharekey: button.data( 'tinvwl_sharekey' ) };
+	}
+
+	function updateWishlistContainer( scope, response ) {
+		if ( scope.form.length ) {
+			scope.container.replaceWith( response.content );
+		} else if ( scope.sharekey && response.status ) {
+			// A mini item has its own payload; refresh main views using their own pagination.
+			window.setTimeout( function() {
+				$.fn.tinvwl_get_wishlist_data( 'refresh', scope.sharekey );
+			}, 0 );
+		}
+	}
+
+	function finishWishlistAction( element, container ) {
+		$( element ).removeClass( 'inited-wishlist-action ftinvwl-pulse' );
+		( container || wishlistActionScope( element ).container ).unblock();
+	}
+
+	function showRequestError( xhr ) {
+		var message = xhr && xhr.responseJSON && xhr.responseJSON.msg;
+		if ( 'string' !== typeof message || ! message || /[<>]/.test( message ) ) {
+			message = tinvwl_add_to_wishlist.i18n_ajax_error;
+		}
+		if ( 'string' === typeof message && message ) {
+			window.alert( message );
+		}
+	}
+
+	var nonceRequest;
+	function freshRequestNonce() {
+		var request = nonceRequest;
+		if ( ! nonceRequest ) {
+			request = $.ajax({
+				url: tinvwl_add_to_wishlist.nonce_url || tinvwl_add_to_wishlist.wc_ajax_url.replace( /([?&])wc-ajax=[^&#]*/, '$1wc-ajax=tinvwl_request_nonce' ),
+				method: 'POST',
+				dataType: 'json',
+				cache: false
+			});
+			nonceRequest = request;
+			request.always( function() {
+				if ( nonceRequest === request ) {
+					nonceRequest = null;
+				}
+			});
+		}
+		return request;
+	}
+
+	function wishlistProductForm( button, productId ) {
+		var formSelector = 'form.cart[method=post], form.vtajaxform[method=post]',
+			formEl = $( button ).closest( formSelector );
+
+		// Prefer the owning form; outside buttons require an unambiguous product identity.
+		if ( ! formEl.length ) {
+			var matchingForms = $( formSelector ).filter( function() {
+				var formProductId = $( this ).attr( 'data-product_id' );
+				if ( 'undefined' !== typeof formProductId ) {
+					return formProductId === String( productId );
+				}
+				return $( this ).find( '[name="add-to-cart"], [name="product_id"]' ).filter( function() {
+					return $( this ).val() === String( productId );
+				}).length > 0;
+			}), product = $( button ).closest( '.product' ),
+				localForms = matchingForms.filter( function() {
+					return product.length && $.contains( product[0], this );
+				});
+			if ( localForms.length ) {
+				matchingForms = localForms;
+			}
+			if ( 1 === matchingForms.length ) {
+				formEl = matchingForms;
+			}
+		}
+		return formEl;
+	}
+
+	function variationFormButtons( form ) {
+		var productId = $( form ).data( 'product_id' );
+		return $( '.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + productId + '"]' ).filter( function() {
+			return wishlistProductForm( this, productId )[0] === form;
+		});
+	}
 
 	//Add to wishlist main function.
 	$.fn.tinvwl_to_wishlist = function( so ) {
@@ -127,7 +245,7 @@
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
 
-					FocusTrap( 'body > .tinv-wishlist' );
+					FocusTrap( 'body > .tinv-wishlist', this );
 
 					if ( ! s.redirectTimer ) {
 						s.removeTimer = window.setTimeout( function() {
@@ -141,7 +259,7 @@
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
-						$msg.remove();
+						removeModalResult( $msg );
 						if ( s.redirectTimer ) {
 							clearTimeout( s.redirectTimer );
 						}
@@ -174,7 +292,8 @@
 					redirect: window.location.href
 				},
 				a = this,
-				formEl = [],
+				formEl = wishlistProductForm( a, data.product_id ),
+				formFields,
 				hiddenFields = [],
 				formData = new FormData();
 
@@ -190,88 +309,84 @@
 				data.stats = tinvwl_add_to_wishlist.stats;
 			}
 
-			$( 'form.cart[method=post][data-product_id="' + $( this ).attr( 'data-tinv-wl-product' ) + '"], form.vtajaxform[method=post][data-product_id="' + $( this ).attr( 'data-tinv-wl-product' ) + '"]' ).each( function() {
-				formEl.push( $( this ) );
-			});
+			formFields = formEl.find( 'input:not(:disabled), select:not(:disabled), textarea:not(:disabled)' );
+			formFields = formFields.add( $( a ).closest( '.tinv-wraper' ).filter( function() {
+				return $( this ).attr( 'data-tinvwl_product_id' ) === String( data.product_id );
+			}).find( 'input:not(:disabled), select:not(:disabled), textarea:not(:disabled)' ).filter( function() {
+				var owner = $( this ).closest( 'form' );
+				return ! owner.length || ( formEl.length && owner[0] === formEl[0] );
+			}) );
 
-			if ( ! formEl.length ) {
-				$( a ).closest( 'form.cart[method=post], form.vtajaxform[method=post]' ).each( function() {
-					formEl.push( $( this ) );
-				});
-				if ( ! formEl.length ) {
-					formEl.push( $( 'form.cart[method=post]' ) );
-				}
-			}
-
-			$( '.tinv-wraper[data-tinvwl_product_id="' + $( this ).attr( 'data-tinv-wl-product' ) + '"]' ).each( function() {
-				formEl.push( $( this ) );
-			});
-
-			$.each( formEl, function( index, element ) {
-				$( element ).find( 'input:not(:disabled), select:not(:disabled), textarea:not(:disabled)' ).each( function() {
-					var name_elm = $( this ).attr( 'name' ),
-						type_elm = $( this ).attr( 'type' ),
-						value_elm = $( this ).val(),
-						count = 10,
-						ti_merge_value = function( o1, o2 ) {
-							if ( 'object' === typeof o2 ) {
-								if ( 'undefined' === typeof o1 ) {
-									o1 = {};
-								}
-								for ( var i in o2 ) {
-									if ( '' === i ) {
+			formFields.each( function() {
+				var name_elm = $( this ).attr( 'name' ),
+					file_name_elm = name_elm,
+					type_elm = $( this ).attr( 'type' ),
+					value_elm = $( this ).val(),
+					multiple_elm = $( this ).is( 'select[multiple]' ),
+					count = 10,
+					ti_merge_value = function( o1, o2 ) {
+						if ( 'object' === typeof o2 ) {
+							if ( 'undefined' === typeof o1 ) {
+								o1 = {};
+							}
+							for ( var i in o2 ) {
+								if ( '' === i ) {
+									var values = multiple_elm && Array.isArray( o2[i] ) ? o2[i] : [o2[i]];
+									for ( var value_index = 0; value_index < values.length; value_index++ ) {
 										var j = -1;
 										for ( j in o1 ) {
 											j = j;
 										}
 										j = parseInt( j ) + 1;
-										o1[j] = ti_merge_value( o1[i], o2[i]);
-									} else {
-										o1[i] = ti_merge_value( o1[i], o2[i]);
+										o1[j] = ti_merge_value( o1[i], values[value_index]);
 									}
+								} else {
+									o1[i] = ti_merge_value( o1[i], o2[i]);
 								}
-								return o1;
-							} else {
-								return o2;
 							}
-						};
-					if ( 'button' === type_elm || 'undefined' == typeof name_elm ) {
-						return;
-					}
-					while ( /^(.+)\[([^\[\]]*?)\]$/.test( name_elm ) && 0 < count ) {
-						var n_name = name_elm.match( /^(.+)\[([^\[\]]*?)\]$/ );
-						if ( 3 === n_name.length ) {
-							var _value_elm = {};
-							_value_elm[n_name[2]] = value_elm;
-							value_elm = _value_elm;
+							return o1;
+						} else {
+							return o2;
 						}
-						name_elm = n_name[1];
-						count--;
+					};
+				if ( 'button' === type_elm || 'undefined' == typeof name_elm || ( multiple_elm && ( ! value_elm || ! value_elm.length ) ) ) {
+					return;
+				}
+				while ( /^(.+)\[([^\[\]]*?)\]$/.test( name_elm ) && 0 < count ) {
+					var n_name = name_elm.match( /^(.+)\[([^\[\]]*?)\]$/ );
+					if ( 3 === n_name.length ) {
+						var _value_elm = {};
+						_value_elm[n_name[2]] = value_elm;
+						value_elm = _value_elm;
 					}
+					name_elm = n_name[1];
+					count--;
+				}
 
-					if ( 'file' === type_elm ) {
-						var file_data = $( this )[0].files;
+				if ( 'file' === type_elm ) {
+					var file_data = $( this )[0].files;
 
-						if ( file_data ) {
-							formData.append( name_elm, file_data[0]);
+					if ( file_data ) {
+						for ( var file_index = 0; file_index < file_data.length; file_index++ ) {
+							formData.append( file_name_elm, file_data[file_index]);
 						}
 					}
+				}
 
-					if ( 'checkbox' === type_elm || 'radio' === type_elm ) {
-						if ( $( this ).is( ':checked' ) ) {
-							if ( ! value_elm.length && 'object' !== typeof value_elm ) {
-								value_elm = true;
-							}
-							data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
+				if ( 'checkbox' === type_elm || 'radio' === type_elm ) {
+					if ( $( this ).is( ':checked' ) ) {
+						if ( ! value_elm.length && 'object' !== typeof value_elm ) {
+							value_elm = true;
 						}
-					} else {
 						data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
 					}
+				} else {
+					data.form[name_elm] = ti_merge_value( data.form[name_elm], value_elm );
+				}
 
-					if ( 'hidden' === type_elm ) {
-						hiddenFields.push( name_elm );
-					}
-				});
+				if ( 'hidden' === type_elm ) {
+					hiddenFields.push( name_elm );
+				}
 			});
 
 			data.form['tinvwl-hidden-fields'] = hiddenFields;
@@ -293,13 +408,7 @@
 				}
 			});
 
-			$.ajax({
-				url: s.api_url,
-				method: 'POST',
-				contentType: false,
-				processData: false,
-				data: formData
-			}).done( function( body ) {
+			function receiveResponse( body ) {
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, body ]);
 
@@ -315,7 +424,46 @@
 						s.onAction.msg.call( a, body );
 					}
 				}
-			});
+			}
+
+			function requestFailed( xhr ) {
+				var body = $.extend( { error: 'request_failed' }, xhr && xhr.responseJSON, { status: false } );
+				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, body ]);
+				s.onDialogHide.call( a.tinvwl_dialog, a );
+				if ( 'function' === typeof s.onAction.status ) {
+					s.onAction.status.call( a, false );
+				}
+				showRequestError( xhr );
+			}
+
+			function sendRequest( retried ) {
+				freshRequestNonce().done( function( nonces ) {
+					if ( ! nonces || 'string' !== typeof nonces.add_nonce || ! nonces.add_nonce ) {
+						requestFailed();
+						return;
+					}
+					// Reuse prepared fields/files; FormData.set is absent in IE11.
+					if ( 'function' === typeof formData.set ) {
+						formData.set( 'tinvwl_add_nonce', nonces.add_nonce );
+					} else {
+						formData.append( 'tinvwl_add_nonce', nonces.add_nonce );
+					}
+					$.ajax({
+						url: s.api_url,
+						method: 'POST',
+						contentType: false,
+						processData: false,
+						data: formData
+					}).done( receiveResponse ).fail( function( xhr ) {
+						if ( ! retried && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error ) {
+							sendRequest( true );
+						} else {
+							requestFailed.call( this, xhr );
+						}
+					});
+				}).fail( requestFailed );
+			}
+			sendRequest( false );
 		};
 		var s = $.extend( true, {}, sd, so );
 		return $( this ).each( function() {
@@ -360,7 +508,8 @@
 				}
 				if ( 'function' !== typeof this.tinvwl_dialog.show_list ) {
 					this.tinvwl_dialog.show_list = function() {
-						var WList = JSON.parse( $( this ).attr( 'data-tinv-wl-list' ) ) || [];
+						var WList = parseWishlistJSON( $( this ).attr( 'data-tinv-wl-list' ) );
+						WList = Array.isArray( WList ) ? WList : [];
 						if ( WList.length ) {
 							WList = s.onPrepareList.call( WList ) || WList;
 							this.tinvwl_dialog.update_list( WList );
@@ -406,6 +555,11 @@
 					return;
 				}
 				e.preventDefault();
+				// Use the same click path before and after initialization, without native or held-key repeats.
+				if ( ! e.originalEvent || ! e.originalEvent.repeat ) {
+					$( this ).trigger( 'click' );
+				}
+				return;
 			}
 
 			$( 'body' ).trigger( 'tinvwl_add_to_wishlist_button_click', [ this ]);
@@ -441,7 +595,7 @@
 
 			e.preventDefault();
 
-			var el = $( this );
+			var el = $( this ), actionScope = wishlistActionScope( this );
 
 			if ( el.is( '.inited-wishlist-action' ) ) {
 				return;
@@ -449,7 +603,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+			actionScope.container.block({
 				message: null,
 				overlayCSS: {
 					background: '#fff',
@@ -461,9 +615,9 @@
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'remove',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.data( 'tinvwl_paged' ) || el.closest( 'form' ).data( 'tinvwl_paged' ),
-				'tinvwl-per-page': el.data( 'tinvwl_per_page' ) || el.closest( 'form' ).data( 'tinvwl_per_page' ),
-				'tinvwl-sharekey': el.data( 'tinvwl_sharekey' ) || el.closest( 'form' ).data( 'tinvwl_sharekey' )
+				'tinvwl-paged': el.data( 'tinvwl_paged' ) || actionScope.form.data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.data( 'tinvwl_per_page' ) || actionScope.form.data( 'tinvwl_per_page' ),
+				'tinvwl-sharekey': el.data( 'tinvwl_sharekey' ) || actionScope.form.data( 'tinvwl_sharekey' )
 			};
 
 			if ( tinvwl_add_to_wishlist.wpml ) {
@@ -486,11 +640,9 @@
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
-			}).done( function( response ) {
-
-				el.removeClass( 'inited-wishlist-action' );
-
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
+			}).always( function() {
+				finishWishlistAction( el );
+			}).fail( showRequestError ).done( function( response ) {
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -499,11 +651,11 @@
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
 
-					FocusTrap( 'body > .tinv-wishlist' );
+					FocusTrap( 'body > .tinv-wishlist', el );
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
-						$msg.remove();
+						removeModalResult( $msg );
 					});
 
 					var closeTimer;
@@ -518,7 +670,7 @@
 					}
 				}
 				if ( response.status ) {
-					$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
+					updateWishlistContainer( actionScope, response );
 					$( '.tinvwl-break-input' ).tinvwl_break_submit({
 						selector: '.tinvwl-break-input-filed'
 					});
@@ -556,7 +708,7 @@
 
 			e.preventDefault();
 
-			var el = $( this );
+			var el = $( this ), actionScope = wishlistActionScope( this );
 
 			if ( el.is( '.inited-wishlist-action' ) ) {
 				return;
@@ -564,7 +716,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+			actionScope.container.block({
 				message: null,
 				overlayCSS: {
 					background: '#fff',
@@ -576,9 +728,9 @@
 				'tinvwl-product_id': el.val(),
 				'tinvwl-action': 'add_to_cart_single',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.data( 'tinvwl_paged' ) || el.closest( 'form' ).data( 'tinvwl_paged' ),
-				'tinvwl-per-page': el.data( 'tinvwl_per_page' ) || el.closest( 'form' ).data( 'tinvwl_per_page' ),
-				'tinvwl-sharekey': el.data( 'tinvwl_sharekey' ) || el.closest( 'form' ).data( 'tinvwl_sharekey' )
+				'tinvwl-paged': el.data( 'tinvwl_paged' ) || actionScope.form.data( 'tinvwl_paged' ),
+				'tinvwl-per-page': el.data( 'tinvwl_per_page' ) || actionScope.form.data( 'tinvwl_per_page' ),
+				'tinvwl-sharekey': el.data( 'tinvwl_sharekey' ) || actionScope.form.data( 'tinvwl_sharekey' )
 			};
 
 			if ( tinvwl_add_to_wishlist.wpml ) {
@@ -601,11 +753,9 @@
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
-			}).done( function( response ) {
-
-				el.removeClass( 'inited-wishlist-action' );
-
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
+			}).always( function() {
+				finishWishlistAction( el );
+			}).fail( showRequestError ).done( function( response ) {
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -614,11 +764,11 @@
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
 
-					FocusTrap( 'body > .tinv-wishlist' );
+					FocusTrap( 'body > .tinv-wishlist', el );
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
-						$msg.remove();
+						removeModalResult( $msg );
 					});
 
 					var closeTimer;
@@ -636,7 +786,7 @@
 
 				$( document.body ).trigger( 'wc_fragment_refresh' );
 
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
+				updateWishlistContainer( actionScope, response );
 
 				jQuery.fn.tinvwl_get_wishlist_data();
 
@@ -668,7 +818,7 @@
 
 			e.preventDefault();
 
-			var el = $( this );
+			var el = $( this ), actionScope = wishlistActionScope( this );
 
 			if ( el.is( '.inited-wishlist-action' ) ) {
 				return;
@@ -676,7 +826,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+			actionScope.container.block({
 				message: null,
 				overlayCSS: {
 					background: '#fff',
@@ -687,9 +837,9 @@
 			var data = {
 				'tinvwl-action': 'add_to_cart_all',
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
-				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
-				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
+				'tinvwl-paged': actionScope.form.data( 'tinvwl_paged' ),
+				'tinvwl-per-page': actionScope.form.data( 'tinvwl_per_page' ),
+				'tinvwl-sharekey': actionScope.form.data( 'tinvwl_sharekey' )
 			};
 
 			if ( tinvwl_add_to_wishlist.wpml ) {
@@ -712,11 +862,9 @@
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
-			}).done( function( response ) {
-
-				el.removeClass( 'inited-wishlist-action' );
-
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
+			}).always( function() {
+				finishWishlistAction( el );
+			}).fail( showRequestError ).done( function( response ) {
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -725,11 +873,11 @@
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
 
-					FocusTrap( 'body > .tinv-wishlist' );
+					FocusTrap( 'body > .tinv-wishlist', el );
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
-						$msg.remove();
+						removeModalResult( $msg );
 					});
 
 					var closeTimer;
@@ -747,7 +895,7 @@
 
 				$( document.body ).trigger( 'wc_fragment_refresh' );
 
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
+				updateWishlistContainer( actionScope, response );
 
 				jQuery.fn.tinvwl_get_wishlist_data();
 
@@ -781,13 +929,13 @@
 
 			var products = [];
 
-			$( 'input[name="wishlist_pr[]"]:checked' ).each( function() {
+			wishlistActionScope( this ).form.find( 'input[name="wishlist_pr[]"]:checked' ).each( function() {
 				products.push( this.value );
 			});
 
-			var el = $( this );
+			var el = $( this ), actionScope = wishlistActionScope( this );
 
-			if ( ! products.length || ( 'tinvwl-action-product_selected' !== el.attr( 'name' ) && ! $( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val() ) ) {
+			if ( ! products.length || ( 'tinvwl-action-product_selected' !== el.attr( 'name' ) && ! wishlistActionScope( this ).form.find( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val() ) ) {
 				alert( window.tinvwl_add_to_wishlist['tinvwl_break_submit']);
 				return;
 			}
@@ -798,7 +946,7 @@
 
 			el.addClass( 'inited-wishlist-action' );
 
-			$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+			actionScope.container.block({
 				message: null,
 				overlayCSS: {
 					background: '#fff',
@@ -812,16 +960,16 @@
 			if ( 'tinvwl-action-product_selected' === el.attr( 'name' ) ) {
 				action = 'add_to_cart_selected';
 			} else {
-				action = $( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val();
+				action = wishlistActionScope( this ).form.find( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val();
 			}
 
 			var data = {
 				'tinvwl-products': products,
 				'tinvwl-action': action,
 				'tinvwl-security': tinvwl_add_to_wishlist.nonce,
-				'tinvwl-paged': el.closest( 'form' ).data( 'tinvwl_paged' ),
-				'tinvwl-per-page': el.closest( 'form' ).data( 'tinvwl_per_page' ),
-				'tinvwl-sharekey': el.closest( 'form' ).data( 'tinvwl_sharekey' )
+				'tinvwl-paged': actionScope.form.data( 'tinvwl_paged' ),
+				'tinvwl-per-page': actionScope.form.data( 'tinvwl_per_page' ),
+				'tinvwl-sharekey': actionScope.form.data( 'tinvwl_sharekey' )
 			};
 
 			if ( tinvwl_add_to_wishlist.wpml ) {
@@ -844,11 +992,9 @@
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 				}
-			}).done( function( response ) {
-
-				el.removeClass( 'inited-wishlist-action' );
-
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
+			}).always( function() {
+				finishWishlistAction( el );
+			}).fail( showRequestError ).done( function( response ) {
 
 				if ( response.msg ) {
 					var $msg = $( response.msg ).eq( 0 );
@@ -857,11 +1003,11 @@
 					}
 					$( 'body > .tinv-wishlist' ).append( $msg );
 
-					FocusTrap( 'body > .tinv-wishlist' );
+					FocusTrap( 'body > .tinv-wishlist', el );
 
 					$msg.on( 'click', '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay', function( e ) {
 						e.preventDefault();
-						$msg.remove();
+						removeModalResult( $msg );
 					});
 
 					var closeTimer;
@@ -881,7 +1027,7 @@
 					$( document.body ).trigger( 'wc_fragment_refresh' );
 				}
 
-				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
+				updateWishlistContainer( actionScope, response );
 
 				jQuery.fn.tinvwl_get_wishlist_data();
 
@@ -900,7 +1046,7 @@
 
 		// Disable add to wishlist button if variations not selected
 		$( document ).on( 'hide_variation', '.variations_form', function( a ) {
-			var e = $( '.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $( this ).data( 'product_id' ) + '"]' );
+			var e = variationFormButtons( this );
 			e.attr( 'data-tinv-wl-productvariation', 0 );
 
 			var originalBlockAjaxWishlistsData = tinvwl_add_to_wishlist.block_ajax_wishlists_data;
@@ -915,7 +1061,7 @@
 		});
 
 		$( document ).on( 'show_variation', '.variations_form', function( a, b, d ) {
-			var e = $( '.tinvwl_add_to_wishlist_button:not(.tinvwl-loop)[data-tinv-wl-product="' + $( this ).data( 'product_id' ) + '"]' );
+			var e = variationFormButtons( this );
 			e.attr( 'data-tinv-wl-productvariation', b.variation_id );
 
 			var originalBlockAjaxWishlistsData = tinvwl_add_to_wishlist.block_ajax_wishlists_data;
@@ -927,47 +1073,42 @@
 			e.removeClass( 'disabled-add-wishlist' );
 		});
 
-		// Refresh when storage changes in another tab
-		$( window ).on( 'storage onstorage', function( e ) {
-			if ( hash_key === e.originalEvent.key && localStorage.getItem( hash_key ) !== sessionStorage.getItem( hash_key ) ) {
-
-				if ( localStorage.getItem( hash_key ) ) {
-
-					var data = JSON.parse( localStorage.getItem( hash_key ) );
-
-					if ( 'object' === typeof data && null !== data && ( data.hasOwnProperty( 'products' ) || data.hasOwnProperty( 'counter' ) ) ) {
-						set_hash( localStorage.getItem( hash_key ) );
-					}
-				}
-
-			}
+		// A cross-tab marker invalidates the snapshot; cached private HTML is never rendered.
+		$( window ).off( '.tinvwlWishlistData' ).on( 'storage.tinvwlWishlistData onstorage.tinvwlWishlistData', function( e ) {
+			var changed = e.originalEvent || e;
+			if ( changed.key !== hash_key && null !== changed.key ) { return; }
+			wishlistSnapshot = null;
+			if ( ! tinvwl_add_to_wishlist.block_ajax_wishlists_data ) { get_data_ajax( undefined, true ); }
 		});
 
 		// Get wishlist data from REST API.
-		var tinvwl_products = [],
-			tinvwl_counter = false;
-		$( 'a.tinvwl_add_to_wishlist_button' ).each( function() {
-			if ( 'undefined' !== $( this ).data( 'tinv-wl-product' ) && $( this ).data( 'tinv-wl-product' ) ) {
-				tinvwl_products.push( $( this ).data( 'tinv-wl-product' ) );
+		var get_data_ajax = function( refresh, force, target ) {
+			if ( 'refresh' === refresh && ! ( target && target.jquery ) ) {
+				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]' ).filter( function() {
+					return 'undefined' === typeof target || $( this ).attr( 'data-tinvwl_sharekey' ) === String( target );
+				}).each( function() {
+					get_data_ajax( refresh, force, $( this ) );
+				});
+				return;
 			}
-		});
 
-		$( '.wishlist_products_counter_number' ).each( function() {
-			tinvwl_counter = true;
-		});
+			var hasProducts = $( 'a.tinvwl_add_to_wishlist_button' ).filter( function() {
+				return !! $( this ).data( 'tinv-wl-product' );
+			}).length;
+			if ( ( 'refresh' === refresh || hasProducts || $( '.wishlist_products_counter_number' ).length ) && ( tinvwl_add_to_wishlist.user_interacted || force ) ) {
 
-		var get_data_ajax = function( refresh ) {
-
-			if ( ( tinvwl_products.length || tinvwl_counter ) && tinvwl_add_to_wishlist.user_interacted ) {
-
+				var readRevision = wishlistRevision;
+				var readSequence = ++latestRead;
+				var fullRefreshSequence = 'refresh' === refresh ? ++latestFullRefresh : 0;
+				var requestContainer = 'refresh' === refresh ? target.closest( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ) : $();
 				var data = {
 					'tinvwl-action': 'get_data',
 					'tinvwl-security': tinvwl_add_to_wishlist.nonce
 				};
 				if ( 'refresh' === refresh ) {
-					var form = $( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]' );
+					var form = target;
 					if ( form.length ) {
-						$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).block({
+						requestContainer.data( 'tinvwlFullRefreshSequence', fullRefreshSequence ).block({
 							message: null,
 							overlayCSS: {
 								background: '#fff',
@@ -1002,18 +1143,30 @@
 					beforeSend: function( xhr ) {
 						xhr.setRequestHeader( 'X-WP-Nonce', tinvwl_add_to_wishlist.nonce );
 					}
-				}).done( function( response ) {
+				}).always( function() {
 					if ( 'refresh' === refresh ) {
-						$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).unblock();
+						finishWishlistAction( undefined, requestContainer );
+					}
+				}).fail( function( xhr ) {
+					if ( 'refresh' === refresh ) {
+						showRequestError( xhr );
+					}
+				}).done( function( response ) {
+					if ( ! response || true !== response.status || ( 'refresh' === refresh && ( 'string' !== typeof response.content || ! response.content.trim() ) ) ) {
+						if ( 'refresh' === refresh ) { showRequestError(); }
+						return;
+					}
+
+					if ( 'refresh' === refresh ) {
 
 						$( document.body ).trigger( 'wc_fragment_refresh' );
-
-						$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear' ).replaceWith( response.content );
-
-						localStorage.setItem( hash_key + '_refresh', '' );
+						if ( readRevision === wishlistRevision && fullRefreshSequence === requestContainer.data( 'tinvwlFullRefreshSequence' ) ) {
+							requestContainer.replaceWith( response.content );
+							$.tinvwlStorage.set( 'localStorage', hash_key + '_refresh', '' );
+						}
 					}
-					if ( response.wishlists_data ) {
-						set_hash( JSON.stringify( response.wishlists_data ) );
+					if ( response.wishlists_data && readRevision === wishlistRevision && readSequence === latestRead ) {
+						set_hash( JSON.stringify( response.wishlists_data ), false );
 					}
 
 					$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
@@ -1022,51 +1175,17 @@
 			}
 		};
 
-		$.fn.tinvwl_get_wishlist_data = function( refresh ) {
-			if ( 'refresh' === refresh ) {
-				get_data_ajax( refresh );
-				return;
-			}
-
-			if ( $supports_html5_storage ) {
-
+		$.fn.tinvwl_get_wishlist_data = function( refresh, sharekey ) {
+			if ( 'refresh' === refresh ) { get_data_ajax( refresh, true, sharekey ); return; }
+			try {
 				if ( 'undefined' !== typeof Cookies && Cookies.get( 'tinvwl_update_data' ) !== undefined ) {
 					Cookies.set( 'tinvwl_update_data', 0, {expires: -1});
-					localStorage.setItem( hash_key, '' );
+					wishlistSnapshot = null;
+					$.tinvwlStorage.remove( 'localStorage', hash_key );
 				}
-
-				if ( localStorage.getItem( hash_key ) ) {
-
-					var data = JSON.parse( localStorage.getItem( hash_key ) );
-
-					if ( 'object' === typeof data && null !== data && ( data.hasOwnProperty( 'products' ) || data.hasOwnProperty( 'counter' ) ) ) {
-						if ( ( ! data.hasOwnProperty( 'lang' ) && ! tinvwl_add_to_wishlist.wpml ) || ( tinvwl_add_to_wishlist.wpml && data.lang === tinvwl_add_to_wishlist.wpml ) ) {
-
-							if ( 'undefined' !== typeof Cookies && Cookies.get( 'tinvwl_wishlists_data_counter' ) === undefined ) {
-								mark_products( data );
-								return;
-							}
-
-							if ( 'undefined' !== typeof Cookies && Cookies.get( 'tinvwl_wishlists_data_counter' ) == data.counter && ( ! data.hasOwnProperty( 'stats_count' ) || Cookies.get( 'tinvwl_wishlists_data_stats' ) == data.stats_count ) ) {
-								mark_products( data );
-								return;
-							}
-						}
-					}
-
-				}
-			}
-
-			if ( tinvwl_add_to_wishlist.block_ajax_wishlists_data ) {
-				if ( data ) {
-					setTimeout( function() {
-						mark_products( data );
-					}, 500 );
-				}
-
-				return;
-			}
-
+			} catch ( error ) { /* Cache invalidation is optional when cookies are blocked. */ }
+			if ( wishlistSnapshot ) { mark_products( wishlistSnapshot ); return; }
+			if ( tinvwl_add_to_wishlist.block_ajax_wishlists_data ) { return; }
 			get_data_ajax();
 		};
 
@@ -1093,7 +1212,7 @@
 					var $nodes = $( newNodes );
 					$nodes.each( function() {
 						var $node = $( this ),
-							els = $node.find( '.tinvwl_add_to_wishlist_button' );
+							els = $node.find( '.tinvwl_add_to_wishlist_button' ).add( $node.filter( '.tinvwl_add_to_wishlist_button' ) );
 						if ( els.length ) {
 							els.each( function() {
 								var $this = $( this ),
@@ -1126,24 +1245,15 @@
 	});
 
 
-	/* Storage Handling */
-
-	// Check if HTML5 storage is supported
-	var $supports_html5_storage = true;
+	/* The current page keeps live server data only; persistent values are wake-up markers. */
+	var wishlistSnapshot = null;
+	var wishlistRevision = 0;
+	var latestRead = 0;
+	var latestFullRefresh = 0;
 	var hash_key = tinvwl_add_to_wishlist.hash_key;
-
-	try {
-		$supports_html5_storage = ( 'sessionStorage' in window && null !== window.sessionStorage );
-		window.sessionStorage.setItem( 'ti', 'test' );
-		window.sessionStorage.removeItem( 'ti' );
-		window.localStorage.setItem( 'ti', 'test' );
-		window.localStorage.removeItem( 'ti' );
-	} catch ( err ) {
-
-		// HTML5 storage is not supported
-		$supports_html5_storage = false;
-	}
-
+	// Remove legacy private payloads without parsing, rendering or using them as credentials.
+	$.tinvwlStorage.remove( 'localStorage', hash_key );
+	$.tinvwlStorage.remove( 'sessionStorage', hash_key );
 
 	/**
 	 * Marks products based on the provided data.
@@ -1151,6 +1261,8 @@
 	 * @param {object} data - The data containing information about wishlists, products, and stats.
 	 */
 	function mark_products( data ) {
+		data = wishlistData( data );
+		if ( ! data ) { return; }
 
 		var g = '1' == window.tinvwl_add_to_wishlist['simple_flow'];
 
@@ -1165,6 +1277,7 @@
 		$( 'body' ).trigger( 'tinvwl_wishlist_mark_products', [ data ]);
 
 		$.each( data.products, function( i, item ) {
+			if ( ! item || 'object' !== typeof item ) { return; }
 			var id = i,
 				e = $( 'a.tinvwl_add_to_wishlist_button[data-tinv-wl-product="' + id + '"]' );
 
@@ -1175,15 +1288,18 @@
 					j = false;
 
 				for ( var i in item ) {
+					item[i] = parseWishlistJSON( item[i] );
+					if ( ! item[i] || 'object' !== typeof item[i] || Array.isArray( item[i] ) ) { delete item[i]; continue; }
 
-					if ( item[i].hasOwnProperty( 'in' ) &&
+					if ( owns( item[i], 'in' ) &&
 						Array.isArray( item[i].in ) &&
 						( -1 < ( item[i].in || []).indexOf( id ) || -1 < ( item[i].in || []).indexOf( vid ) || vids.some( r => 0 <= ( item[i].in || []).indexOf( r ) ) ) ) {
 						j = true;
 					}
 				}
 
-				$( this ).attr( 'data-tinv-wl-list', JSON.stringify( item ) ).toggleClass( 'tinvwl-product-in-list', j ).toggleClass( 'tinvwl-product-make-remove', ( j && g ) ).attr( 'data-tinv-wl-action', ( ( j && g ) ? 'remove' : 'addto' ) );
+				var validItems = Array.isArray( item ) ? item.filter( function( value ) { return !! value; } ) : item;
+				$( this ).attr( 'data-tinv-wl-list', JSON.stringify( validItems ) ).toggleClass( 'tinvwl-product-in-list', j ).toggleClass( 'tinvwl-product-make-remove', ( j && g ) ).attr( 'data-tinv-wl-action', ( ( j && g ) ? 'remove' : 'addto' ) );
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_product_marked', [ this, j ]);
 			});
@@ -1220,11 +1336,15 @@
 	 *
 	 * @param {string} hash - The hash value to set.
 	 */
-	function set_hash( hash ) {
-		if ( $supports_html5_storage ) {
-			localStorage.setItem( hash_key, hash );
-			sessionStorage.setItem( hash_key, hash );
-			mark_products( JSON.parse( hash ) );
+	function set_hash( hash, notify ) {
+		var data = wishlistData( hash );
+		if ( ! data ) { return; }
+		if ( false !== notify ) { wishlistRevision++; }
+		wishlistSnapshot = data;
+		mark_products( data );
+		if ( false !== notify ) {
+			// Non-secret wake-up token; reads never publish it, preventing cross-tab loops.
+			$.tinvwlStorage.set( 'localStorage', hash_key, 'tinvwl:' + Date.now() + ':' + Math.random() );
 		}
 	}
 
@@ -1265,42 +1385,166 @@
 		}, 500 );
 	}
 
-	/**
-	 * Sets up a focus trap for a specified element.
-	 * @param {HTMLElement} el - The element to trap the focus within.
-	 */
-	function FocusTrap( el ) {
+	// One lifecycle for native result dialogs and pre-rendered modal panels.
+	var modalStack = [], modalOpener = null, modalSequence = 0, movingModalFocus = false;
+	var modalSelector = '.tinv-wishlist .tinv-modal.tinv-modal-open';
+	var modalCloseSelector = '.tinv-close-modal, .tinvwl_button_close, .tinv-overlay';
 
-		// Find all focusable elements within the specified element
-		var inputs = $( el ).find( 'select, input, textarea, button, a' ).filter( ':visible' );
+	function modalConnected( element ) {
+		return element && document.documentElement.contains( element );
+	}
 
-		var firstInput = inputs.first();
-		var lastInput = inputs.last();
-
-		// Set focus on the first input and then blur it to prevent immediate focus
-		firstInput.focus().blur();
-
-		/**
-		 * Redirects the tab key press from the last input to the first input.
-		 * @param {KeyboardEvent} e - The keyboard event object.
-		 */
-		lastInput.on( 'keydown', function( e ) {
-			if ( 9 === e.which && ! e.shiftKey ) {
-				e.preventDefault();
-				firstInput.focus();
-			}
-		});
-
-		/**
-		 * Redirects the shift + tab key press from the first input to the last input.
-		 * @param {KeyboardEvent} e - The keyboard event object.
-		 */
-		firstInput.on( 'keydown', function( e ) {
-			if ( 9 === e.which && e.shiftKey ) {
-				e.preventDefault();
-				lastInput.focus();
-			}
+	function modalFocusable( panel ) {
+		return $( panel ).find( 'a[href], area[href], button, input:not([type="hidden"]), select, textarea, [tabindex], [contenteditable="true"]' ).filter( function() {
+			return ! $( this ).is( ':disabled' ) && 0 <= this.tabIndex && $( this ).is( ':visible' ) && ! $( this ).closest( '[inert]' ).length;
 		});
 	}
 
-}( jQuery ) );
+	function modalFocus( element ) {
+		if ( ! modalConnected( element ) || ! $( element ).is( ':visible' ) || $( element ).is( ':disabled' ) ) { return false; }
+		movingModalFocus = true;
+		element.focus();
+		movingModalFocus = false;
+		return document.activeElement === element;
+	}
+
+	function modalFocusFirst( entry ) {
+		modalFocus( modalFocusable( entry.panel )[0] || entry.panel );
+		// Pre-rendered panels become focusable after the visibility transition starts rendering.
+		var attempts = 0;
+		var frame = window.requestAnimationFrame || function( callback ) { window.setTimeout( callback, 16 ); };
+		function finishOpening() {
+			if ( modalStack[modalStack.length - 1] === entry && ! entry.panel.contains( document.activeElement ) ) {
+				if ( ! modalFocus( modalFocusable( entry.panel )[0] || entry.panel ) && ++attempts < 3 ) { frame( finishOpening ); }
+			}
+		}
+		frame( finishOpening );
+	}
+
+	function modalOrigin( element ) {
+		var opener = $( element )[0], parent = $( opener ).closest( '.tinv-modal' );
+		var entry = parent.data( 'tinvwlModalState' );
+		return entry && ! parent.hasClass( 'tinv-modal-open' ) ? entry.opener : opener;
+	}
+
+	function prepareModal( modal, opener ) {
+		var panel = $( modal ).find( '.tinv-modal-inner' ).first();
+		if ( ! panel.length ) { panel = $( modal ); }
+		panel.attr( 'role', 'dialog' );
+		if ( ! panel.attr( 'tabindex' ) ) { panel.attr( 'tabindex', '-1' ); }
+		if ( ! panel.attr( 'aria-label' ) && ! panel.attr( 'aria-labelledby' ) ) {
+			var heading = panel.find( 'h1, h2, h3, h4, h5, h6' ).first();
+			if ( heading.length && $.trim( heading.text() ) ) {
+				if ( ! heading.attr( 'id' ) ) { heading.attr( 'id', 'tinvwl-modal-title-' + ( ++modalSequence ) ); }
+				panel.attr( 'aria-labelledby', heading.attr( 'id' ) );
+			} else {
+				var label = $.trim( panel.find( '.tinv-txt, .tinvwl-txt, .delete-notification' ).first().text() );
+				panel.attr( 'aria-label', label || tinvwl_add_to_wishlist.i18n_modal_title );
+			}
+		}
+		$( modal ).find( '.tinv-close-modal, .tinvwl_button_close' ).each( function() {
+			var button = $( this );
+			if ( ! $.trim( button.text() ) && ! button.attr( 'aria-label' ) && ! button.attr( 'aria-labelledby' ) && ! button.attr( 'title' ) ) {
+				button.attr( 'aria-label', tinvwl_add_to_wishlist.i18n_modal_close );
+			}
+		});
+		if ( opener && modalConnected( opener ) ) {
+			if ( ! modal.id ) { modal.id = 'tinvwl-modal-' + ( ++modalSequence ); }
+			$( opener ).attr({ 'aria-haspopup': 'dialog', 'aria-controls': modal.id, 'aria-expanded': 'true' });
+		}
+		var entry = { modal: modal, panel: panel[0], opener: opener };
+		$( modal ).data( 'tinvwlModalState', entry );
+		return entry;
+	}
+
+	function syncModals() {
+		var previous = modalStack[modalStack.length - 1];
+		var opened = $( modalSelector ).filter( ':visible' ).get();
+		var remaining = modalStack.filter( function( entry ) {
+			if ( 0 <= opened.indexOf( entry.modal ) ) { return true; }
+			$( entry.panel ).removeAttr( 'aria-modal' );
+			if ( entry.opener ) { $( entry.opener ).attr( 'aria-expanded', 'false' ); }
+			return false;
+		});
+		$.each( opened, function( index, modal ) {
+			if ( remaining.some( function( entry ) { return entry.modal === modal; } ) ) { return; }
+			// A replaced result retains the original opener; a nested one uses its own trigger.
+			var opener = modalOpener || ( previous && ! modalConnected( previous.modal ) ? previous.opener : document.activeElement );
+			remaining.push( prepareModal( modal, opener ) );
+			modalOpener = null;
+		});
+		modalOpener = null;
+		modalStack = remaining;
+		var active = modalStack[modalStack.length - 1];
+		$.each( modalStack, function( index, entry ) {
+			if ( entry === active ) { $( entry.panel ).attr( 'aria-modal', 'true' ); }
+			else { $( entry.panel ).removeAttr( 'aria-modal' ); }
+		});
+		if ( active === previous ) { return; }
+		if ( previous && ! modalConnected( previous.modal ) && active && active.opener === previous.opener ) {
+			modalFocusFirst( active );
+		} else if ( previous && remaining.indexOf( previous ) < 0 && modalFocus( previous.opener ) ) {
+			// Closing a nested result returns to the still-open parent before leaving the stack.
+			if ( active && ! active.panel.contains( document.activeElement ) ) { modalFocusFirst( active ); }
+		} else if ( active ) {
+			modalFocusFirst( active );
+		}
+	}
+
+	$.tinvwlModal = {
+		open: function( modal, opener ) {
+			if ( ! $( modal ).length ) { return; }
+			modalOpener = modalOrigin( opener ) || document.activeElement;
+			$( modal ).addClass( 'tinv-modal-open' );
+			syncModals();
+		},
+		sync: function( opener ) {
+			modalOpener = modalOrigin( opener ) || null;
+			syncModals();
+		}
+	};
+
+	$( document ).on( 'keydown.tinvwlModal', function( event ) {
+		var active = modalStack[modalStack.length - 1];
+		if ( ! active ) { return; }
+		if ( 'Escape' === event.key || 27 === event.which ) {
+			event.preventDefault();
+			event.stopPropagation();
+			var close = $( active.modal ).find( modalCloseSelector ).filter( function() { return ! $( this ).is( ':disabled' ); } ).first();
+			if ( close.length ) { close.trigger( 'click' ); }
+			else {
+				$( active.modal ).removeClass( 'tinv-modal-open' );
+				$( 'body' ).trigger( 'tinvwl_modal_closed', [ active.modal ] );
+			}
+			syncModals();
+		} else if ( 'Tab' === event.key || 9 === event.which ) {
+			var targets = modalFocusable( active.panel );
+			var first = targets[0], last = targets[targets.length - 1], focused = document.activeElement;
+			if ( ! targets.length || ! active.panel.contains( focused ) || focused === active.panel || ( event.shiftKey ? focused === first : focused === last ) ) {
+				event.preventDefault();
+				modalFocus( ( event.shiftKey ? last : first ) || active.panel );
+			}
+		}
+	}).on( 'focusin.tinvwlModal', function( event ) {
+		var active = modalStack[modalStack.length - 1];
+		if ( ! movingModalFocus && active && modalConnected( active.modal ) && $( active.modal ).hasClass( 'tinv-modal-open' ) && ! active.panel.contains( event.target ) ) {
+			modalFocusFirst( active );
+		}
+	});
+
+	$( function() {
+		syncModals();
+		if ( window.MutationObserver ) {
+			new MutationObserver( syncModals ).observe( document.body, { subtree: true, childList: true, attributes: true, attributeFilter: [ 'class' ] } );
+		}
+	});
+
+	function FocusTrap( element, opener ) {
+		modalOpener = modalOrigin( opener ) || null;
+		syncModals();
+	}
+
+	function removeModalResult( modal ) {
+		// Let native close/updatepage delegates see their still-connected result before removal.
+		window.setTimeout( function() { modal.remove(); }, 0 );
+	}}( jQuery ) );

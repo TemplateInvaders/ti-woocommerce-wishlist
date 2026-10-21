@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 				:
 			</dt>
 		<?php } ?>
-		<?php if ($data['display']) { ?>
+		<?php if (is_numeric($data['display']) || !empty($data['display'])) { ?>
 			<dd class="variation-<?php echo sanitize_html_class($data['key']); ?>"><?php echo esc_html($data['display']); ?></dd>
 		<?php } ?>
 	<?php endforeach; ?>

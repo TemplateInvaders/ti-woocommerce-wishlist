@@ -194,7 +194,7 @@ class TInvWL_Public_AddToWishlist
 
 			$stats_sql = "SELECT SUM(`count`) as `stats_count` FROM (SELECT COUNT(`B`.`ID`) AS `count` FROM `{$table_stats}` AS `A` LEFT JOIN `{$table}` AS `C` ON `C`.`wishlist_id` = `A`.`wishlist_id` AND `C`.`product_id` = `A`.`product_id` AND `C`.`variation_id` = `A`.`variation_id` LEFT JOIN `{$table_lists}` AS `B` ON `C`.`wishlist_id` = `B`.`ID` LEFT JOIN `{$table_lists}` AS `G` ON `C`.`wishlist_id` = `G`.`ID` AND `G`.`author` = 0 WHERE `A`.`product_id` > 0 GROUP BY `A`.`product_id`, `A`.`variation_id` HAVING `count` > 0 LIMIT 0, 9999999) AS `A`";
 
-			$stats_results = $wpdb->get_results($stats_sql, ARRAY_A);
+			$stats_results = TInvWL_Product::filter_readable_products( (array) $wpdb->get_results($stats_sql, ARRAY_A) );
 
 			if (!empty($stats_results)) {
 				foreach ($stats_results as $product_stats) {
@@ -216,6 +216,12 @@ class TInvWL_Public_AddToWishlist
 	{
 		if (is_null(filter_input(INPUT_POST, 'tinv_wishlist_id'))) {
 			return false;
+		} elseif (!TInvWL_Request_Nonce::verify(filter_input(INPUT_POST, 'tinvwl_add_nonce'), 'tinvwl_add_to_wishlist')) {
+			wp_send_json(array(
+				'status' => false,
+				'error' => 'invalid_nonce',
+				'msg' => __('Your session has expired. Please refresh the page and try again.', 'ti-woocommerce-wishlist'),
+			), 403);
 		} else {
 			remove_action('init', 'woocommerce_add_to_cart_action');
 			remove_action('wp_loaded', 'WC_Form_Handler::add_to_cart_action', 20);
@@ -246,7 +252,7 @@ class TInvWL_Public_AddToWishlist
 				ob_clean();
 				wp_send_json($data);
 			}
-			$wlp = new TInvWL_Product($wishlist, $this->_name);
+			$wlp = new TInvWL_Product( $wishlist, $this->_name, true );
 		} elseif (tinv_get_option('general', 'require_login')) {
 			$data['status'] = false;
 			$data['icon'] = 'icon_big_times';
@@ -269,7 +275,7 @@ class TInvWL_Public_AddToWishlist
 		} else {
 			$wl = new TInvWL_Wishlist($this->_name);
 			$wishlist = $wl->add_sharekey_default();
-			$wlp = new TInvWL_Product($wishlist);
+			$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 		}
 
 		$status = true;
@@ -301,14 +307,16 @@ class TInvWL_Public_AddToWishlist
 						$variations = $product->get_children();
 
 						foreach ($variations as $variation_id) {
+							$prepared_form = apply_filters('tinvwl_addtowishlist_add_form', $form);
 							$quantity = 1;
 							$allowed_adding = !count($wlp->get_wishlist(array(
 								'product_id' => $post['product_id'],
 								'variation_id' => $variation_id,
+								'meta' => $prepared_form,
 								'external' => false,
 							)));
 							if (tinv_get_option('general', 'simple_flow') && 'remove' === $post['product_action']) {
-								if ($wlp->remove_product_from_wl(0, $post['product_id'], $variation_id, apply_filters('tinvwl_addtowishlist_add_form', $form))) {
+								if ($wlp->remove_product_from_wl(0, $post['product_id'], $variation_id, $prepared_form)) {
 									$data['msg'][] = apply_filters('tinvwl_removed_from_wishlist_text', tinv_get_option('general', 'text_removed_from'));
 									$data['removed'] = true;
 									$status = false;
@@ -320,7 +328,7 @@ class TInvWL_Public_AddToWishlist
 								'product_id' => $post['product_id'],
 								'variation_id' => $variation_id,
 								'quantity' => $quantity,
-							)))
+							)), $prepared_form)
 							) {
 								$data['msg'][] = apply_filters('tinvwl_added_to_wishlist_text', tinv_get_option('general', 'text_added_to'));
 							} else {
@@ -340,16 +348,17 @@ class TInvWL_Public_AddToWishlist
 					}
 
 					$post['original_product_id'] = $variation_id;
+					$prepared_form = apply_filters('tinvwl_addtowishlist_add_form', $form);
 
 					$quantity = 1;
 					$allowed_adding = !count($wlp->get_wishlist(array(
 						'product_id' => $post['product_id'],
 						'variation_id' => $variation_id,
-						'meta' => apply_filters('tinvwl_addtowishlist_add_form', $form),
+						'meta' => $prepared_form,
 						'external' => false,
 					)));
 					if (tinv_get_option('general', 'simple_flow') && 'remove' === $post['product_action']) {
-						if ($wlp->remove_product_from_wl(0, $post['product_id'], $variation_id, apply_filters('tinvwl_addtowishlist_add_form', $form))) {
+						if ($wlp->remove_product_from_wl(0, $post['product_id'], $variation_id, $prepared_form)) {
 							$data['msg'][] = apply_filters('tinvwl_removed_from_wishlist_text', tinv_get_option('general', 'text_removed_from'));
 							$data['removed'] = true;
 							$status = false;
@@ -361,7 +370,7 @@ class TInvWL_Public_AddToWishlist
 						'product_id' => $post['product_id'],
 						'quantity' => $quantity,
 						'variation_id' => $variation_id,
-					)), apply_filters('tinvwl_addtowishlist_add_form', $form))) {
+					)), $prepared_form)) {
 						$data['msg'][] = apply_filters('tinvwl_added_to_wishlist_text', tinv_get_option('general', 'text_added_to'));
 					} else {
 						$status = false;
@@ -369,14 +378,15 @@ class TInvWL_Public_AddToWishlist
 					break;
 				case 'simple' :
 				default:
+					$prepared_form = apply_filters('tinvwl_addtowishlist_add_form', $form);
 					$quantity = 1;
 					$allowed_adding = !count($wlp->get_wishlist(array(
 						'product_id' => $post['product_id'],
-						'meta' => apply_filters('tinvwl_addtowishlist_add_form', $form),
+						'meta' => $prepared_form,
 						'external' => false,
 					)));
 					if (tinv_get_option('general', 'simple_flow') && 'remove' === $post['product_action']) {
-						if ($wlp->remove_product_from_wl(0, $post['product_id'], 0, apply_filters('tinvwl_addtowishlist_add_form', $form))) {
+						if ($wlp->remove_product_from_wl(0, $post['product_id'], 0, $prepared_form)) {
 							$data['msg'][] = apply_filters('tinvwl_removed_from_wishlist_text', tinv_get_option('general', 'text_removed_from'));
 							$data['removed'] = true;
 							$status = false;
@@ -387,7 +397,7 @@ class TInvWL_Public_AddToWishlist
 					} elseif ($wlp->add_product(apply_filters('tinvwl_addtowishlist_add', array(
 						'product_id' => $post['product_id'],
 						'quantity' => $quantity,
-					)), apply_filters('tinvwl_addtowishlist_add_form', $form))) {
+					)), $prepared_form)) {
 						$data['msg'][] = apply_filters('tinvwl_added_to_wishlist_text', tinv_get_option('general', 'text_added_to'));
 					} else {
 						$status = false;
@@ -415,14 +425,20 @@ class TInvWL_Public_AddToWishlist
 		$data['msg'] = implode('<br>', $data['msg']);
 
 		$product = $original_product = wc_get_product($post['product_id']);
+		if ( ! TInvWL_Product::can_read_product( $product ) ) {
+			$product = $original_product = false;
+		}
 
 		if ($post['original_product_id'] && $post['product_id'] !== $post['original_product_id']) {
 			$original_product = wc_get_product($post['original_product_id']);
+			if ( ! TInvWL_Product::can_read_product( $original_product ) ) {
+				$original_product = false;
+			}
 		}
 
 		if (!empty($data['msg'])) {
 			if ($original_product) {
-				$data['msg'] = tinvwl_message_placeholders($data['msg'], $original_product, $wishlist);
+				$data['msg'] = tinvwl_message_placeholders($data['msg'], $original_product, $wishlist, true);
 			}
 			$data['msg'] = apply_filters('tinvwl_addtowishlist_message_after', $data['msg'], $data, $post, $form, $product);
 			$data['wishlist'] = $wishlist;
@@ -523,7 +539,7 @@ class TInvWL_Public_AddToWishlist
 			}
 
 			// Add the wishlist fields to the SELECT clause
-			$select_fields .= ", {$table_lists}.ID as wishlist_id, {$table_lists}.status as wishlist_status,
+			$select_fields .= ", {$table_lists}.author as author, {$table_lists}.ID as wishlist_id, {$table_lists}.status as wishlist_status,
                            {$table_lists}.title as wishlist_title, {$table_lists}.share_key as wishlist_share_key";
 
 			// Build base query
@@ -566,15 +582,16 @@ class TInvWL_Public_AddToWishlist
 			$where_conditions = array('1=1');
 			if (!empty($data) && is_array($data)) {
 				foreach ($data as $field => $value) {
+					$owner_table = 'author' === $field ? $table_lists : $table;
 					if (is_array($value)) {
 						$placeholders = array_fill(0, count($value), '%s');
 						$where_conditions[] = $wpdb->prepare(
-							"{$table}.{$field} IN (" . implode(',', $placeholders) . ")",
+							"{$owner_table}.{$field} IN (" . implode(',', $placeholders) . ")",
 							$value
 						);
 					} else {
 						$where_conditions[] = $wpdb->prepare(
-							"{$table}.{$field} = %s",
+							"{$owner_table}.{$field} = %s",
 							$value
 						);
 					}
@@ -589,7 +606,7 @@ class TInvWL_Public_AddToWishlist
 			$sql .= $wpdb->prepare(" LIMIT %d, %d", $default['offset'], $default['count']);
 
 			// Execute query
-			$results = $wpdb->get_results($sql, ARRAY_A);
+			$results = TInvWL_Product::filter_readable_products( (array) $wpdb->get_results($sql, ARRAY_A) );
 
 			// Process results
 			if (!empty($results)) {
@@ -636,7 +653,7 @@ class TInvWL_Public_AddToWishlist
                       HAVING count > 0
                       LIMIT 0, 9999999";
 
-			$stats_results = $wpdb->get_results($stats_sql, ARRAY_A);
+			$stats_results = TInvWL_Product::filter_readable_products( (array) $wpdb->get_results($stats_sql, ARRAY_A) );
 
 			if (!empty($stats_results)) {
 				foreach ($stats_results as $product_stats) {
@@ -724,7 +741,7 @@ class TInvWL_Public_AddToWishlist
 			'variation',
 			'variable-subscription',
 		));
-		$wlp = new TInvWL_Product();
+		$wlp = new TInvWL_Product( array(), TINVWL_PREFIX, true );
 		$wishlists = $this->user_wishlists();
 		$ids = array();
 		foreach ($wishlists as $key => $wishlist) {
@@ -869,7 +886,7 @@ class TInvWL_Public_AddToWishlist
 
 		}
 
-		if (empty($this->product) || !($this->product instanceof WC_Product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
+		if (!TInvWL_Product::can_read_product($this->product) || !apply_filters('tinvwl_allow_addtowishlist_single_product', true, $this->product)) {
 			return false;
 		}
 

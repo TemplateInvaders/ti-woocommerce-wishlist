@@ -129,6 +129,26 @@ class TInvWL_Public_Wishlist_Ajax {
 		if ( ! $wishlist && empty( $post['tinvwl-sharekey'] ) ) {
 			$wishlist = $guest_wishlist;
 		}
+		// A first visit has no stored wishlist until a product is added.
+		if ( ! $wishlist && ! $guest_wishlist && empty( $post['tinvwl-sharekey'] ) && 'get_data' === ( $post['tinvwl-action'] ?? '' ) ) {
+			$response = [
+				'status'        => true,
+				'action'        => 'get_data',
+				'icon'          => 'icon_big_heart_check',
+				'msg'           => '',
+				'content'       => tinvwl_shortcode_view( [
+					'paged'          => $post['tinvwl-paged'] ?? 1,
+					'sharekey'       => false,
+					'lists_per_page' => $post['tinvwl-per-page'] ?? 0,
+				] ),
+				'wishlists_data' => TInvWL_Public_AddToWishlist::instance()->get_wishlists_data( false ),
+			];
+			if ( tinv_get_option( 'table', 'hide_popup' ) ) {
+				unset( $response['msg'] );
+			}
+			wp_send_json( $response );
+			return;
+		}
 		// Check before hooks, product queries, cart changes, and response rendering.
 		if ( ! $wl->can_view( $wishlist ) ) {
 			wp_send_json( [
@@ -142,6 +162,17 @@ class TInvWL_Public_Wishlist_Ajax {
 		$guest_wishlist = $wl->is_owner( $guest_wishlist ) ? $guest_wishlist : [];
 
 		do_action( 'tinvwl_ajax_actions_before', $wishlist, $post, $guest_wishlist );
+
+		// A login transfer may have committed while the before-action callbacks ran.
+		if ( ! empty( $wishlist['ID'] ) ) {
+			$fresh = $wl->get_by_id( $wishlist['ID'] );
+			if ( ! $fresh || ! $wl->can_view( $fresh ) ) {
+				wp_send_json( array( 'status' => false, 'msg' => __( 'Wishlist is not found!', 'ti-woocommerce-wishlist' ), 'icon' => 'icon_big_times' ), 404 );
+				return;
+			}
+			$wishlist = $fresh;
+			$wishlist['is_owner'] = $wl->is_owner( $fresh );
+		}
 
 		$post['wishlist_qty'] = 1;
 		$action               = $post['tinvwl-action'];
@@ -160,9 +191,9 @@ class TInvWL_Public_Wishlist_Ajax {
 				$product = $post['tinvwl-product_id'];
 
 				if ( 0 === $wishlist['ID'] ) {
-					$wlp = TInvWL_Product_Local::instance();
+					$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 				} else {
-					$wlp = new TInvWL_Product( $wishlist );
+					$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 				}
 
 				if ( empty( $wlp ) ) {
@@ -204,9 +235,9 @@ class TInvWL_Public_Wishlist_Ajax {
 				$product_id = $post['tinvwl-product_id'];
 
 				if ( 0 === $wishlist['ID'] ) {
-					$wlp = TInvWL_Product_Local::instance();
+					$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 				} else {
-					$wlp = new TInvWL_Product( $wishlist );
+					$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 				}
 
 				if ( empty( $wlp ) ) {
@@ -278,9 +309,9 @@ class TInvWL_Public_Wishlist_Ajax {
 				}
 
 				if ( 0 === $wishlist['ID'] ) {
-					$wlp = TInvWL_Product_Local::instance();
+					$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 				} else {
-					$wlp = new TInvWL_Product( $wishlist );
+					$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 				}
 
 				if ( empty( $wlp ) ) {
@@ -297,7 +328,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 				$titles = [];
 				foreach ( $products as $product ) {
-					if ( $wlp->remove_product_from_wl( $product['wishlist_id'], $product['product_id'], $product['variation_id'], $product['meta'] ) ) {
+					if ( $wlp->remove_item_from_wl( $product ) ) {
 						$titles[] = sprintf(
 							__( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ),
 							is_callable( [
@@ -331,9 +362,9 @@ class TInvWL_Public_Wishlist_Ajax {
 					$wishlist_product = null;
 
 					if ( 0 === $wishlist['ID'] ) {
-						$wishlist_product = TInvWL_Product_Local::instance();
+						$wishlist_product = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 					} else {
-						$wishlist_product = new TInvWL_Product( $wishlist );
+						$wishlist_product = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 					}
 
 					$wishlist_item = $wishlist_product->get_wishlist( array( 'ID' => $id ) );
@@ -341,7 +372,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					$product_data = wc_get_product( $wishlist_item['variation_id'] ?: $wishlist_item['product_id'] );
 
-					if ( ! $product_data || 'trash' === $product_data->get_status() ) {
+					if ( ! TInvWL_Product::can_read_product( $product_data ) ) {
 						continue;
 					}
 
@@ -394,7 +425,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					foreach ( $result as $data ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $data['quantity'] > 1 ? absint( $data['quantity'] ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( 1.0 !== (float) $data['quantity'] ? esc_html( wc_format_localized_decimal( $data['quantity'] ) ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
 						$count    += $data['quantity'];
 					}
 
@@ -424,7 +455,7 @@ class TInvWL_Public_Wishlist_Ajax {
 				foreach ( $products as $_product ) {
 					$product_data = wc_get_product( $_product['variation_id'] ?: $_product['product_id'] );
 
-					if ( ! $product_data || 'trash' === $product_data->get_status() ) {
+					if ( ! TInvWL_Product::can_read_product( $product_data ) ) {
 						continue;
 					}
 
@@ -475,7 +506,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					foreach ( $result as $data ) {
 						/* translators: %s: product name */
-						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( $data['quantity'] > 1 ? absint( $data['quantity'] ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
+						$titles[] = apply_filters( 'woocommerce_add_to_cart_qty_html', ( 1.0 !== (float) $data['quantity'] ? esc_html( wc_format_localized_decimal( $data['quantity'] ) ) . ' &times; ' : '' ), $data['product']->get_id() ) . apply_filters( 'woocommerce_add_to_cart_item_name_in_quotes', sprintf( _x( '&ldquo;%s&rdquo;', 'Item name in quotes', 'ti-woocommerce-wishlist' ), $data['product']->get_name() ), $data['product']->get_id() );
 						$count    += $data['quantity'];
 					}
 

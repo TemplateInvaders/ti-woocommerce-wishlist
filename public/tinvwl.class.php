@@ -128,8 +128,10 @@ class TInvWL_Public_TInvWL {
 		add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules_raw' ), 9999999 );
 
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
+		add_filter( 'request', array( $this, 'front_page_query_vars' ) );
 		add_action( 'wp', array( $this, 'analytics_referer' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
+		add_action( 'tinvwl_retry_user_cleanup', array( $this, 'retry_user_cleanup' ) );
 
 		add_action( 'wp_ajax_nopriv_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );
 		add_action( 'wp_ajax_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );
@@ -194,7 +196,7 @@ class TInvWL_Public_TInvWL {
 			return false;
 		}
 
-		$wlp = new TInvWL_Product();
+		$wlp = new TInvWL_Product( array(), TINVWL_PREFIX, true );
 
 		$items = $wlp->get( array( 'ID' => $product_id ) );
 		$item  = array_shift( $items );
@@ -206,9 +208,11 @@ class TInvWL_Public_TInvWL {
 		}
 		$wishlist = tinv_wishlist_get( $item['wishlist_id'] );
 		if ( ! $wishlist ) {
-			wp_redirect( remove_query_arg( 'tiwp' ) );
+			wp_redirect( remove_query_arg( array( 'tiwp', 'tiwps' ) ) );
 			return;
 		}
+
+		TInvWL_Public_Cart::remember_product_source( $item, $wishlist );
 
 		$wla = new TInvWL_Analytics( $wishlist, $this->_name );
 		if ( $wishlist['is_owner'] ) {
@@ -216,7 +220,7 @@ class TInvWL_Public_TInvWL {
 		} else {
 			$wla->click_product_from_wl( $item['product_id'], $item['variation_id'] );
 		}
-		wp_redirect( remove_query_arg( 'tiwp' ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
+		wp_redirect( remove_query_arg( array( 'tiwp', 'tiwps' ) ) ); // @codingStandardsIgnoreLine WordPress.VIP.RestrictedFunctions.wp_redirect
 	}
 
 	/**
@@ -408,6 +412,21 @@ class TInvWL_Public_TInvWL {
 		return $public_var;
 	}
 
+	/** Keep plugin query parameters on the static front page, rather than the posts index. */
+	function front_page_query_vars( $vars ) {
+		$front = absint( get_option( 'page_on_front' ) );
+		if ( ! $front || 'page' !== get_option( 'show_on_front' )
+			|| ! array_intersect( array_keys( $vars ), array( 'tinvwlID', 'wl_paged' ) ) ) {
+			return $vars;
+		}
+		// Explicit pages, searches, archives, endpoints and unmatched paths keep their own routing.
+		$allowed = array( 'tinvwlID', 'wl_paged', 'paged', 'page', 'preview', 'cpage', 'embed', 'lang' );
+		if ( ! array_diff( array_keys( $vars ), $allowed ) ) {
+			$vars['page_id'] = $front;
+		}
+		return $vars;
+	}
+
 	/**
 	 * Create ogp namespace
 	 *
@@ -581,6 +600,10 @@ class TInvWL_Public_TInvWL {
 			'update_wishlists_data'      => apply_filters( 'tinvwl_update_wishlists_data', false ),
 			'hash_key'                   => 'ti_wishlist_data_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ),
 			'nonce'                      => wp_create_nonce( 'wp_rest' ),
+			'nonce_url'                  => WC_AJAX::get_endpoint( 'tinvwl_request_nonce' ),
+			'i18n_ajax_error'            => __( 'Unable to update wishlist. Please try again.', 'ti-woocommerce-wishlist' ),
+			'i18n_modal_title'           => __( 'Wishlist', 'ti-woocommerce-wishlist' ),
+			'i18n_modal_close'           => __( 'Close', 'ti-woocommerce-wishlist' ),
 			'rest_root'                  => esc_url_raw( get_rest_url() ),
 			'plugin_url'                 => esc_url_raw( TINVWL_URL ),
 			'wc_ajax_url'                => WC_AJAX::get_endpoint( 'tinvwl' ),
@@ -653,45 +676,222 @@ class TInvWL_Public_TInvWL {
 	 * @param integer $user_id New user id.
 	 */
 	function transfert_local_to_user_register( $user_id ) {
-
-//		set_transient( '_tinvwl_update_wishlists_data', '1' );
-
-		$wl       = new TInvWL_Wishlist( $this->_name );
-		$wishlist = $wl->get_by_sharekey_default();
-		if ( ! empty( $wishlist ) ) {
-			$wishlist = array_shift( $wishlist );
-			if ( empty( $wishlist['author'] ) ) {
-				$wlpl      = new TInvWL_Product( $wishlist );
-				$wl->user  = $user_id;
-				$_wishlist = $wl->get_by_user_default( $user_id );
-				if ( empty( $_wishlist ) ) {
-					$wishlist['author'] = $user_id;
-					unset( $wishlist['title'] );
-					$wl->update( $wishlist['ID'], $wishlist );
-					$wlp      = new TInvWL_Product( $wishlist, $this->_name );
-					$products = $wlp->get_wishlist( array( 'external' => false ) );
-					foreach ( $products as $product ) {
-						$product['author'] = $user_id;
-						$wlp->update( $product );
-					}
-				} else {
-					$_wishlist = array_shift( $_wishlist );
-					if ( $wishlist['ID'] != $_wishlist['ID'] ) {
-						$wlp      = new TInvWL_Product( $_wishlist, $this->_name );
-						$products = $wlpl->get_wishlist( array( 'external' => false ) );
-						$added    = true;
-						foreach ( $products as $product ) {
-							unset( $product['author'] );
-							unset( $product['wishlist_id'] );
-							$added = $added && $wlp->add_product( $product );
-						}
-						if ( $added ) {
-							$wlpl->remove_product_from_wl();
+		global $wpdb;
+		$user_id = absint( $user_id );
+		if ( ! $user_id || ! get_userdata( $user_id ) ) {
+			return false;
+		}
+		$wl          = new TInvWL_Wishlist( $this->_name );
+		$pending_key = TInvWL_Wishlist::guest_transfer_pending_key();
+		$blog_id     = get_current_blog_id();
+		$multisite   = is_multisite();
+		$lock        = 'tinvwl_merge_' . md5( $wpdb->prefix . '|' . $user_id );
+		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock ) ) ) {
+			return false;
+		}
+		$transaction = false;
+		$source_lock = null;
+		try {
+			$pending = get_user_meta( $user_id, $pending_key, true );
+			$sources = array();
+			if ( '' !== $pending && ( ! is_array( $pending ) || (int) ( $pending['user_id'] ?? 0 ) !== $user_id
+				|| ( $multisite && (int) ( $pending['blog_id'] ?? 0 ) !== $blog_id ) ) ) {
+				return false; // Keep mismatched metadata available for recovery; never replay it here.
+			}
+			$append_sources = static function ( $pending ) use ( &$sources ) {
+				$stored = isset( $pending['sources'] ) && is_array( $pending['sources'] ) ? $pending['sources'] : array( $pending );
+				foreach ( $stored as $source ) {
+					if ( is_array( $source ) && ! empty( $source['ID'] ) && TInvWL_Wishlist::is_valid_share_key( $source['share_key'] ?? '' ) ) {
+						$id = absint( $source['ID'] );
+						if ( ! isset( $sources[ $id ] ) ) {
+							$sources[ $id ] = array( 'ID' => $id, 'share_key' => $source['share_key'] );
 						}
 					}
-					$wl->set_sharekey( $_wishlist['share_key'] );
+				}
+			};
+			if ( is_array( $pending ) ) {
+				$append_sources( $pending );
+			}
+			if ( $multisite ) {
+				// The shared legacy record is a read-only archive. Local IDs/keys do not prove its origin.
+				$legacy = get_user_meta( $user_id, '_tinvwl_pending_guest_transfer', true );
+				if ( is_array( $legacy ) && (int) ( $legacy['user_id'] ?? 0 ) === $user_id
+					&& (int) ( $legacy['blog_id'] ?? 0 ) === $blog_id ) {
+					$append_sources( $legacy );
 				}
 			}
+			// Always capture this browser's verified guest list, even when another source is pending.
+			$wishlists = $wl->get_by_sharekey_default();
+			$wishlist  = array_shift( $wishlists );
+			if ( $wishlist && empty( $wishlist['author'] ) && $wl->is_owner( $wishlist ) ) {
+				$id = (int) $wishlist['ID'];
+				$sources[ $id ] = array( 'ID' => $id, 'share_key' => $wishlist['share_key'] );
+			}
+			if ( ! $sources ) {
+				return false;
+			}
+			$persist = static function () use ( $user_id, $pending_key, $blog_id, $multisite, &$sources ) {
+				if ( ! $sources ) {
+					delete_user_meta( $user_id, $pending_key );
+					return '' === get_user_meta( $user_id, $pending_key, true );
+				}
+				$state = array( 'user_id' => $user_id );
+				if ( $multisite ) {
+					$state['blog_id'] = $blog_id;
+				}
+				$state['sources'] = $sources;
+				update_user_meta( $user_id, $pending_key, $state );
+				return get_user_meta( $user_id, $pending_key, true ) === $state;
+			};
+			if ( ! $persist() ) {
+				return false;
+			}
+			$lists = $wpdb->prefix . $this->_name . '_lists';
+			$items = $wpdb->prefix . $this->_name . '_items';
+			$tables = $wpdb->get_results( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name IN (%s, %s)', $lists, $items ), ARRAY_A );
+			if ( ! is_array( $tables ) || 2 !== count( $tables ) ) {
+				return false;
+			}
+			foreach ( $tables as $table ) {
+				if ( ! in_array( strtolower( $table['Engine'] ), array( 'innodb', 'xtradb' ), true ) ) {
+					return false; // Never copy then delete when rollback cannot protect the source.
+				}
+			}
+			$last_key = '';
+			foreach ( $sources as $source_id => $pending_source ) {
+				$receiver = null;
+				$committed_actions = array();
+				$source_lock = 'tinvwl_item_' . md5( $items . '|' . $pending_source['ID'] );
+				if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $source_lock ) ) ) {
+					$source_lock = null;
+					continue; // Keep the verified source pending while an ordinary write completes.
+				}
+				// MySQL and MariaDB reject this noncommitting next-transaction setting inside an active transaction.
+				$suppressed = $wpdb->suppress_errors( true );
+				try {
+					$can_start = $wpdb->query( 'SET TRANSACTION READ WRITE' );
+				} finally {
+					$wpdb->suppress_errors( $suppressed );
+				}
+				if ( false === $can_start || false === $wpdb->query( 'START TRANSACTION' ) ) {
+					return false; // Leave the caller's transaction and all pending sources intact.
+				}
+				$transaction = true;
+				try {
+					$wishlist = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$lists` WHERE ID = %d AND share_key = %s FOR UPDATE", $pending_source['ID'], $pending_source['share_key'] ), ARRAY_A );
+					if ( $wpdb->last_error ) {
+						throw new RuntimeException( 'Could not read the pending guest wishlist.' );
+					}
+					if ( ! $wishlist || ( ! empty( $wishlist['author'] ) && (int) $wishlist['author'] !== $user_id ) ) {
+						$wpdb->query( 'ROLLBACK' );
+						$transaction = false;
+						unset( $sources[ $source_id ] );
+					} elseif ( (int) $wishlist['author'] === $user_id ) {
+						// A prior commit may have succeeded before its pending marker was cleared.
+						$wpdb->query( 'ROLLBACK' );
+						$transaction = false;
+						$last_key = $wishlist['share_key'];
+						unset( $sources[ $source_id ] );
+					} else {
+						$wl->user = $user_id;
+						$targets  = $wl->get_by_user_default( $user_id );
+						if ( $wpdb->last_error ) {
+							throw new RuntimeException( 'Could not read the account wishlist.' );
+						}
+						$target   = array_shift( $targets );
+						if ( ! $target ) {
+							// Keep the original adoption order for filters and product-update callbacks.
+							$wishlist['author'] = $user_id;
+							unset( $wishlist['title'] );
+							if ( ! $wl->update( $wishlist['ID'], $wishlist ) ) {
+								throw new RuntimeException( 'Could not assign the guest wishlist owner.' );
+							}
+						}
+						$source   = TInvWL_Product::for_storage( $wishlist, $this->_name );
+						$receiver = $target ? TInvWL_Product::for_storage( $target, $this->_name ) : $source;
+						$receiver->defer_product_actions();
+						$offset   = 0;
+						do {
+							$products = $source->get_wishlist( array( 'external' => false, 'count' => 100, 'offset' => $offset, 'order_by' => 'ID', 'order' => 'ASC' ) );
+							if ( $wpdb->last_error ) {
+								throw new RuntimeException( 'Could not read guest wishlist items.' );
+							}
+							foreach ( $products as $product ) {
+								$meta = isset( $product['meta'] ) && is_array( $product['meta'] ) ? $product['meta'] : array();
+								if ( $target ) {
+									$data = $product;
+									unset( $data['author'], $data['wishlist_id'] );
+									if ( ! $receiver->add_product( $data, $meta ) || 1 !== $wpdb->delete( $items, array( 'ID' => $product['ID'], 'wishlist_id' => $wishlist['ID'] ) ) ) {
+										throw new RuntimeException( 'Could not merge a guest wishlist item.' );
+									}
+								} else {
+									$product['author'] = $user_id;
+									if ( ! $receiver->update( $product, $meta, $product['ID'] ) ) {
+										throw new RuntimeException( 'Could not transfer a guest wishlist item.' );
+									}
+								}
+							}
+							if ( ! $target ) {
+								$offset += count( $products );
+							}
+						} while ( 100 === count( $products ) );
+						$remaining_sql  = "SELECT COUNT(*) FROM `$items` WHERE wishlist_id = %d" . ( $target ? '' : ' AND author <> %d' );
+						$remaining_args = $target ? array( $wishlist['ID'] ) : array( $wishlist['ID'], $user_id );
+						$remaining = $wpdb->get_var( $wpdb->prepare( $remaining_sql, $remaining_args ) );
+						if ( null === $remaining || (int) $remaining > 0 ) {
+							throw new RuntimeException( 'Guest wishlist transfer was incomplete.' );
+						}
+						if ( false === $wpdb->query( 'COMMIT' ) ) {
+							throw new RuntimeException( 'Could not commit guest wishlist transfer.' );
+						}
+						$transaction = false;
+						$last_key = $target ? $target['share_key'] : $wishlist['share_key'];
+						unset( $sources[ $source_id ] );
+						$committed_actions = $receiver->release_product_actions();
+					}
+				} catch ( Throwable $error ) {
+					if ( $transaction ) {
+						$wpdb->query( 'ROLLBACK' );
+						$transaction = false;
+					}
+					// A failed source remains pending, but must not block another verified guest session.
+					if ( $receiver ) {
+						$receiver->release_product_actions(); // Discard actions belonging to rolled-back writes.
+					}
+				}
+				$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $source_lock ) );
+				$source_lock = null;
+				$persisted = false;
+				try {
+					$persisted = $persist();
+				} finally {
+					foreach ( $committed_actions as $action ) {
+						try {
+							do_action( $action[0], $action[1] );
+						} catch ( Throwable $error ) {
+							// The data is already committed: a callback failure must not trigger a replay.
+							error_log( 'TI Wishlist guest transfer action failed: ' . $error->getMessage() );
+						}
+					}
+				}
+				if ( ! $persisted ) {
+					return false;
+				}
+			}
+			if ( $last_key ) {
+				$wl->set_sharekey( $last_key );
+			}
+			return empty( $sources );
+		} catch ( Throwable $error ) {
+			return false;
+		} finally {
+			if ( $transaction ) {
+				$wpdb->query( 'ROLLBACK' );
+			}
+			if ( $source_lock ) {
+				$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $source_lock ) );
+			}
+			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
 		}
 	}
 
@@ -767,16 +967,43 @@ class TInvWL_Public_TInvWL {
 	 * @param integer $id Removed userid.
 	 */
 	function delete_user_wishlist( $id ) {
-		$wl        = new TInvWL_Wishlist( $this->_name );
-		$wishlists = $wl->get( array(
-			'author' => $id,
-			'count'  => 9999999,
-		) );
-		if ( ! empty( $wishlists ) ) {
+		global $wpdb;
+		$id = absint( $id );
+		if ( ! $id ) {
+			return false;
+		}
+		$wl = new TInvWL_Wishlist( $this->_name );
+		$wishlists = $wl->get( array( 'author' => $id, 'count' => 100 ) );
+		$complete = ! $wpdb->last_error;
+		if ( $complete ) {
 			foreach ( $wishlists as $wishlist ) {
-				$wl->remove( $wishlist['ID'] );
+				if ( ! $wl->remove( $wishlist['ID'], $id ) ) {
+					$complete = false;
+				}
 			}
 		}
+		$args = array( $id );
+		if ( ! $complete || count( $wishlists ) >= 100 ) {
+			if ( ! wp_next_scheduled( 'tinvwl_retry_user_cleanup', $args ) ) {
+				wp_schedule_single_event( time() + 300, 'tinvwl_retry_user_cleanup', $args );
+			}
+			return false;
+		}
+		wp_clear_scheduled_hook( 'tinvwl_retry_user_cleanup', $args );
+		return true;
+	}
+
+	/** Retry only the removed identity in the current site's native cron context. */
+	function retry_user_cleanup( $id ) {
+		$id = absint( $id );
+		if ( ! $id ) {
+			return false;
+		}
+		$user = get_userdata( $id );
+		if ( $user && ( ! is_multisite() || is_user_member_of_blog( $id, get_current_blog_id() ) ) ) {
+			return false; // Preserve a restored account or renewed site membership.
+		}
+		return $this->delete_user_wishlist( $id );
 	}
 
 	/**
@@ -784,22 +1011,30 @@ class TInvWL_Public_TInvWL {
 	 */
 	function legacy_transfer() {
 		$wlpl     = TInvWL_Product_Legacy::instance( $this->_name );
-		$products = $wlpl->get_wishlist( array( 'external' => false ) );
+		$products = $wlpl->get_transfer_products();
 		if ( ! empty( $products ) && is_array( $products ) ) {
 			$wl       = new TInvWL_Wishlist( $this->_name );
 			$wishlist = $wl->add_user_default();
+			if ( ! is_array( $wishlist ) || ! $wl->is_owner( $wishlist ) ) {
+				return false;
+			}
 
 			$wlp = new TInvWL_Product( $wishlist, $this->_name );
 
-			$added = true;
-			foreach ( $products as $product ) {
-				unset( $product['author'] );
-				if ( ! $wlp->add_product( $product ) ) {
-					$added = false;
+			$transferred = array();
+			try {
+				foreach ( $products as $key => $product ) {
+					if ( ! is_array( $product ) ) {
+						continue;
+					}
+					unset( $product['author'] );
+					$product['wishlist_id'] = $wishlist['ID'];
+					if ( $wlp->add_product( $product ) ) {
+						$transferred[] = $key;
+					}
 				}
-			}
-			if ( $added ) {
-				$wlpl->remove_product_from_wl();
+			} finally {
+				$wlpl->consume_transferred( $transferred );
 			}
 		}
 	}

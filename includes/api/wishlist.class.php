@@ -244,7 +244,7 @@ class TInvWL_Includes_API_Wishlist
 			);
 		}
 
-		if (!$wl->update($wishlist['ID'], $data)) {
+		if (!$wl->update_for_api($wishlist['ID'], $data)) {
 			return new WP_Error(
 				'ti_woocommerce_wishlist_api_wishlist_update_error',
 				__('Update wishlist data failed.', 'ti-woocommerce-wishlist'),
@@ -278,7 +278,7 @@ class TInvWL_Includes_API_Wishlist
 			return $wishlist;
 		}
 
-		$wlp = new TInvWL_Product();
+		$wlp = new TInvWL_Product( array(), TINVWL_PREFIX, true );
 		$args = array(
 			'wishlist_id' => $wishlist['wishlist']['ID'],
 			'external' => false,
@@ -293,6 +293,9 @@ class TInvWL_Includes_API_Wishlist
 		}
 		// The order value is passed directly to the DB so it needs to be protected against SQL injections.
 		if (null !== ($order = $request->get_param('order'))) {
+			if ( ! is_string( $order ) ) {
+				return new WP_Error( 'rest_invalid_param', sprintf( __( 'Invalid parameter(s): %s' ), 'order' ), array( 'status' => 400 ) );
+			}
 			$order = strtoupper($order);
 			$valid_order_values = array('ASC', 'DESC');
 			if (in_array($order, $valid_order_values, true)) {
@@ -327,7 +330,7 @@ class TInvWL_Includes_API_Wishlist
 			return $wishlist;
 		}
 
-		$wlp = new TInvWL_Product();
+		$wlp = TInvWL_Product::for_api( $wishlist['wishlist'], TINVWL_PREFIX );
 		$args = array(
 			'wishlist_id' => $wishlist['wishlist']['ID'],
 			'author' => $wishlist['wishlist']['author'],
@@ -391,7 +394,7 @@ class TInvWL_Includes_API_Wishlist
 			);
 		}
 
-		$wlp = new TInvWL_Product();
+		$wlp = TInvWL_Product::for_api( array(), TINVWL_PREFIX );
 
 		// Verify that the item belongs to the same wishlist referenced by share_key.
 		$item_wishlist = $wlp->get_wishlist_by_product_id($item_id);

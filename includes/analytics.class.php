@@ -341,9 +341,10 @@ class TInvWL_Analytics {
 		$fields     = array();
 		$values     = array();
 		$duplicates = array();
+		$first_index = array_key_first( $product_id );
 		foreach ( array_keys( $product_id ) as $index ) {
 			foreach ( $data as $key => $value ) {
-				if ( 0 === $index ) {
+				if ( $first_index === $index ) {
 					$fields[] = $key;
 					if ( in_array( $key, array(
 						'cart',

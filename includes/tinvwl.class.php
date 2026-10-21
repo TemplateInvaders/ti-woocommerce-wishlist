@@ -77,7 +77,9 @@ class TInvWL {
 		}
 
 		TInvWL_View::_init( $this->_name, $this->_version );
+		TInvWL_Activator::maybe_upgrade_charset();
 		TInvWL_Form::_init( $this->_name );
+		add_action( 'wc_ajax_tinvwl_request_nonce', array( 'TInvWL_Request_Nonce', 'endpoint' ) );
 
 		if ( is_admin() ) {
 			if ( current_user_can( 'manage_options' ) ) {
@@ -162,12 +164,21 @@ class TInvWL {
 	 * @return void
 	 */
 	public function reset_cookie(): void {
-		wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
-		unset( $_COOKIE['tinv_wishlistkey'] );
-		wc_setcookie( 'tinv_wishlist_owner', '', time() - HOUR_IN_SECONDS, is_ssl(), true );
-		unset( $_COOKIE['tinv_wishlist_owner'] );
-		TInvWL_Wishlist::$default_sharekey = null;
-		$GLOBALS['tinvwl_wishlist_sharekey'] = null;
+		$keep_guest = false;
+		if ( 'wp_login' === current_filter() ) {
+			$wl = new TInvWL_Wishlist();
+			$guest = $wl->get_by_sharekey_default()[0] ?? null;
+			$keep_guest = $guest && empty( $guest['author'] ) && $wl->is_owner( $guest );
+		}
+		// A busy or failed login transfer must retain the verified source until a later retry.
+		if ( ! $keep_guest ) {
+			wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
+			unset( $_COOKIE['tinv_wishlistkey'] );
+			wc_setcookie( 'tinv_wishlist_owner', '', time() - HOUR_IN_SECONDS, is_ssl(), true );
+			unset( $_COOKIE['tinv_wishlist_owner'] );
+			TInvWL_Wishlist::$default_sharekey = null;
+			$GLOBALS['tinvwl_wishlist_sharekey'] = null;
+		}
 		wc_setcookie( 'tinvwl_wishlists_data_counter', 0, time() - HOUR_IN_SECONDS );
 		unset( $_COOKIE['tinvwl_wishlists_data_counter'] );
 		wc_setcookie( 'tinvwl_update_data', 1, time() + HOUR_IN_SECONDS );

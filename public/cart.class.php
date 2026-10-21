@@ -36,6 +36,10 @@ class TInvWL_Public_Cart {
 	 * @var array
 	 */
 	static $_post;
+
+	/** Request-local frames preserve nested cart preparations and their cleanup owners. */
+	private static $request_frames = array();
+	private static $request_sequence = 0;
 	/**
 	 * This class
 	 *
@@ -83,13 +87,67 @@ class TInvWL_Public_Cart {
 			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data_cart_session' ) );
 		}
 
-		add_action( 'woocommerce_checkout_order_created', array( $this, 'add_order_item_meta' ) );
+		add_action( 'woocommerce_add_to_cart', array( __CLASS__, 'consume_product_source' ), 100, 6 );
+
+		add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta' ) );
 		add_action( 'woocommerce_store_api_checkout_update_order_meta', array( $this, 'add_order_item_meta' ) );
 
 		add_action( 'woocommerce_checkout_order_created', array( $this, 'purchased_items' ) );
-		add_action( 'woocommerce_store_api_checkout_update_order_meta', array( $this, 'purchased_items' ) );
+		add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'purchased_items' ) );
 
 		add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_analytics' ), 9, 3 );
+	}
+
+	/** Remember only a signed, owned parent product link; shared and old links stay analytics-only. */
+	public static function remember_product_source( $item, $wishlist ) {
+		$nonce = isset( $_GET['tiwps'] ) && is_string( $_GET['tiwps'] ) ? wp_unslash( $_GET['tiwps'] ) : '';
+		$wl = new TInvWL_Wishlist( self::$_name );
+		if ( ! WC()->session || ! tinv_get_option( 'processing', 'autoremove' ) || 'tinvwl-addcart' !== tinv_get_option( 'processing', 'autoremove_status' )
+			|| ! $wl->is_owner( $wishlist ) || ! wp_verify_nonce( $nonce, 'tinvwl_product_source_' . absint( $item['ID'] ?? 0 ) )
+			|| ! empty( $item['variation_id'] ) || empty( $item['data'] )
+			|| ! $item['data']->is_type( array( 'variable', 'variable-subscription' ) ) ) {
+			return false;
+		}
+		$model = new TInvWL_Product( $wishlist, self::$_name, true );
+		if ( ! $model->get_parent_source( $item['ID'], $item['product_id'] ) ) { return false; }
+		$sources = (array) WC()->session->get( 'tinvwl_product_sources', array() );
+		foreach ( $sources as $key => $source ) {
+			if ( ! is_array( $source ) || (int) ( $source['expires'] ?? 0 ) < time() ) { unset( $sources[ $key ] ); }
+		}
+		$sources[ absint( $item['data']->get_id() ) ] = array( 'item_id' => absint( $item['ID'] ), 'product_id' => absint( $item['product_id'] ), 'share_key' => $wishlist['share_key'], 'expires' => time() + HOUR_IN_SECONDS );
+		// A session needs only a small set of recent product-page sources.
+		WC()->session->set( 'tinvwl_product_sources', array_slice( $sources, -20, null, true ) );
+		if ( ! headers_sent() && is_callable( array( WC()->session, 'set_customer_session_cookie' ) ) ) {
+			WC()->session->set_customer_session_cookie( true );
+		}
+		return true;
+	}
+
+	/** A successful native add consumes its exact owned source, never another saved variation/configuration. */
+	public static function consume_product_source( $cart_item_key, $product_id, $quantity, $variation_id = 0, $variation = array(), $cart_item_data = array() ) {
+		$quantity = filter_var( $quantity, FILTER_VALIDATE_FLOAT );
+		if ( self::$request_frames || ! WC()->session || ! WC()->cart || ! $variation_id || false === $quantity || ! is_finite( $quantity ) || $quantity <= 0 ) {
+			return;
+		}
+		$sources = (array) WC()->session->get( 'tinvwl_product_sources', array() );
+		$source = $sources[ $product_id ] ?? null;
+		if ( ! is_array( $source ) ) { return; }
+		$item = WC()->cart->get_cart_item( $cart_item_key );
+		$variation_product = wc_get_product( $variation_id );
+		if ( ! $item || (int) $item['product_id'] !== (int) $product_id || (int) $item['variation_id'] !== (int) $variation_id
+			|| ! ( $variation_product instanceof WC_Product_Variation ) || (int) $variation_product->get_parent_id() !== (int) $product_id ) {
+			return;
+		}
+		unset( $sources[ $product_id ] );
+		WC()->session->set( 'tinvwl_product_sources', $sources );
+		if ( (int) ( $source['expires'] ?? 0 ) < time() || ! tinv_get_option( 'processing', 'autoremove' ) || 'tinvwl-addcart' !== tinv_get_option( 'processing', 'autoremove_status' ) ) {
+			return;
+		}
+		$wl = new TInvWL_Wishlist( self::$_name );
+		$wishlist = $wl->get_by_share_key( $source['share_key'] ?? '' );
+		if ( ! $wl->is_owner( $wishlist ) ) { return; }
+		$model = new TInvWL_Product( $wishlist, self::$_name, true );
+		$model->consume_parent_source( $source['item_id'] ?? 0, $source['product_id'] ?? 0, $quantity );
 	}
 
 	/**
@@ -97,7 +155,7 @@ class TInvWL_Public_Cart {
 	 *
 	 * @param array $wishlist Wishlist object.
 	 * @param integer $wl_product Wishlist product id.
-	 * @param integer $wl_quantity Product quantity.
+	 * @param int|float $wl_quantity Product quantity.
 	 *
 	 * @return array|boolean
 	 */
@@ -112,9 +170,9 @@ class TInvWL_Public_Cart {
 		$wishlist['is_owner'] = $wl->is_owner( $wishlist );
 		$wlp = null;
 		if ( 0 === $wishlist['ID'] ) {
-			$wlp = TInvWL_Product_Local::instance();
+			$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
 		} else {
-			$wlp = new TInvWL_Product( $wishlist );
+			$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
 		}
 		$product = $wlp->get_wishlist( array( 'ID' => $wl_product ) );
 		$product = array_shift( $product );
@@ -126,79 +184,126 @@ class TInvWL_Public_Cart {
 		}
 		$product['action'] = 'add';
 		$product           = apply_filters( 'tinvwl_addproduct_tocart', $product );
-		self::prepare_post( $product );
+		$request_product = $product;
+		// Native request encoding must not change saved configuration or cart attribution.
+		$request_product['meta'] = apply_filters( 'tinvwl_addproduct_tocart_prepare_meta', $product['meta'], $product );
+		try {
+			self::prepare_post( $request_product );
 
-		$use_original_id = false;
+			$use_original_id = false;
 
-		if ( function_exists( 'pll_is_translated_post_type' ) ) {
-			$use_original_id = true;
-		}
-
-		if ( function_exists( 'wpml_get_current_language' ) ) {
-
-			global $sitepress;
-
-			if ( $sitepress && $sitepress instanceof SitePress ) {
-				$wpml_settings = $sitepress->get_settings();
-				if ( isset( $wpml_settings['custom_posts_sync_option'] ) && isset( $wpml_settings['custom_posts_sync_option']['product'] ) && in_array( $wpml_settings['custom_posts_sync_option']['product'], array(
-						1,
-						2,
-					) ) ) {
-					$use_original_id = true;
-				}
+			if ( function_exists( 'pll_is_translated_post_type' ) ) {
+				$use_original_id = true;
 			}
-		}
 
-		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', apply_filters( 'wpml_object_id', absint( $product['product_id'] ), 'product', $use_original_id ) );
-		$quantity     = empty( $wl_quantity ) ? 1 : apply_filters( 'tinvwl_wishlist_product_add_cart_qty', wc_stock_amount( $wl_quantity ), $product );
-		$variation_id = apply_filters( 'wpml_object_id', $product['variation_id'], 'product_variation', $use_original_id );
-		$variations   = $product['data']->is_type( 'variation' ) ? wc_get_product_variation_attributes( apply_filters( 'wpml_object_id', $product['data']->get_id(), 'product', $use_original_id ) ) : array();
+			if ( function_exists( 'wpml_get_current_language' ) ) {
 
-		if ( ! empty( $variation_id ) && is_array( $variations ) ) {
-			foreach ( $variations as $name => $value ) {
-				if ( '' === $value ) {
-					// Could be any value that saved to a custom meta.
-					if ( array_key_exists( 'meta', $product ) && array_key_exists( $name, $product['meta'] ) ) {
-						$variations[ $name ] = $product['meta'][ $name ];
+				global $sitepress;
+
+				if ( $sitepress && $sitepress instanceof SitePress ) {
+					$wpml_settings = $sitepress->get_settings();
+					if ( isset( $wpml_settings['custom_posts_sync_option'] ) && isset( $wpml_settings['custom_posts_sync_option']['product'] ) && in_array( $wpml_settings['custom_posts_sync_option']['product'], array(
+							1,
+							2,
+						) ) ) {
+						$use_original_id = true;
 					}
 				}
 			}
+
+			$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', apply_filters( 'wpml_object_id', absint( $product['product_id'] ), 'product', $use_original_id ) );
+			$quantity     = empty( $wl_quantity ) ? 1 : apply_filters( 'tinvwl_wishlist_product_add_cart_qty', wc_stock_amount( $wl_quantity ), $product );
+			$variation_id = absint( apply_filters( 'wpml_object_id', $product['variation_id'], 'product_variation', $use_original_id ) );
+			$variations = array();
+			if ( ! empty( $product['variation_id'] ) ) {
+				// Resolve the selected variation once. Its attributes and parent must describe
+				// that same native variation, including translated wishlist rows.
+				$variation_product = wc_get_product( $variation_id );
+				if ( ! ( $variation_product instanceof WC_Product_Variation ) || (int) $variation_product->get_parent_id() !== (int) $product_id ) {
+					return array( 'product' => $product['data'], 'quantity' => $quantity, 'error_code' => 'not_purchasable' );
+				}
+				$variations = wc_get_product_variation_attributes( $variation_id );
+			}
+
+			if ( ! empty( $variation_id ) && is_array( $variations ) ) {
+				foreach ( $variations as $name => $value ) {
+					if ( '' === $value ) {
+						// Could be any value that saved to a custom meta.
+						if ( array_key_exists( 'meta', $product ) && array_key_exists( $name, $product['meta'] ) ) {
+							$variations[ $name ] = $product['meta'][ $name ];
+						}
+					}
+				}
+			}
+
+			$cart_errors       = self::add_to_cart_errors( $product['data'], $quantity, true );
+			$passed_validation = ! isset( $cart_errors['error_code'] );
+			$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
+			if ( $passed_validation ) {
+				$cart_item_data = apply_filters( 'tinvwl_addproduct_tocart_prepare_cart_data', $request_product['meta'], $product );
+				$cart_quantities = wp_list_pluck( WC()->cart->get_cart(), 'quantity' );
+				$cart_item_key   = self::add_native_cart_item( $product_id, $quantity, $variation_id, $variations, $cart_item_data, $cart_errors );
+				if ( $cart_item_key ) {
+					// Native quantity filters and sold-individually rules may adjust the request.
+					// Attribute only the amount actually added to this new or existing cart row.
+					$cart_item = WC()->cart->get_cart_item( $cart_item_key );
+					if ( isset( $cart_item['quantity'] ) ) {
+						$quantity = $cart_item['quantity'] - ( $cart_quantities[ $cart_item_key ] ?? 0 );
+					}
+
+					/* Run a 3rd party code when product added to a cart from a wishlist.
+					 *
+					 * @param string $cart_item_key cart product unique key.
+					 * @param int|float $quantity Product quantity actually added.
+					 * @param array $product product data.
+					 * */
+					do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
+					$wla = new TInvWL_Analytics( $wishlist, self::$_name );
+					$wla->cart_product( $product_id, $variation_id );
+					if ( ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] ) && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' ) ) {
+						self::ar_f_wl( $wishlist, $product_id, $quantity, $variation_id, $product['meta'] );
+					}
+					self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
+					self::set_item_meta( $cart_item_key, $product['meta'] );
+
+					return array(
+						'product'       => $product['data'],
+						'quantity'      => $quantity,
+						'cart_item_key' => $cart_item_key
+					);
+				}
+			}
+			$error_code = $cart_errors['error_code'] ?? 'default';
+
+			return array( 'product' => $product['data'], 'quantity' => $quantity, 'error_code' => $error_code );
+		} finally {
+			self::unprepare_post( $request_product );
 		}
 
-		$cart_errors       = self::add_to_cart_errors( $product['data'], $quantity );
-		$passed_validation = ! isset( $cart_errors['error_code'] );
-		$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
-		if ( $passed_validation ) {
-			$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product['meta'] );
-			if ( $cart_item_key ) {
+	}
 
-				/* Run a 3rd party code when product added to a cart from a wishlist.
-				 *
-				 * @param string $cart_item_key cart product unique key.
-				 * @param integer $quantity Product quantity.
-				 * @param array $product product data.
-				 * */
-				do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
-				$wla = new TInvWL_Analytics( $wishlist, self::$_name );
-				$wla->cart_product( $product_id, $variation_id );
-				if ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' ) ) {
-					self::ar_f_wl( $wishlist, $product_id, $quantity, $variation_id, $product['meta'] );
-				}
-				self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
-				self::set_item_meta( $cart_item_key, $product['meta'] );
-				self::unprepare_post( $product );
-
-				return array(
-					'product'       => $product['data'],
-					'quantity'      => $quantity,
-					'cart_item_key' => $cart_item_key
-				);
+	/** Let WooCommerce validate the fully prepared configuration and retain its error category. */
+	private static function add_native_cart_item( $product_id, $quantity, $variation_id, $variations, $cart_item_data, &$errors ) {
+		// These are request controls, not native cart configuration. Raw metadata is retained separately.
+		unset( $cart_item_data['tinvwl-hidden-fields'], $cart_item_data['add-to-cart'], $cart_item_data['product_id'], $cart_item_data['variation_id'], $cart_item_data['quantity'] );
+		$native_id = $variation_id ?: $product_id;
+		$capture = static function ( $message, $product ) use ( &$errors, $native_id ) {
+			if ( $product instanceof WC_Product && (int) $product->get_id() === (int) $native_id ) {
+				$errors['error_code'] = 'woocommerce_cart_product_cannot_add_another_message' === current_filter() ? 'sold_individually' : 'more_than_stock';
+			}
+			return $message;
+		};
+		$hooks = array( 'woocommerce_cart_product_cannot_add_another_message', 'woocommerce_cart_product_not_enough_stock_message', 'woocommerce_cart_product_not_enough_stock_already_in_cart_message' );
+		foreach ( $hooks as $hook ) {
+			add_filter( $hook, $capture, PHP_INT_MAX, 2 );
+		}
+		try {
+			return WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $cart_item_data );
+		} finally {
+			foreach ( $hooks as $hook ) {
+				remove_filter( $hook, $capture, PHP_INT_MAX );
 			}
 		}
-		self::unprepare_post( $product );
-		$error_code = $cart_errors['error_code'] ?? 'default';
-
-		return array( 'product' => $product['data'], 'quantity' => $quantity, 'error_code' => $error_code );
 	}
 
 	/**
@@ -207,27 +312,41 @@ class TInvWL_Public_Cart {
 	 * @param array $product Wishlist Product.
 	 */
 	public static function prepare_post( $product ) {
-		do_action( 'tinvwl_before_prepare_post', $product );
-		self::$_post    = $_POST; // @codingStandardsIgnoreLine WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+		$token = ++self::$request_sequence;
+		self::$request_frames[] = array(
+			'token' => $token,
+			'post' => $_POST,
+			'request' => $_REQUEST,
+			'previous_post' => self::$_post,
+			'previous_request' => self::$_request,
+		);
+		self::$_post = $_POST;
 		self::$_request = $_REQUEST;
+		do_action( 'tinvwl_before_prepare_post', $product, $token );
 		if ( array_key_exists( 'meta', $product ) && ! empty( $product['meta'] ) ) {
-			$_POST    = $product['meta']; // Maybe a conflict there will be no GET attributes.
+			$_POST = $product['meta'];
 			$_REQUEST = $product['meta'];
 		} else {
-			$_POST    = array();
+			$_POST = array();
 			$_REQUEST = array();
 		}
 	}
 
-	/**
-	 * Unprepare _POST data
-	 *
-	 * @param array $product Wishlist Product.
-	 */
+	/** Restore this preparation even when its observer or a nested cart operation throws. */
 	public static function unprepare_post( $product ) {
-		do_action( 'tinvwl_before_unprepare_post', $product, self::$_post, self::$_request );
-		$_POST    = self::$_post;
-		$_REQUEST = self::$_request;
+		$frame = array_pop( self::$request_frames );
+		if ( ! $frame ) {
+			$frame = array( 'token' => 0, 'post' => self::$_post, 'request' => self::$_request, 'previous_post' => self::$_post, 'previous_request' => self::$_request );
+		}
+		try {
+			do_action( 'tinvwl_before_unprepare_post', $product, $frame['post'], $frame['request'], $frame['token'] );
+		} finally {
+			$_POST = $frame['post'];
+			$_REQUEST = $frame['request'];
+			self::$_post = $frame['previous_post'];
+			self::$_request = $frame['previous_request'];
+			do_action( 'tinvwl_after_unprepare_post', $product, $frame['post'], $frame['request'], $frame['token'] );
+		}
 	}
 
 	/**
@@ -251,7 +370,7 @@ class TInvWL_Public_Cart {
 	 *
 	 * @param string $cart_item_key Cart product key.
 	 * @param string $wishlist_sharekey Wishlist sharekey.
-	 * @param integer $quantity Product quantity.
+	 * @param int|float $quantity Product quantity.
 	 *
 	 * @return boolean
 	 */
@@ -346,8 +465,25 @@ class TInvWL_Public_Cart {
 	 */
 	public function add_order_item_meta( $order ) {
 		foreach ( $order->get_items() as $item ) {
-			$data = self::get_item_data( $item->legacy_cart_item_key );
-			$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $item->legacy_cart_item_key, $item->legacy_values );
+			$store_api = 'woocommerce_store_api_checkout_update_order_meta' === current_filter();
+			$key = $item->legacy_cart_item_key;
+			$values = $item->legacy_values;
+			if ( $store_api ) {
+				if ( ! $key ) {
+					$key = $item->get_meta( '_tinvwl_cart_item_key', true, 'edit' );
+				}
+				$key = is_string( $key ) ? $key : '';
+				$values = $key && WC()->cart ? WC()->cart->get_cart_item( $key ) : array();
+			}
+			if ( $key ) {
+				$item->update_meta_data( '_tinvwl_cart_item_key', $key );
+			}
+			$data = $store_api && ! $values ? array() : self::get_item_data( $key );
+			$data = apply_filters( 'tinvwl_addproduct_toorder', $data, $key, $values );
+			if ( $store_api ) {
+				// Refresh unchanged drafts from the current cart, including removed sources.
+				$item->delete_meta_data( '_tinvwl_wishlist_cart' );
+			}
 			if ( ! empty( $data ) ) {
 				$item->update_meta_data( '_tinvwl_wishlist_cart', $data );
 			}
@@ -409,7 +545,7 @@ class TInvWL_Public_Cart {
 			return $wishlist;
 		}
 		if ( ! empty( $user_id ) ) {
-			return $wl->add_user_default( $user_id );
+			return $wl->get_default( $user_id );
 		}
 
 		return null;
@@ -420,17 +556,17 @@ class TInvWL_Public_Cart {
 	 *
 	 * @param array $wishlist Wishlist object.
 	 * @param integer $product_id Product id.
-	 * @param integer $quantity Quantity product.
+	 * @param int|float $quantity Quantity product.
 	 * @param integer $variation_id Variation product id.
 	 * @param array $meta Meta array for post form.
 	 *
-	 * @return integer
+	 * @return int|float
 	 */
 	private static function ar_f_wl( $wishlist, $product_id, $quantity = 1, $variation_id = 0, $meta = array() ) {
 		$product_id   = absint( $product_id );
-		$quantity     = absint( $quantity );
+		$quantity     = floatval( $quantity );
 		$variation_id = absint( $variation_id );
-		if ( ! tinv_get_option( 'processing', 'autoremove' ) || empty( $wishlist ) || empty( $product_id ) || empty( $quantity ) ) {
+		if ( ! tinv_get_option( 'processing', 'autoremove' ) || empty( $wishlist ) || empty( $product_id ) || ! is_finite( $quantity ) || $quantity <= 0 ) {
 			return $quantity;
 		}
 		$wlp = null;
@@ -452,7 +588,7 @@ class TInvWL_Public_Cart {
 		if ( empty( $product ) ) {
 			return $quantity;
 		}
-		$wlp->remove_product_from_wl( 0, $product_id, $variation_id, $product['meta'] );
+		$wlp->remove_item_from_wl( $product );
 
 		return 0;
 	}
@@ -464,47 +600,254 @@ class TInvWL_Public_Cart {
 	 * @param string $old_status Not used.
 	 * @param string $new_status Updated status order.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	function order_status_analytics( $order_id, $old_status, $new_status ) {
-		$new_status = str_replace( 'wc-', '', $new_status );
-		$order      = wc_get_order( $order_id );
-
-		if ( in_array( $new_status, array(
-				'processing',
-				'completed',
-			) ) && empty( get_post_meta( $order_id, '_wishlist_analytics_processed', true ) ) ) {
-
-			$items = $order->get_items();
-			if ( empty( $items ) || ! is_array( $items ) ) {
-				return;
+		global $wpdb;
+		for ( $attempt = 0; $attempt < 3; $attempt++ ) {
+			$retry = false;
+			$complete = $this->process_order_analytics( $order_id, $old_status, $new_status, $retry );
+			if ( $complete || ! $retry || $attempt === 2 ) {
+				return $complete;
 			}
+			// A concurrency failure rolled back this entire attempt; start with a fresh receipt/snapshot.
+			$wpdb->last_error = '';
+			usleep( 20000 * ( $attempt + 1 ) );
+		}
+		return false;
+	}
 
-			foreach ( $items as $item ) {
-
-				$_wishlist_cart = self::get_order_item_meta( $item, '_tinvwl_wishlist_cart' );
-
-				if ( $_wishlist_cart ) {
-					$_quantity = absint( $item['qty'] );
-					if ( is_array( $_wishlist_cart ) ) {
-						foreach ( array_keys( $_wishlist_cart ) as $key ) {
-							if ( 0 >= $_quantity ) {
-								break;
-							}
-							$wishlist = $this->get_order_wishlist( $key );
-
-							if ( empty( $wishlist ) ) {
-								continue;
-							}
-							$wla = new TInvWL_Analytics( $wishlist, self::$_name );
-							$wla->sell_product_from_wl( $item['product_id'], $item['variation_id'] );
-						}
-					}
+	/** One independent analytics transaction; only recognized transient SQL failures permit retry. */
+	private function process_order_analytics( $order_id, $old_status, $new_status, &$retry ) {
+		global $wpdb;
+		$new_status = str_replace( 'wc-', '', $new_status );
+		if ( ! in_array( $new_status, array( 'processing', 'completed' ), true ) ) {
+			return false;
+		}
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			return false;
+		}
+		// Metadata refresh/save must not discard pending changes on a shared cached order.
+		$order = clone $order;
+		$store = $order->get_data_store()->get_current_class_name();
+		$hpos = is_a( $store, 'Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore', true );
+		if ( ! $hpos && ! is_a( $store, 'WC_Order_Data_Store_CPT', true ) ) {
+			return false;
+		}
+		$order_id = $order->get_id();
+		$root = $hpos ? $wpdb->prefix . 'wc_orders' : $wpdb->posts;
+		$root_id = $hpos ? 'id' : 'ID';
+		$meta = $hpos ? $wpdb->prefix . 'wc_orders_meta' : $wpdb->postmeta;
+		$meta_id = $hpos ? 'id' : 'meta_id';
+		$meta_owner = $hpos ? 'order_id' : 'post_id';
+		$analytics = $wpdb->prefix . self::$_name . '_analytics';
+		$items = $wpdb->prefix . 'woocommerce_order_items';
+		$item_meta = $wpdb->prefix . 'woocommerce_order_itemmeta';
+		$key = '_wishlist_analytics_processed';
+		$lock = 'tinvwl_analytics_' . md5( $wpdb->prefix . '|' . $order_id );
+		$locked = $transaction = $touched_meta = false;
+		$item_caches = array();
+		$prime_item_meta = method_exists( 'WC_Order_Item', 'prime_raw_meta_data_cache' ) && method_exists( 'WC_Order_Item', 'generate_meta_cache_key' );
+		try {
+			$suppressed = $wpdb->suppress_errors( true );
+			try {
+				$independent = $wpdb->query( 'SET TRANSACTION READ WRITE' );
+			} finally {
+				$wpdb->suppress_errors( $suppressed );
+			}
+			if ( false === $independent ) {
+				return false;
+			}
+			// HPOS metadata CRUD may also backfill postmeta when Woo synchronization is enabled.
+			$required_tables = $hpos ? array( $root, $meta, $analytics, $wpdb->postmeta ) : array( $root, $meta, $analytics );
+			$tables = $wpdb->get_results( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name IN (' . implode( ',', array_fill( 0, count( $required_tables ), '%s' ) ) . ')', $required_tables ), ARRAY_A );
+			if ( $wpdb->last_error || ! is_array( $tables ) || count( $tables ) !== count( $required_tables ) ) {
+				return false;
+			}
+			foreach ( $tables as $table ) {
+				if ( ! in_array( strtolower( $table['Engine'] ), array( 'innodb', 'xtradb' ), true ) ) {
+					return false;
 				}
 			}
-
-			update_post_meta( $order_id, '_wishlist_analytics_processed', '1' );
+			if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) {
+				return false;
+			}
+			$locked = true;
+			if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+				return false;
+			}
+			$transaction = true;
+			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT `$root_id` FROM `$root` WHERE `$root_id` = %d FOR UPDATE", $order_id ) );
+			if ( $wpdb->last_error || ! $exists ) {
+				return false;
+			}
+			// The first consistent read starts a fresh snapshot after the per-order mutex/root lock.
+			// Read-only metadata needs no cross-order next-key locks; completion stays serialized.
+			$receipt_sql = $wpdb->prepare( "SELECT meta_value FROM `$meta` WHERE `$meta_owner` = %d AND meta_key = %s ORDER BY `$meta_id`", $order_id, $key );
+			$receipt = $wpdb->get_col( $receipt_sql );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			if ( ! empty( $receipt ) && ! empty( maybe_unserialize( $receipt[0] ) ) ) {
+				return true;
+			}
+			if ( $hpos ) {
+				// Earlier releases wrote this marker to postmeta even with HPOS authoritative.
+				$legacy = $wpdb->get_col( $wpdb->prepare( "SELECT meta_value FROM `{$wpdb->postmeta}` WHERE post_id = %d AND meta_key = %s ORDER BY meta_id", $order_id, $key ) );
+				if ( $wpdb->last_error ) {
+					return false;
+				}
+				if ( ! empty( $legacy ) && ! empty( maybe_unserialize( $legacy[0] ) ) ) {
+					return true;
+				}
+			}
+			$lines = $wpdb->get_results( $wpdb->prepare( "SELECT order_item_id, order_item_type, order_id, order_item_name FROM `$items` WHERE order_id = %d AND order_item_type = %s ORDER BY order_item_id", $order_id, 'line_item' ), ARRAY_A );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			$native_items = array();
+			foreach ( $lines as $line ) {
+				$line_id = (int) $line['order_item_id'];
+				$rows = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_key, meta_value FROM `$item_meta` WHERE order_item_id = %d ORDER BY meta_id", $line_id ), ARRAY_A );
+				if ( $wpdb->last_error ) {
+					return false;
+				}
+				$wp_meta = $raw_meta = array();
+				foreach ( $rows as $row ) {
+					$wp_meta[ $row['meta_key'] ][] = $row['meta_value'];
+					$raw_meta[] = (object) $row;
+				}
+				// Hydrate through Woo's factory/setters/read filters using only successful snapshot reads.
+				$item_caches[] = $line_id;
+				wp_cache_set( 'item-' . $line_id, (object) $line, 'order-items' );
+				wp_cache_set( $line_id, $wp_meta, 'order_item_meta' );
+				if ( $prime_item_meta ) {
+					WC_Order_Item::prime_raw_meta_data_cache( array( $line_id => $raw_meta ), 'order-items' );
+				}
+				$item = WC_Order_Factory::get_order_item( (object) $line );
+				if ( $wpdb->last_error || ! $item instanceof WC_Order_Item_Product ) {
+					return false;
+				}
+				if ( ! $prime_item_meta ) {
+					// Woo 3.2-4.6 has no public raw-cache priming API: force a checked native read.
+					$item->read_meta_data( true );
+					if ( $wpdb->last_error ) { return false; }
+				}
+				if ( method_exists( $item, 'set_order' ) ) { $item->set_order( $order ); }
+				$native_items[ $line_id ] = $item;
+			}
+			// Preserve the same collection extension point exposed by WC_Order::get_items().
+			$native_items = apply_filters( 'woocommerce_order_get_items', $native_items, $order, array( 'line_item' ) );
+			if ( empty( $native_items ) || ! is_array( $native_items ) || $wpdb->last_error ) {
+				return false;
+			}
+			$events = array();
+			foreach ( $native_items as $item ) {
+				if ( ! $item instanceof WC_Order_Item_Product ) { continue; }
+				$map = $this->get_order_item_meta( $item, '_tinvwl_wishlist_cart' );
+				$quantity = floatval( $item['qty'] );
+				$product_id = $item['product_id'];
+				$variation_id = $item['variation_id'];
+				$product_id = is_scalar( $product_id ) ? absint( $product_id ) : 0;
+				$variation_id = is_scalar( $variation_id ) ? absint( $variation_id ) : 0;
+				if ( $wpdb->last_error ) {
+					return false;
+				}
+				if ( ! is_array( $map ) ) { continue; }
+				foreach ( array_keys( $map ) as $share_key ) {
+					if ( 0 >= $quantity ) { break; }
+					$wishlist = $this->get_order_wishlist( $share_key );
+					if ( $wpdb->last_error ) {
+						return false;
+					}
+					if ( empty( $wishlist ) ) { continue; }
+					$events[] = array( 'wishlist' => $wishlist, 'product_id' => $product_id, 'variation_id' => $variation_id );
+				}
+			}
+			// All orders acquire shared analytics rows in the same order, even with reversed line/maps.
+			usort( $events, static function ( $left, $right ) {
+				return array( (int) $left['wishlist']['ID'], $left['product_id'], $left['variation_id'] )
+					<=> array( (int) $right['wishlist']['ID'], $right['product_id'], $right['variation_id'] );
+			} );
+			foreach ( $events as $event ) {
+				$wla = new TInvWL_Analytics( $event['wishlist'], self::$_name );
+				// Preserve C13: each positive line/source remains a separate one-unit event.
+				if ( false === $wla->sell_product_from_wl( $event['product_id'], $event['variation_id'] ) || $wpdb->last_error ) {
+					return false;
+				}
+			}
+			self::refresh_analytics_order_meta( $order, $hpos );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			$touched_meta = true;
+			$order->update_meta_data( $key, '1' );
+			// This internal marker must not trigger HPOS full-order autosave/status side effects.
+			$metadata_only = static function ( $should_save ) { return false; };
+			if ( $hpos ) { add_filter( 'woocommerce_orders_table_datastore_should_save_after_meta_change', $metadata_only, PHP_INT_MAX ); }
+			try {
+				$order->save_meta_data();
+			} finally {
+				if ( $hpos ) { remove_filter( 'woocommerce_orders_table_datastore_should_save_after_meta_change', $metadata_only, PHP_INT_MAX ); }
+			}
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			$receipt = $wpdb->get_col( $receipt_sql );
+			if ( $wpdb->last_error || count( $receipt ) !== 1 || $receipt[0] !== '1' ) {
+				return false;
+			}
+			if ( false === $wpdb->query( 'COMMIT' ) ) {
+				return false;
+			}
+			$transaction = false;
+			return true;
+		} finally {
+			$error = $wpdb->last_error;
+			$retry = $transaction && self::transient_order_error();
+			foreach ( $item_caches as $line_id ) {
+				wp_cache_delete( 'item-' . $line_id, 'order-items' );
+				wp_cache_delete( $line_id, 'order_item_meta' );
+				if ( $prime_item_meta ) {
+					wp_cache_delete( WC_Order_Item::generate_meta_cache_key( $line_id, 'order-items' ), 'order-items' );
+				}
+			}
+			if ( ! $prime_item_meta && $item_caches && method_exists( 'WC_Cache_Helper', 'incr_cache_prefix' ) ) {
+				WC_Cache_Helper::incr_cache_prefix( 'order-items' );
+			}
+			if ( $transaction && false === $wpdb->query( 'ROLLBACK' ) ) { $retry = false; }
+			if ( $locked ) { $wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) ); }
+			if ( $touched_meta ) {
+				try {
+					self::refresh_analytics_order_meta( $order, $hpos );
+				} catch ( Throwable $error_refresh ) {
+					// A cache callback cannot turn a persisted marker into a repeated increment.
+					$retry = false;
+				}
+			}
+			$wpdb->last_error = $error;
 		}
+	}
+
+	/** Retry only concurrency failures, with a new transaction and snapshot. */
+	private static function transient_order_error() {
+		global $wpdb;
+		$code = class_exists( 'mysqli', false ) && $wpdb->dbh instanceof mysqli ? mysqli_errno( $wpdb->dbh ) : 0;
+		return in_array( $code, array( 1020, 1205, 1213 ), true ) || preg_match( '/Record has changed since last read|Lock wait timeout exceeded|Deadlock found when trying to get lock/i', $wpdb->last_error );
+	}
+
+	/** Clear native metadata caches before refreshing this analytics-only order clone. */
+	private static function refresh_analytics_order_meta( $order, $hpos ) {
+		$meta_store = 'Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStoreMeta';
+		if ( $hpos && class_exists( $meta_store ) && method_exists( $meta_store, 'clear_cached_data' ) ) {
+			wc_get_container()->get( $meta_store )->clear_cached_data( array( $order->get_id() ) );
+		}
+		wp_cache_delete( $order->get_id(), 'post_meta' );
+		if ( method_exists( $order, 'get_meta_cache_key' ) ) {
+			wp_cache_delete( $order->get_meta_cache_key(), 'orders' );
+		}
+		$order->read_meta_data( true );
 	}
 
 	/**
@@ -528,11 +871,12 @@ class TInvWL_Public_Cart {
 	 * Get errors when adding a product to the cart.
 	 *
 	 * @param WC_Product $product The product to add to the cart.
-	 * @param int $quantity The quantity of the product to be added. Default is 1.
+	 * @param int|float $quantity The normalized quantity of the product to be added. Default is 1.
+	 * @param bool $defer_quantity Let the actual WC_Cart add normalize and validate stock.
 	 *
 	 * @return array Array of error codes or false if no errors.
 	 */
-	public static function add_to_cart_errors( WC_Product $product, int $quantity = 1 ): array {
+	public static function add_to_cart_errors( WC_Product $product, $quantity = 1, $defer_quantity = false ): array {
 		if ( ! $product->is_purchasable() ) {
 			return [ 'product' => $product, 'error_code' => 'not_purchasable' ];
 		}
@@ -549,6 +893,12 @@ class TInvWL_Public_Cart {
 			return [ 'product' => $product, 'error_code' => 'parent_variable' ];
 		}
 
+		// During a real add, WC_Cart normalizes quantity (including sold-individually) once,
+		// then performs native stock checks against that final amount and stock owner.
+		if ( $defer_quantity ) {
+			return [ 'product' => $product ];
+		}
+
 		/** @global \WooCommerce $woocommerce */
 		global $woocommerce;
 		$product_in_cart = array_filter(
@@ -556,9 +906,7 @@ class TInvWL_Public_Cart {
 			fn( array $item ): bool => $item['product_id'] === $product->get_id()
 		);
 
-		if ( $product->is_sold_individually() && ! empty( $product_in_cart ) ) {
-			return [ 'product' => $product, 'error_code' => 'sold_individually' ];
-		}
+		// Sold-individually identity includes native add-on cart data, prepared by WC_Cart.
 
 		if ( ! $product->has_enough_stock( $quantity ) ) {
 			return [ 'product' => $product, 'error_code' => 'more_than_stock' ];
@@ -566,7 +914,7 @@ class TInvWL_Public_Cart {
 
 		if ( $product->managing_stock() ) {
 			$quantity_in_cart = array_sum( wp_list_pluck( $product_in_cart, 'quantity' ) );
-			if ( $quantity_in_cart + $quantity > $product->get_stock_quantity() ) {
+			if ( ! $product->has_enough_stock( $quantity_in_cart + $quantity ) ) {
 				return [ 'product' => $product, 'error_code' => 'more_than_stock' ];
 			}
 		}

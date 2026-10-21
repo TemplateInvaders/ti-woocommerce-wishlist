@@ -66,6 +66,21 @@ if (!function_exists('tinv_wishlist_metasupport_woocommerce_mix_and_match_produc
 	add_filter('tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_woocommerce_mix_and_match_products', 10, 2);
 } // End if().
 
+if ( ! function_exists( 'tinvwl_mnm_child_products' ) ) {
+	/** Resolve native child items to their configured product instances. */
+	function tinvwl_mnm_child_products( $product ) {
+		$items = is_callable( array( $product, 'get_child_items' ) ) ? $product->get_child_items() : $product->get_children();
+		$products = array();
+		foreach ( (array) $items as $item ) {
+			$child = $item instanceof WC_Product ? $item : ( is_object( $item ) && is_callable( array( $item, 'get_product' ) ) ? $item->get_product() : false );
+			if ( $child instanceof WC_Product ) {
+				$products[ $child->get_id() ] = $child;
+			}
+		}
+		return $products;
+	}
+}
+
 if (!function_exists('tinvwl_row_woocommerce_mix_and_match_products')) {
 
 	/**
@@ -78,7 +93,7 @@ if (!function_exists('tinvwl_row_woocommerce_mix_and_match_products')) {
 	{
 		if (is_object($product) && $product->is_type('mix-and-match') && array_key_exists('mnm_quantity', $wl_product['meta'])) {
 			$product_quantity = $product->is_sold_individually() ? 1 : $wl_product['quantity'];
-			$mnm_items = $product->get_children();
+			$mnm_items = tinvwl_mnm_child_products( $product );
 			if (!empty($mnm_items)) {
 				foreach ($mnm_items as $id => $mnm_item) {
 					$item_quantity = 0;
@@ -149,7 +164,7 @@ if (!function_exists('tinvwl_item_price_woocommerce_mix_and_match_products')) {
 	function tinvwl_item_price_woocommerce_mix_and_match_products($price, $wl_product, $product)
 	{
 		if (is_object($product) && $product->is_type('mix-and-match') && $product->is_priced_per_product()) {
-			$mnm_items = $product->get_children();
+			$mnm_items = tinvwl_mnm_child_products( $product );
 			if (!empty($mnm_items)) {
 				$_price = 0;
 				foreach ($mnm_items as $id => $mnm_item) {

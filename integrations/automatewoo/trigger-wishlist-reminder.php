@@ -52,24 +52,25 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 	 * Get a batch of items to process for given workflow.
 	 *
 	 * @param Workflow $workflow
-	 * @param int $offset The batch query offset.
+	 * @param int $offset The last wishlist ID, as required by AW daily-trigger cursors.
 	 * @param int $limit The max items for the query.
 	 *
 	 * @return array[] Array of items in array format. Items will be stored in the database so they should be IDs not objects.
 	 */
 	public function get_batch_for_workflow(Workflow $workflow, int $offset, int $limit): array
 	{
+		global $wpdb;
 		$tasks = [];
-
-		$wl = new TInvWL_Wishlist();
-		$wishlists = $wl->get(array(
-			'count' => 9999999,
-		));
-
-		foreach ($wishlists as $wishlist) {
-			$tasks[] = array(
-				'wishlist' => $wishlist,
-			);
+		if ($limit <= 0) {
+			return $tasks;
+		}
+		$table = $wpdb->prefix . TINVWL_PREFIX . '_lists';
+		$ids = $wpdb->get_col($wpdb->prepare("SELECT ID FROM `$table` WHERE ID > %d AND author > 0 ORDER BY ID ASC LIMIT %d", max(0, $offset), $limit));
+		if ($wpdb->last_error) {
+			throw new RuntimeException('Could not load wishlist reminder batch.');
+		}
+		foreach ($ids as $id) {
+			$tasks[] = array('wishlist' => (int)$id);
 		}
 
 		return $tasks;
@@ -90,25 +91,44 @@ class TINVWL_Trigger_Wishlist_Reminder extends AutomateWoo\Triggers\AbstractBatc
 			throw InvalidArgument::missing_required('wishlist');
 		}
 
-		$wishlist = isset($item['wishlist']) && !empty($item['wishlist']['author']) ? $item['wishlist'] : false;
-
-		if (!$wishlist) {
-			throw new RuntimeException('Wishlist not found.');
+		// Existing queued snapshots are locators only; ownership and contents may have changed.
+		$id = is_array($item['wishlist']) ? ($item['wishlist']['ID'] ?? 0) : $item['wishlist'];
+		if (!is_scalar($id) || !ctype_digit((string)$id) || (int)$id <= 0) {
+			return;
 		}
-
-		if (empty($item['wishlist']['author'])) {
-			throw new RuntimeException('Wishlist customer not found.');
+		global $wpdb;
+		$wishlists = (new TInvWL_Wishlist())->get(array('ID' => (int)$id, 'count' => 1));
+		if ($wpdb->last_error) {
+			throw new RuntimeException('Could not load wishlist reminder.');
+		}
+		$wishlist = array_shift($wishlists);
+		if (!$wishlist || empty($wishlist['author']) || !get_userdata($wishlist['author'])) {
+			return;
+		}
+		$date = DateTime::createFromFormat('Y-m-d H:i:s', $wishlist['date']);
+		if (!$date) {
+			return;
 		}
 
 		$normalized_wishlist = new TINVWL_AutomateWoo_Wishlist();
-		$normalized_wishlist->id = $item['wishlist']['ID'];
-		$normalized_wishlist->owner_id = $item['wishlist']['author'];
-		$normalized_wishlist->date = DateTime::createFromFormat("Y-m-d H:i:s", $item['wishlist']['date']);
-		$normalized_wishlist->get_items();
+		$normalized_wishlist->id = $wishlist['ID'];
+		$normalized_wishlist->owner_id = $wishlist['author'];
+		$normalized_wishlist->date = $date;
+		$items = $normalized_wishlist->get_items();
+		if ($wpdb->last_error) {
+			throw new RuntimeException('Could not load wishlist reminder products.');
+		}
+		if (!$items) {
+			return;
+		}
+		$customer = AutomateWoo\Customer_Factory::get_by_user_id($wishlist['author']);
+		if (!$customer) {
+			throw new RuntimeException('Wishlist customer not found.');
+		}
 
 		$workflow->maybe_run(
 			[
-				'customer' => AutomateWoo\Customer_Factory::get_by_user_id($item['wishlist']['author']),
+				'customer' => $customer,
 				'wishlist' => $normalized_wishlist,
 			]
 		);

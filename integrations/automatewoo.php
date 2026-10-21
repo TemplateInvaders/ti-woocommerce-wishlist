@@ -42,6 +42,16 @@ if (!$available) {
 }
 
 add_filter('automatewoo/triggers', 'tinvwl_automatewoo_triggers');
+add_filter('automatewoo/data_types/includes', 'tinvwl_automatewoo_data_types');
+
+/** Native wishlist validation/compression is also required for reminder run logs. */
+function tinvwl_automatewoo_data_types($types)
+{
+	if (empty($types['wishlist'])) {
+		$types['wishlist'] = 'AutomateWoo\\DataTypes\\Wishlist';
+	}
+	return $types;
+}
 
 /**
  * @param array $triggers

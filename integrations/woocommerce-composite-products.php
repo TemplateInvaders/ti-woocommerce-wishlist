@@ -194,6 +194,135 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 	add_action( 'tinvwl_wishlist_row_after', 'tinvwl_row_woocommerce_composite_products', 10, 2 );
 } // End if().
 
+if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
+
+	/**
+	 * Price the exact saved selection using native cart pricing on disposable object copies.
+	 *
+	 * @param array $meta Saved Bundle fields, without the Composite component prefix.
+	 * @param WC_Product_Bundle $bundle Selected Bundle product.
+	 * @param WC_CP_Product $component_option Native selected component option.
+	 * @return float|false Configured unit price, or false for legacy vendor APIs.
+	 */
+	function tinvwl_composited_bundle_price( $meta, $bundle, $component_option ) {
+		// Older vendors do not expose object-local cart contexts; retain their existing adapter below.
+		if ( ! isset( WC_CP()->product_data, WC_PB()->product_data )
+			|| ! is_callable( array( WC_CP()->product_data, 'set' ) ) || ! is_callable( array( WC_CP()->product_data, 'delete' ) )
+			|| ! is_callable( array( WC_PB()->product_data, 'set' ) ) || ! is_callable( array( WC_PB()->product_data, 'delete' ) )
+			|| ! is_callable( array( 'WC_CP_Products', 'get_composited_cart_item_discount_method' ) )
+			|| ! is_callable( array( 'WC_PB_Product_Prices', 'get_bundled_cart_item_discount_method' ) )
+			|| ! is_callable( array( $bundle, 'set_object_context' ) ) ) {
+			return false;
+		}
+
+		$discount_method = WC_CP_Products::get_composited_cart_item_discount_method();
+		$sale_contexts = array();
+		if ( 'props' === $discount_method ) {
+			if ( ! is_callable( array( $component_option, 'get_product_id' ) )
+				|| ! is_callable( array( $component_option, 'get_component_id' ) )
+				|| ! is_callable( array( $component_option, 'get_composite' ) ) ) {
+				return false;
+			}
+			// The native sale-state getter nests CP/PB catalog scopes without exception guards.
+			// Read their depths only: a top-object comparison cannot distinguish repeated pushes
+			// of an existing caller's object. Unsupported vendor internals use the legacy adapter.
+			foreach ( array( 'WC_CP_Products' => 'filtered_component_option_pre', 'WC_PB_Product_Prices' => 'bundled_item_pre' ) as $class => $property ) {
+				if ( ! property_exists( $class, $property ) ) {
+					return false;
+				}
+				try {
+					$reflection = new ReflectionProperty( $class, $property );
+					$reflection->setAccessible( true );
+					$stack = $reflection->getValue();
+				} catch ( Throwable $error ) {
+					return false;
+				}
+				if ( null !== $stack && ! is_array( $stack ) ) {
+					return false;
+				}
+				$sale_contexts[ $class ] = $reflection;
+			}
+		}
+
+		$products = array();
+		$bundle_product = clone $bundle;
+		$bundle_product->set_object_context( 'cart' );
+		$products[] = $bundle_product;
+		try {
+			if ( 'props' === $discount_method ) {
+				$bundle_product->set_price( $component_option->get_raw_price( $bundle_product, 'cart' ) );
+				$discount = $component_option->get_discount();
+				if ( ! empty( $discount ) || $bundle->is_on_sale() ) {
+					$depths = array();
+					foreach ( $sale_contexts as $class => $reflection ) {
+						$stack = $reflection->getValue();
+						if ( null !== $stack && ! is_array( $stack ) ) {
+							return false;
+						}
+						$depths[ $class ] = is_array( $stack ) ? count( $stack ) : 0;
+					}
+					$unwind = static function ( $class, $callback ) use ( $sale_contexts, $depths ) {
+						$stack = $sale_contexts[ $class ]->getValue();
+						while ( is_array( $stack ) && count( $stack ) > $depths[ $class ] ) {
+							call_user_func( $callback );
+							$stack = $sale_contexts[ $class ]->getValue();
+						}
+					};
+					try {
+						// Match native sale properties only; the configured unit still uses the saved stamp.
+						// A fresh native wrapper keeps range-calculation runtime state off the caller's product.
+						$sale_option = new WC_CP_Product( $component_option->get_product_id(), $component_option->get_component_id(), $component_option->get_composite() );
+						$bundle_product->set_sale_price( $sale_option->get_price( 'edit' ) );
+					} finally {
+						try {
+							$unwind( 'WC_PB_Product_Prices', array( 'WC_PB_Product_Prices', 'remove_price_filters' ) );
+						} finally {
+							$unwind( 'WC_CP_Products', array( 'WC_CP_Products', 'remove_filters' ) );
+						}
+					}
+				}
+			} else {
+				WC_CP()->product_data->set( $bundle_product, 'composited_cart_item', $component_option );
+			}
+			$price = (float) $bundle_product->get_price();
+			$prefix = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $bundle->get_id() );
+			foreach ( $bundle->get_bundled_items() as $item_id => $item ) {
+				$quantity = isset( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) ? absint( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) : $item->get_quantity();
+				if ( ! $quantity || ! $item->is_priced_individually()
+					|| ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $item_id, $meta ) ) ) {
+					continue;
+				}
+				$variation_id = absint( $meta[ $prefix . 'bundle_variation_id_' . $item_id ] ?? 0 );
+				$selected = $variation_id ? wc_get_product( $variation_id ) : $item->product;
+				if ( ! $selected ) {
+					continue;
+				}
+				$selected = clone $selected;
+				$products[] = $selected;
+				$cart_item = clone $item;
+				$cart_item->composited_cart_item = $component_option;
+				if ( 'props' === WC_PB_Product_Prices::get_bundled_cart_item_discount_method() ) {
+					$selected->set_price( $cart_item->get_raw_price( $selected, 'cart' ) );
+					if ( $cart_item->is_on_sale( 'cart' ) ) {
+						$selected->set_sale_price( $selected->get_price( 'edit' ) );
+					}
+				} else {
+					WC_PB()->product_data->set( $selected, 'bundled_cart_item', $cart_item );
+				}
+				$price += (float) $selected->get_price() * $quantity;
+			}
+			return $price;
+		} finally {
+			// Vendor sidecars use object hashes, which PHP can reuse after a clone is released.
+			foreach ( $products as $priced_product ) {
+				WC_CP()->product_data->delete( $priced_product, 'composited_cart_item' );
+				WC_PB()->product_data->delete( $priced_product, 'bundled_cart_item' );
+				WC_PB()->product_data->delete( $priced_product, 'bundled_item_price' );
+			}
+		}
+	}
+}
+
 if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 
 	/**
@@ -244,13 +373,15 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 
 							$wl_product_bundle['meta'] = $component_meta;
 
-							$bundle_price  = tinvwl_item_price_woocommerce_product_bundles( 0, $wl_product_bundle, $composited_product, true );
-							$regular_price += $bundle_price;
-
-							if ( $discount = $composited_product_wrapper->get_discount() ) {
-								$bundle_price = empty( $bundle_price ) ? $bundle_price : round( (double) $bundle_price * ( 100 - $discount ) / 100, wc_cp_price_num_decimals() );
+							$bundle_price = tinvwl_composited_bundle_price( $component_meta, $composited_product, $composited_product_wrapper );
+							if ( false === $bundle_price ) {
+								$bundle_price = tinvwl_item_price_woocommerce_product_bundles( 0, $wl_product_bundle, $composited_product, true );
+								if ( $discount = $composited_product_wrapper->get_discount() ) {
+									$bundle_price = empty( $bundle_price ) ? $bundle_price : round( (double) $bundle_price * ( 100 - $discount ) / 100, wc_cp_price_num_decimals( 'extended' ) );
+								}
 							}
-							$_price += $bundle_price;
+							$regular_price += $bundle_price * $composited_product_quantity;
+							$_price += $bundle_price * $composited_product_quantity;
 
 							continue;
 						}

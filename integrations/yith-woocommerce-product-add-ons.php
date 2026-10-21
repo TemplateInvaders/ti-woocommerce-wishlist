@@ -102,7 +102,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 								$option_price_sale      = ( $base_product_price / 100 ) * $option_percentage_sale;
 							} else if ( $info['price_type'] == 'multiplied' ) {
 								$option_price      = $info['price'] * $value;
-								$option_price_sale = $info['price'] * $value;
+								$option_price_sale = (float) $info['price_sale'] * $value;
 							} else {
 								$option_price      = $info['price'];
 								$option_price_sale = $info['price_sale'];
@@ -115,7 +115,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 								$option_price = 0;
 								$first_free_options_count ++;
 							} else {
-								$option_price = $option_price_sale > 0 ? $option_price_sale : $option_price;
+								$option_price = isset( $info['price_sale'] ) && '' !== $info['price_sale'] && $option_price_sale >= 0 ? $option_price_sale : $option_price;
 							}
 
 							$cart_data_name = ( ( isset( $info['addon_label'] ) && $info['addon_label'] != '' ) ? $info['addon_label'] : '' );
@@ -232,7 +232,7 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 								$option_price_sale      = ( $product_price / 100 ) * $option_percentage_sale;
 							} else if ( $info['price_type'] == 'multiplied' ) {
 								$option_price      = $info['price'] * $value;
-								$option_price_sale = $info['price'] * $value;
+								$option_price_sale = (float) $info['price_sale'] * $value;
 							} else {
 								$option_price      = $info['price'];
 								$option_price_sale = $info['price_sale'];
@@ -242,7 +242,7 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 							if ( $info['addon_first_options_selected'] == 'yes' && $first_free_options_count < $info['addon_first_free_options'] ) {
 								$first_free_options_count ++;
 							} else {
-								$option_price = $option_price_sale > 0 ? $option_price_sale : $option_price;
+								$option_price = isset( $info['price_sale'] ) && '' !== $info['price_sale'] && $option_price_sale >= 0 ? $option_price_sale : $option_price;
 
 
 								if ( in_array( $info['addon_type'], array( 'product' ) ) && ( $info['price_method'] == 'product' || $info['price_method'] == 'discount' ) ) {

@@ -134,14 +134,12 @@ class TInvWL_Admin_Notices {
 	}
 
 	/**
-	 * Disable notifications.
+	 * Finish the notification postponement period.
 	 *
 	 * @return void
 	 */
 	public static function disable_notifications(): void {
 		delete_option( 'tinvwl_notifications_postponed' );
-//		get_transient( 'tinvwl-admin-notice-delay' );
-		tinv_update_option( 'chat', 'enabled', true );
 	}
 
 	/**

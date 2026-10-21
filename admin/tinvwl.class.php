@@ -211,6 +211,33 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	}
 
 	/**
+	 * Read the saved chat preference or its validated, pending settings value.
+	 *
+	 * Admin assets are enqueued before the native settings form is saved.
+	 * Reuse that form's schema, nonce checks and validation without saving here.
+	 *
+	 * @return bool
+	 */
+	private function support_chat_enabled(): bool {
+		$enabled = (bool) tinv_get_option( 'chat', 'enabled' );
+		if ( ! current_user_can( 'tinvwl_general_settings' ) || ! filter_input( INPUT_POST, 'chat_nonce' ) ) {
+			return $enabled;
+		}
+
+		$settings = TInvWL_Admin_Settings_General::instance( $this->_name, $this->_version );
+		$sections = apply_filters( 'tinvwl_prepare_admsections_constructor_data', $settings->constructor_data() );
+		$sections = apply_filters( 'tinvwl_prepare_admsections', $sections );
+		$view     = new TInvWL_ViewSection( $this->_name, $this->_version );
+		$view->load_data( $sections );
+		$data = apply_filters( 'tinvwl_prepare_admsections_constructor_save', $view->post_form() );
+		if ( isset( $data['chat'] ) && is_array( $data['chat'] ) && array_key_exists( 'enabled', $data['chat'] ) ) {
+			return (bool) $data['chat']['enabled'];
+		}
+
+		return $enabled;
+	}
+
+	/**
 	 * Load javascript
 	 */
 	function enqueue_scripts() {
@@ -226,82 +253,64 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		) );
 		wp_enqueue_script( $this->_name );
 
-		$geo              = new WC_Geolocation(); // Get WC_Geolocation instance object
-		$user_ip          = $geo->get_ip_address(); // Get user IP
-		$user_geo         = $geo->geolocate_ip( $user_ip ); // Get geolocated user data.
-		$country_code     = $user_geo['country']; // Get the country code
-		$restricted_codes = array( 'BD', 'PK', 'IN', 'NG', 'KE' );
-
-		$chat_option = ( isset( $_POST['chat_nonce'] ) ) ? ( isset( $_POST['chat-enabled'] ) ? true : false ) : tinv_get_option( 'chat', 'enabled' );
-
-		$disable_chat = ! $chat_option || in_array( $country_code, $restricted_codes );
-
-		if ( ! $disable_chat ) {
-
-			global $wpdb;
-
-			$user_id       = get_current_user_id();
-			$user_info     = get_userdata( $user_id );
-			$current_theme = wp_get_theme();
-			$parent_theme  = $current_theme->parent();
-
-			$lists_table = sprintf( '%s%s_%s', $wpdb->prefix, TINVWL_PREFIX, 'lists' );
-
-			$total_wishlists = $wpdb->get_var( "SELECT COUNT(*) FROM `{$lists_table}`" );
-
-			$first_wishlist_date = $wpdb->get_var( "SELECT `date` FROM `{$lists_table}` ORDER BY `ID` ASC" );
-
-			$timestamp = $first_wishlist_date ? strtotime( $first_wishlist_date ) : time();
-
-			$date1 = new DateTime(); // current date
-			$date2 = ( new DateTime() )->setTimestamp( $timestamp ); // your timestamp
-
-			$interval = $date1->diff( $date2 );
-
-			$days_used = $interval->days;
-
-			// If the difference is 0 days, show as 1 day
-			if ( $days_used === 0 ) {
-				$days_used = 1;
-			}
-
-			wp_add_inline_script( $this->_name, 'window.intercomSettings = {
-					app_id: "zyh6v0pc",
-					hide_default_launcher: ' . ( ( $disable_chat ) ? 'true' : 'false' ) . ',
-					"Website": "' . get_site_url() . '",
-					"Plugin name": "WooCommerce Wishlist Plugin",
-					"Plugin version":"' . TINVWL_FVERSION . '",
-					"Theme name":"' . $current_theme->get( 'Name' ) . '",
-					"Theme version":"' . $current_theme->get( 'Version' ) . '",
-					"Theme URI":"' . $current_theme->get( 'ThemeURI' ) . '",
-					"Theme author":"' . $current_theme->get( 'Author' ) . '",
-					"Theme author URI":"' . $current_theme->get( 'AuthorURI' ) . '",
-					"Parent theme name":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Name' ) : '' ) . '",
-					"Parent theme version":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Version' ) : '' ) . '",
-					"Parent theme URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : '' ) . '",
-					"Parent theme author":"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : '' ) . '",
-					"Parent theme author URI":"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : '' ) . '",
-					};
-					(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();
-					Intercom("trackEvent", "wishlist-free-install", {
-						theme_name:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Name' ) : $current_theme->get( 'Name' ) ) . '",
-						theme_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'ThemeURI' ) : $current_theme->get( 'ThemeURI' ) ) . '",
-						theme_author:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Author' ) : $current_theme->get( 'Author' ) ) . '",
-						theme_author_uri:"' . ( ( $parent_theme ) ? $parent_theme->get( 'AuthorURI' ) : $current_theme->get( 'AuthorURI' ) ) . '",
-						theme_version:"' . ( ( $parent_theme ) ? $parent_theme->get( 'Version' ) : $current_theme->get( 'Version' ) ) . '",
-						website:"' . get_site_url() . '",
-						user:"' . $user_info->user_email . '",
-						user_name:"' . $user_info->user_nicename . '",
-						plugin_name:"WooCommerce Wishlist Plugin",
-						plugin_version:"' . TINVWL_FVERSION . '",
-						partner:"' . TINVWL_UTM_SOURCE . '"
-					});
-					Intercom("trackEvent", "lists-data", {
-						wishlists:' . $total_wishlists . ',
-						days_used:' . $days_used . '
-					});
-			' );
+		if ( ! $this->support_chat_enabled() ) {
+			return;
 		}
+
+		$geo              = new WC_Geolocation();
+		$user_geo         = $geo->geolocate_ip( $geo->get_ip_address() );
+		$country_code     = $user_geo['country'];
+		$restricted_codes = array( 'BD', 'PK', 'IN', 'NG', 'KE' );
+		if ( in_array( $country_code, $restricted_codes, true ) ) {
+			return;
+		}
+
+		$user_info     = wp_get_current_user();
+		$current_theme = wp_get_theme();
+		$parent_theme  = $current_theme->parent();
+		$event_theme   = $parent_theme ?: $current_theme;
+		$settings      = array(
+			'app_id'                => 'zyh6v0pc',
+			'hide_default_launcher' => false,
+			'Website'               => get_site_url(),
+			'Plugin name'           => 'WooCommerce Wishlist Plugin',
+			'Plugin version'        => TINVWL_FVERSION,
+			'Theme name'            => $current_theme->get( 'Name' ),
+			'Theme version'         => $current_theme->get( 'Version' ),
+			'Theme URI'             => $current_theme->get( 'ThemeURI' ),
+			'Theme author'          => $current_theme->get( 'Author' ),
+			'Theme author URI'      => $current_theme->get( 'AuthorURI' ),
+			'Parent theme name'     => $parent_theme ? $parent_theme->get( 'Name' ) : '',
+			'Parent theme version'  => $parent_theme ? $parent_theme->get( 'Version' ) : '',
+			'Parent theme URI'      => $parent_theme ? $parent_theme->get( 'ThemeURI' ) : '',
+			'Parent theme author'   => $parent_theme ? $parent_theme->get( 'Author' ) : '',
+			'Parent theme author URI' => $parent_theme ? $parent_theme->get( 'AuthorURI' ) : '',
+		);
+		$install_event = array(
+			'theme_name'       => $event_theme->get( 'Name' ),
+			'theme_uri'        => $event_theme->get( 'ThemeURI' ),
+			'theme_author'     => $event_theme->get( 'Author' ),
+			'theme_author_uri' => $event_theme->get( 'AuthorURI' ),
+			'theme_version'    => $event_theme->get( 'Version' ),
+			'website'         => get_site_url(),
+			'user'            => $user_info->user_email,
+			'user_name'       => $user_info->user_nicename,
+			'plugin_name'     => 'WooCommerce Wishlist Plugin',
+			'plugin_version'  => TINVWL_FVERSION,
+			'partner'        => TINVWL_UTM_SOURCE,
+		);
+		global $wpdb;
+		$lists_table = sprintf( '%s%s_%s', $wpdb->prefix, TINVWL_PREFIX, 'lists' );
+		$total_wishlists = $wpdb->get_var( "SELECT COUNT(*) FROM `{$lists_table}`" );
+		$first_wishlist_date = $wpdb->get_var( "SELECT `date` FROM `{$lists_table}` ORDER BY `ID` ASC" );
+		$timestamp = $first_wishlist_date ? strtotime( $first_wishlist_date ) : time();
+		$days_used = max( 1, ( new DateTime() )->diff( ( new DateTime() )->setTimestamp( $timestamp ) )->days );
+		$json_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+		$inline = 'window.intercomSettings = ' . wp_json_encode( $settings, $json_flags ) . ';'
+			. '(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/zyh6v0pc";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();'
+			. 'Intercom("trackEvent", "wishlist-free-install", ' . wp_json_encode( $install_event, $json_flags ) . ');';
+		$inline .= 'Intercom("trackEvent", "lists-data", ' . wp_json_encode( array( 'wishlists' => (int) $total_wishlists, 'days_used' => $days_used ), $json_flags ) . ');';
+		wp_add_inline_script( $this->_name, $inline );
 	}
 
 	/**
@@ -427,16 +436,27 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	}
 
 	/**
-	 * Removing old wishlist without a user older than 34 days
+	 * Remove guest wishlists older than the configured retention period.
 	 */
 	public static function remove_old_wishlists() {
 		global $wpdb;
-		$wishlists = $wpdb->get_results( 'SELECT t1.wishlist_id ID FROM ' . $wpdb->prefix . 'tinvwl_items t1 JOIN( SELECT wishlist_id, MAX(DATE) DATE FROM ' . $wpdb->prefix . 'tinvwl_items GROUP BY wishlist_id ) t2 ON t1.wishlist_id = t2.wishlist_id AND t1.date = t2.date WHERE t1.author = 0 AND t1.date < DATE_SUB(CURDATE(), INTERVAL ' . (int) tinv_get_option( 'general', 'guests_timeout' ) . ' DAY)', ARRAY_A );
+		$days = max( 1, absint( tinv_get_option( 'general', 'guests_timeout' ) ) );
+		// Bound each daily batch and let the model recheck ownership/activity under its writer lock.
+		$wishlists = $wpdb->get_results( $wpdb->prepare( "SELECT guest_list.ID FROM `{$wpdb->prefix}tinvwl_lists` AS guest_list WHERE guest_list.author = 0 AND EXISTS (SELECT 1 FROM `{$wpdb->prefix}tinvwl_items` AS item WHERE item.wishlist_id = guest_list.ID AND item.author = 0 AND item.date < DATE_SUB(CURDATE(), INTERVAL %d DAY)) AND NOT EXISTS (SELECT 1 FROM `{$wpdb->prefix}tinvwl_items` AS item WHERE item.wishlist_id = guest_list.ID AND (item.author <> 0 OR item.date IS NULL OR item.date < '1000-01-01 00:00:00' OR item.date >= DATE_SUB(CURDATE(), INTERVAL %d DAY))) ORDER BY guest_list.ID ASC LIMIT 100", $days, $days ), ARRAY_A );
+		if ( $wpdb->last_error ) {
+			return;
+		}
+		$default_title = sanitize_text_field( apply_filters( 'tinvwl_default_wishlist_title', tinv_get_option( 'general', 'default_title' ) ) );
+		$empty = $wpdb->get_results( $wpdb->prepare( "SELECT guest_list.ID FROM `{$wpdb->prefix}tinvwl_lists` AS guest_list WHERE guest_list.author = 0 AND guest_list.type = 'default' AND guest_list.status = 'share' AND (guest_list.title = '' OR guest_list.title = %s) AND guest_list.date >= '1000-01-01 00:00:00' AND guest_list.date < DATE_SUB(CURDATE(), INTERVAL %d DAY) AND NOT EXISTS (SELECT 1 FROM `{$wpdb->prefix}tinvwl_items` AS item WHERE item.wishlist_id = guest_list.ID) ORDER BY guest_list.ID ASC LIMIT 100", $default_title, $days ), ARRAY_A );
+		if ( $wpdb->last_error ) {
+			return;
+		}
+		$wishlists = array_merge( (array) $wishlists, (array) $empty );
 
 		if ( $wishlists ) {
 			$wl = new TInvWL_Wishlist();
 			foreach ( $wishlists as $wishlist ) {
-				$wl->remove( $wishlist['ID'] );
+				$wl->remove_expired_guest( $wishlist['ID'], $days );
 			}
 		}
 	}

@@ -135,7 +135,18 @@ if (defined('WP_ROCKET_VERSION')) {
 	 */
 	function tinvwl_rocket_clean_dynamic_cache()
 	{
+		// A bulk mutation can emit many events; purge once after its successful writes.
+		add_action('shutdown', 'tinvwl_rocket_flush_dynamic_cache', PHP_INT_MAX);
+	}
 
+	/** Apply the existing dynamic-cache purge once at the end of this request. */
+	function tinvwl_rocket_flush_dynamic_cache()
+	{
+		static $flushed = false;
+		if ($flushed) {
+			return;
+		}
+		$flushed = true;
 		$key = filter_input(INPUT_COOKIE, 'tinv_wishlistkey', FILTER_VALIDATE_REGEXP, array(
 			'options' => array(
 				'regexp' => '/^[A-Fa-f0-9]{6}$/',

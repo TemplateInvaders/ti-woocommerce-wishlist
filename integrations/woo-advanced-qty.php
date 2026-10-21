@@ -45,7 +45,7 @@ if (!$available) {
 if (!function_exists('tinv_wishlist_qty_woo_advanced_qty')) {
 
 	/**
-	 * Force quantity to minimum.
+	 * Preserve the requested quantity while respecting the vendor minimum.
 	 *
 	 * @param $quantity
 	 * @param $product
@@ -57,14 +57,20 @@ if (!function_exists('tinv_wishlist_qty_woo_advanced_qty')) {
 
 		if (class_exists('Woo_Advanced_QTY_Public')) {
 			$advanced_qty = new Woo_Advanced_QTY_Public(null, null);
+			$has_quantity = is_numeric($quantity) && (float)$quantity > 0;
 
 			$args = $advanced_qty->qty_input_args(array(
 				'min_value' => 1,
 				'max_value' => '',
 				'step' => 1,
+				'input_value' => $has_quantity ? $quantity : 1,
 			), $product);
 
-			$quantity = $args['input_value'];
+			$minimum = isset($args['min_value']) && is_numeric($args['min_value']) ? max(0, (float)$args['min_value']) : 0;
+			if (!$has_quantity) {
+				$quantity = isset($args['input_value']) && is_numeric($args['input_value']) && (float)$args['input_value'] > 0 ? $args['input_value'] : 1;
+			}
+			$quantity = max((float)$quantity, $minimum);
 		}
 
 		return $quantity;
@@ -86,17 +92,10 @@ if (!function_exists('tinv_wishlist_qty_woo_advanced_url')) {
 	{
 
 		if (class_exists('Woo_Advanced_QTY_Public')) {
-			if (strpos($url, 'add-to-cart=')) {
-				$advanced_qty = new Woo_Advanced_QTY_Public(null, null);
-				$args = $advanced_qty->qty_input_args(array(
-					'min_value' => 1,
-					'max_value' => '',
-					'step' => 1,
-				), $product);
-
-				$url = preg_replace('/&quantity=[0-9.]*/', '', $url);
-
-				$url .= '&quantity=' . $args['input_value'];
+			parse_str((string)wp_parse_url($url, PHP_URL_QUERY), $query);
+			if (isset($query['add-to-cart'])) {
+				$quantity = isset($query['quantity']) && is_numeric($query['quantity']) ? $query['quantity'] : 0;
+				$url = add_query_arg('quantity', tinv_wishlist_qty_woo_advanced_qty($quantity, $product), $url);
 			}
 		}
 

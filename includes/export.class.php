@@ -91,36 +91,190 @@ class TInvWL_Export {
 	 * @return array|bool
 	 */
 	public function get_settings(): array {
-		$dir = TINVWL_PATH . 'admin/settings/';
-		if ( ! file_exists( $dir ) || ! is_dir( $dir ) ) {
-			return false;
+		$settings = array();
+		foreach ( $this->settings_schema() as $key => $fields ) {
+			$settings[ $key ] = get_option( $key );
 		}
 
-		$files = scandir( $dir );
-		$ids   = array();
+		return $settings;
+	}
 
-		foreach ( $files as $value ) {
-			if ( preg_match( '/\.class\.php$/i', $value ) ) {
-				$file    = preg_replace( '/\.class\.php$/i', '', $value );
-				$class   = 'TInvWL_Admin_Settings_' . ucfirst( $file );
-				$options = $class::instance( $this->_name, $this->_version );
-
-				if ( method_exists( $options, 'constructor_data' ) && __FUNCTION__ != 'constructor_data' ) {
-					foreach ( $options->constructor_data() as $data ) {
-						$ids[] = $data['id'];
+	/**
+	 * Use the same section registration filters as the settings UI. A prefix alone
+	 * does not make an option importable; extensions must register their fields.
+	 *
+	 * @return array Registered option names and their field definitions.
+	 */
+	private function settings_schema(): array {
+		$dir = TINVWL_PATH . 'admin/settings/';
+		if ( ! is_dir( $dir ) ) {
+			return array();
+		}
+		$schema = array();
+		foreach ( scandir( $dir ) as $file ) {
+			if ( ! preg_match( '/\.class\.php$/i', $file ) ) {
+				continue;
+			}
+			$class = 'TInvWL_Admin_Settings_' . ucfirst( preg_replace( '/\.class\.php$/i', '', $file ) );
+			if ( ! class_exists( $class ) ) {
+				continue;
+			}
+			$options = $class::instance( $this->_name, $this->_version );
+			if ( ! method_exists( $options, 'constructor_data' ) ) {
+				continue;
+			}
+			$sections = $options->constructor_data();
+			$style_ids = array();
+			if ( $options instanceof TInvWL_Admin_BaseStyle ) {
+				$style_ids[] = 'style_options';
+				if ( method_exists( $options, 'get_templates' ) ) {
+					foreach ( array_merge( array( '' ), array_keys( $options->get_templates() ) ) as $template ) {
+						foreach ( $options->prepare_sections( $template ) as $style_section ) {
+							$sections[] = $style_section;
+							$style_ids[] = $style_section['id'];
+						}
+					}
+				}
+			}
+			$sections = apply_filters( 'tinvwl_prepare_admsections_constructor_data', $sections );
+			$sections = apply_filters( 'tinvwl_prepare_admsections', $sections );
+			if ( ! is_array( $sections ) ) {
+				continue;
+			}
+			foreach ( $sections as $section ) {
+				$id = is_array( $section ) ? ( $section['id'] ?? '' ) : '';
+				if ( ! is_string( $id ) || '' === $id || 'save_buttons' === $id ) {
+					continue;
+				}
+				$key = $this->_name . '-' . $id;
+				$schema[ $key ] = $schema[ $key ] ?? array();
+				if ( in_array( $id, $style_ids, true ) ) {
+					// Native style saves also persist the generated CSS, outside UI fields.
+					$schema[ $key ]['css'] = array( 'type' => 'textarea', 'std' => '' );
+				}
+				// Keep old export placeholders for informational/noform sections,
+				// but those sections do not register editable fields.
+				if ( ! empty( $section['noform'] ) || empty( $section['fields'] ) || ! is_array( $section['fields'] ) ) {
+					continue;
+				}
+				foreach ( $section['fields'] as $field ) {
+					$name = is_array( $field ) ? ( $field['name'] ?? '' ) : '';
+					if ( is_string( $name ) && '' !== $name ) {
+						$schema[ $key ][ $name ] = $field;
 					}
 				}
 			}
 		}
 
-		$ids      = array_values( array_diff( $ids, [ 'save_buttons' ] ) );
-		$settings = array();
+		return $schema;
+	}
 
-		foreach ( $ids as $id ) {
-			$settings[ 'tinvwl-' . $id ] = get_option( 'tinvwl-' . $id );
+	/** Validate every key/value before the first option is written. */
+	private function valid_settings( $settings ): bool {
+		if ( ! is_array( $settings ) || empty( $settings ) ) {
+			return false;
+		}
+		$schema = $this->settings_schema();
+		foreach ( $settings as $key => $values ) {
+			if ( ! is_string( $key ) || ! array_key_exists( $key, $schema ) ) {
+				return false;
+			}
+			// get_option() exported false for missing sections. WordPress may store
+			// that sentinel as an empty string after an older import.
+			if ( false === $values || '' === $values ) {
+				continue;
+			}
+			if ( ! is_array( $values ) ) {
+				return false;
+			}
+			foreach ( $values as $name => $value ) {
+				if ( ! array_key_exists( $name, $schema[ $key ] ) || ! $this->valid_setting_value( $value, $schema[ $key ][ $name ] ) ) {
+					return false;
+				}
+			}
 		}
 
-		return $settings;
+		return true;
+	}
+
+	/** Validate shape and declared validators without re-sanitizing exported HTML/CSS. */
+	private function valid_setting_value( $value, array $field ): bool {
+		$type = $field['type'] ?? 'text';
+		// Native form validators can leave unset false/empty values, including
+		// multiselects whose declared default is an empty string.
+		if ( false === $value || ( '' === $value && empty( $field['std'] ) ) ) {
+			return true;
+		}
+		$validation = $field['validate'] ?? null;
+		$flags = is_array( $validation ) ? ( $validation['flags'] ?? 0 ) : 0;
+		$array_type = in_array( $type, array( 'multiselect', 'multicheckbox', 'dateperiod', 'timeperiod' ), true );
+		$expects_array = $array_type || is_array( $field['std'] ?? null ) || ( $flags & ( FILTER_REQUIRE_ARRAY | FILTER_FORCE_ARRAY ) );
+		if ( $expects_array ) {
+			if ( ! is_array( $value ) ) {
+				return false;
+			}
+			if ( $array_type ) {
+				foreach ( $value as $item ) {
+					if ( ! is_scalar( $item ) ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		if ( ! is_scalar( $value ) ) {
+			return null === $value && array_key_exists( 'std', $field ) && null === $field['std'];
+		}
+		if ( null === $validation ) {
+			if ( 'checkboxonoff' === $type ) {
+				$validation = FILTER_VALIDATE_BOOLEAN;
+			} elseif ( in_array( $type, array( 'number', 'numberrange', 'time' ), true ) ) {
+				$validation = FILTER_VALIDATE_INT;
+			} else {
+				return true;
+			}
+		}
+		$filter = is_array( $validation ) ? ( $validation['filter'] ?? FILTER_DEFAULT ) : $validation;
+		if ( ! in_array( $filter, array( FILTER_VALIDATE_INT, FILTER_VALIDATE_FLOAT, FILTER_VALIDATE_BOOLEAN, FILTER_VALIDATE_REGEXP, FILTER_VALIDATE_URL, FILTER_VALIDATE_EMAIL, FILTER_VALIDATE_IP, FILTER_VALIDATE_MAC, FILTER_VALIDATE_DOMAIN, FILTER_CALLBACK ), true ) ) {
+			return true;
+		}
+		$args = is_array( $validation ) ? $validation : array();
+		unset( $args['filter'] );
+		if ( isset( $args['options'] ) && is_array( $args['options'] ) ) {
+			unset( $args['options']['default'] );
+		}
+		$args['flags'] = ( $args['flags'] ?? 0 ) | FILTER_NULL_ON_FAILURE;
+		$result = filter_var( $value, $filter, $args );
+
+		return null !== $result && ( FILTER_VALIDATE_BOOLEAN === $filter || false !== $result );
+	}
+
+	/** A false native update can mean unchanged data; verify its stored value. */
+	private function import_option( string $key, $value ): bool {
+		global $wpdb;
+		$wpdb->last_error = '';
+		$updated = update_option( $key, $value );
+		if ( $wpdb->last_error ) {
+			return false;
+		}
+		if ( $updated ) {
+			return true; // Preserve values accepted by native sanitizers and save filters.
+		}
+		$stored = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM `$wpdb->options` WHERE option_name = %s", $key ), ARRAY_A );
+		if ( $wpdb->last_error ) {
+			return false;
+		}
+		// An absent section is exported as false; WordPress stores scalar false as ''.
+		return null === $stored ? false === $value : (string) $stored['option_value'] === (string) maybe_serialize( $value );
+	}
+
+	/** Effective settings used by public wishlist route registration. */
+	private function routing_settings(): array {
+		return array(
+			(int) tinv_get_option( 'page', 'wishlist' ),
+			(bool) tinv_get_option( 'general', 'my_account_endpoint' ),
+			(string) tinv_get_option( 'general', 'my_account_endpoint_slug' ),
+		);
 	}
 
 	/**
@@ -143,7 +297,7 @@ class TInvWL_Export {
 
 		$nonce_value = $_REQUEST['tinvwl_import_nonce'] ?? '';
 
-		if ( ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! in_array( 'administrator', (array) wp_get_current_user()->roles ) ) {
+		if ( ! is_string( $nonce_value ) || ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! current_user_can( 'tinvwl_export_import_settings' ) ) {
 			$this->exitWithRedirect( __( 'There was an error importing your settings, please try again.', 'ti-woocommerce-wishlist' ) );
 		}
 
@@ -169,20 +323,31 @@ class TInvWL_Export {
 			} else {
 				$this->exitWithRedirect( $movefile['error'] );
 			}
-		} elseif ( ! empty( trim( stripslashes( $_POST['settings-json'] ) ) ) ) {
-			$settings_json = trim( stripslashes( $_POST['settings-json'] ) );
+		} elseif ( isset( $_POST['settings-json'] ) && is_string( $_POST['settings-json'] ) && '' !== trim( wp_unslash( $_POST['settings-json'] ) ) ) {
+			$settings_json = trim( wp_unslash( $_POST['settings-json'] ) );
 		} else {
 			$this->exitWithRedirect( __( 'Please upload the TI WooCommerce Wishlist setting file or copy the content.', 'ti-woocommerce-wishlist' ) );
 		}
 
 		$settings = json_decode( $settings_json, true );
 
-		if ( empty( $settings ) ) {
+		if ( JSON_ERROR_NONE !== json_last_error() || ! $this->valid_settings( $settings ) ) {
 			$this->exitWithRedirect( __( 'The settings JSON is not valid.', 'ti-woocommerce-wishlist' ) );
 		}
 
+		$routes_before = $this->routing_settings();
+		$failed = false;
 		foreach ( $settings as $key => $value ) {
-			update_option( $key, $value );
+			if ( ! $this->import_option( $key, $value ) ) {
+				$failed = true;
+			}
+		}
+		if ( $routes_before !== $this->routing_settings() ) {
+			// Let the next request register the imported routes before rebuilding their cache.
+			delete_option( 'rewrite_rules' );
+		}
+		if ( $failed ) {
+			$this->exitWithRedirect( __( 'There was an error importing your settings, please try again.', 'ti-woocommerce-wishlist' ) );
 		}
 
 		exit( wp_redirect( admin_url( 'admin.php?page=tinvwl' ) ) );
@@ -205,7 +370,7 @@ class TInvWL_Export {
 	public function export_settings() {
 		$nonce_value = $_REQUEST['tinvwl_import_nonce'] ?? '';
 
-		if ( ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! in_array( 'administrator', (array) wp_get_current_user()->roles ) ) {
+		if ( ! is_string( $nonce_value ) || ! wp_verify_nonce( $nonce_value, 'tinvwl_import' ) || ! current_user_can( 'tinvwl_export_import_settings' ) ) {
 			$this->exitWithRedirect( __( 'There was an error exporting your settings, please try again.', 'ti-woocommerce-wishlist' ) );
 		}
 

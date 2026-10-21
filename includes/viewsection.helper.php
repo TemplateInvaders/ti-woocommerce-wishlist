@@ -539,9 +539,9 @@ class TInvWL_ViewSection extends TInvWL_View {
 					$value = $default;
 				}
 			} elseif ( is_array( $value ) ) {
-				foreach ( $value as $val ) {
-					if ( ! array_key_exists( $val, (array) $options ) ) {
-						unset( $value[ $val ] );
+				foreach ( $value as $key => $val ) {
+					if ( ( ! is_string( $val ) && ! is_int( $val ) ) || ! array_key_exists( $val, (array) $options ) ) {
+						unset( $value[ $key ] );
 					}
 				}
 				if ( ! $value ) {

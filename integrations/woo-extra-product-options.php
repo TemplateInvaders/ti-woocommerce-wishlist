@@ -41,6 +41,18 @@ if ( ! $available ) {
 	return;
 }
 
+if ( ! function_exists( 'tinvwl_themehigh_prepare_cart_data' ) ) {
+	/** Native ThemeHigh reads options from the prepared request; raw controls are not cart identity. */
+	function tinvwl_themehigh_prepare_cart_data( $meta, $product ) {
+		foreach ( (array) THWEPOF_Utils::get_product_fields_full() as $name => $field ) {
+			unset( $meta[ $name ] );
+		}
+		unset( $meta['thwepof_product_fields'] );
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_cart_data', 'tinvwl_themehigh_prepare_cart_data', 10, 2 );
+}
+
 if ( ! function_exists( 'tinv_wishlist_item_meta_woo_extra_product_options' ) ) {
 
 	/**

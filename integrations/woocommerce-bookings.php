@@ -166,15 +166,13 @@ if (class_exists('WC_Bookings')) {
 		add_filter('tinvwl_wishlist_item_status', 'tinvwl_item_status_woocommerce_bookings', 10, 4);
 	}
 
-	add_filter('woocommerce_product_object_query_args', 'tinvwl_item_product_type_woocommerce_bookings');
+	add_filter('tinvwl_wishlist_product_query_args', 'tinvwl_item_product_type_woocommerce_bookings');
 
 	function tinvwl_item_product_type_woocommerce_bookings($args)
 	{
-		if (!is_array($args['type'])) {
-			$args['type'] = [$args['type']];
-		}
-
-		$args['type'][] = 'booking';
+		// Extend only wishlist product lookups; other callers keep their requested types.
+		$types = isset($args['type']) ? (array) $args['type'] : array_keys(wc_get_product_types());
+		$args['type'] = array_values(array_unique(array_merge($types, array('booking'))));
 
 		return $args;
 	}

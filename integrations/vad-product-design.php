@@ -117,13 +117,15 @@ if ( ! function_exists( 'tinvwl_item_price_vad_product_design' ) ) {
 	 * @param array $wl_product Wishlist Product.
 	 * @param WC_Product $product Woocommerce Product.
 	 *
-	 * @return string
+	 * @param bool $raw Whether the numeric unit price is required for calculations.
+	 *
+	 * @return float|string
 	 */
 	function tinvwl_item_price_vad_product_design( $price, $wl_product, $product, $raw ) {
 //		echo '<pre><code>' . print_r( $wl_product, true ) . '</code></pre>';
 		if ( class_exists( 'VAD_Product_Design' ) ) {
 			if ( $product && 'design' === $product->get_type() && isset( $wl_product['meta']['select_product_price'] ) ) {
-				return wc_price( $wl_product['meta']['select_product_price'] );
+				return $raw ? (float) $wl_product['meta']['select_product_price'] : wc_price( $wl_product['meta']['select_product_price'] );
 			}
 		}
 

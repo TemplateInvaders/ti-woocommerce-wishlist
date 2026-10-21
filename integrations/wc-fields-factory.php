@@ -114,10 +114,17 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_wc_fields_factory' ) ) {
 							}
 						}
 					}
+					if ( 'file' === $ftype && is_array( $data ) && 'file' === ( $data['ftype'] ?? '' ) && isset( $data['user_val'] ) && is_string( $data['user_val'] ) ) {
+						$data = $data['user_val'];
+						$item[ $key ]['user_val'] = $data;
+					}
 					$item[ $key ]['fee_rules']     = $fee_rules;
 					$item[ $key ]['pricing_rules'] = $pricing_rules;
 					$item[ $key ]['format']        = $format;
 					$item[ $key ]['ftype']         = $ftype;
+					if ( 'file' === $ftype && is_array( $data ) && ! array_filter( $data ) ) {
+						unset( $item[ $key ] );
+					}
 
 					unset( $item_data[ $key ] );
 				}
@@ -315,10 +322,9 @@ function tinvwl_meta_wc_fields_factory( $meta, $post, $files ) {
 
 		foreach ( $files as $name => $file ) {
 			if ( array_key_exists( $name, $meta ) ) {
-				$upload = tinvwl_upload_file_wc_fields_factory( $file );
-				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
-					$file['tmp_name'] = $upload['file'];
-					$meta[ $name ]    = json_encode( array_merge( $upload, $file ) );
+				$upload = tinvwl_upload_meta_wc_fields_factory( $file );
+				if ( false !== $upload && ! empty( $upload ) ) {
+					$meta[ $name ] = json_encode( $upload );
 				}
 			}
 		}
@@ -337,10 +343,9 @@ function tinvwl_cart_meta_wc_fields_factory( $meta ) {
 
 		foreach ( $files as $name => $file ) {
 			if ( ! array_key_exists( $name, $meta ) ) {
-				$upload = tinvwl_upload_file_wc_fields_factory( $file );
-				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
-					$file['tmp_name'] = $upload['file'];
-					$meta[ $name ]    = json_encode( array_merge( $upload, $file ) );
+				$upload = tinvwl_upload_meta_wc_fields_factory( $file );
+				if ( false !== $upload && ! empty( $upload ) ) {
+					$meta[ $name ] = json_encode( $upload );
 				}
 			}
 		}
@@ -354,20 +359,228 @@ add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_add_to_cart_meta_wc_fields_facto
 
 function tinvwl_add_to_cart_meta_wc_fields_factory( $wl_product ) {
 	if ( function_exists( 'wcff' ) ) {
-
 		foreach ( $wl_product['meta'] as $key => $value ) {
 			if ( strpos( $key, 'wccpf' ) === 0 || strpos( $key, 'wccvf' ) === 0 ) {
-				$data                       = ( ! is_array( $value ) && is_object( json_decode( $value ) ) ) ? json_decode( $value, true ) : $value;
-				$wl_product['meta'][ $key ] = $data;
-
-				if ( strpos( $value, '"file":' ) !== false ) {
-					$_FILES[ $key ] = json_decode( $value, true );
-				}
+				// Saved files stay encoded until their native validation/persistence scopes.
+				if ( is_string( $value ) && strpos( $value, '"file":' ) !== false ) { continue; }
+				$wl_product['meta'][ $key ] = ( ! is_array( $value ) && is_object( json_decode( $value ) ) ) ? json_decode( $value, true ) : $value;
 			}
 		}
 	}
-
 	return $wl_product;
+}
+
+
+/** Reuse only verified public upload descriptors; WCFF still validates all current field policies. */
+class TInvWL_WCFF_Saved_Files {
+    private static $contexts = array();
+
+    public static function begin( $product, $token = 0 ) {
+        $index = count( self::$contexts );
+        self::$contexts[] = array( 'token' => $token, 'product_id' => (int) $product['product_id'], 'files' => array(), 'busy' => false, 'validated' => false, 'quantity' => null );
+        $files = array();
+        $product_id = (int) $product['product_id'];
+        $variation_id = (int) ( $product['variation_id'] ?? 0 );
+        $template = WC()->session ? WC()->session->get( 'wcff_current_template', 'single-product' ) : 'single-product';
+        $groups = wcff()->dao->load_fields_groups_for_product( $product_id, 'wccpf', $template, 'any' );
+        if ( $variation_id ) {
+            $groups = array_merge( $groups, wcff()->dao->load_fields_groups_for_product( $variation_id, 'wccpf', $template, 'any' ) );
+            if ( 'yes' === ( wcff()->option->get_options()['enable_variable_field'] ?? 'yes' ) ) {
+                $groups = array_merge( $groups, wcff()->dao->load_fields_groups_for_product( $variation_id, 'wccvf', 'any', 'any' ) );
+            }
+        }
+        foreach ( $groups as $group ) {
+            foreach ( $group['fields'] as $field ) {
+                if ( 'file' !== $field['type'] ) { continue; }
+                $base = $field['key'] ?? $field['name'];
+                foreach ( $product['meta'] as $key => $value ) {
+                    if ( $key !== $base && ! preg_match( '/^' . preg_quote( $base, '/' ) . '_[1-9][0-9]*$/D', $key ) ) { continue; }
+                    $files[ $key ] = self::prepare( $value, $field );
+                    $files[ $key ]['input'] = $value;
+                    $files[ $key ]['field'] = $field;
+                }
+            }
+        }
+        self::$contexts[ $index ]['files'] = $files;
+        if ( ! $files ) { return; }
+        // Keep native callback IDs, tie order, accepted_args, and has/remove_filter semantics.
+        // Replacing the callable in its public WP_Hook slot avoids remove/add reordering.
+        foreach ( array( 'woocommerce_add_to_cart_validation' => 'fields_validator', 'woocommerce_add_cart_item_data' => 'fields_persister' ) as $hook => $method ) {
+            if ( empty( $GLOBALS['wp_filter'][ $hook ] ) || ! $GLOBALS['wp_filter'][ $hook ] instanceof WP_Hook ) { continue; }
+            foreach ( $GLOBALS['wp_filter'][ $hook ]->callbacks as &$callbacks ) {
+                foreach ( $callbacks as &$entry ) {
+                    $native = $entry['function'];
+                    if ( ! is_array( $native ) || ! $native[0] instanceof wcff_product_fields || $native[1] !== $method ) { continue; }
+                    $entry['function'] = static function ( ...$args ) use ( $native, $method ) { return self::dispatch( $native, $method, $args ); };
+                }
+                unset( $entry );
+            }
+            unset( $callbacks );
+        }
+    }
+
+    public static function end( $product = null, $post = null, $request = null, $token = 0 ) {
+        for ( $index = count( self::$contexts ) - 1; $index >= 0; $index-- ) {
+            if ( self::$contexts[ $index ]['token'] === $token ) { array_splice( self::$contexts, $index, 1 ); break; }
+        }
+    }
+
+    public static function quantity( $passed, $product_id, $quantity ) {
+        $index = count( self::$contexts ) - 1;
+        if ( $index >= 0 && ! self::$contexts[ $index ]['busy'] && self::$contexts[ $index ]['files'] && (int) $product_id === self::$contexts[ $index ]['product_id'] ) {
+            self::$contexts[ $index ]['quantity'] = $quantity;
+        }
+        return $passed;
+    }
+
+    private static function prepare( $value, $field ) {
+        if ( is_array( $value ) && isset( $value['user_val'] ) ) { $value = $value['user_val']; }
+        $data = is_string( $value ) ? json_decode( $value, true ) : $value;
+        $multi = 'yes' === ( $field['multi_file'] ?? 'no' );
+        $empty = is_array( $data ) && ! array_filter( $data );
+        $uploads = $empty ? array() : ( $multi ? $data : array( $data ) );
+        $valid = is_array( $uploads );
+        $native = array(); $resolved = array();
+        if ( $valid ) {
+            foreach ( $uploads as $upload ) {
+                $file = self::file( $upload, $field );
+                if ( ! $file ) { $valid = false; break; }
+                $resolved[] = $file['upload']; $native[] = $file['file'];
+            }
+        }
+        $missing = array( 'name' => '', 'type' => '', 'tmp_name' => '', 'error' => $valid ? UPLOAD_ERR_NO_FILE : UPLOAD_ERR_CANT_WRITE, 'size' => 0 );
+        if ( ! $native || ! $valid ) { $native = array( $missing ); }
+        $input = $native[0];
+        if ( $multi ) {
+            $input = array();
+            foreach ( array( 'name', 'type', 'tmp_name', 'error', 'size' ) as $column ) { $input[ $column ] = array_column( $native, $column ); }
+        }
+        return array( 'valid' => $valid, 'file' => $input, 'uploads' => $resolved, 'value' => $multi ? $resolved : ( $resolved[0] ?? array() ) );
+    }
+
+    private static function file( $upload, $field ) {
+        if ( ! is_array( $upload ) || empty( $upload['file'] ) || empty( $upload['url'] ) || ! is_string( $upload['file'] ) || ! is_string( $upload['url'] ) ) { return false; }
+        $path = realpath( $upload['file'] );
+        if ( ! $path || ! is_file( $path ) || ! is_readable( $path ) || is_link( $upload['file'] ) ) { return false; }
+        $path = wp_normalize_path( $path );
+        $given = wp_normalize_path( $upload['file'] );
+        if ( preg_match( '~(^|/)\.\.?(/|$)~', $given ) || ( isset( $upload['tmp_name'] ) && ! in_array( wp_normalize_path( $upload['tmp_name'] ), array( $given, $path ), true ) ) ) { return false; }
+        $current = wp_get_upload_dir();
+        $roots = array( array( $current['basedir'], $current['baseurl'] ) );
+        // Native WCFF custom_upload_dir maps only this registered field's relative folder.
+        $custom = $field['upload_url'] ?? '';
+        if ( is_string( $custom ) && $custom && ! preg_match( '~(^[/\\\\]|^[A-Za-z]:|(^|[/\\\\])\.\.?([/\\\\]|$))~', $custom ) ) {
+            $roots[] = array( WP_CONTENT_DIR . '/' . $custom, WP_CONTENT_URL . '/' . $custom );
+        }
+        $allowed = false;
+        foreach ( $roots as $root ) {
+            if ( empty( $root[0] ) || empty( $root[1] ) ) { continue; }
+            $base = realpath( $root[0] );
+            if ( ! $base ) { continue; }
+            $base = trailingslashit( wp_normalize_path( $base ) );
+            if ( strpos( $path, $base ) !== 0 ) { continue; }
+            $relative = substr( $path, strlen( $base ) );
+            $configured = trailingslashit( wp_normalize_path( $root[0] ) ) . $relative;
+            if ( ( $given === $path || $given === $configured ) && $upload['url'] === trailingslashit( $root[1] ) . $relative ) { $allowed = true; break; }
+        }
+        if ( ! $allowed ) { return false; }
+        $name = wp_basename( $path ); $size = filesize( $path );
+        $type = wp_check_filetype_and_ext( $path, $name, get_allowed_mime_types() );
+        if ( ! $size || ! $type['ext'] || ! $type['type'] ) { return false; }
+        $file = array( 'name' => $name, 'type' => $type['type'], 'tmp_name' => $path, 'error' => UPLOAD_ERR_OK, 'size' => $size );
+        return array( 'file' => $file, 'upload' => array_merge( array( 'file' => $path, 'url' => $upload['url'] ), $file ) );
+    }
+
+    private static function dispatch( $native, $method, $args ) {
+        $index = count( self::$contexts ) - 1;
+        if ( $index < 0 || self::$contexts[ $index ]['busy'] || (int) ( $args[1] ?? 0 ) !== self::$contexts[ $index ]['product_id'] || ! self::$contexts[ $index ]['files'] ) { return call_user_func_array( $native, $args ); }
+        $files = self::$contexts[ $index ]['files'];
+        foreach ( $files as $key => $file ) {
+            if ( ! array_key_exists( $key, $_REQUEST ) || $_REQUEST[ $key ] !== $file['input'] ) { return call_user_func_array( $native, $args ); }
+        }
+        if ( 'fields_persister' === $method ) {
+            foreach ( $files as $key => $file ) { if ( ! array_key_exists( $key, $args[0] ) || $args[0][ $key ] !== $file['input'] ) { return call_user_func_array( $native, $args ); } }
+        }
+        self::$contexts[ $index ]['busy'] = true;
+        $request = $uploaded = array();
+        foreach ( $files as $key => $file ) {
+            $request[ $key ] = array( array_key_exists( $key, $_REQUEST ), $_REQUEST[ $key ] ?? null );
+            $uploaded[ $key ] = array( array_key_exists( $key, $_FILES ), $_FILES[ $key ] ?? null );
+            unset( $_REQUEST[ $key ], $_FILES[ $key ] );
+            if ( 'fields_validator' === $method ) { $_FILES[ $key ] = $file['file']; }
+        }
+        if ( null !== self::$contexts[ $index ]['quantity'] ) {
+            $request['quantity'] = array( array_key_exists( 'quantity', $_REQUEST ), $_REQUEST['quantity'] ?? null );
+            $_REQUEST['quantity'] = self::$contexts[ $index ]['quantity'];
+        }
+        $seen = false; $declared = array(); $observer = null;
+        if ( 'fields_persister' === $method ) {
+            $observer = static function ( $groups, $id ) use ( &$seen, &$declared, $args ) {
+                if ( (int) $id === (int) $args[1] || ( ! empty( $args[2] ) && (int) $id === (int) $args[2] ) ) {
+                    $seen = true;
+                    foreach ( $groups as $group ) { foreach ( $group['fields'] as $field ) { if ( 'file' === $field['type'] ) { $declared[ $field['key'] ?? $field['name'] ] = true; } } }
+                }
+                return $groups;
+            };
+            add_filter( 'wcff_fields_for_product', $observer, PHP_INT_MAX, 2 );
+        }
+        try {
+            $data = call_user_func_array( $native, $args );
+            if ( 'fields_validator' === $method ) { self::$contexts[ $index ]['validated'] = true === $data; }
+            if ( 'fields_persister' === $method ) {
+                foreach ( $files as $key => $file ) {
+                    unset( $data[ $key ] );
+                    $field = $file['field'];
+                    if ( $seen && empty( $declared[ $field['key'] ?? $field['name'] ] ) ) { continue; }
+                    if ( ! self::$contexts[ $index ]['validated'] || ! $file['valid'] ) { throw new Exception( __( 'Unable to restore the saved product file.', 'ti-woocommerce-wishlist' ) ); }
+                    if ( ! $file['uploads'] ) { continue; }
+                    $value = array( 'field_key' => $key, 'field_val' => array( 'fname' => $field['key'] ?? $field['name'], 'ftype' => 'file', 'user_val' => wp_json_encode( $file['value'] ), 'fee_rules' => array(), 'pricing_rules' => array(), 'format' => '' ) );
+                    if ( has_filter( 'wcff_before_inserting_cart_data' ) ) { $value = apply_filters( 'wcff_before_inserting_cart_data', $field, $value ); }
+                    $data[ $value['field_key'] ] = $value['field_val'];
+                }
+            }
+            return $data;
+        } finally {
+            if ( $observer ) { remove_filter( 'wcff_fields_for_product', $observer, PHP_INT_MAX ); }
+            foreach ( $request as $key => $value ) { if ( $value[0] ) { $_REQUEST[ $key ] = $value[1]; } else { unset( $_REQUEST[ $key ] ); } }
+            foreach ( $uploaded as $key => $value ) { if ( $value[0] ) { $_FILES[ $key ] = $value[1]; } else { unset( $_FILES[ $key ] ); } }
+            self::$contexts[ $index ]['busy'] = false;
+        }
+    }
+}
+
+add_filter( 'woocommerce_add_to_cart_validation', array( 'TInvWL_WCFF_Saved_Files', 'quantity' ), PHP_INT_MIN, 3 );
+add_action( 'tinvwl_before_prepare_post', array( 'TInvWL_WCFF_Saved_Files', 'begin' ), 10, 2 );
+add_action( 'tinvwl_after_unprepare_post', array( 'TInvWL_WCFF_Saved_Files', 'end' ), PHP_INT_MIN, 4 );
+
+function tinvwl_upload_meta_wc_fields_factory( $file ) {
+	if ( isset( $file['name'] ) && is_array( $file['name'] ) ) {
+		$uploads = array();
+		foreach ( $file['name'] as $index => $name ) {
+			if ( '' === $name ) {
+				continue;
+			}
+			$single_file = array();
+			foreach ( $file as $field => $values ) {
+				if ( is_array( $values ) && array_key_exists( $index, $values ) ) {
+					$single_file[ $field ] = $values[ $index ];
+				}
+			}
+			$upload = tinvwl_upload_meta_wc_fields_factory( $single_file );
+			if ( false === $upload ) {
+				return false;
+			}
+			$uploads[] = $upload;
+		}
+		return $uploads;
+	}
+
+	$upload = tinvwl_upload_file_wc_fields_factory( $file );
+	if ( ! empty( $upload['error'] ) || empty( $upload['file'] ) ) {
+		return false;
+	}
+	$file['tmp_name'] = $upload['file'];
+	return array_merge( $upload, $file );
 }
 
 function tinvwl_upload_file_wc_fields_factory( $file ) {

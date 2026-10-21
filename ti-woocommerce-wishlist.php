@@ -233,6 +233,8 @@ if (!function_exists('run_tinv_wishlist')) {
 				exit;
 			}
 		} elseif (dependency_tinv_wishlist()) {
+			// Register TI triggers before AutomateWoo caches its registry during WooCommerce init.
+			require_once TINVWL_PATH . 'integrations/automatewoo.php';
 			$plugin = new TInvWL();
 			$plugin->run();
 		}

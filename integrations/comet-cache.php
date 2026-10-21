@@ -51,7 +51,11 @@ if ( ! function_exists( 'tinvwl_comet_cache_reject' ) ) {
 	 * @return mixed
 	 */
 	function tinvwl_comet_cache_reject( $data = '' ) {
-		define( 'COMET_CACHE_ALLOWED', false );
+		if ( ! defined( 'COMET_CACHE_ALLOWED' ) ) {
+			if ( ! defined( 'COMET_CACHE_ALLOWED' ) ) {
+			define( 'COMET_CACHE_ALLOWED', false );
+		}
+		}
 
 		return $data;
 	}

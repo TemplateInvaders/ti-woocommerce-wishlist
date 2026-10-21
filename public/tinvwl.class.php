@@ -349,8 +349,8 @@ class TInvWL_Public_TInvWL {
 					// Match the front page and pass item value as a query var.
 					add_rewrite_rule( '^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]', 'top' );
 					self::$rules_raw['^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]';
-					add_rewrite_rule( '^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );
-					self::$rules_raw['^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[3]&wl_paged=$matches[4]';
+					add_rewrite_rule( '^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]&wl_paged=$matches[2]', 'top' );
+					self::$rules_raw['^((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$'] = 'index.php?page_id=' . $page_on_front . '&tinvwlID=$matches[1]&wl_paged=$matches[2]';
 				}
 
 				add_rewrite_rule( '(([^/]+/)*' . $page_slug . ')/((?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{32}))?/wl_page/([0-9]{1,})/{0,1}$', 'index.php?pagename=$matches[1]&tinvwlID=$matches[3]&wl_paged=$matches[4]', 'top' );

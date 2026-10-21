@@ -139,6 +139,10 @@ class TInvWL {
 	 * Define hooks for the plugin.
 	 */
 	public function define_hooks(): void {
+		if ( ! empty( $_COOKIE['tinv_wishlist_owner'] ) ) {
+			if ( ! defined( 'DONOTCACHEPAGE' ) ) { define( 'DONOTCACHEPAGE', true ); }
+			add_action( 'send_headers', 'nocache_headers' );
+		}
 		add_filter(
 			'plugin_action_links_' . plugin_basename( TINVWL_PATH . 'ti-woocommerce-wishlist.php' ),
 			[ $this, 'action_links' ]

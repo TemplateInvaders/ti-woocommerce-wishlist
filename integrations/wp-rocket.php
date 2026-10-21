@@ -33,6 +33,35 @@ $tinvwl_integrations[$slug] = array(
 	'available' => $available,
 );
 
+// Authorization cookies must bypass page cache even when optional compatibility is disabled.
+if ( $available ) {
+	if ( ! function_exists( 'tinvwl_rocket_reject_owner_cookie' ) ) {
+		function tinvwl_rocket_reject_owner_cookie( $cookies = array() ) {
+			$cookies[] = 'tinv_wishlist_owner';
+			return array_values( array_unique( $cookies ) );
+		}
+	}
+	add_filter( 'rocket_cache_reject_cookies', 'tinvwl_rocket_reject_owner_cookie' );
+
+	if ( ! function_exists( 'tinvwl_rocket_upgrade_owner_cache_policy' ) ) {
+		function tinvwl_rocket_upgrade_owner_cache_policy() {
+			$option = 'tinvwl_rocket_owner_cache_policy';
+			if ( 1 === (int) get_option( $option ) || ! function_exists( 'flush_rocket_htaccess' ) || ! function_exists( 'rocket_generate_config_file' ) || ! function_exists( 'rocket_clean_domain' ) ) {
+				return;
+			}
+			flush_rocket_htaccess();
+			rocket_generate_config_file();
+			// Old files were keyed only by the public share cookie and cannot retain owner HTML.
+			$before = did_action( 'after_rocket_clean_domain' );
+			$result = rocket_clean_domain();
+			if ( false !== $result && did_action( 'after_rocket_clean_domain' ) > $before ) {
+				update_option( $option, 1, false );
+			}
+		}
+	}
+	add_action( 'init', 'tinvwl_rocket_upgrade_owner_cache_policy', 20 );
+}
+
 if (!tinv_get_option('integrations', $slug)) {
 	return;
 }

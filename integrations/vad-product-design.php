@@ -96,8 +96,11 @@ function tinvwl_wishlist_item_thumbnail_vad_product_design( $image, $wl_product,
 
 	if ( class_exists( 'VAD_Product_Design' ) ) {
 		if ( $product && 'design' === $product->get_type() ) {
-			if ( isset( $wl_product['meta']['select_product_ima'] ) ) {
-				return '<img src="' . $wl_product['meta']['select_product_ima'] . '" alt="' . esc_attr( $product->get_name() ) . '" />';
+			if ( isset( $wl_product['meta']['select_product_ima'] ) && is_string( $wl_product['meta']['select_product_ima'] ) ) {
+				$image_url = esc_url( $wl_product['meta']['select_product_ima'] );
+				if ( '' !== $image_url ) {
+					return '<img src="' . $image_url . '" alt="' . esc_attr( $product->get_name() ) . '" />';
+				}
 			}
 		}
 	}

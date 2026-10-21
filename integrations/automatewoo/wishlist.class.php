@@ -40,6 +40,19 @@ class TINVWL_AutomateWoo_Wishlist extends AutomateWoo\Wishlist {
 		return 'tinv';
 	}
 
+	/** Resolve a trusted workflow's wishlist independently of the browser session. */
+	private function get_owned_wishlist() {
+		$id = $this->get_id();
+		$owner_id = $this->get_user_id();
+		$owner = $owner_id ? get_userdata( $owner_id ) : false;
+		if ( ! $id || ! $owner || ! $owner->exists() ) {
+			return false;
+		}
+		$wishlists = ( new TInvWL_Wishlist() )->get( array( 'ID' => $id, 'author' => $owner_id, 'count' => 1 ) );
+		$wishlist = array_shift( $wishlists );
+		return is_array( $wishlist ) && (int) $wishlist['ID'] === $id && (int) $wishlist['author'] === $owner_id ? $wishlist : false;
+	}
+
 	/**
 	 * @return array
 	 */
@@ -51,7 +64,8 @@ class TINVWL_AutomateWoo_Wishlist extends AutomateWoo\Wishlist {
 
 		$this->items = [];
 
-		$products = tinvwl_get_wishlist_products( $this->get_id(), array( 'count' => 9999999 ) );
+		$wishlist = $this->get_owned_wishlist();
+		$products = $wishlist ? ( new TInvWL_Product( $wishlist ) )->get_wishlist( array( 'count' => 9999999 ) ) : array();
 		if ( $products ) {
 			foreach ( $products as $product ) {
 				$this->items[] = $product['product_id'];
@@ -67,9 +81,8 @@ class TINVWL_AutomateWoo_Wishlist extends AutomateWoo\Wishlist {
 	 * @return string
 	 */
 	function get_link() {
-		$url = tinv_url_wishlist( $this->get_id() );
-
-		return $url;
+		$wishlist = $this->get_owned_wishlist();
+		return $wishlist ? tinv_url_wishlist_by_key( $wishlist['share_key'] ) : '';
 	}
 
 

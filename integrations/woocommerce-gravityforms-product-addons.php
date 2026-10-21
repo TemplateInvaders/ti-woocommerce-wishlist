@@ -285,12 +285,50 @@ if ( ! function_exists( 'tinvwl_wc_gf_addons_edit_link' ) ) {
 
 		if ( isset( $_GET['wc_gforms_wishlist_product_id'] ) && empty( $_POST ) ) {
 
-			$wl_product_id = $_GET['wc_gforms_wishlist_product_id'];
+			if ( ! is_scalar( $_GET['wc_gforms_wishlist_product_id'] ) ) {
+				return $form;
+			}
+			$wl_product_id = filter_var( $_GET['wc_gforms_wishlist_product_id'], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+			if ( false === $wl_product_id ) {
+				return $form;
+			}
 			$wlp           = new TInvWL_Product();
 			$wl_product    = $wlp->get( array( 'ID' => $wl_product_id ) );
 			$wl_product    = array_shift( $wl_product );
 
 			if ( empty( $wl_product ) ) {
+				return $form;
+			}
+			if ( empty( $wl_product['wishlist_id'] ) || ! isset( $wl_product['meta']['wc_gforms_form_id'], $form['id'] ) ) {
+				return $form;
+			}
+			$saved_form_id = filter_var( $wl_product['meta']['wc_gforms_form_id'], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+			if ( false === $saved_form_id || $saved_form_id !== filter_var( $form['id'], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ) ) {
+				return $form;
+			}
+
+			// A product ID does not grant access to its wishlist's saved form values.
+			$wl = new TInvWL_Wishlist();
+			$wishlists = $wl->get( array( 'ID' => (int) $wl_product['wishlist_id'], 'count' => 1 ) );
+			$wishlist = array_shift( $wishlists );
+			if ( ! $wishlist || ! method_exists( $wl, 'can_view' ) || ! $wl->can_view( $wishlist ) ) {
+				return $form;
+			}
+
+			global $product;
+			if ( ! $product instanceof WC_Product ) {
+				return $form;
+			}
+			$variation_id = ! empty( $wl_product['variation_id'] ) ? (int) $wl_product['variation_id'] : 0;
+			$saved_product_id = $variation_id ?: (int) $wl_product['product_id'];
+			$saved_product_id = apply_filters( 'wpml_object_id', $saved_product_id, $variation_id ? 'product_variation' : 'product', true );
+			$saved_product = wc_get_product( $saved_product_id );
+			if ( ! $saved_product ) {
+				return $form;
+			}
+			$current_parent_id = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+			$saved_parent_id = $saved_product->is_type( 'variation' ) ? $saved_product->get_parent_id() : $saved_product->get_id();
+			if ( (int) $current_parent_id !== (int) $saved_parent_id ) {
 				return $form;
 			}
 			if ( array_key_exists( 'wc_gforms_form_id', $wl_product['meta'] ) ) {

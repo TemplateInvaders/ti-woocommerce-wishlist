@@ -170,6 +170,8 @@ class TInvWL_Wishlist
 	 */
 	private function set_guest_owner($wishlist)
 	{
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) { define( 'DONOTCACHEPAGE', true ); }
+		nocache_headers();
 		$expires = time() + 31 * DAY_IN_SECONDS;
 		$token = $wishlist['ID'] . '.' . $expires . '.' . $this->guest_owner_signature($wishlist, $expires);
 		setcookie('tinv_wishlist_owner', $token, array(

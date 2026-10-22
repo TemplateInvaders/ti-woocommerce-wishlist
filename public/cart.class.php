@@ -77,9 +77,9 @@ class TInvWL_Public_Cart {
 	 */
 	function define_hooks() {
 		if ( version_compare( WC_VERSION, '3.7.0', '<' ) ) {
-			add_action( 'woocommerce_before_cart_item_quantity_zero', array( __CLASS__, 'remove_item_data' ) );
+			add_action( 'woocommerce_before_cart_item_quantity_zero', array( __CLASS__, 'archive_item_data' ), 10, 2 );
 		} else {
-			add_action( 'woocommerce_remove_cart_item', array( __CLASS__, 'remove_item_data' ) );
+			add_action( 'woocommerce_remove_cart_item', array( __CLASS__, 'archive_item_data' ), 10, 2 );
 		}
 		if ( version_compare( WC_VERSION, '3.9.0', '<' ) ) {
 			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data' ) );
@@ -87,6 +87,7 @@ class TInvWL_Public_Cart {
 			add_action( 'woocommerce_cart_emptied', array( __CLASS__, 'remove_item_data_cart_session' ) );
 		}
 
+		add_action( 'woocommerce_cart_item_restored', array( __CLASS__, 'restore_item_data' ), 10, 2 );
 		add_action( 'woocommerce_add_to_cart', array( __CLASS__, 'consume_product_source' ), 100, 6 );
 
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta' ) );
@@ -418,6 +419,36 @@ class TInvWL_Public_Cart {
 		WC()->session->set( 'tinvwl_wishlist_meta', $data );
 	}
 
+	/** Keep attribution for exactly the rows WooCommerce can still restore with Undo. */
+	public static function archive_item_data( $cart_item_key, $cart = null ) {
+		$cart = $cart ?: WC()->cart;
+		$archive = (array) WC()->session->get( 'tinvwl_removed_cart_sources', array() );
+		$removed = $cart && is_callable( array( $cart, 'get_removed_cart_contents' ) ) ? $cart->get_removed_cart_contents() : array();
+		$archive = array_intersect_key( $archive, (array) $removed + array( $cart_item_key => true ) );
+		$sources = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
+		$metadata = (array) WC()->session->get( 'tinvwl_wishlist_meta', array() );
+		if ( isset( $sources[ $cart_item_key ] ) ) {
+			$archive[ $cart_item_key ] = array( 'sources' => $sources[ $cart_item_key ], 'meta' => $metadata[ $cart_item_key ] ?? array() );
+		} else { unset( $archive[ $cart_item_key ] ); }
+		WC()->session->set( 'tinvwl_removed_cart_sources', $archive );
+		self::remove_item_data( $cart_item_key );
+	}
+
+	/** Restoring a cart row restores its source without adding or debiting it again. */
+	public static function restore_item_data( $cart_item_key, $cart = null ) {
+		$cart = $cart ?: WC()->cart;
+		$archive = (array) WC()->session->get( 'tinvwl_removed_cart_sources', array() );
+		if ( ! $cart || ! $cart->get_cart_item( $cart_item_key ) || ! isset( $archive[ $cart_item_key ]['sources'] ) ) { return; }
+		$sources = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
+		$metadata = (array) WC()->session->get( 'tinvwl_wishlist_meta', array() );
+		$sources[ $cart_item_key ] = $archive[ $cart_item_key ]['sources'];
+		$metadata[ $cart_item_key ] = $archive[ $cart_item_key ]['meta'];
+		unset( $archive[ $cart_item_key ] );
+		WC()->session->set( 'tinvwl_wishlist_cart', $sources );
+		WC()->session->set( 'tinvwl_wishlist_meta', $metadata );
+		WC()->session->set( 'tinvwl_removed_cart_sources', $archive );
+	}
+
 	/**
 	 * Remove product added from wishlist
 	 *
@@ -429,6 +460,7 @@ class TInvWL_Public_Cart {
 		$data = (array) WC()->session->get( 'tinvwl_wishlist_cart', array() );
 		if ( empty( $cart_item_key ) ) {
 			WC()->session->set( 'tinvwl_wishlist_cart', array() );
+			WC()->session->set( 'tinvwl_removed_cart_sources', array() );
 
 			return true;
 		}
@@ -451,6 +483,7 @@ class TInvWL_Public_Cart {
 	 * @return boolean
 	 */
 	public static function remove_item_data_cart_session( $clear_persistent_cart = true ) {
+		WC()->session->set( 'tinvwl_removed_cart_sources', array() );
 		if ( $clear_persistent_cart ) {
 			WC()->session->set( 'tinvwl_wishlist_cart', array() );
 

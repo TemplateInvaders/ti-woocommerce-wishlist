@@ -304,53 +304,60 @@ class TInvWL_Public_Wishlist_Ajax {
 				break;
 
 			case 'remove_selected':
-				if ( ! $owner ) {
-					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
+				$ids = array_values( array_unique( array_map( static function ( $id ) { return (int) filter_var( $id, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ); }, (array) ( $post['tinvwl-products'] ?? array() ) ) ) );
+				$read_ids = array_values( array_filter( $ids ) );
+				$results = $failed_titles = array();
+				foreach ( $ids as $id ) {
+					$results[ $id ] = array( 'status' => 'failed', 'error' => $owner ? ( $id > 0 ? 'item_unavailable' : 'invalid_item' ) : 'forbidden' );
+					$failed_titles[ $id ] = sprintf( __( 'Item #%d', 'ti-woocommerce-wishlist' ), $id );
+				}
+				$response['removal_results'] = $results;
+				if ( ! $owner || ! $read_ids ) {
+					$response['outcome'] = 'failed';
+					$response['error'] = $owner ? ( $ids ? 'invalid_selection' : 'no_items_selected' ) : 'forbidden';
+					$response['msg'][] = __( 'Could not remove the selected items. Please refresh the wishlist and try again.', 'ti-woocommerce-wishlist' );
 					break;
 				}
 
-				if ( 0 === $wishlist['ID'] ) {
-					$wlp = TInvWL_Product_Local::instance( TINVWL_PREFIX, true );
-				} else {
-					$wlp = new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
+				$wlp = 0 === $wishlist['ID'] ? TInvWL_Product_Local::instance( TINVWL_PREFIX, true ) : new TInvWL_Product( $wishlist, TINVWL_PREFIX, true );
+				global $wpdb;
+				$read_failed = false;
+				try {
+					$products = $wlp ? $wlp->get_wishlist( array( 'ID' => $read_ids, 'count' => 9999999 ) ) : false;
+					$read_failed = ! is_array( $products ) || ! empty( $wpdb->last_error );
+				} catch ( Throwable $error ) {
+					$read_failed = true;
+				}
+				if ( $read_failed ) {
+					$products = array();
+					foreach ( $results as &$result ) { $result['error'] = 'read_failed'; }
+					unset( $result );
 				}
 
-				if ( empty( $wlp ) ) {
-					$response['msg'][] = __( 'Something went wrong', 'ti-woocommerce-wishlist' );
-					break;
-				}
-
-				$products = $wlp->get_wishlist(
-					array(
-						'ID'    => $post['tinvwl-products'],
-						'count' => 9999999,
-					)
-				);
-
-				$titles = [];
+				$titles = $seen = array();
 				foreach ( $products as $product ) {
+					$id = (int) $product['ID'];
+					if ( ! isset( $results[ $id ] ) || isset( $seen[ $id ] ) || empty( $product['data'] ) ) { continue; }
+					$seen[ $id ] = true;
+					$title = sprintf( __( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ), is_callable( array( $product['data'], 'get_name' ) ) ? $product['data']->get_name() : $product['data']->get_title() );
+					$failed_titles[ $id ] = $title;
 					if ( $wlp->remove_item_from_wl( $product ) ) {
-						$titles[] = sprintf(
-							__( '&ldquo;%s&rdquo;', 'ti-woocommerce-wishlist' ),
-							is_callable( [
-								$product['data'],
-								'get_name'
-							] ) ? $product['data']->get_name() : $product['data']->get_title()
-						);
+						$results[ $id ] = array( 'status' => 'removed' );
+						$titles[] = $title;
+						unset( $failed_titles[ $id ] );
+					} else {
+						$results[ $id ]['error'] = 'remove_failed';
 					}
 				}
-
-				if ( ! empty( $titles ) ) {
-					$response['status'] = true;
-					$response['msg'][]  = sprintf(
-						_n(
-							'%s has been successfully removed from the wishlist.',
-							'%s have been successfully removed from the wishlist.',
-							count( $titles ),
-							'ti-woocommerce-wishlist'
-						),
-						wc_format_list_of_items( $titles )
-					);
+				$response['removal_results'] = $results;
+				if ( $titles ) {
+					$response['msg'][] = sprintf( _n( '%s has been successfully removed from the wishlist.', '%s have been successfully removed from the wishlist.', count( $titles ), 'ti-woocommerce-wishlist' ), wc_format_list_of_items( $titles ) );
+				}
+				$response['status'] = empty( $failed_titles );
+				$response['outcome'] = $failed_titles ? ( $titles ? 'partial' : 'failed' ) : 'removed';
+				if ( $failed_titles ) {
+					$response['error'] = $titles ? 'partial_remove' : 'remove_failed';
+					$response['msg'][] = sprintf( __( 'Could not complete or confirm removal of %s. Please refresh the wishlist and check these items.', 'ti-woocommerce-wishlist' ), wc_format_list_of_items( array_values( $failed_titles ) ) );
 				}
 
 				break;
@@ -543,7 +550,7 @@ class TInvWL_Public_Wishlist_Ajax {
 		$response['msg']     = array_unique( $response['msg'] );
 		$response['msg']     = implode( '<br>', $response['msg'] );
 
-		if ( tinv_get_option( 'table', 'hide_popup' ) ) {
+		if ( tinv_get_option( 'table', 'hide_popup' ) && ( 'remove_selected' !== $action || $response['status'] ) ) {
 			unset( $response['msg'] );
 		}
 

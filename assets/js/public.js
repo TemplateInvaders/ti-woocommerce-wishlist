@@ -1,5 +1,3 @@
-"use strict";
-
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 // Add to wishlist
 (function ($) {
@@ -99,10 +97,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
       scope.container.replaceWith(response.content);
     } else if (scope.sharekey && response.status) {
-      // A mini item has its own payload; refresh main views using their own pagination.
-      window.setTimeout(function () {
-        $.fn.tinvwl_get_wishlist_data('refresh', scope.sharekey);
-      }, 0);
+      // The mutation queue retains this target until every write has settled.
+      $.fn.tinvwl_get_wishlist_data('refresh', scope.sharekey);
     }
   }
   function finishWishlistAction(element, container) {
@@ -123,6 +119,22 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   var mutationQueue = [],
     mutationRunning = false,
     mutationDrainTimer;
+  var pendingWishlistViews = Object.create(null);
+  function rememberWishlistViews(target) {
+    if (!(target && target.jquery)) {
+      if ('undefined' !== typeof target) {
+        pendingWishlistViews[String(target)] = true;
+        return;
+      }
+      target = $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]');
+    }
+    target.each(function () {
+      var key = $(this).attr('data-tinvwl_sharekey');
+      if ('undefined' !== typeof key) {
+        pendingWishlistViews[key] = true;
+      }
+    });
+  }
   function wishlistAjax(options) {
     var data = options.data,
       mutation = data instanceof window.FormData || data && data['tinvwl-action'] && 'get_data' !== data['tinvwl-action'];
@@ -130,6 +142,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       return sendWishlistRequest(options);
     }
     var result = $.Deferred();
+    rememberWishlistViews();
     wishlistRevision++;
     latestRead++;
     mutationQueue.push(function () {
@@ -1124,6 +1137,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     var statsReadPending = false;
     var _get_data_ajax = function get_data_ajax(refresh, force, target, statsProducts) {
       if (mutationRunning || mutationQueue.length) {
+        if ('refresh' === refresh) {
+          rememberWishlistViews(target);
+        }
         return;
       }
       if (statsProducts && statsReadPending) {
@@ -1228,6 +1244,18 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     };
     $.fn.tinvwl_get_wishlist_data = function (refresh, sharekey) {
       if ('synchronize' === refresh) {
+        rememberWishlistViews();
+        if (mutationRunning || mutationQueue.length) {
+          return;
+        }
+        var views = pendingWishlistViews;
+        pendingWishlistViews = Object.create(null);
+        $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]').filter(function () {
+          return owns(views, $(this).attr('data-tinvwl_sharekey'));
+        }).each(function () {
+          _get_data_ajax('refresh', true, $(this));
+        });
+        // Request the canonical snapshot last so a shared view cannot replace its state.
         _get_data_ajax(undefined, true);
         return;
       }
@@ -1655,8 +1683,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, 0);
   }
 })(jQuery);
-"use strict";
-
 // Initialize a single guest secret before the first mutation, including virgin tabs.
 (function ($) {
   $.tinvwlGuestNonceRequest = function (settings) {
@@ -1760,8 +1786,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     return deferred.promise();
   };
 })(jQuery);
-"use strict";
-
 // Misc
 (function ($) {
   $(document).ready(function () {
@@ -1844,8 +1868,6 @@ function clearTooltip(e) {
     delete elem.tinvwlTooltipLabel;
   }
 }
-"use strict";
-
 // Wishlist table
 (function ($) {
   //Prevent to submit wishlist table action

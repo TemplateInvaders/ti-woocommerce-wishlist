@@ -164,13 +164,13 @@ class TInvWL {
 	 * @return void
 	 */
 	public function reset_cookie(): void {
+		global $wpdb;
 		$keep_guest = false;
-		if ( 'wp_login' === current_filter() ) {
-			$wl = new TInvWL_Wishlist();
-			$guest = $wl->get_by_sharekey_default()[0] ?? null;
-			$keep_guest = $guest && empty( $guest['author'] ) && $wl->is_owner( $guest );
-		}
-		// A busy or failed login transfer must retain the verified source until a later retry.
+		$wl = new TInvWL_Wishlist();
+		$guest = $wl->get_by_sharekey_default()[0] ?? null;
+		$keep_guest = ( $guest && empty( $guest['author'] ) && $wl->is_owner( $guest ) )
+			|| ( $wpdb->last_error && ! empty( $_COOKIE['tinv_wishlist_owner'] ) );
+		// A busy or failed transfer must retain its signed source across login and logout.
 		if ( ! $keep_guest ) {
 			TInvWL_Request_Nonce::rotate_guest_identity();
 			wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );

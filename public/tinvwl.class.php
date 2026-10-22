@@ -179,6 +179,7 @@ class TInvWL_Public_TInvWL {
 		add_action( 'wp_logout', array( $this, 'logout' ), 10, 2 );
 		add_action( 'user_register', array( $this, 'transfert_local_to_user_register' ) );
 		add_action( 'init', array( $this, 'legacy_transfer' ), 90 );
+		add_action( 'init', array( $this, 'retry_guest_transfer' ), 95 );
 		add_action( 'clear_auth_cookie', array( $this, 'set_user_sharekey' ) );
 
 		add_action( 'tinvwl_after_wishlist_table', array( $this, 'wishlist_button_action_before' ), 0 );
@@ -670,6 +671,20 @@ class TInvWL_Public_TInvWL {
 //		set_transient( '_tinvwl_update_wishlists_data', '1' );
 	}
 
+	/** Retry a captured login transfer without requiring another authentication event. */
+	function retry_guest_transfer() {
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return false;
+		}
+		$key = TInvWL_Wishlist::guest_transfer_pending_key();
+		if ( get_user_meta( $user_id, $key, true ) || get_user_meta( $user_id, $key . '_captures', false )
+			|| ! empty( $_COOKIE['tinv_wishlist_owner'] ) ) {
+			return $this->transfert_local_to_user_register( $user_id );
+		}
+		return false;
+	}
+
 	/**
 	 * Transfer Cookie Wishlist when register user
 	 *
@@ -685,6 +700,25 @@ class TInvWL_Public_TInvWL {
 		$pending_key = TInvWL_Wishlist::guest_transfer_pending_key();
 		$blog_id     = get_current_blog_id();
 		$multisite   = is_multisite();
+		$capture_key = $pending_key . '_captures';
+		// Each proof is an independent metadata row: concurrent logins must not overwrite one another.
+		$wishlists = $wl->get_by_sharekey_default();
+		$wishlist = array_shift( $wishlists );
+		if ( $wpdb->last_error ) {
+			return false;
+		}
+		if ( $wishlist && empty( $wishlist['author'] ) && $wl->is_owner( $wishlist ) ) {
+			$capture = array( 'user_id' => $user_id, 'blog_id' => $blog_id, 'sources' => array(
+				array( 'ID' => (int) $wishlist['ID'], 'share_key' => $wishlist['share_key'] ),
+			) );
+			$captured = get_user_meta( $user_id, $capture_key, false );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			if ( ! in_array( $capture, $captured, true ) && ! add_user_meta( $user_id, $capture_key, $capture ) ) {
+				return false; // Keep the signed browser proof if durable capture could not be written.
+			}
+		}
 		$lock        = 'tinvwl_merge_' . md5( $wpdb->prefix . '|' . $user_id );
 		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock ) ) ) {
 			return false;
@@ -693,6 +727,9 @@ class TInvWL_Public_TInvWL {
 		$source_lock = null;
 		try {
 			$pending = get_user_meta( $user_id, $pending_key, true );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
 			$sources = array();
 			if ( '' !== $pending && ( ! is_array( $pending ) || (int) ( $pending['user_id'] ?? 0 ) !== $user_id
 				|| ( $multisite && (int) ( $pending['blog_id'] ?? 0 ) !== $blog_id ) ) ) {
@@ -712,6 +749,16 @@ class TInvWL_Public_TInvWL {
 			if ( is_array( $pending ) ) {
 				$append_sources( $pending );
 			}
+			$captures = get_user_meta( $user_id, $capture_key, false );
+			if ( $wpdb->last_error ) {
+				return false;
+			}
+			foreach ( $captures as $capture ) {
+				if ( is_array( $capture ) && (int) ( $capture['user_id'] ?? 0 ) === $user_id
+					&& (int) ( $capture['blog_id'] ?? 0 ) === $blog_id ) {
+					$append_sources( $capture );
+				}
+			}
 			if ( $multisite ) {
 				// The shared legacy record is a read-only archive. Local IDs/keys do not prove its origin.
 				$legacy = get_user_meta( $user_id, '_tinvwl_pending_guest_transfer', true );
@@ -719,13 +766,6 @@ class TInvWL_Public_TInvWL {
 					&& (int) ( $legacy['blog_id'] ?? 0 ) === $blog_id ) {
 					$append_sources( $legacy );
 				}
-			}
-			// Always capture this browser's verified guest list, even when another source is pending.
-			$wishlists = $wl->get_by_sharekey_default();
-			$wishlist  = array_shift( $wishlists );
-			if ( $wishlist && empty( $wishlist['author'] ) && $wl->is_owner( $wishlist ) ) {
-				$id = (int) $wishlist['ID'];
-				$sources[ $id ] = array( 'ID' => $id, 'share_key' => $wishlist['share_key'] );
 			}
 			if ( ! $sources ) {
 				return false;
@@ -745,6 +785,13 @@ class TInvWL_Public_TInvWL {
 			};
 			if ( ! $persist() ) {
 				return false;
+			}
+			// The account-locked checkpoint now owns these proofs. New concurrent captures stay untouched.
+			foreach ( $captures as $capture ) {
+				if ( is_array( $capture ) && (int) ( $capture['user_id'] ?? 0 ) === $user_id
+					&& (int) ( $capture['blog_id'] ?? 0 ) === $blog_id ) {
+					delete_user_meta( $user_id, $capture_key, $capture );
+				}
 			}
 			$lists = $wpdb->prefix . $this->_name . '_lists';
 			$items = $wpdb->prefix . $this->_name . '_items';

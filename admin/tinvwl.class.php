@@ -35,13 +35,19 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 	 * Testing for the ability to update the functional
 	 */
 	function maybe_update() {
+		// Schema recovery is independent of the application checkpoint, including a
+		// checkpoint written by a previous release after an unsuccessful ALTER.
+		TInvWL_Activator::update();
+		$db_version = get_option( $this->_name . '_db_ver' );
+		if ( ! $db_version || version_compare( $db_version, $this->_version, 'lt' ) ) {
+			return;
+		}
 		$prev = get_option( $this->_name . '_ver' );
 		if ( false === $prev ) {
 			add_option( $this->_name . '_ver', $this->_version );
 			$prev = $this->_version;
 		}
 		if ( version_compare( $this->_version, $prev, 'gt' ) ) {
-			TInvWL_Activator::update();
 			new TInvWL_Update( $this->_version, $prev );
 			update_option( $this->_name . '_ver', $this->_version );
 			do_action( 'tinvwl_updated', $this->_version, $prev );

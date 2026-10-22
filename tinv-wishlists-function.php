@@ -898,6 +898,25 @@ if (!function_exists('tinvwl_meta_validate_cart_add')) {
 	add_filter('tinvwl_product_add_to_cart_need_redirect', 'tinvwl_meta_validate_cart_add', 90, 4);
 } // End if().
 
+if ( ! function_exists( 'tinv_wishlist_normalize_hidden_fields' ) ) {
+	/** Accept only flat field names from current input or historical JSON metadata. */
+	function tinv_wishlist_normalize_hidden_fields( $fields ) {
+		if ( is_string( $fields ) ) {
+			$fields = json_decode( $fields, true );
+		}
+		if ( ! is_array( $fields ) ) {
+			return array();
+		}
+		$names = array();
+		foreach ( $fields as $field ) {
+			if ( ( is_string( $field ) || is_int( $field ) ) && '' !== (string) $field ) {
+				$names[] = (string) $field;
+			}
+		}
+		return array_values( array_unique( $names ) );
+	}
+}
+
 if (!function_exists('tinv_wishlist_print_meta')) {
 
 	/**
@@ -927,8 +946,8 @@ if (!function_exists('tinv_wishlist_print_meta')) {
 			}
 		}
 		if (array_key_exists('tinvwl-hidden-fields', $meta)) {
-			$hiddenFields = apply_filters('tinvwl_wishlist_item_meta_hidden_fields', json_decode($meta['tinvwl-hidden-fields'], true));
-			if ($hiddenFields !== null) {
+			$hiddenFields = tinv_wishlist_normalize_hidden_fields( apply_filters( 'tinvwl_wishlist_item_meta_hidden_fields', tinv_wishlist_normalize_hidden_fields( $meta['tinvwl-hidden-fields'] ) ) );
+			if ($hiddenFields) {
 				foreach ($hiddenFields as $hiddenKey) {
 					if (isset($meta[$hiddenKey])) {
 						unset($meta[$hiddenKey]);
@@ -945,21 +964,8 @@ if (!function_exists('tinv_wishlist_print_meta')) {
 		}
 		$item_data = array();
 
-		$hidden_keys = array();
-		if (isset($meta['tinvwl-hidden-fields'])) {
-			$hidden_raw = $meta['tinvwl-hidden-fields'];
-			unset($meta['tinvwl-hidden-fields']);
-			if (is_string($hidden_raw)) {
-				$decoded = json_decode($hidden_raw, true);
-				if (is_array($decoded)) {
-					$hidden_keys = array_map('strval', $decoded);
-				}
-			} elseif (is_array($hidden_raw)) {
-				$hidden_keys = array_map('strval', $hidden_raw);
-			}
-		}
 		foreach ($meta as $key => $value) {
-			if (preg_match('/^_/', (string)$key) || in_array((string)$key, $hidden_keys, true)) {
+			if (preg_match('/^_/', (string)$key)) {
 				continue;
 			}
 

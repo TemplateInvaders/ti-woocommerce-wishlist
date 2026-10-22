@@ -817,18 +817,11 @@ class TInvWL_Public_TInvWL {
 								throw new RuntimeException( 'Could not read guest wishlist items.' );
 							}
 							foreach ( $products as $product ) {
-								$meta = isset( $product['meta'] ) && is_array( $product['meta'] ) ? $product['meta'] : array();
-								if ( $target ) {
-									$data = $product;
-									unset( $data['author'], $data['wishlist_id'] );
-									if ( ! $receiver->add_product( $data, $meta ) || 1 !== $wpdb->delete( $items, array( 'ID' => $product['ID'], 'wishlist_id' => $wishlist['ID'] ) ) ) {
-										throw new RuntimeException( 'Could not merge a guest wishlist item.' );
-									}
-								} else {
-									$product['author'] = $user_id;
-									if ( ! $receiver->update( $product, $meta, $product['ID'] ) ) {
-										throw new RuntimeException( 'Could not transfer a guest wishlist item.' );
-									}
+								if ( ! $receiver->transfer_saved_item( $product ) ) {
+									throw new RuntimeException( 'Could not transfer a saved guest wishlist item.' );
+								}
+								if ( $target && 1 !== $wpdb->delete( $items, array( 'ID' => $product['ID'], 'wishlist_id' => $wishlist['ID'] ) ) ) {
+									throw new RuntimeException( 'Could not remove the transferred guest wishlist item.' );
 								}
 							}
 							if ( ! $target ) {

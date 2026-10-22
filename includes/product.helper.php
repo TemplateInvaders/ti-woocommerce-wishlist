@@ -90,6 +90,67 @@ class TInvWL_Product {
 	}
 
 
+	/**
+	 * Transfer saved intent without requiring a live, readable WooCommerce product.
+	 * The login transfer owns both list mutexes and the surrounding transaction.
+	 * Stored configuration and historical price/stock must survive trash, hard deletion
+	 * and temporary product lookup failures; ordinary public writes cannot use this path.
+	 */
+	public function transfer_saved_item( $item ) {
+		global $wpdb;
+		if ( ! $this->storage_context || empty( $item['ID'] ) || empty( $item['wishlist_id'] ) || ! $this->wishlist_id() ) {
+			return false;
+		}
+		$saved = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$this->table}` WHERE ID = %d AND wishlist_id = %d FOR UPDATE", $item['ID'], $item['wishlist_id'] ), ARRAY_A );
+		if ( $wpdb->last_error || ! $saved || ! $saved['product_id'] || false === $this->storage_quantity( $saved['quantity'] ) ) {
+			return false;
+		}
+		if ( (int) $saved['wishlist_id'] === (int) $this->wishlist_id() ) {
+			if ( false === $wpdb->update( $this->table, array( 'author' => $this->user ), array( 'ID' => $saved['ID'], 'wishlist_id' => $this->wishlist_id() ) ) ) {
+				return false;
+			}
+			$saved['author'] = $this->user;
+			$this->product_action( 'tinvwl_product_updated', $saved );
+			return $saved['ID'];
+		}
+		$scope = array( 'wishlist_id' => $this->wishlist_id(), 'product_id' => $saved['product_id'], 'variation_id' => $saved['variation_id'] );
+		$formdata = $saved['formdata'];
+		if ( null === $formdata || '' === $formdata || '{"tinvwl-hidden-fields":"[]"}' === self::canonical_stored_configuration( $formdata ) ) {
+			$formdata = array( null, '', '{"tinvwl-hidden-fields":"[]"}' );
+		}
+		$formdata = $this->legacy_configuration_formdata( $formdata, $scope );
+		if ( false === $formdata ) {
+			return false;
+		}
+		$existing = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$this->table}` WHERE wishlist_id = %d AND product_id = %d AND variation_id = %d AND ", $this->wishlist_id(), $saved['product_id'], $saved['variation_id'] ) . $this->configuration_where( $formdata ) . ' ORDER BY ID ASC LIMIT 1 FOR UPDATE', ARRAY_A );
+		if ( $wpdb->last_error ) {
+			return false;
+		}
+		if ( $existing ) {
+			$quantity = $this->storage_quantity( $existing['quantity'] );
+			if ( false === $quantity || false === $this->storage_quantity( $quantity + (float) $saved['quantity'] ) ) {
+				return false;
+			}
+			$existing['quantity'] = $quantity + (float) $saved['quantity'];
+			if ( false === $wpdb->update( $this->table, array( 'quantity' => $existing['quantity'], 'author' => $this->user ), array( 'ID' => $existing['ID'], 'wishlist_id' => $this->wishlist_id() ) ) ) {
+				return false;
+			}
+			$existing['author'] = $this->user;
+			$this->product_action( 'tinvwl_product_updated', $existing );
+			return $existing['ID'];
+		}
+		unset( $saved['ID'] );
+		$saved['wishlist_id'] = $this->wishlist_id();
+		$saved['author'] = $this->user;
+		if ( ! $wpdb->insert( $this->table, $saved ) ) {
+			return false;
+		}
+		$id = $wpdb->insert_id;
+		$this->product_action( 'tinvwl_product_added', $saved );
+		return $id;
+	}
+
+
 	/** Create a REST write model while retaining public product visibility and validation. */
 	public static function for_api( $wishlist = array(), $plugin_name = TINVWL_PREFIX ) {
 		$product = new self( $wishlist, $plugin_name, true );
@@ -438,8 +499,8 @@ class TInvWL_Product {
 			 * @param array $data product data including author and wishlist IDs.
 			 * */
 			$this->product_action( 'tinvwl_product_added', $data );
-			$wla = new TInvWL_Analytics( $this->wishlist );
-			$wla->cart_product( $data['product_id'], $data['variation_id'] );
+			// Free derives wishlist saves from items; cart analytics are recorded only
+			// after WooCommerce successfully adds an item in Public_Cart.
 
 			return $id;
 		}
@@ -1280,6 +1341,9 @@ class TInvWL_Product {
 			$meta = array();
 		}
 		$meta = apply_filters( 'tinvwl_product_prepare_meta', $meta, $product_id, $variation_id );
+		if ( is_array( $meta ) && array_key_exists( 'tinvwl-hidden-fields', $meta ) ) {
+			$meta['tinvwl-hidden-fields'] = json_encode( tinv_wishlist_normalize_hidden_fields( $meta['tinvwl-hidden-fields'] ) );
+		}
 		foreach (
 			array(
 				'add-to-cart',

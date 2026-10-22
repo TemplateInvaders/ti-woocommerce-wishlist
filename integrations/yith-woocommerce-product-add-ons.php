@@ -41,6 +41,68 @@ if ( ! $available ) {
 	return;
 }
 
+/** Accept stored JSON, cart-decoded options and the metadata display wrapper. */
+function tinvwl_yith_saved_options( $meta ) {
+	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
+	if ( ! is_array( $meta ) ) { return false; }
+	$options = array_key_exists( 'yith_wapo', $meta ) ? $meta['yith_wapo'] : array();
+	if ( is_array( $options ) && array_key_exists( 'display', $options ) ) { $options = $options['display']; }
+	if ( '' === $options ) { return array(); }
+	$options = is_string( $options ) ? json_decode( $options, true ) : $options;
+	if ( ! is_array( $options ) ) { return false; }
+	foreach ( $options as $index => $option ) {
+		if ( ! is_array( $option ) ) { return false; }
+		foreach ( $option as $key => $value ) {
+			if ( ! is_scalar( $value ) ) { return false; }
+			if ( ! $key ) { unset( $options[ $index ][ $key ] ); continue; }
+			$parts = explode( '-', $key );
+			$addon_id = $parts[0];
+			$option_id = $parts[1] ?? $value;
+			$info = yith_wapo_get_option_info( $addon_id, $option_id );
+			if ( ! is_array( $info ) || empty( $info['addon_type'] ) ) { return false; }
+			$addon = $info['addon'] ?? new YITH_WAPO_Addon( $addon_id );
+			if ( ! is_object( $addon ) || ! is_callable( array( $addon, 'get_option' ) ) ) { return false; }
+			$required = 'yes' === $addon->get_option( 'required', $option_id );
+			if ( '' === (string) $value ) {
+				if ( $required ) { return false; }
+				unset( $options[ $index ][ $key ] );
+				continue;
+			}
+			if ( 'product' === $info['addon_type'] ) {
+				$selection = explode( '-', (string) $value );
+				if ( count( $selection ) < 3 || ! is_numeric( $selection[2] ) || ! is_finite( (float) $selection[2] ) || (float) $selection[2] < 0 ) { return false; }
+				if ( 0.0 === (float) $selection[2] ) {
+					if ( $required ) { return false; }
+					unset( $options[ $index ][ $key ] );
+					continue;
+				}
+				if ( ! tinvwl_yith_selected_product( $value, $info ) ) { return false; }
+			}
+		}
+	}
+	return $options;
+}
+function tinvwl_yith_selected_product( $value, $info ) {
+	$parts = explode( '-', (string) $value );
+	$id = isset( $parts[1] ) ? filter_var( $parts[1], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ) : false;
+	if ( false === $id ) { return false; }
+	$product = wc_get_product( $id );
+	if ( ! $product instanceof WC_Product ) { return false; }
+	$expected = 0;
+	if ( array_key_exists( 'product_id', $info ) ) {
+		$expected = filter_var( $info['product_id'], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		if ( false === $expected ) { return false; }
+	}
+	if ( $product instanceof WC_Product_Variation ) {
+		if ( ! wc_get_product( $product->get_parent_id() ) instanceof WC_Product || ( $expected && $expected !== $id && $expected !== (int) $product->get_parent_id() ) ) { return false; }
+	} elseif ( $expected && $expected !== $id ) { return false; }
+	return $product;
+}
+function tinvwl_yith_configuration_available( $available, $wl_product, $product ) {
+	return $available && false !== tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
+}
+add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_yith_configuration_available', 10, 3 );
+
 if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on' ) ) {
 
 	/**
@@ -55,6 +117,12 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 	function tinv_wishlist_item_meta_yith_woocommerce_product_add_on( $item_data, $product_id, $variation_id ) {
 
 		if ( isset( $item_data['yith_wapo_product_id'] ) && class_exists( 'YITH_WAPO' ) ) {
+			$options = tinvwl_yith_saved_options( $item_data );
+			if ( false === $options ) {
+				unset( $item_data['yith_wapo'], $item_data['yith_wapo_product_id'], $item_data['yith_wapo_is_single'] );
+				$item_data[] = array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) );
+				return $item_data;
+			}
 			unset( $item_data['yith_wapo_product_id'] );
 			unset( $item_data['yith_wapo_is_single'] );
 
@@ -75,11 +143,11 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 
 			}
 			if ( ! empty( $item_data['yith_wapo'] ) ) {
-				$base_product_price = is_object( $base_product ) ? (float) yit_get_display_price( $base_product ) : 0;
+					$base_product_price = is_object( $base_product ) ? (float) yit_get_display_price( $base_product ) : 0;
 				// $total_options_price = 0;
 				$cart_data_array          = array();
 				$first_free_options_count = 0;
-				foreach ( json_decode( $item_data['yith_wapo']['display'], true ) as $index => $option ) {
+				foreach ( $options as $index => $option ) {
 					foreach ( $option as $key => $value ) {
 						if ( $key && '' !== $value ) {
 							$value = stripslashes( $value );
@@ -132,7 +200,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 								$option_product_info = explode( '-', $value );
 								$option_product_id   = $option_product_info[1];
 								$option_product_qty  = $option_product_info[2];
-								$option_product      = wc_get_product( $option_product_id );
+								$option_product      = tinvwl_yith_selected_product( $value, $info );
+								if ( ! $option_product ) { return array( array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ) ); }
 								$value               = $option_product->get_title();
 
 								// product prices
@@ -192,17 +261,20 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 	 * @param string $price Returned price.
 	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
+	 * @param bool $raw Return an unformatted unit price.
 	 *
-	 * @return string
+	 * @return string|float
 	 */
-	function tinvwl_item_price_yith_woocommerce_product_add_on( $price, $wl_product, $product ) {
+	function tinvwl_item_price_yith_woocommerce_product_add_on( $price, $wl_product, $product, $raw = false ) {
+		$options = tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
+		if ( false === $options || ! apply_filters( 'tinvwl_wishlist_item_configuration_available', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 
 		if ( class_exists( 'YITH_WAPO' ) ) {
 
 			if ( ! empty( $wl_product['meta']['yith_wapo'] ) ) {
 				$total_options_price      = 0;
 				$first_free_options_count = 0;
-				foreach ( json_decode( $wl_product['meta']['yith_wapo'], true ) as $index => $option ) {
+				foreach ( $options as $index => $option ) {
 					foreach ( $option as $key => $value ) {
 
 						$value = stripslashes( $value );
@@ -249,7 +321,8 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 									$option_product_info = explode( '-', $value );
 									$option_product_id   = $option_product_info[1];
 									$option_product_qty  = $option_product_info[2];
-									$option_product      = wc_get_product( $option_product_id );
+									$option_product      = tinvwl_yith_selected_product( $value, $info );
+									if ( ! $option_product ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 									$value               = $option_product->get_title();
 									$product_price       = $option_product->get_price();
 									if ( $info['price_method'] == 'product' ) {
@@ -275,7 +348,7 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 				}
 
 				$base_price = $product->get_price();
-				$price      = wc_price( $base_price + $total_options_price );
+				$price      = $raw ? (float) $base_price + $total_options_price : wc_price( $base_price + $total_options_price );
 
 			}
 		}
@@ -283,7 +356,7 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 4 );
 } // End if().
 
 if ( ! function_exists( 'tinvwl_add_to_cart_meta_yith_woocommerce_product_add_on' ) ) {
@@ -292,7 +365,10 @@ if ( ! function_exists( 'tinvwl_add_to_cart_meta_yith_woocommerce_product_add_on
 		if ( class_exists( 'YITH_WAPO' ) ) {
 
 			if ( ! empty( $wl_product['meta']['yith_wapo'] ) ) {
-				$wl_product['meta']['yith_wapo'] = json_decode( $wl_product['meta']['yith_wapo'], true );
+				if ( is_string( $wl_product['meta']['yith_wapo'] ) ) {
+					$decoded = json_decode( $wl_product['meta']['yith_wapo'], true );
+					if ( is_array( $decoded ) ) { $wl_product['meta']['yith_wapo'] = $decoded; }
+				}
 			}
 		}
 
@@ -320,7 +396,9 @@ if ( ! function_exists( 'tinvwl_meta_validate_cart_add_yith_woocommerce_product_
 
 			if ( ! empty( $wl_product['meta']['yith_wapo'] ) ) {
 
-				foreach ( json_decode( $wl_product['meta']['yith_wapo'], true ) as $index => $option ) {
+				$options = tinvwl_yith_saved_options( $wl_product['meta'] );
+				if ( false === $options ) { return true; }
+				foreach ( $options as $index => $option ) {
 					foreach ( $option as $key => $value ) {
 						if ( $key && '' === $value ) {
 							$value = stripslashes( $value );

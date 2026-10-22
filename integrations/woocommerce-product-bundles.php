@@ -64,6 +64,46 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' 
 	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_woocommerce_product_bundles', 10, 2 );
 } // End if().
 
+/** Resolve this saved bundle without changing any cached bundled-item objects. */
+function tinvwl_bundle_saved_components( $wl_product, $product ) {
+	$meta = $wl_product['meta'] ?? array();
+	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
+	if ( ! is_array( $meta ) ) { return false; }
+	$prefix = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product->get_id() );
+	$items = $product->get_bundled_items();
+	if ( ! is_array( $items ) ) { return false; }
+	foreach ( $meta as $key => $value ) {
+		if ( preg_match( '/^' . preg_quote( $prefix, '/' ) . 'bundle_(?:variation_id|quantity|selected_optional)_(\d+)$/D', $key, $match ) && ! isset( $items[ $match[1] ] ) ) {
+			$quantity = $meta[ $prefix . 'bundle_quantity_' . $match[1] ] ?? 1;
+			if ( ! is_numeric( $quantity ) || 0.0 !== (float) $quantity ) { return false; }
+		}
+	}
+	$components = array();
+	foreach ( $items as $id => $item ) {
+		$quantity = $meta[ $prefix . 'bundle_quantity_' . $id ] ?? $item->get_quantity();
+		if ( ! is_numeric( $quantity ) || ! is_finite( (float) $quantity ) || (float) $quantity < 0 ) { return false; }
+		if ( 0.0 === (float) $quantity || ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $id, $meta ) ) ) { continue; }
+		$base_id = filter_var( $item->get_product_id(), FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		if ( false === $base_id ) { return false; }
+		$base = wc_get_product( $base_id );
+		if ( ! $base instanceof WC_Product ) { return false; }
+		$selected = $meta[ $prefix . 'bundle_variation_id_' . $id ] ?? 0;
+		$selected = is_int( $selected ) || is_string( $selected ) ? filter_var( $selected, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0 ) ) ) : false;
+		if ( false === $selected ) { return false; }
+		$component = $selected ? wc_get_product( (int) $selected ) : $base;
+		if ( ! $component instanceof WC_Product ) { return false; }
+		if ( $selected && ( ! $component instanceof WC_Product_Variation || (int) $component->get_parent_id() !== (int) $item->get_product_id() ) ) { return false; }
+		if ( ! $selected && in_array( $base->get_type(), array( 'variable', 'variable-subscription' ), true ) ) { return false; }
+		$components[ $id ] = array( 'item' => $item, 'product' => $component, 'quantity' => (float) $quantity );
+	}
+	return $components;
+}
+
+function tinvwl_bundle_configuration_available( $available, $wl_product, $product ) {
+	return $available && ( ! $product->is_type( 'bundle' ) || false !== tinvwl_bundle_saved_components( $wl_product, $product ) );
+}
+add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_bundle_configuration_available', 10, 3 );
+
 if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 
 	/**
@@ -76,36 +116,17 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product, $discount_extra = 0 ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
-			$product_id    = $product->get_id();
-			$bundled_items = $product->get_bundled_items();
-			if ( ! empty( $bundled_items ) ) {
-				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
-					// A selected variation belongs to this row, not the cached bundle item.
-					$bundled_item = clone $bundled_item;
-
-					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
-					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
-					if ( ! empty( $bundled_variation_id ) ) {
-						$bundled_item->product = wc_get_product( $bundled_variation_id );
-					}
-
-					$is_optional = $bundled_item->is_optional();
-
-					$bundled_item_quantity_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_quantity_' . $bundled_item_id;
-					$bundled_product_qty               = isset( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) ? absint( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) : $bundled_item->get_quantity();
-
-					if ( $is_optional ) {
-
-						/** Documented in method 'get_posted_bundle_configuration'. */
-						$bundled_item_selected_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_selected_optional_' . $bundled_item_id;
-
-						if ( ! array_key_exists( $bundled_item_selected_request_key, $wl_product['meta'] ) ) {
-							$bundled_product_qty = 0;
-						}
-					}
-					if ( 0 === $bundled_product_qty || ! $bundled_item->is_visible( 'cart' ) ) {
-						continue;
-					}
+			$components = tinvwl_bundle_saved_components( $wl_product, $product );
+			if ( false === $components ) {
+				echo '<tr class="tinvwl-unavailable-configuration"><td colspan="20">' . esc_html__( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) . '</td></tr>';
+				return;
+			}
+			if ( $components ) {
+				foreach ( $components as $component ) {
+					$bundled_item = clone $component['item'];
+					$bundled_item->product = $component['product'];
+					$bundled_product_qty = $component['quantity'];
+					if ( ! $bundled_item->is_visible( 'cart' ) ) { continue; }
 
 					$product_url   = $bundled_item->product->get_permalink();
 					$product_image = $bundled_item->product->get_image();
@@ -148,7 +169,9 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					if ( tinv_get_option( 'product_table', 'colm_stock' ) ) {
 						$row_string .= '<td class="product-stock">%4$s</td>';
 					}
-
+					if ( tinv_get_option( 'product_table', 'colm_quantity' ) ) {
+						$row_string .= '<td class="product-quantity">&nbsp;</td>';
+					}
 					if ( tinv_get_option( 'product_table', 'add_to_cart' ) ) {
 						$row_string .= '<td class="product-action">&nbsp;</td>';
 					}
@@ -177,38 +200,15 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 	function tinvwl_item_price_woocommerce_product_bundles( $price, $wl_product, $product, $raw = false ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
-			$bundle_price  = $product->get_price();
-			$product_id    = $product->get_id();
-			$bundled_items = $product->get_bundled_items();
-
-			if ( ! empty( $bundled_items ) ) {
-
+			$components = tinvwl_bundle_saved_components( $wl_product, $product );
+			if ( false === $components || ! apply_filters( 'tinvwl_wishlist_item_configuration_available', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
+			$bundle_price = $product->get_price();
+			if ( is_array( $components ) ) {
 				$bundled_items_price = 0.0;
-
-				foreach ( $bundled_items as $bundled_item_id => $bundled_item ) {
-
-					$bundled_item_variation_id_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_variation_id_' . $bundled_item_id;
-					$bundled_variation_id                  = absint( isset( $wl_product['meta'][ $bundled_item_variation_id_request_key ] ) ? $wl_product['meta'][ $bundled_item_variation_id_request_key ] : 0 );
-					if ( ! empty( $bundled_variation_id ) ) {
-						$_bundled_product = wc_get_product( $bundled_variation_id );
-					} else {
-						$_bundled_product = $bundled_item->product;
-					}
-
-					$is_optional = $bundled_item->is_optional();
-
-					$bundled_item_quantity_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_quantity_' . $bundled_item_id;
-					$bundled_product_qty               = isset( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) ? absint( $wl_product['meta'][ $bundled_item_quantity_request_key ] ) : $bundled_item->get_quantity();
-
-					if ( $is_optional ) {
-
-						/** Documented in method 'get_posted_bundle_configuration'. */
-						$bundled_item_selected_request_key = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $product_id ) . 'bundle_selected_optional_' . $bundled_item_id;
-
-						if ( ! array_key_exists( $bundled_item_selected_request_key, $wl_product['meta'] ) ) {
-							$bundled_product_qty = 0;
-						}
-					}
+				foreach ( $components as $component ) {
+					$bundled_item = $component['item'];
+					$_bundled_product = $component['product'];
+					$bundled_product_qty = $component['quantity'];
 
 					if ( $bundled_item->is_priced_individually() ) {
 						$product_price = $bundled_item->get_raw_price( $_bundled_product );
@@ -220,6 +220,11 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 
 				} // End foreach().
 				$price = (double) $bundle_price + $bundled_items_price;
+
+				if ( $raw ) {
+					return $price;
+				}
+
 				if ( ! $raw ) {
 					$price = apply_filters( 'woocommerce_get_price_html', wc_price( $price ), $product );
 				}

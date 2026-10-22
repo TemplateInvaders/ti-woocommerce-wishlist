@@ -185,6 +185,9 @@ class TInvWL_Public_Cart {
 		}
 		$product['action'] = 'add';
 		$product           = apply_filters( 'tinvwl_addproduct_tocart', $product );
+		if ( ! apply_filters( 'tinvwl_wishlist_item_configuration_available', true, $product, $product['data'] ) ) {
+			return array( 'product' => $product['data'], 'quantity' => $wl_quantity, 'error_code' => 'unavailable_configuration' );
+		}
 		$request_product = $product;
 		// Native request encoding must not change saved configuration or cart attribution.
 		$request_product['meta'] = apply_filters( 'tinvwl_addproduct_tocart_prepare_meta', $product['meta'], $product );

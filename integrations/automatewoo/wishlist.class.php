@@ -40,6 +40,19 @@ class TINVWL_AutomateWoo_Wishlist extends AutomateWoo\Wishlist {
 		return 'tinv';
 	}
 
+	/** Resolve the saved variation without silently substituting its parent or a different family. */
+	public static function get_event_product( $data ) {
+		$product_id = absint( $data['product_id'] ?? 0 );
+		$variation_id = absint( $data['variation_id'] ?? 0 );
+		if ( ! $product_id ) { return false; }
+		$product = wc_get_product( $variation_id ? $variation_id : $product_id );
+		if ( ! $product instanceof WC_Product ) { return false; }
+		if ( $variation_id && ( ! $product instanceof WC_Product_Variation || (int) $product->get_parent_id() !== $product_id ) ) {
+			return false;
+		}
+		return $product;
+	}
+
 	/** Resolve a trusted workflow's wishlist independently of the browser session. */
 	private function get_owned_wishlist() {
 		$id = $this->get_id();

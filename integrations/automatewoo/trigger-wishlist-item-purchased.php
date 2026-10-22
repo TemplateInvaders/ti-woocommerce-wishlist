@@ -38,6 +38,9 @@ class TINVWL_Trigger_Wishlist_Item_Purchased extends AutomateWoo\Trigger
 			return;
 		}
 
+		$product = $item->get_product();
+		if ( ! $product instanceof WC_Product ) { return; }
+
 		$wishlist = new TINVWL_AutomateWoo_Wishlist();
 		$wishlist->id = $wishlist_data['ID'];
 		$wishlist->owner_id = $wishlist_data['author'];
@@ -45,7 +48,7 @@ class TINVWL_Trigger_Wishlist_Item_Purchased extends AutomateWoo\Trigger
 		$this->maybe_run(array(
 			'customer' => AutomateWoo\Customer_Factory::get_by_user_id($wishlist_data['author']),
 			'wishlist' => $wishlist,
-			'product' => wc_get_product($item->get_product_id()),
+			'product' => $product,
 		));
 
 	}

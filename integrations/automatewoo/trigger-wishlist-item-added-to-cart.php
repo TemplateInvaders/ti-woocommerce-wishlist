@@ -38,6 +38,9 @@ class TINVWL_Trigger_Wishlist_Item_Added_To_Cart extends AutomateWoo\Trigger
 			return;
 		}
 
+		$event_product = TINVWL_AutomateWoo_Wishlist::get_event_product( $product );
+		if ( ! $event_product ) { return; }
+
 		$wishlist = new TINVWL_AutomateWoo_Wishlist();
 		$wishlist->id = $product['wishlist_id'];
 		$wishlist->owner_id = $product['author'];
@@ -45,7 +48,7 @@ class TINVWL_Trigger_Wishlist_Item_Added_To_Cart extends AutomateWoo\Trigger
 		$this->maybe_run(array(
 			'customer' => AutomateWoo\Customer_Factory::get_by_user_id($product['author']),
 			'wishlist' => $wishlist,
-			'product' => wc_get_product($product['product_id']),
+			'product' => $event_product,
 		));
 
 	}

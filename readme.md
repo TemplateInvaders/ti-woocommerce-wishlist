@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 7.1.3
-Stable tag: 2.13.0
+Stable tag: 2.14.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,57 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+
+### 2.14.0 ###
+*Release Date - 22 October 2026*
+
+- **Updated**: Compatibility with WordPress 7.1.3 and WooCommerce 11.2.1
+- **Security**: Strengthened wishlist ownership checks, product access restrictions and REST API permissions
+- **Security**: Protected public wishlist actions and access to saved product configurations
+- **Fixed**: Guest-to-account wishlist transfers, concurrent updates and duplicate product entries
+- **Fixed**: AJAX 404 errors when refreshing a wishlist before the first product is added
+- **Fixed**: Unnecessary creation of empty default wishlists and scheduled cleanup of expired empty guest defaults
+- **Fixed**: Excessive database queries for product statistics on storefront and admin requests
+- **Fixed**: Unnecessary cart validation when loading wishlists and refreshing wishlist data
+- **Fixed**: Login redirects affecting the cart and checkout when no wishlist page is assigned
+- **Fixed**: Selected variations and product attributes when adding wishlist items to the cart
+- **Fixed**: Automatic removal of parent variable products after choosing a variation on the product page
+- **Fixed**: Legacy wishlist migration, emoji support and recovery after incomplete database upgrades
+- **Fixed**: Saved product configurations, uploaded files and zero-valued custom product options
+- **Fixed**: Fractional quantities, stock validation, backorders and automatic removal of wishlist items
+- **Fixed**: Purchase tracking and wishlist attribution during checkout
+- **Fixed**: Wishlist buttons, dialogs, counters and multiple wishlist views on the same page
+- **Fixed**: Keyboard navigation, screen reader labels and recovery after failed AJAX requests
+- **Fixed**: Wishlist names, special characters, pagination links and front page routing
+- **Fixed**: Settings import validation, error reporting, wishlist routes and support chat preferences
+- **Updated**: Integration with [Advanced Product Fields (Product Addons) for WooCommerce](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) plugin
+- **Updated**: Integration with [Advanced Product Fields Pro and Extended](https://www.studiowombat.com/plugin/advanced-product-fields-for-woocommerce/) plugin: saved selections, formatted prices, option adjustments and transfer to cart
+- **Updated**: Integration with [WooCommerce Product Add-Ons](https://woocommerce.com/products/product-add-ons/) plugin
+- **Updated**: Integration with [Woo Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin
+- **Updated**: Integration with [WooCommerce Product Add-Ons Ultimate](https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/) plugin
+- **Updated**: Integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+- **Updated**: Integration with [Spam protection, Anti-Spam, FireWall by CleanTalk](https://wordpress.org/plugins/cleantalk-spam-protect/) plugin
+- **Updated**: Integration with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/) plugin
+- **Updated**: Integration with [PW WooCommerce Gift Cards](https://wordpress.org/plugins/pw-woocommerce-gift-cards/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/) plugin
+- **Updated**: Integration with [Extra Product Options For WooCommerce | Custom Product Addons and Fields](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+- **Updated**: Integration with [WooCommerce Gravity Forms Product Add-Ons](https://woocommerce.com/products/gravity-forms-add-ons/) plugin
+- **Updated**: Integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/) plugin
+- **Updated**: Integration with [WPC Product Bundles for WooCommerce](https://wordpress.org/plugins/woo-product-bundle/) plugin
+- **Updated**: Integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/) plugin
+- **Updated**: Integration with [WooCommerce Mix and Match Products](https://woocommerce.com/products/woocommerce-mix-and-match-products/) plugin
+- **Updated**: Integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/) plugin
+- **Updated**: Integration with [WooCommerce Square](https://woocommerce.com/products/square/) plugin
+- **Updated**: Integration with [Product Quantity for WooCommerce](https://wordpress.org/plugins/product-quantity-for-woocommerce/) plugin
+- **Updated**: Integration with [WooCommerce Advanced Quantity](https://codecanyon.net/item/woocommerce-advanced-quantity/11861326) plugin
+- **Updated**: Integration with [VAD Product Design](http://www.virtualartdevelopers.com) plugin
+- **Updated**: Integration with [WPML Multilingual CMS](https://wpml.org/) plugin
+- **Updated**: Compatibility with [Flatsome](https://flatsome.uxthemes.com/) theme
+- **Updated**: Integration with [WP Rocket](https://wp-rocket.me/) plugin
+- **Updated**: Integration with [Comet Cache](https://wordpress.org/plugins/comet-cache/) plugin
+- **Updated**: Integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/) plugin
+- **Updated**: Integration with [myCred – Points Management System For Gamification, Ranks, Badges, and Loyalty Rewards Program](https://wordpress.org/plugins/mycred/) plugin
 
 ### 2.13.0 ###
 *Release Date - 12 October 2026*

@@ -68,10 +68,12 @@ class TInvWL_Public_Wishlist_Ajax {
 		$post = filter_input_array( INPUT_POST, [
 			'tinvwl-security'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-action'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'tinvwl-retry'      => FILTER_VALIDATE_BOOLEAN,
 			'tinvwl-product_id' => FILTER_VALIDATE_INT,
 			'tinvwl-paged'      => FILTER_VALIDATE_INT,
 			'tinvwl-per-page'   => FILTER_VALIDATE_INT,
 			'tinvwl-sharekey'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'tinvwl-qty' => array( 'filter' => FILTER_VALIDATE_FLOAT, 'flags' => FILTER_FORCE_ARRAY ),
 			'tinvwl-products'   => [
 				'filter' => FILTER_VALIDATE_INT,
 				'flags'  => FILTER_FORCE_ARRAY,
@@ -362,11 +364,13 @@ class TInvWL_Public_Wishlist_Ajax {
 
 				break;
 			case 'add_to_cart_selected':
-				$products = $post['tinvwl-products'];
+				$products = array_values( array_unique( array_filter( array_map( 'absint', (array) ( $post['tinvwl-products'] ?? array() ) ) ) ) );
 
 				$result = $errors = array();
 
+				$response['cart_results'] = array();
 				foreach ( $products as $id ) {
+					$response['cart_results'][ $id ] = array( 'status' => 'failed', 'requested_quantity' => ! empty( $post['tinvwl-retry'] ) ? ( $post['tinvwl-qty'][ $id ] ?? 1 ) : 1 );
 					$wishlist_product = null;
 
 					if ( 0 === $wishlist['ID'] ) {
@@ -377,10 +381,12 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					$wishlist_item = $wishlist_product->get_wishlist( array( 'ID' => $id ) );
 					$wishlist_item = array_shift( $wishlist_item );
+					if ( ! $wishlist_item ) { $errors[] = TInvWL_Public_Cart::unavailable_cart_item( $id ); continue; }
 
 					$product_data = wc_get_product( $wishlist_item['variation_id'] ?: $wishlist_item['product_id'] );
 
 					if ( ! TInvWL_Product::can_read_product( $product_data ) ) {
+						$errors[] = TInvWL_Public_Cart::unavailable_cart_item( $id );
 						continue;
 					}
 
@@ -397,7 +403,7 @@ class TInvWL_Public_Wishlist_Ajax {
 					// Restore global product data.
 					$product = $previous_product;
 
-					$quantity                  = apply_filters( 'tinvwl_product_add_to_cart_quantity', 1, $product_data );
+					$quantity                  = apply_filters( 'tinvwl_product_add_to_cart_quantity', $response['cart_results'][ $id ]['requested_quantity'], $product_data );
 					$wishlist_item['quantity'] = $quantity;
 
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $wishlist_item ) ) {
@@ -415,6 +421,7 @@ class TInvWL_Public_Wishlist_Ajax {
 					$add           = TInvWL_Public_Cart::add( $wishlist, $wishlist_item, $quantity );
 
 					if ( $add && ! isset( $add['error_code'] ) ) {
+						$response['cart_results'][ $id ]['status'] = 'added';
 						$result[] = $add;
 					} else {
 						$errors[] = $add;
@@ -460,7 +467,15 @@ class TInvWL_Public_Wishlist_Ajax {
 				$products = TInvWL_Public_Wishlist_Buttons::get_current_products( $wishlist, 9999999 );
 				$result   = $errors = [];
 
+				$retry_ids = ! empty( $post['tinvwl-retry'] ) ? array_values( array_unique( array_filter( array_map( 'absint', (array) ( $post['tinvwl-products'] ?? array() ) ) ) ) ) : null;
+				$response['cart_results'] = array();
+				foreach ( $retry_ids ?? array() as $retry_id ) {
+					$response['cart_results'][ $retry_id ] = array( 'status' => 'failed', 'requested_quantity' => $post['tinvwl-qty'][ $retry_id ] ?? 1 );
+				}
 				foreach ( $products as $_product ) {
+					$item_id = (int) $_product['ID'];
+					if ( null !== $retry_ids && ! in_array( $item_id, $retry_ids, true ) ) { continue; }
+					$response['cart_results'][ $item_id ] = array( 'status' => 'failed', 'requested_quantity' => null !== $retry_ids ? ( $post['tinvwl-qty'][ $item_id ] ?? 1 ) : 1 );
 					$product_data = wc_get_product( $_product['variation_id'] ?: $_product['product_id'] );
 
 					if ( ! TInvWL_Product::can_read_product( $product_data ) ) {
@@ -477,7 +492,7 @@ class TInvWL_Public_Wishlist_Ajax {
 
 					$product = $_product_tmp; // Restore global product data.
 
-					$quantity             = apply_filters( 'tinvwl_product_add_to_cart_quantity', 1, $product_data );
+					$quantity             = apply_filters( 'tinvwl_product_add_to_cart_quantity', $response['cart_results'][ $item_id ]['requested_quantity'], $product_data );
 					$_product['quantity'] = $quantity;
 
 					if ( apply_filters( 'tinvwl_product_add_to_cart_need_redirect', false, $product_data, $redirect_url, $_product ) ) {
@@ -496,6 +511,7 @@ class TInvWL_Public_Wishlist_Ajax {
 					$add = TInvWL_Public_Cart::add( $wishlist, $_product, $quantity );
 
 					if ( $add && ! isset( $add['error_code'] ) ) {
+						$response['cart_results'][ $item_id ]['status'] = 'added';
 						$result[] = $add;
 					} else {
 						$errors[] = $add;
@@ -538,6 +554,10 @@ class TInvWL_Public_Wishlist_Ajax {
 				break;
 		}
 
+		if ( in_array( $action, array( 'add_to_cart_selected', 'add_to_cart_all' ), true ) ) {
+			$response = TInvWL_Public_Cart::complete_bulk_response( $response );
+		}
+
 		$response['content'] = tinvwl_shortcode_view(
 			[
 				'paged'          => $post['tinvwl-paged'],
@@ -550,7 +570,7 @@ class TInvWL_Public_Wishlist_Ajax {
 		$response['msg']     = array_unique( $response['msg'] );
 		$response['msg']     = implode( '<br>', $response['msg'] );
 
-		if ( tinv_get_option( 'table', 'hide_popup' ) && ( 'remove_selected' !== $action || $response['status'] ) ) {
+		if ( tinv_get_option( 'table', 'hide_popup' ) && ( ! in_array( $action, array( 'remove_selected', 'add_to_cart_selected', 'add_to_cart_all' ), true ) || $response['status'] ) ) {
 			unset( $response['msg'] );
 		}
 

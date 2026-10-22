@@ -78,6 +78,89 @@
 
 	// Resolve each mutation before sending the next: snapshots follow server commit order.
 	var mutationQueue = [], mutationRunning = false, mutationDrainTimer;
+	// Confirmed failures are retried within the same list, bulk action and selection intent.
+	var cartRetryStates = Object.create(null), cartRetryIntents = Object.create(null), cartRetrySequence = 0;
+	function bulkCartAction(action) {
+		return 'add_to_cart_all' === action || 'add_to_cart_selected' === action;
+	}
+	function cartRetryForms(key) {
+		return $('div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]').filter(function () {
+			return $(this).attr('data-tinvwl_sharekey') === key;
+		});
+	}
+	function cartRetryContext(data) {
+		if (data instanceof window.FormData || !bulkCartAction(data['tinvwl-action']) || !data['tinvwl-sharekey']) { return null; }
+		var key = String(data['tinvwl-sharekey']), quantities = Object.create(null), revisions = Object.create(null), drafts = Object.create(null);
+		cartRetryForms(key).find('input').each(function () {
+			var match = /^wishlist_qty\[([1-9][0-9]*)\]$/.exec(this.name);
+			if (match && 'hidden' !== this.type) {
+				quantities[match[1]] = this.value;
+				revisions[match[1]] = $(this).data('tinvwlDraftRevision') || 0;
+				drafts[match[1]] = !!$(this).data('tinvwlDraftEdited') || this.value !== this.defaultValue;
+			}
+		});
+		return {key: JSON.stringify([key, data['tinvwl-action']]), sharekey: key, intent: cartRetryIntents[key] || 0,
+			sequence: ++cartRetrySequence, quantities: quantities, revisions: revisions, drafts: drafts};
+	}
+	function hasCartRetry(form, action) {
+		var state = cartRetryStates[JSON.stringify([form.attr('data-tinvwl_sharekey'), action])];
+		return bulkCartAction(action) && state && state.ids && state.ids.length > 0;
+	}
+	function prepareCartRetry(data, context) {
+		if (!context) { return 'send'; }
+		if (context.intent !== (cartRetryIntents[context.sharekey] || 0)) { return 'cancelled'; }
+		var state = cartRetryStates[context.key];
+		if (!state) { return 'send'; }
+		if (state.uncertainThrough && context.sequence <= state.uncertainThrough) { return 'uncertain'; }
+		if (state.completedThrough) {
+			if (context.sequence <= state.completedThrough) { return 'cancelled'; }
+			delete cartRetryStates[context.key];
+			return 'send'; // A later click after full success is a new explicit cart action.
+		}
+		if (!state.ids || !state.ids.length) { delete cartRetryStates[context.key]; return 'send'; }
+		data['tinvwl-products'] = state.ids.slice();
+		data['tinvwl-qty'] = {};
+		state.ids.forEach(function (id) {
+			var input = state.inputs[id], edited = input ? (input.value !== context.quantities[id] || input.revision !== context.revisions[id]) : context.drafts[id];
+			// Add all did not submit a pre-existing draft. Preserve its saved requested amount until a new edit.
+			if (owns(context.quantities, id) && (edited || !owns(state.quantities, id))) { data['tinvwl-qty'][id] = context.quantities[id]; }
+			else if (owns(state.quantities, id)) { data['tinvwl-qty'][id] = state.quantities[id]; }
+		});
+		if ('add_to_cart_all' === data['tinvwl-action']) { data['tinvwl-retry'] = true; }
+		return 'send';
+	}
+	function rememberCartRetry(data, response, context) {
+		if (!context || context.intent !== (cartRetryIntents[context.sharekey] || 0) || !response || !response.cart_results) { return; }
+		var results = response.cart_results, ids = [], quantities = Object.create(null), inputs = Object.create(null), valid = false;
+		Object.keys(results).forEach(function (id) {
+			var result = results[id];
+			if (!/^[1-9][0-9]*$/.test(id) || !result || ('added' !== result.status && 'failed' !== result.status)) { return; }
+			valid = true;
+			if ('failed' !== result.status) { return; }
+			ids.push(id);
+			if (owns(context.quantities, id)) { inputs[id] = {value: context.quantities[id], revision: context.revisions[id]}; }
+			if (isFinite(Number(result.requested_quantity)) && Number(result.requested_quantity) >= 0) { quantities[id] = result.requested_quantity; }
+			else if (data['tinvwl-qty'] && owns(data['tinvwl-qty'], id)) { quantities[id] = data['tinvwl-qty'][id]; }
+		});
+		if (!valid) { return; }
+		cartRetryStates[context.key] = {sharekey: context.sharekey, ids: ids, quantities: quantities, inputs: inputs,
+			completedThrough: ids.length ? 0 : cartRetrySequence};
+	}
+	function rememberUncertainCart(context) {
+		if (!context || context.intent !== (cartRetryIntents[context.sharekey] || 0)) { return; }
+		var state = cartRetryStates[context.key] || {sharekey: context.sharekey};
+		state.uncertainThrough = cartRetrySequence;
+		cartRetryStates[context.key] = state;
+	}
+	$(document).on('change', 'form[data-tinvwl_sharekey] input[name="wishlist_pr[]"], form[data-tinvwl_sharekey] .global-cb', function () {
+		var key = $(this).closest('form').attr('data-tinvwl_sharekey');
+		cartRetryIntents[key] = (cartRetryIntents[key] || 0) + 1;
+		Object.keys(cartRetryStates).forEach(function (stateKey) { if (cartRetryStates[stateKey].sharekey === key) { delete cartRetryStates[stateKey]; } });
+	}).on('reset', 'form[data-tinvwl_sharekey]', function () {
+		var key = $(this).attr('data-tinvwl_sharekey');
+		cartRetryIntents[key] = (cartRetryIntents[key] || 0) + 1;
+		Object.keys(cartRetryStates).forEach(function (stateKey) { if (cartRetryStates[stateKey].sharekey === key) { delete cartRetryStates[stateKey]; } });
+	});
 	var pendingWishlistViews = Object.create(null);
 	function rememberWishlistViews(target) {
 		if (!(target && target.jquery)) {
@@ -93,14 +176,24 @@
 	function wishlistAjax(options) {
 		var data = options.data, mutation = data instanceof window.FormData || (data && data['tinvwl-action'] && 'get_data' !== data['tinvwl-action']);
 		if (!mutation) { return sendWishlistRequest(options); }
-		var result = $.Deferred();
+		var result = $.Deferred(), cartContext = cartRetryContext(data);
 		rememberWishlistViews();
 		wishlistRevision++;
 		latestRead++;
 		mutationQueue.push(function () {
-			sendWishlistRequest(options).done(function () {
+			var retry = prepareCartRetry(data, cartContext);
+			if ('send' !== retry) {
+				if ('uncertain' === retry) { result.reject(); }
+				else { result.resolve({status: false, error: 'cart_intent_changed'}); }
+				mutationRunning = false;
+				drainMutations();
+				return;
+			}
+			sendWishlistRequest(options).done(function (response) {
+				rememberCartRetry(data, response, cartContext);
 				result.resolveWith(this, arguments);
 			}).fail(function () {
+				rememberUncertainCart(cartContext);
 				result.rejectWith(this, arguments);
 			}).always(function () {
 				mutationRunning = false;
@@ -1016,7 +1109,7 @@
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
-				if ( response.redirect ) {
+				if ( true === response.status && response.redirect ) {
 					window.location.href = response.redirect;
 				}
 			});
@@ -1046,7 +1139,8 @@
 
 			var el = $( this ), actionScope = wishlistActionScope( this );
 
-			if ( ! products.length || ( 'tinvwl-action-product_selected' !== el.attr( 'name' ) && ! wishlistActionScope( this ).form.find( 'select#tinvwl_product_actions option' ).filter( ':selected' ).val() ) ) {
+			var retryAction = 'tinvwl-action-product_selected' === el.attr('name') ? 'add_to_cart_selected' : actionScope.form.find('select#tinvwl_product_actions option').filter(':selected').val();
+			if ((!products.length && !hasCartRetry(actionScope.form, retryAction)) || !retryAction) {
 				alert( window.tinvwl_add_to_wishlist['tinvwl_break_submit']);
 				return;
 			}
@@ -1149,7 +1243,7 @@
 
 				$( 'body' ).trigger( 'tinvwl_wishlist_ajax_response', [ this, response ]);
 
-				if ( response.redirect ) {
+				if ( true === response.status && response.redirect ) {
 					window.location.href = response.redirect;
 				}
 			});

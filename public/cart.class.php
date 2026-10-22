@@ -166,7 +166,7 @@ class TInvWL_Public_Cart {
 		}
 		$wl = new TInvWL_Wishlist();
 		if ( ! $wl->can_view( $wishlist ) ) {
-			return false;
+			return self::unavailable_cart_item( $wl_product );
 		}
 		$wishlist['is_owner'] = $wl->is_owner( $wishlist );
 		$wlp = null;
@@ -178,10 +178,10 @@ class TInvWL_Public_Cart {
 		$product = $wlp->get_wishlist( array( 'ID' => $wl_product ) );
 		$product = array_shift( $product );
 		if ( empty( $product ) ) {
-			return false;
+			return self::unavailable_cart_item( $wl_product );
 		}
 		if ( empty( $product['data'] ) ) {
-			return false;
+			return self::unavailable_cart_item( $wl_product );
 		}
 		$product['action'] = 'add';
 		$product           = apply_filters( 'tinvwl_addproduct_tocart', $product );
@@ -955,6 +955,31 @@ class TInvWL_Public_Cart {
 		return [ 'product' => $product ];
 	}
 
+	/** Normalize a disappeared saved row without losing earlier cart successes. */
+	public static function unavailable_cart_item( $item_id = 0, $product = null ): array {
+		return array( 'product' => $product, 'item_id' => is_scalar( $item_id ) ? absint( $item_id ) : 0, 'quantity' => 0, 'error_code' => 'unavailable' );
+	}
+
+	/** A bulk response describes every row and redirects only after complete success. */
+	public static function complete_bulk_response( array $response ): array {
+		$results = $response['cart_results'] ?? array();
+		$failed = $added = array();
+		foreach ( $results as $id => $result ) {
+			if ( 'added' === ( $result['status'] ?? '' ) ) { $added[] = (int) $id; }
+			else { $failed[] = (int) $id; }
+		}
+		$response['retry_items'] = $failed;
+		$response['status'] = ! $failed && (bool) $added;
+		$response['outcome'] = $failed ? ( $added ? 'partial' : 'failed' ) : ( $added ? 'full' : 'failed' );
+		if ( ! $response['status'] ) {
+			unset( $response['redirect'] );
+			$response['error'] = $added ? 'partial_cart' : 'cart_failed';
+			$message = __( 'Some selected items could not be added. Try again to retry only those items.', 'ti-woocommerce-wishlist' );
+			if ( ! in_array( $message, $response['msg'] ?? array(), true ) ) { $response['msg'][] = $message; }
+		}
+		return $response;
+	}
+
 	/**
 	 * Generates an error message for products that couldn't be added to the cart.
 	 *
@@ -969,8 +994,11 @@ class TInvWL_Public_Cart {
 		// Group $products data by error_code to get a new array $codes
 		$codes = [];
 		foreach ( $products as $product ) {
-			$error_code             = $product['error_code'];
-			$product_name           = $product['product']->get_name();
+			$product = is_array( $product ) ? $product : self::unavailable_cart_item();
+			$error_code = isset( $product['error_code'] ) && is_string( $product['error_code'] ) ? $product['error_code'] : 'unavailable';
+			$object = $product['product'] ?? null;
+			$product_name = $object instanceof WC_Product ? $object->get_name()
+				: ( ! empty( $product['item_id'] ) ? sprintf( __( 'Item #%d', 'ti-woocommerce-wishlist' ), $product['item_id'] ) : __( 'Unavailable item', 'ti-woocommerce-wishlist' ) );
 			$codes[ $error_code ][] = $product_name;
 		}
 

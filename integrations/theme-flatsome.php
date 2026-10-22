@@ -41,12 +41,19 @@ if ( ! $available ) {
 	return;
 }
 
-add_action( 'after_setup_theme', 'tinvwl_flatsome' );
+if ( did_action( 'after_setup_theme' ) ) {
+	tinvwl_flatsome();
+} else {
+	add_action( 'after_setup_theme', 'tinvwl_flatsome' );
+}
 
 function tinvwl_flatsome() {
-	if ( ! class_exists( 'Flatsome_Default' ) ) {
+	static $initialized = false;
+	if ( $initialized || ! class_exists( 'Flatsome_Default' ) ) {
 		return;
 	}
+
+	$initialized = true;
 
 	// Catalog mode
 	if ( ! function_exists( 'tinvwl_flatsome_init' ) ) {
@@ -55,6 +62,9 @@ function tinvwl_flatsome() {
 		 * Run hooks after theme init.
 		 */
 		function tinvwl_flatsome_init() {
+			static $initialized = false;
+			if ( $initialized ) { return; }
+			$initialized = true;
 
 			if ( get_theme_mod( 'catalog_mode' ) ) {
 
@@ -74,7 +84,11 @@ function tinvwl_flatsome() {
 			}
 		}
 
-		add_action( 'init', 'tinvwl_flatsome_init' );
+		if ( did_action( 'init' ) ) {
+			tinvwl_flatsome_init();
+		} else {
+			add_action( 'init', 'tinvwl_flatsome_init' );
+		}
 	}
 
 	if ( ! function_exists( 'tinvwl_tinvwl_flatsome_woocommerce_catalog_mode_variable' ) ) {

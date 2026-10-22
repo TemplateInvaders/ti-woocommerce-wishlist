@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Product Bundles
  *
- * @version 2.30.0
+ * @version 2.30.1
  *
  * @slug yith-woocommerce-product-bundles
  *

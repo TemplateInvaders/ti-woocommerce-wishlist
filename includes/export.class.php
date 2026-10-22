@@ -258,6 +258,18 @@ class TInvWL_Export {
 			return false;
 		}
 		if ( $updated ) {
+			if ( 0 === strpos( $key, $this->_name . '-style' ) ) {
+				// A partially successful import must not keep CSS from its previous settings.
+				$templates = array( '', tinv_template() );
+				$style = TInvWL_Admin_Settings_Style::instance( $this->_name, $this->_version );
+				if ( method_exists( $style, 'get_templates' ) ) {
+					$templates = array_merge( $templates, array_keys( $style->get_templates() ) );
+				}
+				foreach ( array_unique( $templates ) as $template ) {
+					delete_transient( $this->_name . '_dynamic_' . $template );
+				}
+				delete_transient( $this->_name . '_dynamicfont' );
+			}
 			return true; // Preserve values accepted by native sanitizers and save filters.
 		}
 		$stored = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM `$wpdb->options` WHERE option_name = %s", $key ), ARRAY_A );

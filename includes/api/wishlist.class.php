@@ -156,7 +156,15 @@ class TInvWL_Includes_API_Wishlist
 	{
 		$user_id = absint($request->get_param('user_id'));
 
-		if ($user_id && !$this->user_id_exists($user_id)) {
+		if (0 === $user_id) {
+			return new WP_Error(
+				'ti_woocommerce_wishlist_api_invalid_user_id',
+				__('A positive user ID is required.', 'ti-woocommerce-wishlist'),
+				array('status' => 400)
+			);
+		}
+
+		if (!$this->user_id_exists($user_id)) {
 			// Don't expose which user_ids exist by not returning an error that says that.
 			return new WP_Error(
 				'ti_woocommerce_wishlist_api_wishlist_not_found',
@@ -167,19 +175,14 @@ class TInvWL_Includes_API_Wishlist
 
 		$wl = new TInvWL_Wishlist();
 
-		if (0 === $user_id) {
-			$wishlists = array();
-			$wishlists[] = $wl->add_sharekey_default();
-		} else {
-			$wishlists = $wl->get_by_user($user_id);
+		$wishlists = $wl->get_by_user($user_id);
 
-			if (!$wishlists) {
-				return new WP_Error(
-					'ti_woocommerce_wishlist_api_wishlist_not_found',
-					__('No wishlists found for this user.', 'ti-woocommerce-wishlist'),
-					array('status' => 400)
-				);
-			}
+		if (!$wishlists) {
+			return new WP_Error(
+				'ti_woocommerce_wishlist_api_wishlist_not_found',
+				__('No wishlists found for this user.', 'ti-woocommerce-wishlist'),
+				array('status' => 400)
+			);
 		}
 
 		$response = array_map(

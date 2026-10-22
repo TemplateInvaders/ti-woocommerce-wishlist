@@ -118,7 +118,7 @@ class TInvWL_Product {
 		if ( null === $formdata || '' === $formdata || '{"tinvwl-hidden-fields":"[]"}' === self::canonical_stored_configuration( $formdata ) ) {
 			$formdata = array( null, '', '{"tinvwl-hidden-fields":"[]"}' );
 		}
-		$formdata = $this->legacy_configuration_formdata( $formdata, $scope );
+		$formdata = $this->legacy_configuration_formdata( $formdata, $scope, true );
 		if ( false === $formdata ) {
 			return false;
 		}
@@ -614,7 +614,7 @@ class TInvWL_Product {
 		return $is_object ? (object) $values : $values;
 	}
 
-	private static function canonical_stored_configuration( $formdata ) {
+	private static function canonical_stored_configuration( $formdata, $ignore_empty_hidden_fields = false ) {
 		if ( ! is_string( $formdata ) || '' === $formdata ) {
 			return false;
 		}
@@ -622,16 +622,21 @@ class TInvWL_Product {
 		if ( JSON_ERROR_NONE !== json_last_error() || ( ! is_array( $value ) && ! $value instanceof stdClass ) ) {
 			return false;
 		}
+		// The empty presentation marker is inert on saved addons. Compare raw
+		// configurations without rerunning hooks that can derive or alter addons.
+		if ( $ignore_empty_hidden_fields && $value instanceof stdClass && isset( $value->{'tinvwl-hidden-fields'} ) && '[]' === $value->{'tinvwl-hidden-fields'} ) {
+			unset( $value->{'tinvwl-hidden-fields'} );
+		}
 		return json_encode( self::canonicalize_configuration( $value ) );
 	}
 
 	/** Reuse old key orders without rewriting stored addons or running prepare hooks on saved values. */
-	private function legacy_configuration_formdata( $formdata, $scope ) {
+	private function legacy_configuration_formdata( $formdata, $scope, $ignore_empty_hidden_fields = false ) {
 		global $wpdb;
 		$formdata = is_array( $formdata ) ? $formdata : array( $formdata );
 		$identities = array();
 		foreach ( $formdata as $value ) {
-			$canonical = self::canonical_stored_configuration( $value );
+			$canonical = self::canonical_stored_configuration( $value, $ignore_empty_hidden_fields );
 			if ( false !== $canonical ) {
 				$identities[ $canonical ] = true;
 			}
@@ -657,7 +662,7 @@ class TInvWL_Product {
 			return false;
 		}
 		foreach ( (array) $rows as $row ) {
-			$canonical = self::canonical_stored_configuration( $row['formdata'] );
+			$canonical = self::canonical_stored_configuration( $row['formdata'], $ignore_empty_hidden_fields );
 			if ( false !== $canonical && isset( $identities[ $canonical ] ) && ! in_array( $row['formdata'], $formdata, true ) ) {
 				$formdata[] = $row['formdata'];
 			}

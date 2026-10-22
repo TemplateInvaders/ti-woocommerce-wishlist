@@ -51,7 +51,9 @@
 	}
 
 	function updateWishlistContainer( scope, response ) {
+		if ( ! response || true !== response.status ) { return; }
 		if ( scope.form.length ) {
+			if ( 'string' !== typeof response.content || ! response.content.trim() ) { return; }
 			scope.container.replaceWith( response.content );
 		} else if ( scope.sharekey && response.status ) {
 			// A mini item has its own payload; refresh main views using their own pagination.
@@ -76,17 +78,80 @@
 		}
 	}
 
+	// Resolve each mutation before sending the next: snapshots follow server commit order.
+	var mutationQueue = [], mutationRunning = false, mutationDrainTimer;
+	function wishlistAjax(options) {
+		var data = options.data, mutation = data instanceof window.FormData || (data && data['tinvwl-action'] && 'get_data' !== data['tinvwl-action']);
+		if (!mutation) { return sendWishlistRequest(options); }
+		var result = $.Deferred();
+		wishlistRevision++;
+		latestRead++;
+		mutationQueue.push(function () {
+			sendWishlistRequest(options).done(function () {
+				result.resolveWith(this, arguments);
+			}).fail(function () {
+				result.rejectWith(this, arguments);
+			}).always(function () {
+				mutationRunning = false;
+				drainMutations();
+			});
+		});
+		drainMutations();
+		return result.promise();
+	}
+	// Only a nonce rejection produced before execution is safe to replay once.
+	function sendWishlistRequest(options) {
+		if (!options.data || options.data instanceof window.FormData || !owns(options.data, 'tinvwl-security')) { return $.ajax(options); }
+		var result = $.Deferred();
+		function refresh() {
+			freshRequestNonce().done(function (nonces) {
+				if (!nonces || 'string' !== typeof nonces.rest_nonce || !nonces.rest_nonce) { result.reject(); return; }
+				tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
+				send(true);
+			}).fail(function () { result.rejectWith(this, arguments); });
+		}
+		function send(retried) {
+			options.data['tinvwl-security'] = tinvwl_add_to_wishlist.nonce;
+			$.ajax(options).done(function (response) {
+				if (!retried && response && false === response.status && 'invalid_nonce' === response.error) { refresh(); return; }
+				result.resolveWith(this, arguments);
+			}).fail(function (xhr) {
+				if (!retried && xhr && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error) { refresh(); return; }
+				result.rejectWith(this, arguments);
+			});
+		}
+		send(false);
+		return result.promise();
+	}
+
+	function drainMutations() {
+		if (mutationRunning) { return; }
+		if (mutationQueue.length) {
+			mutationRunning = true;
+			mutationQueue.shift()();
+			return;
+		}
+		window.clearTimeout(mutationDrainTimer);
+		mutationDrainTimer = window.setTimeout(function () {
+			// Includes changes from other tabs and uncertain transport outcomes; never replay a write.
+			if (!mutationRunning && !mutationQueue.length) { $.fn.tinvwl_get_wishlist_data('synchronize'); }
+		}, 0);
+	}
+
 	var nonceRequest;
 	function freshRequestNonce() {
 		var request = nonceRequest;
 		if ( ! nonceRequest ) {
-			request = $.ajax({
+			request = $.tinvwlGuestNonceRequest({
 				url: tinvwl_add_to_wishlist.nonce_url || tinvwl_add_to_wishlist.wc_ajax_url.replace( /([?&])wc-ajax=[^&#]*/, '$1wc-ajax=tinvwl_request_nonce' ),
 				method: 'POST',
 				dataType: 'json',
 				cache: false
 			});
 			nonceRequest = request;
+			request.done(function (nonces) {
+				if (nonces && 'string' === typeof nonces.rest_nonce && nonces.rest_nonce) { tinvwl_add_to_wishlist.nonce = nonces.rest_nonce; }
+			});
 			request.always( function() {
 				if ( nonceRequest === request ) {
 					nonceRequest = null;
@@ -480,7 +545,7 @@
 					} else {
 						formData.append( 'tinvwl_add_nonce', nonces.add_nonce );
 					}
-					$.ajax({
+					wishlistAjax({
 						url: s.api_url,
 						method: 'POST',
 						contentType: false,
@@ -665,7 +730,7 @@
 				data.stats_products = wishlistStatsProductIds();
 			}
 
-			$.ajax({
+			wishlistAjax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
@@ -779,7 +844,7 @@
 				data.stats_products = wishlistStatsProductIds();
 			}
 
-			$.ajax({
+			wishlistAjax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
@@ -889,7 +954,7 @@
 				data.stats_products = wishlistStatsProductIds();
 			}
 
-			$.ajax({
+			wishlistAjax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
@@ -1020,7 +1085,7 @@
 				data.stats_products = wishlistStatsProductIds();
 			}
 
-			$.ajax({
+			wishlistAjax({
 				url: tinvwl_add_to_wishlist.wc_ajax_url,
 				method: 'POST',
 				cache: false,
@@ -1120,6 +1185,7 @@
 		// Get wishlist data from REST API.
 		var statsReadPending = false;
 		var get_data_ajax = function( refresh, force, target, statsProducts ) {
+			if (mutationRunning || mutationQueue.length) { return; }
 			if ( statsProducts && statsReadPending ) { return; }
 
 			if ( 'refresh' === refresh && ! ( target && target.jquery ) ) {
@@ -1176,7 +1242,7 @@
 					if ( statsProducts ) { statsReadPending = true; }
 				}
 
-				$.ajax({
+				wishlistAjax({
 					url: tinvwl_add_to_wishlist.wc_ajax_url,
 					method: 'POST',
 					cache: false,
@@ -1223,6 +1289,7 @@
 		};
 
 		$.fn.tinvwl_get_wishlist_data = function( refresh, sharekey ) {
+			if ('synchronize' === refresh) { get_data_ajax(undefined, true); return; }
 			if ( 'refresh' === refresh ) { get_data_ajax( refresh, true, sharekey ); return; }
 			try {
 				if ( 'undefined' !== typeof Cookies && Cookies.get( 'tinvwl_update_data' ) !== undefined ) {

@@ -172,6 +172,7 @@ class TInvWL {
 		}
 		// A busy or failed login transfer must retain the verified source until a later retry.
 		if ( ! $keep_guest ) {
+			TInvWL_Request_Nonce::rotate_guest_identity();
 			wc_setcookie( 'tinv_wishlistkey', 0, time() - HOUR_IN_SECONDS );
 			unset( $_COOKIE['tinv_wishlistkey'] );
 			wc_setcookie( 'tinv_wishlist_owner', '', time() - HOUR_IN_SECONDS, is_ssl(), true );

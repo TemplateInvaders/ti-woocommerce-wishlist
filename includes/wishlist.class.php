@@ -59,6 +59,8 @@ class TInvWL_Wishlist
 	 * @var array
 	 */
 	private $privacy;
+	/** Server-derived key while creating the one default for a verified guest identity. */
+	private $guest_default_sharekey = null;
 
 	/**
 	 * Constructor
@@ -261,26 +263,42 @@ class TInvWL_Wishlist
 	function add_sharekey_default($sharekey = '')
 	{
 		global $wpdb;
-		if ( empty( $sharekey ) ) {
-			$sharekey = $this->get_sharekey();
-		}
+		if ( empty( $sharekey ) ) { $sharekey = $this->get_sharekey(); }
 		$wl = $this->get_by_sharekey_default( $sharekey );
-		// Invalid/missing routing keys do not query storage, so an older unrelated error is irrelevant.
-		if ( self::is_valid_share_key( $sharekey ) && $wpdb->last_error ) {
+		if ( self::is_valid_share_key( $sharekey ) && $wpdb->last_error ) { return false; }
+		if ( $wl ) { return array_shift( $wl ); }
+
+		$identity = TInvWL_Request_Nonce::guest_identity();
+		if ( '' === $identity || is_user_logged_in() ) { return false; }
+		$key = substr( hash_hmac( 'sha256', $this->_name . '|guest-default|' . get_current_blog_id() . '|' . $identity, wp_salt( 'auth' ) ), 0, 32 );
+		$lock = 'tinvwl_guest_' . md5( $wpdb->prefix . '|' . $this->_name . '|' . $identity );
+		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) { return false; }
+		try {
+			// A current read after the mutex sees a list committed by another first add.
+			$wl = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$this->table}` WHERE share_key = %s ORDER BY ID ASC LIMIT 1 FOR UPDATE", $key ), ARRAY_A );
+			if ( $wpdb->last_error ) { return false; }
+			if ( $wl ) {
+				if ( ! empty( $wl['author'] ) || 'default' !== $wl['type'] ) { return false; }
+				// Proof is the secret-derived key, never a public share-key lookup.
+				$this->set_guest_owner( $wl );
+				$wl['ID'] = absint( $wl['ID'] );
+				$wl['author'] = 0;
+				$wl['is_owner'] = true;
+			} else {
+				$this->guest_default_sharekey = $key;
+				$wl = $this->add( array( 'title' => $this->default_name, 'type' => 'default', 'status' => $this->default_privacy, 'author' => 0, 'share_key' => $key ) );
+			}
+			if ( is_array( $wl ) && isset( $wl['share_key'] ) ) {
+				$this->set_sharekey( $wl['share_key'] );
+				return $wl;
+			}
 			return false;
+		} finally {
+			$this->guest_default_sharekey = null;
+			$error = $wpdb->last_error;
+			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
+			$wpdb->last_error = $error;
 		}
-		if ( $wl ) {
-			return array_shift( $wl );
-		}
-
-		$wl = $this->add($this->default_name, 'default', $this->default_privacy, 0);
-		if (is_array($wl) && array_key_exists('share_key', $wl)) {
-			$this->set_sharekey($wl['share_key']);
-
-			return $wl;
-		}
-
-		return false;
 	}
 
 	/**
@@ -347,6 +365,10 @@ class TInvWL_Wishlist
 	private function insert_wishlist($data)
 	{
 		global $wpdb;
+		if ( null !== $this->guest_default_sharekey ) {
+			if ( ! empty( $data['author'] ) || 'default' !== $data['type'] ) { return false; }
+			$data['share_key'] = $this->guest_default_sharekey;
+		}
 		if ($wpdb->insert($this->table, $data)) { // @codingStandardsIgnoreLine WordPress.VIP.DirectDatabaseQuery.DirectQuery
 			$data['ID'] = $wpdb->insert_id;
 			if (empty($data['author']) && !is_user_logged_in()) {
@@ -867,6 +889,9 @@ class TInvWL_Wishlist
 			$wpdb->last_error = $error;
 		}
 		if ( $committed ) {
+			if ( $wishlist && empty( $wishlist['author'] ) && $this->is_owner( $wishlist ) ) {
+				TInvWL_Request_Nonce::rotate_guest_identity();
+			}
 			do_action( 'tinvwl_wishlist_removed', $id );
 		}
 		return $committed;

@@ -96,6 +96,7 @@ class TInvWL_Public_Wishlist_Ajax {
 		} else {
 			$response = [
 				'status' => false,
+				'error'  => 'invalid_nonce',
 				'msg'    => [ __( 'Something went wrong', 'ti-woocommerce-wishlist' ) ],
 				'icon'   => 'icon_big_times',
 			];
@@ -111,7 +112,7 @@ class TInvWL_Public_Wishlist_Ajax {
 				$response['msg'] = tinv_wishlist_template_html( 'ti-addedtowishlist-dialogbox.php', apply_filters( 'tinvwl_addtowishlist_dialog_box', $response, $post ) );
 			}
 
-			wp_send_json( $response );
+			wp_send_json( $response, 403 );
 		}
 	}
 

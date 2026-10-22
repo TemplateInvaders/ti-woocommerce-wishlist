@@ -90,7 +90,13 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     };
   }
   function updateWishlistContainer(scope, response) {
+    if (!response || true !== response.status) {
+      return;
+    }
     if (scope.form.length) {
+      if ('string' !== typeof response.content || !response.content.trim()) {
+        return;
+      }
       scope.container.replaceWith(response.content);
     } else if (scope.sharekey && response.status) {
       // A mini item has its own payload; refresh main views using their own pagination.
@@ -112,17 +118,103 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       window.alert(message);
     }
   }
+
+  // Resolve each mutation before sending the next: snapshots follow server commit order.
+  var mutationQueue = [],
+    mutationRunning = false,
+    mutationDrainTimer;
+  function wishlistAjax(options) {
+    var data = options.data,
+      mutation = data instanceof window.FormData || data && data['tinvwl-action'] && 'get_data' !== data['tinvwl-action'];
+    if (!mutation) {
+      return sendWishlistRequest(options);
+    }
+    var result = $.Deferred();
+    wishlistRevision++;
+    latestRead++;
+    mutationQueue.push(function () {
+      sendWishlistRequest(options).done(function () {
+        result.resolveWith(this, arguments);
+      }).fail(function () {
+        result.rejectWith(this, arguments);
+      }).always(function () {
+        mutationRunning = false;
+        drainMutations();
+      });
+    });
+    drainMutations();
+    return result.promise();
+  }
+  // Only a nonce rejection produced before execution is safe to replay once.
+  function sendWishlistRequest(options) {
+    if (!options.data || options.data instanceof window.FormData || !owns(options.data, 'tinvwl-security')) {
+      return $.ajax(options);
+    }
+    var result = $.Deferred();
+    function refresh() {
+      freshRequestNonce().done(function (nonces) {
+        if (!nonces || 'string' !== typeof nonces.rest_nonce || !nonces.rest_nonce) {
+          result.reject();
+          return;
+        }
+        tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
+        send(true);
+      }).fail(function () {
+        result.rejectWith(this, arguments);
+      });
+    }
+    function send(retried) {
+      options.data['tinvwl-security'] = tinvwl_add_to_wishlist.nonce;
+      $.ajax(options).done(function (response) {
+        if (!retried && response && false === response.status && 'invalid_nonce' === response.error) {
+          refresh();
+          return;
+        }
+        result.resolveWith(this, arguments);
+      }).fail(function (xhr) {
+        if (!retried && xhr && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error) {
+          refresh();
+          return;
+        }
+        result.rejectWith(this, arguments);
+      });
+    }
+    send(false);
+    return result.promise();
+  }
+  function drainMutations() {
+    if (mutationRunning) {
+      return;
+    }
+    if (mutationQueue.length) {
+      mutationRunning = true;
+      mutationQueue.shift()();
+      return;
+    }
+    window.clearTimeout(mutationDrainTimer);
+    mutationDrainTimer = window.setTimeout(function () {
+      // Includes changes from other tabs and uncertain transport outcomes; never replay a write.
+      if (!mutationRunning && !mutationQueue.length) {
+        $.fn.tinvwl_get_wishlist_data('synchronize');
+      }
+    }, 0);
+  }
   var nonceRequest;
   function freshRequestNonce() {
     var request = nonceRequest;
     if (!nonceRequest) {
-      request = $.ajax({
+      request = $.tinvwlGuestNonceRequest({
         url: tinvwl_add_to_wishlist.nonce_url || tinvwl_add_to_wishlist.wc_ajax_url.replace(/([?&])wc-ajax=[^&#]*/, '$1wc-ajax=tinvwl_request_nonce'),
         method: 'POST',
         dataType: 'json',
         cache: false
       });
       nonceRequest = request;
+      request.done(function (nonces) {
+        if (nonces && 'string' === typeof nonces.rest_nonce && nonces.rest_nonce) {
+          tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
+        }
+      });
       request.always(function () {
         if (nonceRequest === request) {
           nonceRequest = null;
@@ -487,7 +579,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           } else {
             formData.append('tinvwl_add_nonce', nonces.add_nonce);
           }
-          $.ajax({
+          wishlistAjax({
             url: s.api_url,
             method: 'POST',
             contentType: false,
@@ -658,7 +750,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         data.stats = tinvwl_add_to_wishlist.stats;
         data.stats_products = wishlistStatsProductIds();
       }
-      $.ajax({
+      wishlistAjax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
         method: 'POST',
         cache: false,
@@ -754,7 +846,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         data.stats = tinvwl_add_to_wishlist.stats;
         data.stats_products = wishlistStatsProductIds();
       }
-      $.ajax({
+      wishlistAjax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
         method: 'POST',
         cache: false,
@@ -842,7 +934,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         data.stats = tinvwl_add_to_wishlist.stats;
         data.stats_products = wishlistStatsProductIds();
       }
-      $.ajax({
+      wishlistAjax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
         method: 'POST',
         cache: false,
@@ -945,7 +1037,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         data.stats = tinvwl_add_to_wishlist.stats;
         data.stats_products = wishlistStatsProductIds();
       }
-      $.ajax({
+      wishlistAjax({
         url: tinvwl_add_to_wishlist.wc_ajax_url,
         method: 'POST',
         cache: false,
@@ -1031,6 +1123,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     // Get wishlist data from REST API.
     var statsReadPending = false;
     var _get_data_ajax = function get_data_ajax(refresh, force, target, statsProducts) {
+      if (mutationRunning || mutationQueue.length) {
+        return;
+      }
       if (statsProducts && statsReadPending) {
         return;
       }
@@ -1082,7 +1177,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             statsReadPending = true;
           }
         }
-        $.ajax({
+        wishlistAjax({
           url: tinvwl_add_to_wishlist.wc_ajax_url,
           method: 'POST',
           cache: false,
@@ -1132,6 +1227,10 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     };
     $.fn.tinvwl_get_wishlist_data = function (refresh, sharekey) {
+      if ('synchronize' === refresh) {
+        _get_data_ajax(undefined, true);
+        return;
+      }
       if ('refresh' === refresh) {
         _get_data_ajax(refresh, true, sharekey);
         return;
@@ -1555,6 +1654,111 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       modal.remove();
     }, 0);
   }
+})(jQuery);
+"use strict";
+
+// Initialize a single guest secret before the first mutation, including virgin tabs.
+(function ($) {
+  $.tinvwlGuestNonceRequest = function (settings) {
+    var deferred = $.Deferred(),
+      started = false,
+      timer;
+    function send(headers) {
+      return $.ajax($.extend({}, settings, {
+        headers: $.extend({}, settings.headers, headers)
+      })).done(function () {
+        deferred.resolveWith(this, arguments);
+      }).fail(function () {
+        deferred.rejectWith(this, arguments);
+      });
+    }
+    function fallback() {
+      if (started) {
+        return;
+      }
+      started = true;
+      window.clearTimeout(timer);
+      if (window.navigator.locks && window.navigator.locks.request) {
+        window.navigator.locks.request('tinvwl-guest-bootstrap', function () {
+          return new window.Promise(function (resolve) {
+            send({
+              'X-TInvWL-Guest-Locked': '1'
+            }).always(function () {
+              resolve();
+            });
+          });
+        }).catch(function () {
+          send({});
+        });
+      } else {
+        // An existing HttpOnly cookie still works. A fresh guest fails safely
+        // if neither atomic browser storage nor a cross-tab mutex is available.
+        send({});
+      }
+    }
+    try {
+      var crypto = window.crypto || window.msCrypto;
+      if (!window.indexedDB || !crypto || !crypto.getRandomValues) {
+        fallback();
+        return deferred.promise();
+      }
+      var open = window.indexedDB.open('tinvwl_guest_bootstrap', 1);
+      timer = window.setTimeout(fallback, 2000);
+      open.onupgradeneeded = function () {
+        open.result.createObjectStore('identity');
+      };
+      open.onerror = open.onblocked = fallback;
+      open.onsuccess = function () {
+        var db = open.result;
+        if (started) {
+          db.close();
+          return;
+        }
+        try {
+          var transaction = db.transaction('identity', 'readwrite'),
+            store = transaction.objectStore('identity'),
+            read = store.get('session'),
+            value;
+          read.onsuccess = function () {
+            value = read.result;
+            if (!value || 'string' !== typeof value.secret || !/^[a-f0-9]{64}$/.test(value.secret) || 'number' !== typeof value.expires || !isFinite(value.expires) || value.expires <= Date.now()) {
+              var bytes = crypto.getRandomValues(new Uint8Array(32)),
+                secret = '';
+              for (var i = 0; i < bytes.length; i++) {
+                secret += ('0' + bytes[i].toString(16)).slice(-2);
+              }
+              value = {
+                secret: secret,
+                expires: Date.now() + 86400000
+              };
+              store.put(value, 'session');
+            }
+          };
+          transaction.oncomplete = function () {
+            db.close();
+            if (started) {
+              return;
+            }
+            started = true;
+            window.clearTimeout(timer);
+            send({
+              'X-TInvWL-Guest-Bootstrap': value.secret
+            });
+          };
+          transaction.onabort = transaction.onerror = function () {
+            db.close();
+            fallback();
+          };
+        } catch (error) {
+          db.close();
+          fallback();
+        }
+      };
+    } catch (error) {
+      fallback();
+    }
+    return deferred.promise();
+  };
 })(jQuery);
 "use strict";
 

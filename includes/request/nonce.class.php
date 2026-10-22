@@ -12,7 +12,7 @@ class TInvWL_Request_Nonce {
 		return is_ssl() ? self::SECURE_COOKIE : self::COOKIE;
 	}
 
-	private static function cookie() {
+	public static function guest_identity() {
 		$value = $_COOKIE[ self::cookie_name() ] ?? '';
 		return is_string( $value ) && preg_match( '/^[a-f0-9]{64}$/D', $value ) ? $value : '';
 	}
@@ -22,26 +22,39 @@ class TInvWL_Request_Nonce {
 		return is_user_logged_in() ? $action : $action . '|guest|' . hash( 'sha256', $cookie );
 	}
 
-	/** Only rendering or the same-origin preflight may issue the independent CSRF cookie. */
+	/** Rotate the secret when ownership/session changes, retaining HttpOnly protection. */
+	public static function rotate_guest_identity() {
+		return self::set_guest_identity( bin2hex( random_bytes( 32 ) ) );
+	}
+
+	private static function set_guest_identity( $cookie ) {
+		if ( headers_sent() ) { return ''; }
+		$created = setcookie( self::cookie_name(), $cookie, array(
+			'expires' => time() + 30 * DAY_IN_SECONDS,
+			'path' => '/', 'domain' => '', 'secure' => is_ssl(),
+			'httponly' => true, 'samesite' => 'Lax',
+		) );
+		if ( ! $created ) { return ''; }
+		$_COOKIE[ self::cookie_name() ] = $cookie;
+		return $cookie;
+	}
+
+	/** Only a same-origin preflight may initialize the independent CSRF/guest secret. */
 	public static function create( $action ) {
-		$cookie = self::cookie();
+		$cookie = self::guest_identity();
 		if ( ! is_user_logged_in() && '' === $cookie ) {
-			if ( headers_sent() ) {
-				return '';
+			$bootstrap = $_SERVER['HTTP_X_TINVWL_GUEST_BOOTSTRAP'] ?? '';
+			if ( is_string( $bootstrap ) && preg_match( '/^[a-f0-9]{64}$/D', $bootstrap ) ) {
+				// IndexedDB atomically shares this random bootstrap across virgin tabs.
+				// The browser never learns the HttpOnly credential derived by the server.
+				$cookie = hash_hmac( 'sha256', 'tinvwl-guest-bootstrap|' . $bootstrap, wp_salt( 'auth' ) );
+			} elseif ( '1' === ( $_SERVER['HTTP_X_TINVWL_GUEST_LOCKED'] ?? '' ) ) {
+				$cookie = bin2hex( random_bytes( 32 ) );
+			} else {
+				return ''; // Do not race independent initializers when browser storage is unavailable.
 			}
-			$cookie = bin2hex( random_bytes( 32 ) );
-			$created = setcookie( self::cookie_name(), $cookie, array(
-				'expires' => time() + 30 * DAY_IN_SECONDS,
-				'path' => '/',
-				'domain' => '',
-				'secure' => is_ssl(),
-				'httponly' => true,
-				'samesite' => 'Lax',
-			) );
-			if ( ! $created ) {
-				return '';
-			}
-			$_COOKIE[ self::cookie_name() ] = $cookie;
+			$cookie = self::set_guest_identity( $cookie );
+			if ( '' === $cookie ) { return ''; }
 		}
 		return wp_create_nonce( self::action( $action, $cookie ) );
 	}
@@ -51,7 +64,7 @@ class TInvWL_Request_Nonce {
 		if ( ! is_string( $nonce ) || '' === $nonce ) {
 			return false;
 		}
-		$cookie = self::cookie();
+		$cookie = self::guest_identity();
 		if ( ! is_user_logged_in() && '' === $cookie ) {
 			return false;
 		}
@@ -69,9 +82,14 @@ class TInvWL_Request_Nonce {
 		if ( 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
 			wp_send_json( array( 'status' => false, 'error' => 'invalid_method' ), 405 );
 		}
+		$add_nonce = self::create( 'tinvwl_add_to_wishlist' );
+		if ( '' === $add_nonce ) {
+			wp_send_json( array( 'status' => false, 'error' => 'guest_identity_unavailable' ), 409 );
+		}
 		wp_send_json( array(
-			'add_nonce' => self::create( 'tinvwl_add_to_wishlist' ),
+			'add_nonce' => $add_nonce,
 			'cart_nonce' => self::create( 'tinvwl_save_cart' ),
+			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
 		) );
 	}
 }

@@ -4,7 +4,7 @@
  *
  * @name LiteSpeed Cache
  *
- * @version 7.9.1
+ * @version 7.9.2
  *
  * @slug litespeed-cache
  *

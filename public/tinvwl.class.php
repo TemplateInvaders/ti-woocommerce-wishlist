@@ -131,6 +131,8 @@ class TInvWL_Public_TInvWL {
 		add_filter( 'request', array( $this, 'front_page_query_vars' ) );
 		add_action( 'wp', array( $this, 'analytics_referer' ) );
 		add_action( 'deleted_user', array( $this, 'delete_user_wishlist' ) );
+		// WordPress switches to the departing site before firing this hook.
+		add_action( 'remove_user_from_blog', array( $this, 'delete_user_wishlist' ) );
 		add_action( 'tinvwl_retry_user_cleanup', array( $this, 'retry_user_cleanup' ) );
 
 		add_action( 'wp_ajax_nopriv_' . $this->_name . '_css', array( $this, 'dynaminc_css' ) );

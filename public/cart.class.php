@@ -244,6 +244,9 @@ class TInvWL_Public_Cart {
 			$passed_validation = ! isset( $cart_errors['error_code'] );
 			$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', $passed_validation, $product_id, $quantity, $variation_id, $variations );
 			if ( $passed_validation ) {
+				$remove_saved_item = tinv_get_option( 'processing', 'autoremove' ) && ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] ) && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' );
+				$saved_source = $remove_saved_item ? self::saved_cart_source( $wlp, $product['ID'] ) : null;
+				if ( $remove_saved_item && ! $saved_source ) { return self::unavailable_cart_item( $product['ID'] ); }
 				$cart_item_data = apply_filters( 'tinvwl_addproduct_tocart_prepare_cart_data', $request_product['meta'], $product );
 				$cart_quantities = wp_list_pluck( WC()->cart->get_cart(), 'quantity' );
 				$cart_item_key   = self::add_native_cart_item( $product_id, $quantity, $variation_id, $variations, $cart_item_data, $cart_errors );
@@ -264,8 +267,8 @@ class TInvWL_Public_Cart {
 					do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
 					$wla = new TInvWL_Analytics( $wishlist, self::$_name );
 					$wla->cart_product( $product_id, $variation_id );
-					if ( ( ( 'private' !== $wishlist['status'] && tinv_get_option( 'processing', 'autoremove_anyone' ) ) || $wishlist['is_owner'] ) && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' ) ) {
-						self::ar_f_wl( $wishlist, $product_id, $quantity, $variation_id, $product['meta'] );
+					if ( $remove_saved_item ) {
+						self::ar_f_wl( $wishlist, $saved_source['product_id'], $quantity, $saved_source['variation_id'], $saved_source['meta'], $saved_source['ID'] );
 					}
 					self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
 					self::set_item_meta( $cart_item_key, $product['meta'] );
@@ -284,6 +287,16 @@ class TInvWL_Public_Cart {
 			self::unprepare_post( $request_product );
 		}
 
+	}
+
+	/** The cart can use a translation; storage mutations retain the saved row's identity. */
+	private static function saved_cart_source( $model, $item_id ) {
+		global $wpdb;
+		$table = $wpdb->prefix . self::$_name . '_items';
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$table` WHERE ID = %d AND wishlist_id = %d", $item_id, $model->wishlist_id() ), ARRAY_A );
+		if ( $wpdb->last_error || ! $row ) { return false; }
+		$row['meta'] = empty( $row['formdata'] ) ? array() : json_decode( $row['formdata'], true );
+		return is_array( $row['meta'] ) ? $row : false;
 	}
 
 	/** Let WooCommerce validate the fully prepared configuration and retain its error category. */
@@ -598,7 +611,7 @@ class TInvWL_Public_Cart {
 	 *
 	 * @return int|float
 	 */
-	private static function ar_f_wl( $wishlist, $product_id, $quantity = 1, $variation_id = 0, $meta = array() ) {
+	private static function ar_f_wl( $wishlist, $product_id, $quantity = 1, $variation_id = 0, $meta = array(), $item_id = 0 ) {
 		$product_id   = absint( $product_id );
 		$quantity     = floatval( $quantity );
 		$variation_id = absint( $variation_id );
@@ -615,6 +628,7 @@ class TInvWL_Public_Cart {
 			return 0;
 		}
 		$products = $wlp->get_wishlist( array(
+			'ID'           => $item_id ?: null,
 			'product_id'   => $product_id,
 			'variation_id' => $variation_id,
 			'meta'         => $meta,

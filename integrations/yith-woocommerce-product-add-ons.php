@@ -41,6 +41,47 @@ if ( ! $available ) {
 	return;
 }
 
+/** Quantity maps may be stored as JSON or wrapped for metadata display. */
+function tinvwl_yith_quantity_map( $map ) {
+	if ( is_array( $map ) && array_key_exists( 'display', $map ) ) { $map = $map['display']; }
+	$map = is_string( $map ) ? json_decode( $map, true ) : $map;
+	return is_array( $map ) ? $map : false;
+}
+
+/** Resolve native POST/cart quantity maps before the legacy encoded quantity. */
+function tinvwl_yith_option_quantity( $meta, $key, $value ) {
+	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
+	if ( ! is_array( $meta ) ) { return false; }
+	$parts = explode( '-', (string) $value );
+	if ( count( $parts ) < 2 || count( $parts ) > 3 ) { return false; }
+	$quantity = $parts[2] ?? 1;
+	foreach ( array( 'yith_wapo_product_qty', 'yith_wapo_qty_options' ) as $field ) {
+		if ( ! array_key_exists( $field, $meta ) ) { continue; }
+		$map = tinvwl_yith_quantity_map( $meta[ $field ] );
+		if ( false === $map ) { return false; }
+		if ( array_key_exists( $key, $map ) ) { $quantity = $map[ $key ]; break; }
+	}
+	return is_numeric( $quantity ) && is_finite( (float) $quantity ) && (float) $quantity >= 0 ? (float) $quantity : false;
+}
+
+/** Match the native per-product option calculation, including its quantity and filters. */
+function tinvwl_yith_product_option_price( $addon_id, $option_id, $key, $value, $info, $quantity, $base_price ) {
+	$product = tinvwl_yith_selected_product( $value, $info );
+	if ( ! $product ) { return NAN; }
+	$cart = function_exists( 'YITH_WAPO_Cart' ) ? YITH_WAPO_Cart() : null;
+	if ( is_callable( array( $cart, 'calculate_addon_prices_on_cart' ) ) ) {
+		$prices = $cart->calculate_addon_prices_on_cart( $addon_id, $option_id, $key, $value, array( 'yith_wapo_qty_options' => array( $key => $quantity ) ), $base_price, false );
+		$price = isset( $prices['price_sale'] ) && '' !== $prices['price_sale'] && is_numeric( $prices['price_sale'] ) && (float) $prices['price_sale'] >= 0 ? $prices['price_sale'] : ( $prices['price'] ?? null );
+		return is_numeric( $price ) && is_finite( (float) $price ) ? (float) $price : NAN;
+	}
+	$unit = (float) $product->get_price();
+	if ( 'discount' === $info['price_method'] ) {
+		$discount = (float) $info['price'];
+		$unit -= 'percentage' === $info['price_type'] ? $unit * $discount / 100 : $discount;
+	}
+	return $unit * $quantity;
+}
+
 /** Accept stored JSON, cart-decoded options and the metadata display wrapper. */
 function tinvwl_yith_saved_options( $meta ) {
 	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
@@ -69,9 +110,9 @@ function tinvwl_yith_saved_options( $meta ) {
 				continue;
 			}
 			if ( 'product' === $info['addon_type'] ) {
-				$selection = explode( '-', (string) $value );
-				if ( count( $selection ) < 3 || ! is_numeric( $selection[2] ) || ! is_finite( (float) $selection[2] ) || (float) $selection[2] < 0 ) { return false; }
-				if ( 0.0 === (float) $selection[2] ) {
+				$quantity = tinvwl_yith_option_quantity( $meta, $key, $value );
+				if ( false === $quantity ) { return false; }
+				if ( 0.0 === $quantity ) {
 					if ( $required ) { return false; }
 					unset( $options[ $index ][ $key ] );
 					continue;
@@ -117,14 +158,15 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 	function tinv_wishlist_item_meta_yith_woocommerce_product_add_on( $item_data, $product_id, $variation_id ) {
 
 		if ( isset( $item_data['yith_wapo_product_id'] ) && class_exists( 'YITH_WAPO' ) ) {
+			$saved_meta = $item_data;
 			$options = tinvwl_yith_saved_options( $item_data );
 			if ( false === $options ) {
-				unset( $item_data['yith_wapo'], $item_data['yith_wapo_product_id'], $item_data['yith_wapo_is_single'] );
+				unset( $item_data['yith_wapo'], $item_data['yith_wapo_product_id'], $item_data['yith_wapo_is_single'], $item_data['yith_wapo_product_qty'], $item_data['yith_wapo_qty_options'] );
 				$item_data[] = array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) );
 				return $item_data;
 			}
 			unset( $item_data['yith_wapo_product_id'] );
-			unset( $item_data['yith_wapo_is_single'] );
+			unset( $item_data['yith_wapo_is_single'], $item_data['yith_wapo_product_qty'], $item_data['yith_wapo_qty_options'] );
 
 			$id = ( $variation_id ) ? $variation_id : $product_id;
 
@@ -202,21 +244,14 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 							} else if ( in_array( $info['addon_type'], array( 'product' ) ) ) {
 								$option_product_info = explode( '-', $value );
 								$option_product_id   = $option_product_info[1];
-								$option_product_qty  = $option_product_info[2];
+								$option_product_qty  = tinvwl_yith_option_quantity( $saved_meta, $key, $value );
 								$option_product      = tinvwl_yith_selected_product( $value, $info );
 								if ( ! $option_product ) { return array( array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ) ); }
-								$value               = $option_product->get_title();
+								$value               = $option_product_qty . ' x ' . $option_product->get_title();
 
-								// product prices
-								$product_price = $option_product->get_price();
-								if ( $info['price_method'] == 'product' ) {
-									$option_price = $product_price;
-								} else if ( $info['price_method'] == 'discount' ) {
-									$option_discount_value = $option_price;
-									$option_price          = $product_price - $option_discount_value;
-									if ( $info['price_type'] == 'percentage' ) {
-										$option_price = $product_price - ( ( $product_price / 100 ) * $option_discount_value );
-									}
+								if ( in_array( $info['price_method'], array( 'product', 'discount' ), true ) ) {
+									$option_price = tinvwl_yith_product_option_price( $addon_id, $option_id, $key, $option[ $key ], $info, $option_product_qty, $base_product_price );
+									if ( ! is_finite( $option_price ) ) { return array( array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ) ); }
 								}
 
 							} else if ( in_array( $info['addon_type'], array( 'file' ) ) ) {
@@ -323,20 +358,11 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 								if ( in_array( $info['addon_type'], array( 'product' ) ) && ( $info['price_method'] == 'product' || $info['price_method'] == 'discount' ) ) {
 									$option_product_info = explode( '-', $value );
 									$option_product_id   = $option_product_info[1];
-									$option_product_qty  = $option_product_info[2];
+									$option_product_qty  = tinvwl_yith_option_quantity( $wl_product['meta'], $key, $value );
 									$option_product      = tinvwl_yith_selected_product( $value, $info );
 									if ( ! $option_product ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
-									$value               = $option_product->get_title();
-									$product_price       = $option_product->get_price();
-									if ( $info['price_method'] == 'product' ) {
-										$option_price = $product_price;
-									} else if ( $info['price_method'] == 'discount' ) {
-										$option_discount_value = $option_price;
-										$option_price          = $product_price - $option_discount_value;
-										if ( $info['price_type'] == 'percentage' ) {
-											$option_price = $product_price - ( ( $product_price / 100 ) * $option_discount_value );
-										}
-									}
+									$option_price = tinvwl_yith_product_option_price( $addon_id, $option_id, $key, $value, $info, $option_product_qty, $product->get_price() );
+									if ( ! is_finite( $option_price ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 									$total_options_price += floatval( $option_price );
 
 								} else if ( $info['price_method'] == 'decrease' ) {
@@ -361,6 +387,34 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_yith_woocommerce_product_add_on', 10, 4 );
 } // End if().
+
+/** Native request quantities must not alter the saved configuration used for attribution. */
+function tinvwl_prepare_cart_yith_component_quantities( $meta, $wl_product ) {
+	if ( empty( $meta['yith_wapo'] ) ) { return $meta; }
+	$options = tinvwl_yith_saved_options( $meta );
+	if ( false === $options ) { throw new InvalidArgumentException( __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ); }
+	$quantities = array();
+	foreach ( $options as $option ) {
+		foreach ( $option as $key => $value ) {
+			$ids = explode( '-', $key );
+			$info = yith_wapo_get_option_info( $ids[0], $ids[1] ?? $value );
+			if ( 'product' === ( $info['addon_type'] ?? '' ) ) {
+				$quantities[ $key ] = tinvwl_yith_option_quantity( $meta, $key, $value );
+			}
+		}
+	}
+	$meta['yith_wapo'] = $options;
+	foreach ( array( 'yith_wapo_product_qty', 'yith_wapo_qty_options' ) as $field ) {
+		if ( ! array_key_exists( $field, $meta ) ) { continue; }
+		$meta[ $field ] = tinvwl_yith_quantity_map( $meta[ $field ] );
+		if ( false === $meta[ $field ] ) { throw new InvalidArgumentException( __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ); }
+	}
+	if ( $quantities || isset( $meta['yith_wapo_product_qty'] ) || isset( $meta['yith_wapo_qty_options'] ) ) {
+		$meta['yith_wapo_product_qty'] = array_replace( $meta['yith_wapo_qty_options'] ?? array(), $meta['yith_wapo_product_qty'] ?? array(), $quantities );
+	}
+	return $meta;
+}
+add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_prepare_cart_yith_component_quantities', 10, 2 );
 
 if ( ! function_exists( 'tinvwl_add_to_cart_meta_yith_woocommerce_product_add_on' ) ) {
 

@@ -87,19 +87,19 @@ function tinvwl_yith_selected_product( $value, $info ) {
 	$id = isset( $parts[1] ) ? filter_var( $parts[1], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ) : false;
 	if ( false === $id ) { return false; }
 	$product = wc_get_product( $id );
-	if ( ! $product instanceof WC_Product ) { return false; }
+	if ( ! TInvWL_Product::can_read_product( $product ) ) { return false; }
 	$expected = 0;
 	if ( array_key_exists( 'product_id', $info ) ) {
 		$expected = filter_var( $info['product_id'], FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		if ( false === $expected ) { return false; }
 	}
 	if ( $product instanceof WC_Product_Variation ) {
-		if ( ! wc_get_product( $product->get_parent_id() ) instanceof WC_Product || ( $expected && $expected !== $id && $expected !== (int) $product->get_parent_id() ) ) { return false; }
+		if ( ! TInvWL_Product::can_read_product( wc_get_product( $product->get_parent_id() ) ) || ( $expected && $expected !== $id && $expected !== (int) $product->get_parent_id() ) ) { return false; }
 	} elseif ( $expected && $expected !== $id ) { return false; }
 	return $product;
 }
 function tinvwl_yith_configuration_available( $available, $wl_product, $product ) {
-	return $available && false !== tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
+	return $available && TInvWL_Product::can_read_product( $product ) && false !== tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
 }
 add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_yith_configuration_available', 10, 3 );
 
@@ -129,6 +129,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on
 			$id = ( $variation_id ) ? $variation_id : $product_id;
 
 			$base_product = wc_get_product( $id );
+			if ( ! TInvWL_Product::can_read_product( $base_product ) ) {
+				return array( array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ) );
+			}
 
 			if ( ( is_object( $base_product ) && get_option( 'yith_wapo_settings_show_product_price_cart' ) == 'yes' ) ) {
 

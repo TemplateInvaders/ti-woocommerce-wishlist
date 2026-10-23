@@ -66,6 +66,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_product_bundles' 
 
 /** Resolve this saved bundle without changing any cached bundled-item objects. */
 function tinvwl_bundle_saved_components( $wl_product, $product ) {
+	if ( ! TInvWL_Product::can_read_product( $product ) ) { return false; }
 	$meta = $wl_product['meta'] ?? array();
 	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
 	if ( ! is_array( $meta ) ) { return false; }
@@ -86,13 +87,14 @@ function tinvwl_bundle_saved_components( $wl_product, $product ) {
 		$base_id = filter_var( $item->get_product_id(), FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		if ( false === $base_id ) { return false; }
 		$base = wc_get_product( $base_id );
-		if ( ! $base instanceof WC_Product ) { return false; }
+		if ( ! TInvWL_Product::can_read_product( $base ) ) { return false; }
 		$selected = $meta[ $prefix . 'bundle_variation_id_' . $id ] ?? 0;
 		$selected = is_int( $selected ) || is_string( $selected ) ? filter_var( $selected, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0 ) ) ) : false;
 		if ( false === $selected ) { return false; }
 		$component = $selected ? wc_get_product( (int) $selected ) : $base;
-		if ( ! $component instanceof WC_Product ) { return false; }
+		if ( ! TInvWL_Product::can_read_product( $component ) ) { return false; }
 		if ( $selected && ( ! $component instanceof WC_Product_Variation || (int) $component->get_parent_id() !== (int) $item->get_product_id() ) ) { return false; }
+		if ( $component instanceof WC_Product_Variation && ! TInvWL_Product::can_read_product( wc_get_product( $component->get_parent_id() ) ) ) { return false; }
 		if ( ! $selected && in_array( $base->get_type(), array( 'variable', 'variable-subscription' ), true ) ) { return false; }
 		$components[ $id ] = array( 'item' => $item, 'product' => $component, 'quantity' => (float) $quantity );
 	}

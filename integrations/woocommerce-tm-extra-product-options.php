@@ -54,6 +54,12 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 	 */
 	function tinv_wishlist_metasupport_woocommerce_tm_extra_product_options( $meta, $product_id, $variation_id ) {
 		if ( array_key_exists( 'tcaddtocart', $meta ) && ( defined( 'THEMECOMPLETE_EPO_VERSION' ) || defined( 'TM_EPO_VERSION' ) ) ) {
+			$saved_meta = array();
+			foreach ( $meta as $key => $value ) { $saved_meta[ $key ] = is_array( $value ) && array_key_exists( 'display', $value ) ? $value['display'] : $value; }
+			$base_product = wc_get_product( $variation_id ? $variation_id : $product_id );
+			if ( false === tinvwl_tm_saved_components( array( 'meta' => $saved_meta ), $base_product ) ) {
+				return array( array( 'key' => __( 'Configuration', 'ti-woocommerce-wishlist' ), 'display' => __( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) ) );
+			}
 			$api     = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_API() : TM_EPO_API();
 			$core    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
 			$version = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_VERSION : TM_EPO_VERSION;
@@ -107,6 +113,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_woocommerce_tm_extra_product_
 
 /** Read selected product options before passing them to display or native cart helpers. */
 function tinvwl_tm_saved_components( $wl_product, $product ) {
+	if ( ! TInvWL_Product::can_read_product( $product ) ) { return false; }
 	$meta = $wl_product['meta'] ?? array();
 	$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
 	if ( ! is_array( $meta ) ) { return false; }
@@ -132,9 +139,9 @@ function tinvwl_tm_saved_components( $wl_product, $product ) {
 					$id = is_int( $id ) || is_string( $id ) ? filter_var( $id, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ) : false;
 					if ( false === $id ) { return false; }
 					$selected = wc_get_product( $id );
-					if ( ! $selected instanceof WC_Product ) { return false; }
+					if ( ! TInvWL_Product::can_read_product( $selected ) ) { return false; }
 					// The saved field names only this product, so never choose a replacement variation.
-					if ( $selected instanceof WC_Product_Variation && ! wc_get_product( $selected->get_parent_id() ) instanceof WC_Product ) { return false; }
+					if ( $selected instanceof WC_Product_Variation && ! TInvWL_Product::can_read_product( wc_get_product( $selected->get_parent_id() ) ) ) { return false; }
 					$components[] = array( 'element' => $element, 'product' => $selected, 'quantity' => (float) $quantity );
 				}
 			}

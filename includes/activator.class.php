@@ -130,7 +130,10 @@ class TInvWL_Activator
 		global $wpdb;
 		$lock = 'tinvwl_schema_' . md5( $wpdb->prefix . '|' . self::$_name );
 		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock ) ) ) { return false; }
-		try { return self::$action( $tables ); }
+		try {
+			if ( isset( $tables['items']['field']['quantity'] ) ) { $tables['items'] = self::compatible_items_table( 'items', $tables['items'] ); }
+			return self::$action( $tables );
+		}
 		catch ( Throwable $error ) { return self::schema_error(); }
 		finally {
 			$error = $wpdb->last_error;
@@ -240,6 +243,7 @@ class TInvWL_Activator
 	 */
 	public static function table($name, $table)
 	{
+		$table = self::compatible_items_table( $name, $table );
 		$name = self::$wpdb_prefix . self::$_name . '_' . $name;
 		$fields = $table['field'];
 		$index = (isset($table['index'])) ? $table['index'] : null;
@@ -424,7 +428,7 @@ class TInvWL_Activator
 	}
 
 	private static function schema_repaired() {
-		update_option( self::schema_marker(), '1:' . self::$_version, false );
+		update_option( self::schema_marker(), '2:' . self::$_version, false );
 		delete_option( self::schema_marker() . '_error' );
 	}
 
@@ -535,7 +539,7 @@ class TInvWL_Activator
 	}
 
 	public static function schema_ready() {
-		return '1:' . self::$_version === (string) get_option( self::schema_marker() );
+		return '2:' . self::$_version === (string) get_option( self::schema_marker() );
 	}
 
 	/** Verify once per release; failed or interrupted repairs remain eligible for retry. */
@@ -566,6 +570,24 @@ class TInvWL_Activator
 		echo '<div class="notice notice-error"><p>' . esc_html__( 'TI Wishlist could not finish updating its database tables. The update will be retried automatically. Ask your database administrator to check ALTER/CREATE permissions and InnoDB support; some wishlist operations are unavailable until the repair succeeds.', TINVWL_DOMAIN ) . '</p></div>';
 	}
 
+	/** Keep existing fractional storage in both dbDelta DDL and required-column repairs. */
+	private static function compatible_items_table( $name, $table ) {
+		if ( 'items' !== $name || ! isset( $table['field']['quantity'] ) ) { return $table; }
+		global $wpdb;
+		$physical = $wpdb->prefix . self::$_name . '_items';
+		$column = $wpdb->get_row( $wpdb->prepare( 'SELECT COLUMN_TYPE AS type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s AND COLUMN_NAME = %s', $physical, 'quantity' ), ARRAY_A );
+		if ( $wpdb->last_error ) { throw new RuntimeException( 'Could not inspect saved quantity storage.' ); }
+		if ( $column && preg_match( '/\A(?:float|double|decimal|numeric)(?:\(\d+(?:,\d+)?\))?(?: unsigned)?(?: zerofill)?\z/i', $column['type'] ) ) {
+			$flags = $table['field']['quantity'];
+			$aliases = self::column_database();
+			$flags = is_string( $flags ) ? $aliases[ $flags ] : $flags;
+			$flags[0] = $column['type'];
+			$flags[1] = null;
+			$table['field']['quantity'] = $flags;
+		}
+		return $table;
+	}
+
 	/** Collect the current descriptors without replaying historical migration actions. */
 	private static function current_tables() {
 		$methods = array_filter( get_class_methods( __CLASS__ ), static function ( $method ) {
@@ -576,6 +598,7 @@ class TInvWL_Activator
 		foreach ( $methods as $method ) {
 			$tables = self::merge_database( $tables, $method );
 		}
+		if ( isset( $tables['items']['field']['quantity'] ) ) { $tables['items'] = self::compatible_items_table( 'items', $tables['items'] ); }
 		return $tables;
 	}
 

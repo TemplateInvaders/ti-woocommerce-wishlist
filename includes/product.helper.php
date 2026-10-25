@@ -856,6 +856,7 @@ class TInvWL_Product {
 		$ids                = array();
 		$stored_product_ids = array();
 		foreach ( $products as $k => $product ) {
+			unset( $product['price_baseline'] ); // Keep technical price state out of public item data.
 			// Display and translation filters must not decide which stored product has been deleted.
 			$stored_product_ids[ $k ] = array(
 				'ID'           => absint( $product['ID'] ?? 0 ),

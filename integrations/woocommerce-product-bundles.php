@@ -86,7 +86,11 @@ function tinvwl_bundle_saved_components( $wl_product, $product ) {
 	foreach ( $items as $id => $item ) {
 		$quantity = $meta[ $prefix . 'bundle_quantity_' . $id ] ?? $item->get_quantity( 'default' );
 		if ( ! is_numeric( $quantity ) || ! is_finite( (float) $quantity ) || (float) $quantity < 0 ) { return false; }
-		if ( 0.0 === (float) $quantity || ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $id, $meta ) ) ) { continue; }
+		if ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $id, $meta ) ) { continue; }
+		$minimum = $item->get_quantity( 'min' );
+		$maximum = $item->get_quantity( 'max' );
+		if ( (float) $quantity < $minimum || ( $maximum && (float) $quantity > $maximum ) ) { return false; }
+		if ( 0.0 === (float) $quantity ) { continue; }
 		$base_id = filter_var( $item->get_product_id(), FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		if ( false === $base_id ) { return false; }
 		$base = wc_get_product( $base_id );

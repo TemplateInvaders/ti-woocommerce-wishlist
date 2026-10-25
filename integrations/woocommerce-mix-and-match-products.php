@@ -146,6 +146,10 @@ function tinvwl_mnm_saved_components( $wl_product, $product ) {
 		}
 		$components[ $id ] = array( 'product' => $child, 'quantity' => $quantity );
 	}
+	$size = array_sum( array_column( $components, 'quantity' ) );
+	$minimum = is_callable( array( $product, 'get_min_container_size' ) ) ? $product->get_min_container_size() : 0;
+	$maximum = is_callable( array( $product, 'get_max_container_size' ) ) ? $product->get_max_container_size() : 0;
+	if ( $size < $minimum || ( $maximum && $size > $maximum ) ) { return false; }
 	return $components;
 }
 

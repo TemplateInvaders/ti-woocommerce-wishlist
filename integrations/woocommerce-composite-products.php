@@ -107,10 +107,14 @@ function tinvwl_composite_saved_components( $wl_product, $product ) {
 		$quantity = is_int( $quantity ) || is_string( $quantity ) ? filter_var( $quantity, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0 ) ) ) : false;
 		if ( false === $quantity ) { return false; }
 		if ( isset( $meta['wccp_component_selection_nil'][ $id ] ) && ! is_scalar( $meta['wccp_component_selection_nil'][ $id ] ) ) { return false; }
-		if ( 0 === $quantity || isset( $meta['wccp_component_selection_nil'][ $id ] ) ) { continue; }
+		if ( isset( $meta['wccp_component_selection_nil'][ $id ] ) ) { continue; }
 		$selected = $meta['wccp_component_selection'][ $id ] ?? '';
+		if ( in_array( $selected, array( '', 0, '0' ), true ) && $item->is_optional() ) { continue; }
+		$minimum = $item->get_quantity( 'min' );
+		$maximum = $item->get_quantity( 'max' );
+		if ( $quantity < $minimum || ( $maximum && $quantity > $maximum ) ) { return false; }
+		if ( 0 === $quantity ) { continue; }
 		if ( in_array( $selected, array( '', 0, '0' ), true ) ) {
-			if ( $item->is_optional() ) { continue; }
 			return false;
 		}
 		$selected = is_int( $selected ) || is_string( $selected ) ? filter_var( $selected, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) ) : false;

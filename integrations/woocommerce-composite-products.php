@@ -135,7 +135,7 @@ function tinvwl_composite_saved_components( $wl_product, $product ) {
 			foreach ( $meta as $key => $value ) {
 				if ( 0 === strpos( $key, $prefix ) ) { $nested[ substr( $key, strlen( $prefix ) ) ] = $value; }
 			}
-			if ( ! function_exists( 'tinvwl_bundle_saved_components' ) || false === tinvwl_bundle_saved_components( array( 'meta' => $nested ), $child ) ) { return false; }
+			if ( ! function_exists( 'tinvwl_bundle_saved_components' ) || ! is_array( tinvwl_bundle_saved_components( array( 'meta' => $nested ), $child ) ) ) { return false; }
 		}
 		$components[ $id ] = array( 'component' => $item, 'product' => $child, 'wrapper' => $wrapper, 'option' => $option, 'quantity' => $child->is_sold_individually() ? min( 1, $quantity ) : $quantity );
 	}

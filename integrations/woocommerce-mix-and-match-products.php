@@ -152,6 +152,12 @@ function tinvwl_mnm_saved_components( $wl_product, $product ) {
 function tinvwl_mnm_configuration_available( $available, $wl_product, $product ) {
 	return $available && ( ! $product->is_type( 'mix-and-match' ) || is_array( tinvwl_mnm_saved_components( $wl_product, $product ) ) );
 }
+/** An unconfigured catalog item has readable pricing but still requires selection before cart. */
+function tinvwl_mnm_configuration_readable( $readable, $wl_product, $product ) {
+	return $readable && ( ! $product->is_type( 'mix-and-match' ) || false !== tinvwl_mnm_saved_components( $wl_product, $product ) );
+}
+add_filter( 'tinvwl_wishlist_item_configuration_readable', 'tinvwl_mnm_configuration_readable', 10, 3 );
+
 add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_mnm_configuration_available', 10, 3 );
 add_filter( 'tinvwl_wishlist_product_configuration_valid', 'tinvwl_mnm_configuration_available', 10, 3 );
 

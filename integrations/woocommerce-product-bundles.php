@@ -105,6 +105,7 @@ function tinvwl_bundle_configuration_available( $available, $wl_product, $produc
 	return $available && ( ! $product->is_type( 'bundle' ) || false !== tinvwl_bundle_saved_components( $wl_product, $product ) );
 }
 add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_bundle_configuration_available', 10, 3 );
+add_filter( 'tinvwl_wishlist_item_configuration_readable', 'tinvwl_bundle_configuration_available', 10, 3 );
 
 if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 
@@ -203,7 +204,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
 			$components = tinvwl_bundle_saved_components( $wl_product, $product );
-			if ( false === $components || ! apply_filters( 'tinvwl_wishlist_item_configuration_available', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
+			if ( false === $components || ! apply_filters( 'tinvwl_wishlist_item_configuration_readable', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 			$bundle_price = $product->get_price();
 			if ( is_array( $components ) ) {
 				$bundled_items_price = 0.0;

@@ -143,6 +143,7 @@ function tinvwl_yith_configuration_available( $available, $wl_product, $product 
 	return $available && TInvWL_Product::can_read_product( $product ) && false !== tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
 }
 add_filter( 'tinvwl_wishlist_item_configuration_available', 'tinvwl_yith_configuration_available', 10, 3 );
+add_filter( 'tinvwl_wishlist_item_configuration_readable', 'tinvwl_yith_configuration_available', 10, 3 );
 
 if ( ! function_exists( 'tinv_wishlist_item_meta_yith_woocommerce_product_add_on' ) ) {
 
@@ -304,8 +305,12 @@ if ( ! function_exists( 'tinvwl_item_price_yith_woocommerce_product_add_on' ) ) 
 	 * @return string|float
 	 */
 	function tinvwl_item_price_yith_woocommerce_product_add_on( $price, $wl_product, $product, $raw = false ) {
+		$meta = $wl_product['meta'] ?? array();
+		$meta = is_string( $meta ) ? json_decode( $meta, true ) : $meta;
+		if ( is_array( $meta ) && ! array_key_exists( 'yith_wapo', $meta ) ) { return $price; }
+		$wl_product['meta'] = $meta;
 		$options = tinvwl_yith_saved_options( $wl_product['meta'] ?? array() );
-		if ( false === $options || ! apply_filters( 'tinvwl_wishlist_item_configuration_available', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
+		if ( false === $options || ! apply_filters( 'tinvwl_wishlist_item_configuration_readable', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 
 		if ( class_exists( 'YITH_WAPO' ) ) {
 

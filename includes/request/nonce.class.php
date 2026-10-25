@@ -89,6 +89,7 @@ class TInvWL_Request_Nonce {
 		wp_send_json( array(
 			'add_nonce' => $add_nonce,
 			'cart_nonce' => self::create( 'tinvwl_save_cart' ),
+			'table_nonce' => self::create( 'tinvwl_table_action' ),
 			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
 		) );
 	}

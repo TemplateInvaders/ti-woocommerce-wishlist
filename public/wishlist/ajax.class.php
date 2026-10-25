@@ -93,7 +93,7 @@ class TInvWL_Public_Wishlist_Ajax {
 			: ( is_user_logged_in() ? ( $wl->get_by_user_default()[0] ?? null ) : $guest_wishlist );
 		$wishlist = $wishlist ?: [];
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $post['tinvwl-security'] ) && wp_verify_nonce( $post['tinvwl-security'], 'wp_rest' ) ) {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $post['tinvwl-security'] ) && TInvWL_Request_Nonce::verify( $post['tinvwl-security'], 'tinvwl_table_action' ) ) {
 			$this->wishlist_ajax_actions( $wishlist, $post, $guest_wishlist );
 		} else {
 			$response = [

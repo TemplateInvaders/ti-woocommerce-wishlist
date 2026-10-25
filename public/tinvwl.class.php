@@ -602,7 +602,7 @@ class TInvWL_Public_TInvWL {
 			'block_ajax_wishlists_data'  => apply_filters( 'tinvwl_block_ajax_wishlists_data', false ),
 			'update_wishlists_data'      => apply_filters( 'tinvwl_update_wishlists_data', false ),
 			'hash_key'                   => 'ti_wishlist_data_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ),
-			'nonce'                      => wp_create_nonce( 'wp_rest' ),
+			'nonce'                      => '', // Table actions receive a session-bound nonce from the uncached preflight.
 			'nonce_url'                  => WC_AJAX::get_endpoint( 'tinvwl_request_nonce' ),
 			'i18n_ajax_error'            => __( 'Unable to update wishlist. Please try again.', 'ti-woocommerce-wishlist' ),
 			'i18n_modal_title'           => __( 'Wishlist', 'ti-woocommerce-wishlist' ),

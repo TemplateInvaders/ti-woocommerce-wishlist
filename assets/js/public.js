@@ -334,14 +334,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       return $.ajax(options);
     }
     var result = $.Deferred();
-    function refresh() {
+    function refresh(retried) {
       freshRequestNonce().done(function (nonces) {
-        if (!nonces || 'string' !== typeof nonces.rest_nonce || !nonces.rest_nonce) {
+        if (!nonces || 'string' !== typeof nonces.table_nonce || !nonces.table_nonce) {
           result.reject();
           return;
         }
-        tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
-        send(true);
+        tinvwl_add_to_wishlist.nonce = nonces.table_nonce;
+        send(retried);
       }).fail(function () {
         result.rejectWith(this, arguments);
       });
@@ -350,19 +350,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       options.data['tinvwl-security'] = tinvwl_add_to_wishlist.nonce;
       $.ajax(options).done(function (response) {
         if (!retried && response && false === response.status && 'invalid_nonce' === response.error) {
-          refresh();
+          refresh(true);
           return;
         }
         result.resolveWith(this, arguments);
       }).fail(function (xhr) {
         if (!retried && xhr && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error) {
-          refresh();
+          refresh(true);
           return;
         }
         result.rejectWith(this, arguments);
       });
     }
-    send(false);
+    if (tinvwl_add_to_wishlist.nonce) {
+      send(false);
+    } else {
+      refresh(false);
+    }
     return result.promise();
   }
   function drainMutations() {
@@ -394,8 +398,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       });
       nonceRequest = request;
       request.done(function (nonces) {
-        if (nonces && 'string' === typeof nonces.rest_nonce && nonces.rest_nonce) {
-          tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
+        if (nonces && 'string' === typeof nonces.table_nonce && nonces.table_nonce) {
+          tinvwl_add_to_wishlist.nonce = nonces.table_nonce;
         }
       });
       request.always(function () {

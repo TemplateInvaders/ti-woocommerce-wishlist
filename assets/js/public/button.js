@@ -207,24 +207,25 @@
 	function sendWishlistRequest(options) {
 		if (!options.data || options.data instanceof window.FormData || !owns(options.data, 'tinvwl-security')) { return $.ajax(options); }
 		var result = $.Deferred();
-		function refresh() {
+		function refresh(retried) {
 			freshRequestNonce().done(function (nonces) {
-				if (!nonces || 'string' !== typeof nonces.rest_nonce || !nonces.rest_nonce) { result.reject(); return; }
-				tinvwl_add_to_wishlist.nonce = nonces.rest_nonce;
-				send(true);
+				if (!nonces || 'string' !== typeof nonces.table_nonce || !nonces.table_nonce) { result.reject(); return; }
+				tinvwl_add_to_wishlist.nonce = nonces.table_nonce;
+				send(retried);
 			}).fail(function () { result.rejectWith(this, arguments); });
 		}
 		function send(retried) {
 			options.data['tinvwl-security'] = tinvwl_add_to_wishlist.nonce;
 			$.ajax(options).done(function (response) {
-				if (!retried && response && false === response.status && 'invalid_nonce' === response.error) { refresh(); return; }
+				if (!retried && response && false === response.status && 'invalid_nonce' === response.error) { refresh(true); return; }
 				result.resolveWith(this, arguments);
 			}).fail(function (xhr) {
-				if (!retried && xhr && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error) { refresh(); return; }
+				if (!retried && xhr && 403 === xhr.status && xhr.responseJSON && 'invalid_nonce' === xhr.responseJSON.error) { refresh(true); return; }
 				result.rejectWith(this, arguments);
 			});
 		}
-		send(false);
+		if (tinvwl_add_to_wishlist.nonce) { send(false); }
+		else { refresh(false); }
 		return result.promise();
 	}
 
@@ -254,7 +255,7 @@
 			});
 			nonceRequest = request;
 			request.done(function (nonces) {
-				if (nonces && 'string' === typeof nonces.rest_nonce && nonces.rest_nonce) { tinvwl_add_to_wishlist.nonce = nonces.rest_nonce; }
+				if (nonces && 'string' === typeof nonces.table_nonce && nonces.table_nonce) { tinvwl_add_to_wishlist.nonce = nonces.table_nonce; }
 			});
 			request.always( function() {
 				if ( nonceRequest === request ) {

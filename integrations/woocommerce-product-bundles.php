@@ -84,7 +84,7 @@ function tinvwl_bundle_saved_components( $wl_product, $product ) {
 	$components = array();
 	$requires_selection = false;
 	foreach ( $items as $id => $item ) {
-		$quantity = $meta[ $prefix . 'bundle_quantity_' . $id ] ?? $item->get_quantity();
+		$quantity = $meta[ $prefix . 'bundle_quantity_' . $id ] ?? $item->get_quantity( 'default' );
 		if ( ! is_numeric( $quantity ) || ! is_finite( (float) $quantity ) || (float) $quantity < 0 ) { return false; }
 		if ( 0.0 === (float) $quantity || ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $id, $meta ) ) ) { continue; }
 		$base_id = filter_var( $item->get_product_id(), FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );

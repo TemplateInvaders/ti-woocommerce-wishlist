@@ -29,6 +29,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		$this->_version = $version;
 
 		$this->maybe_update();
+		add_action( 'admin_notices', array( 'TInvWL_Activator', 'schema_notice' ) );
 	}
 
 	/**
@@ -39,7 +40,7 @@ class TInvWL_Admin_TInvWL extends TInvWL_Admin_Base {
 		// checkpoint written by a previous release after an unsuccessful ALTER.
 		TInvWL_Activator::update();
 		$db_version = get_option( $this->_name . '_db_ver' );
-		if ( ! $db_version || version_compare( $db_version, $this->_version, 'lt' ) ) {
+		if ( ! $db_version || version_compare( $db_version, $this->_version, 'lt' ) || ! TInvWL_Activator::schema_ready() ) {
 			return;
 		}
 		$prev = get_option( $this->_name . '_ver' );

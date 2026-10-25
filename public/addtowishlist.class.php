@@ -312,13 +312,13 @@ class TInvWL_Public_AddToWishlist
 							$prepared_form = apply_filters('tinvwl_addtowishlist_add_form', $form);
 							$quantity = 1;
 							$allowed_adding = !count($wlp->get_wishlist(array(
-								'product_id' => $post['product_id'],
-								'variation_id' => $variation_id,
+								'product_id' => $variation_id, // Grouped children are saved as simple products.
+								'variation_id' => 0,
 								'meta' => $prepared_form,
 								'external' => false,
 							)));
 							if (tinv_get_option('general', 'simple_flow') && 'remove' === $post['product_action']) {
-								if ($wlp->remove_product_from_wl(0, $post['product_id'], $variation_id, $prepared_form)) {
+								if ($wlp->remove_product_from_wl(0, $variation_id, 0, $prepared_form)) {
 									$data['msg'][] = apply_filters('tinvwl_removed_from_wishlist_text', tinv_get_option('general', 'text_removed_from'));
 									$data['removed'] = true;
 									$status = false;
@@ -1048,7 +1048,14 @@ class TInvWL_Public_AddToWishlist
 				'variable-subscription',
 			))) ? $this->variation_id : ($this->product->is_type('variation') ? $this->product->get_id() : 0)), 'product_variation', true);
 
-		$content .= sprintf('<a role="button" tabindex="0" name="%s" aria-label="%s" data-tinv-wl-add-label="%s" data-tinv-wl-remove-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
+		$grouped_children = array();
+		if ( in_array( $this->product->get_type(), array( 'group', 'grouped' ), true ) ) {
+			foreach ( $this->product->get_children() as $child_id ) {
+				$grouped_children[] = (int) apply_filters( 'wpml_object_id', $child_id, 'product', true );
+			}
+		}
+
+		$content .= sprintf('<a role="button" tabindex="0" name="%s" aria-label="%s" data-tinv-wl-add-label="%s" data-tinv-wl-remove-label="%s" class="tinvwl_add_to_wishlist_button %s" data-tinv-wl-list="[]" data-tinv-wl-product="%s" data-tinv-wl-productvariation="%s" data-tinv-wl-productvariations="%s" data-tinv-wl-grouped-children="%s" data-tinv-wl-producttype="%s" data-tinv-wl-action="add">%s</a>',
 			esc_attr(sanitize_title($button_text)),
 			esc_attr(wp_strip_all_tags($button_text)),
 			esc_attr(wp_strip_all_tags($button_text)),
@@ -1060,6 +1067,7 @@ class TInvWL_Public_AddToWishlist
 					'variable',
 					'variable-subscription',
 				))) ? $this->variation_ids : ($this->product->is_type('variation') ? array($product_variation) : array())),
+			esc_attr( json_encode( $grouped_children ) ),
 			$this->product->get_type(),
 			$text);
 		$content .= apply_filters('tinvwl_wishlist_button_after', '');

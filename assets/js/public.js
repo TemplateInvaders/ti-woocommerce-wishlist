@@ -1523,6 +1523,49 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
    *
    * @param {object} data - The data containing information about wishlists, products, and stats.
    */
+
+  // Grouped buttons represent child simple rows, independently of variation membership.
+  function groupedButtonProducts(data) {
+    var products = $.extend({}, data.products || {});
+    $('a.tinvwl_add_to_wishlist_button').each(function () {
+      var type = $(this).attr('data-tinv-wl-producttype');
+      if ('grouped' !== type && 'group' !== type) {
+        return;
+      }
+      var children = parseWishlistJSON($(this).attr('data-tinv-wl-grouped-children')),
+        lists = Object.create(null);
+      if (!Array.isArray(children)) {
+        return;
+      }
+      children.forEach(function (child) {
+        $.each(data.products && data.products[child] || {}, function (key, value) {
+          var item = parseWishlistJSON(value);
+          if (!item || 'object' !== _typeof(item) || !Array.isArray(item.in) || !item.in.some(function (variation) {
+            return 0 === variation || '0' === variation;
+          })) {
+            return;
+          }
+          var id = item.ID;
+          if (!id) {
+            return;
+          }
+          if (!lists[id]) {
+            lists[id] = $.extend({}, item, {
+              in: [0],
+              grouped_children: []
+            });
+          }
+          if (-1 === lists[id].grouped_children.indexOf(Number(child))) {
+            lists[id].grouped_children.push(Number(child));
+          }
+        });
+      });
+      if (Object.keys(lists).length) {
+        products[$(this).attr('data-tinv-wl-product')] = lists;
+      }
+    });
+    return products;
+  }
   function mark_products(data) {
     data = wishlistData(data);
     if (!data) {
@@ -1536,7 +1579,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     });
     $('body').trigger('tinvwl_wishlist_mark_products', [data]);
-    $.each(data.products, function (i, item) {
+    $.each(groupedButtonProducts(data), function (i, item) {
       if (!item || 'object' !== _typeof(item)) {
         return;
       }

@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product function class
  */
 class TInvWL_Product {
+	private $quantity_addition = 0;
 
 	/**
 	 * Table name
@@ -595,7 +596,11 @@ class TInvWL_Product {
 		if ( ! $set || ! $conditions ) {
 			return false;
 		}
-		return $wpdb->query( "UPDATE `{$this->table}` SET " . implode( ', ', $set ) . ' WHERE ' . implode( ' AND ', $conditions ) );
+		$write = function () use ( $wpdb, $set, $conditions ) { return $wpdb->query( "UPDATE `{$this->table}` SET " . implode( ', ', $set ) . ' WHERE ' . implode( ' AND ', $conditions ) ); };
+		if ( array_key_exists( 'quantity', $data ) && class_exists( 'TInvWL_Public_CartDebit' ) ) {
+			return TInvWL_Public_CartDebit::write_quantity( $this->table, implode( ' AND ', $conditions ), $write, ! $this->storage_context && ! $this->quantity_addition );
+		}
+		return $write();
 	}
 
 	/** Sort object keys recursively; the order of numeric lists remains meaningful. */

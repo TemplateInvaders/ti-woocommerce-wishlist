@@ -140,6 +140,45 @@ class TInvWL_Public_CartDebit {
 		return $keys;
 	}
 
+	/** Reconcile user quantity writes with outstanding effects in their own atomic boundary. */
+	public static function write_quantity( $items, $predicate, callable $write, $absolute = false ) {
+		global $wpdb;
+		$status = $wpdb->get_row( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name = %s', self::table() ), ARRAY_A );
+		if ( $wpdb->last_error ) { return false; }
+		if ( ! $status ) { return $write(); }
+		if ( ! in_array( strtolower( $status['Engine'] ), array( 'innodb', 'xtradb' ), true ) ) { return false; }
+		$suppressed = $wpdb->suppress_errors( true );
+		try { $independent = false !== $wpdb->query( 'SET TRANSACTION READ WRITE' ); }
+		finally { $wpdb->suppress_errors( $suppressed ); }
+		$transaction = false;
+		try {
+			if ( $independent ) {
+				if ( false === $wpdb->query( 'START TRANSACTION' ) ) { return false; }
+				$transaction = true;
+			}
+			$rows = $wpdb->get_results( "SELECT * FROM `$items` WHERE $predicate FOR UPDATE", ARRAY_A );
+			if ( $wpdb->last_error || ! is_array( $rows ) ) { return false; }
+			$result = $write();
+			if ( false === $result ) { return false; }
+			foreach ( $rows as $row ) {
+				$current = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$items` WHERE ID = %d AND wishlist_id = %d FOR UPDATE", $row['ID'], $row['wishlist_id'] ), ARRAY_A );
+				if ( $wpdb->last_error || ! $current ) { return false; }
+				$parent = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `' . $wpdb->prefix . TINVWL_PREFIX . '_lists` WHERE ID = %d FOR UPDATE', $row['wishlist_id'] ), ARRAY_A );
+				if ( $wpdb->last_error || ! $parent ) { return false; }
+				$current['meta'] = empty( $current['formdata'] ) ? array() : json_decode( $current['formdata'], true );
+				if ( ! is_array( $current['meta'] ) ) { return false; }
+				// An explicit owner quantity replaces previous cart intent; incremental additions do not.
+				if ( $absolute ) { $current['quantity'] = '0'; }
+				self::contributions( $parent, $current, false );
+			}
+			if ( $transaction && false === $wpdb->query( 'COMMIT' ) ) { return false; }
+			$transaction = false;
+			$wpdb->rows_affected = $result;
+			return $result;
+		} catch ( Throwable $error ) { return false; }
+		finally { if ( $transaction ) { $wpdb->query( 'ROLLBACK' ); } }
+	}
+
 	/** Spend shared source authority in the same transaction as the physical debit and completion receipt. */
 	public static function bounded_payload( $wishlist, $operation, $payload ) {
 		global $wpdb;

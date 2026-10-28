@@ -134,13 +134,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 
 									} else {
 
-										/**
-										 * Removed in 3.7.1 because tax was getting doubled
-										 */
-										// $product_id = $cart_item['data']->get_id();
-										// $product = wc_get_product( $product_id );
-										// $price = pewc_maybe_include_tax( $product, $item['price'] );
-										$price = ' ' . wc_price( $item['field_price'] );
+										// These are raw field settings, rather than the vendor's display-priced cart metadata.
+										$price = ' ' . wc_price( pewc_maybe_include_tax( wc_get_product( $variation_id ?: $product_id ), $item['field_price'] ) );
 
 									}
 

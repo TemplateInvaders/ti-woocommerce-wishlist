@@ -220,7 +220,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 				if ( $discount ) {
 					$product_price = $product_price * ( 100 - $discount ) / 100;
 				}
-				$product_price = wc_price( $product_price );
+				$product_price = wc_price( wc_get_price_to_display( $composited_product, array( 'price' => $product_price, 'qty' => 1 ) ) );
 
 				if ( $component_option ) {
 					if ( false === $component_option->is_priced_individually() && false === $component_option->get_raw_price() > 0 ) {

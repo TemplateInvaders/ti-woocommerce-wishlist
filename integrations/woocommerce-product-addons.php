@@ -196,7 +196,7 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_woocommerce_product_addons($price, $wl_product, $product)
+	function tinvwl_item_price_woocommerce_product_addons($price, $wl_product, $product, $raw = false)
 	{
 
 		if (class_exists('WC_Product_Addons')) {
@@ -289,14 +289,15 @@ if (!function_exists('tinvwl_item_price_woocommerce_product_addons')) {
 
 				}
 
-				$price = wc_price((float)$product->get_price() + (float)$price);
+				if ( $raw ) { return (float) $product->get_price() + (float) $price; }
+				$price = wc_price( wc_get_price_to_display( $product, array( 'price' => (float) $product->get_price() + (float) $price, 'qty' => 1 ) ) );
 			}
 		}
 
 		return $price;
 	}
 
-	add_filter('tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_addons', 10, 3);
+	add_filter('tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_product_addons', 10, 4);
 } // End if().
 
 add_filter('tinvwl_addtowishlist_prepare_form', 'tinvwl_meta_woocommerce_product_addons', 10, 3);

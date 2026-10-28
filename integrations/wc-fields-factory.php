@@ -161,7 +161,7 @@ if ( ! function_exists( 'tinvwl_item_price_wc_fields_factory' ) ) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_wc_fields_factory( $price, $wl_product, $product ) {
+	function tinvwl_item_price_wc_fields_factory( $price, $wl_product, $product, $raw = false ) {
 
 		if ( function_exists( 'wcff' ) ) {
 			$replaced_price  = 0;
@@ -171,7 +171,6 @@ if ( ! function_exists( 'tinvwl_item_price_wc_fields_factory' ) ) {
 
 			$product_id   = $wl_product['product_id'];
 			$variation_id = $wl_product['variation_id'];
-
 
 			foreach ( $wl_product['meta'] as $ckey => $cval ) {
 				if ( ( strpos( $ckey, "wccpf_" ) !== false || strpos( $ckey, "wccvf_" ) !== false ) ) {
@@ -245,9 +244,7 @@ if ( ! function_exists( 'tinvwl_item_price_wc_fields_factory' ) ) {
 					$item['product_id']   = $product_id;
 					$item['variation_id'] = $variation_id;
 
-
 					if ( isset( $item[ $ckey ]["pricing_rules"] ) ) {
-
 
 						$ftype   = $item [ $ckey ] ["ftype"];
 						$dformat = $item[ $ckey ] ["format"];
@@ -301,17 +298,19 @@ if ( ! function_exists( 'tinvwl_item_price_wc_fields_factory' ) ) {
 							$orgPrice = $basePrice + $additional_cost;
 						}
 
-						$price = wc_price( $orgPrice );
+						$price = wc_price( wc_get_price_to_display( $product, array( 'price' => $orgPrice, 'qty' => 1 ) ) );
 					}
 				}
-
 			}
+		}
+		if ( $raw  && isset($orgPrice)) {
+			return $orgPrice;
 		}
 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wc_fields_factory', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wc_fields_factory', 10, 4 );
 } // End if().
 
 add_filter( 'tinvwl_addtowishlist_prepare_form', 'tinvwl_meta_wc_fields_factory', 10, 3 );

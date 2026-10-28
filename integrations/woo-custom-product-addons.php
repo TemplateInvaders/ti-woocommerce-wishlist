@@ -712,7 +712,7 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons' ) 
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_woocommerce_custom_product_addons( $price, $wl_product, $product ) {
+	function tinvwl_item_price_woocommerce_custom_product_addons( $price, $wl_product, $product, $raw = false ) {
 		if ( defined( 'WCPA_ITEM_ID' ) && class_exists( 'WCPA_Form' ) && class_exists( 'WCPA_MC' ) ) {
 
 			$price    = 0;
@@ -766,7 +766,11 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons' ) 
 			$mc    = new WCPA_MC();
 			$price = $mc->mayBeConvert( $price ) + $product->get_price( 'edit' );
 
-			$price = wc_price( $price );
+			if ( $raw ) {
+				return $price;
+			}
+
+			$price = wc_price( wc_get_price_to_display( $product, array( 'price' => $price, 'qty' => 1 ) ) );
 
 		}
 
@@ -774,14 +778,18 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons' ) 
 			$options_price = tinvwl_wcpa_current_options_price( $wl_product );
 
 			if ( 0 < $options_price ) {
-				$price = wc_price( (float) $product->get_price( 'edit' ) + $options_price );
+				$price = (float) $product->get_price( 'edit' ) + $options_price;
+
+				if ( ! $raw ) {
+					$price = wc_price( wc_get_price_to_display( $product, array( 'price' => $price, 'qty' => 1 ) ) );
+				}
 			}
 		}
 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_product_addons', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_product_addons', 10, 4 );
 } // End if().
 
 if ( ! function_exists( 'tinvwl_item_price_woocommerce_custom_product_addons_text_button' ) ) {

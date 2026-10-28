@@ -205,7 +205,7 @@ if ( ! function_exists( 'tinvwl_item_price_wapf' ) ) {
 
 			if ( $options_total > 0 ) {
 				$unit_price = $base + $options_total;
-				return $raw ? $unit_price : wc_price( $unit_price );
+				return $raw ? $unit_price : wc_price( wc_get_price_to_display( $product, array( 'price' => $unit_price, 'qty' => 1 ) ) );
 			}
 
 		}

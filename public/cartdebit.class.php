@@ -57,6 +57,8 @@ class TInvWL_Public_CartDebit {
 	public static function init() {
 		add_action( 'tinvwl_cart_debit_retry', array( __CLASS__, 'run' ) );
 		add_action( 'tinvwl_cart_debits', array( __CLASS__, 'run' ) );
+		add_action( 'tinvwl_cart_debits', array( __CLASS__, 'run_order_events' ) );
+		add_action( 'tinvwl_order_status_retry', array( __CLASS__, 'retry_order_event' ), 10, 4 );
 		add_action( 'woocommerce_cart_loaded_from_session', array( __CLASS__, 'resume_session' ) );
 		if ( ! wp_next_scheduled( 'tinvwl_cart_debits' ) ) { wp_schedule_event( time() + 60, 'hourly', 'tinvwl_cart_debits' ); }
 	}
@@ -213,6 +215,67 @@ class TInvWL_Public_CartDebit {
 		$payload['remove_empty'] = $item && 'remove' === $payload['strategy'] && '0' === self::decimal( $payload['remove_quantity'] ) && '0' === self::decimal( $item['quantity'] );
 		$payload['remove_quantity'] = $amount; $payload['quantity'] = $amount;
 		return $payload;
+	}
+
+	/** Retain the qualifying order event even when later statuses no longer match the setting. */
+	public static function remember_order_event( $kind, $order_id, $old_status, $new_status ) {
+		global $wpdb;
+		if ( ! in_array( $kind, array( 'analytics', 'autoremove' ), true ) || ! $order_id ) { return false; }
+		self::retry_order_later( $kind, $order_id, $old_status, $new_status );
+		if ( ! self::maybe_install() ) { return false; }
+		$previous = $wpdb->suppress_errors( true );
+		try { $independent = $wpdb->query( 'SET TRANSACTION READ WRITE' ); }
+		finally { $wpdb->suppress_errors( $previous ); }
+		if ( false === $independent ) { return false; }
+		$key = hash( 'sha256', 'order-event|' . $kind . '|' . (int) $order_id . '|' . $new_status );
+		$payload = wp_json_encode( array( 'kind' => $kind, 'order_id' => (int) $order_id, 'old_status' => $old_status, 'new_status' => $new_status ) );
+		$now = time();
+		$result = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO `' . self::table() . "` (operation_key,wishlist_id,item_id,payload,state,available_at,created_at,updated_at) VALUES (%s,0,%d,%s,'order_retry',%d,%d,%d)", $key, $order_id, $payload, $now + 60, $now, $now ) );
+		self::retry_order_later( $kind, $order_id, $old_status, $new_status );
+		return false === $result ? false : $key;
+	}
+
+	public static function finish_order_event( $key ) {
+		global $wpdb;
+		if ( ! $key ) { return; }
+		$payload = $wpdb->get_var( $wpdb->prepare( 'SELECT payload FROM `' . self::table() . '` WHERE operation_key = %s', $key ) );
+		if ( $wpdb->last_error ) { return; }
+		$event = json_decode( (string) $payload, true );
+		if ( false === $wpdb->query( $wpdb->prepare( 'UPDATE `' . self::table() . "` SET state = 'order_done', updated_at = %d WHERE operation_key = %s AND state = 'order_retry'", time(), $key ) ) ) { return; }
+		if ( is_array( $event ) && isset( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ) ) {
+			wp_clear_scheduled_hook( 'tinvwl_order_status_retry', array( $event['kind'], (int) $event['order_id'], $event['old_status'], $event['new_status'] ) );
+		}
+	}
+
+	/** A separate WP cron entry also survives an unavailable receipt table. */
+	public static function retry_order_later( $kind, $order_id, $old_status, $new_status ) {
+		$args = array( $kind, (int) $order_id, $old_status, $new_status );
+		if ( ! wp_next_scheduled( 'tinvwl_order_status_retry', $args ) ) {
+			if ( false === wp_schedule_single_event( time() + 60, 'tinvwl_order_status_retry', $args ) ) { self::log( 'Could not schedule the qualifying order event for retry.' ); }
+		}
+	}
+
+	public static function retry_order_event( $kind, $order_id, $old_status, $new_status ) {
+		$cart = TInvWL_Public_Cart::instance( TINVWL_PREFIX );
+		if ( 'analytics' === $kind ) { return $cart->order_status_analytics( $order_id, $old_status, $new_status ); }
+		if ( 'autoremove' === $kind && is_callable( array( $cart, 'order_status_changed' ) ) ) { return $cart->order_status_changed( $order_id, $old_status, $new_status ); }
+		return false;
+	}
+
+	public static function run_order_events() {
+		global $wpdb;
+		if ( ! self::maybe_install() ) { return false; }
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `' . self::table() . "` WHERE state = 'order_retry' AND available_at <= %d ORDER BY ID LIMIT 25", time() ), ARRAY_A );
+		if ( $wpdb->last_error || ! is_array( $rows ) ) { return false; }
+		foreach ( $rows as $row ) {
+			$event = json_decode( $row['payload'], true );
+			if ( ! is_array( $event ) || ! isset( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ) ) { continue; }
+			try { $complete = self::retry_order_event( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ); }
+			catch ( Throwable $error ) { $complete = false; }
+			if ( $complete ) { self::finish_order_event( $row['operation_key'] ); }
+			else { $wpdb->query( $wpdb->prepare( 'UPDATE `' . self::table() . "` SET attempts = attempts + 1, available_at = %d WHERE ID = %d AND state = 'order_retry'", time() + 300, $row['ID'] ) ); }
+		}
+		return true;
 	}
 
 	/** Reserve a receipt first: a failed reservation must not add anything to the cart. */

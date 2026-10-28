@@ -797,10 +797,14 @@ class TInvWL_Public_Cart {
 	 */
 	function order_status_analytics( $order_id, $old_status, $new_status ) {
 		global $wpdb;
+		if ( ! in_array( str_replace( 'wc-', '', $new_status ), array( 'processing', 'completed' ), true ) ) { return false; }
+		$event_key = TInvWL_Public_CartDebit::remember_order_event( 'analytics', $order_id, $old_status, $new_status );
 		for ( $attempt = 0; $attempt < 3; $attempt++ ) {
 			$retry = false;
 			$complete = $this->process_order_analytics( $order_id, $old_status, $new_status, $retry );
 			if ( $complete || ! $retry || $attempt === 2 ) {
+				if ( $complete ) { TInvWL_Public_CartDebit::finish_order_event( $event_key ); }
+				else { TInvWL_Public_CartDebit::retry_order_later( 'analytics', $order_id, $old_status, $new_status ); }
 				return $complete;
 			}
 			// A concurrency failure rolled back this entire attempt; start with a fresh receipt/snapshot.

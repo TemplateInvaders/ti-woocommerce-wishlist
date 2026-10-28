@@ -715,6 +715,17 @@ class TInvWL_Activator
 		return preg_replace( '/\b(tinyint|smallint|mediumint|int|integer|bigint)\(\d+\)/', '$1', $type );
 	}
 
+	/** Compare numeric defaults exactly, including server-added scale and exponent notation. */
+	private static function schema_numeric_default( $value ) {
+		if ( ! preg_match( '/^([+-]?)(\d*)(?:\.(\d*))?(?:[eE]([+-]?\d+))?$/D', (string) $value, $parts ) || ( '' === $parts[2] && '' === ( $parts[3] ?? '' ) ) ) { return (string) $value; }
+		$fraction = $parts[3] ?? '';
+		$digits = ltrim( $parts[2] . $fraction, '0' );
+		if ( '' === $digits ) { return '0'; }
+		$trimmed = rtrim( $digits, '0' );
+		$power = (int) ( $parts[4] ?? 0 ) - strlen( $fraction ) + strlen( $digits ) - strlen( $trimmed );
+		return ( '-' === $parts[1] ? '-' : '' ) . $trimmed . 'e' . $power;
+	}
+
 	/** Compare required column attributes without relying on dbDelta defaults/nullability support. */
 	private static function column_matches( $column, $flags ) {
 		$type = $flags[0] . ( null === $flags[1] ? '' : '(' . $flags[1] . ')' );
@@ -725,6 +736,10 @@ class TInvWL_Activator
 		$expected_default = $flags[3];
 		if ( 'CURRENT_TIMESTAMP' === $expected_default ) {
 			$default = strtoupper( str_replace( '()', '', (string) $default ) );
+		}
+		if ( null !== $default && null !== $expected_default && preg_match( '/^(?:tinyint|smallint|mediumint|int|integer|bigint|decimal|numeric|float|double|real|bit)\b/i', $type ) ) {
+			$default = self::schema_numeric_default( $default );
+			$expected_default = self::schema_numeric_default( $expected_default );
 		}
 		return ! ( self::schema_type( $column['Type'] ) !== self::schema_type( $type )
 			|| ( 'YES' === $column['Null'] ) !== (bool) $flags[2]

@@ -69,8 +69,124 @@ class TInvWL_Public_CartDebit {
 		}
 	}
 
+	/** Exact non-negative decimal arithmetic keeps shared BIGINT/DECIMAL contributions intact. */
+	private static function decimal( $value ) {
+		$value = (string) $value;
+		if ( ! preg_match( '/\A(\d*(?:\.\d*)?)(?:[eE]([+-]?\d+))?\z/D', $value, $m ) || ! is_numeric( $value ) || ! is_finite( (float) $value ) || (float) $value < 0 ) { throw new RuntimeException( 'Invalid contribution quantity.' ); }
+		$parts = explode( '.', $m[1] ); $digits = implode( '', $parts );
+		$point = strlen( $parts[0] ) + (int) ( $m[2] ?? 0 );
+		if ( $point < 0 ) { $digits = str_repeat( '0', -$point ) . $digits; $point = 0; }
+		if ( $point > strlen( $digits ) ) { $digits .= str_repeat( '0', $point - strlen( $digits ) ); }
+		$integer = ltrim( substr( $digits, 0, $point ), '0' ); $fraction = rtrim( substr( $digits, $point ), '0' );
+		return ( '' === $integer ? '0' : $integer ) . ( '' === $fraction ? '' : '.' . $fraction );
+	}
+
+	private static function decimal_parts( $a, $b ) {
+		$a = explode( '.', self::decimal( $a ) ); $b = explode( '.', self::decimal( $b ) );
+		$scale = max( strlen( $a[1] ?? '' ), strlen( $b[1] ?? '' ) );
+		$a = $a[0] . str_pad( $a[1] ?? '', $scale, '0' ); $b = $b[0] . str_pad( $b[1] ?? '', $scale, '0' );
+		$length = max( strlen( $a ), strlen( $b ) );
+		return array( str_pad( $a, $length, '0', STR_PAD_LEFT ), str_pad( $b, $length, '0', STR_PAD_LEFT ), $scale );
+	}
+
+	private static function decimal_compare( $a, $b ) {
+		list( $a, $b ) = self::decimal_parts( $a, $b ); return strcmp( $a, $b );
+	}
+
+	private static function decimal_sum( $a, $b, $subtract = false ) {
+		list( $a, $b, $scale ) = self::decimal_parts( $a, $b ); $carry = 0; $digits = '';
+		if ( $subtract && strcmp( $a, $b ) < 0 ) { throw new RuntimeException( 'Contribution underflow.' ); }
+		for ( $i = strlen( $a ) - 1; $i >= 0; --$i ) {
+			$n = (int) $a[$i] + ( $subtract ? -(int) $b[$i] : (int) $b[$i] ) + $carry;
+			$carry = $subtract ? ( $n < 0 ? -1 : 0 ) : ( $n >= 10 ? 1 : 0 );
+			$digits = (string) ( ( $n + 10 ) % 10 ) . $digits;
+		}
+		if ( $carry > 0 ) { $digits = $carry . $digits; }
+		if ( $scale ) { $digits = substr( $digits, 0, -$scale ) . '.' . substr( $digits, -$scale ); }
+		return self::decimal( $digits );
+	}
+
+	private static function same_source( $payload, $wishlist, $item ) {
+		$identity = TInvWL_Product::saved_configuration_identity( $item['meta'] );
+		return false !== $identity && is_array( $payload ) && isset( $payload['author'], $payload['share_key'], $payload['product_id'], $payload['variation_id'] )
+			&& (int) $wishlist['author'] === (int) $payload['author'] && hash_equals( (string) $wishlist['share_key'], (string) $payload['share_key'] )
+			&& (int) $payload['product_id'] === (int) $item['product_id'] && (int) $payload['variation_id'] === (int) $item['variation_id']
+			&& TInvWL_Product::saved_configuration_identity( $payload['meta'] ?? null ) === $identity;
+	}
+
+	/** Under the item mutex and transaction, register only newly observed quantity as a new contribution. */
+	private static function contributions( $wishlist, $item, $register = true ) {
+		global $wpdb; $table = self::table();
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `$table` WHERE wishlist_id = %d AND item_id = %d AND state = 'contribution' ORDER BY ID FOR UPDATE", $wishlist['ID'], $item['ID'] ), ARRAY_A );
+		if ( $wpdb->last_error || ! is_array( $rows ) ) { throw new RuntimeException( 'Could not read contribution bounds.' ); }
+		$available = self::decimal( $item['quantity'] ); $keys = array();
+		foreach ( $rows as $row ) {
+			$payload = json_decode( $row['payload'], true );
+			if ( ! self::same_source( $payload, $wishlist, $item ) ) { continue; }
+			$remaining = self::decimal( $payload['remaining'] ?? '' );
+			$kept = self::decimal_compare( $remaining, $available ) > 0 ? $available : $remaining;
+			if ( $remaining !== $kept ) {
+				$payload['remaining'] = $kept;
+				if ( 1 !== $wpdb->update( $table, array( 'payload' => wp_json_encode( $payload ), 'updated_at' => time() ), array( 'ID' => $row['ID'] ) ) ) { throw new RuntimeException( 'Could not reduce contribution bounds.' ); }
+			}
+			$available = self::decimal_sum( $available, $kept, true ); $keys[] = $row['operation_key'];
+		}
+		if ( $register && ( '0' !== $available || ! $keys ) ) {
+			$key = bin2hex( random_bytes( 32 ) );
+			$payload = array( 'author' => (int) $wishlist['author'], 'share_key' => $wishlist['share_key'], 'product_id' => (int) $item['product_id'], 'variation_id' => (int) $item['variation_id'], 'meta' => $item['meta'], 'remaining' => $available );
+			if ( 1 !== $wpdb->insert( $table, array( 'operation_key' => $key, 'wishlist_id' => $wishlist['ID'], 'item_id' => $item['ID'], 'payload' => wp_json_encode( $payload ), 'state' => 'contribution', 'created_at' => time(), 'updated_at' => time() ) ) ) { throw new RuntimeException( 'Could not save contribution bounds.' ); }
+			$keys[] = $key;
+		}
+		return $keys;
+	}
+
+	/** Spend shared source authority in the same transaction as the physical debit and completion receipt. */
+	public static function bounded_payload( $wishlist, $operation, $payload ) {
+		global $wpdb;
+		// Legacy operations without a provable original bound remain pending rather than consume a merged list.
+		if ( empty( $payload['contributions'] ) || ! is_array( $payload['contributions'] ) ) {
+			self::log( 'An older cart debit has no original quantity bound and remains pending to protect saved quantities.' );
+			return false;
+		}
+		$table = $wpdb->prefix . TINVWL_PREFIX . '_items';
+		$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$table` WHERE ID = %d AND wishlist_id = %d FOR UPDATE", $operation['item_id'], $wishlist['ID'] ), ARRAY_A );
+		if ( $wpdb->last_error ) { return false; }
+		$amount = '0';
+		if ( $item ) {
+			$item['meta'] = empty( $item['formdata'] ) ? array() : json_decode( $item['formdata'], true );
+			if ( ! is_array( $item['meta'] ) || ! self::same_source( $payload, $wishlist, $item ) ) { return false; }
+			self::contributions( $wishlist, $item, false );
+			$wanted = self::decimal( 'remove' === $payload['strategy'] ? $payload['remove_quantity'] : $payload['quantity'] );
+			foreach ( array_unique( $payload['contributions'] ) as $key ) {
+				$row = self::get( $key );
+				if ( $wpdb->last_error || ! $row || 'contribution' !== $row['state'] || (int) $row['wishlist_id'] !== (int) $wishlist['ID'] || (int) $row['item_id'] !== (int) $item['ID'] ) { return false; }
+				$bound = json_decode( $row['payload'], true );
+				if ( ! self::same_source( $bound, $wishlist, $item ) ) { return false; }
+				$remaining = self::decimal( $bound['remaining'] ?? '' );
+				$take = self::decimal_compare( $wanted, $remaining ) < 0 ? $wanted : $remaining;
+				if ( '0' !== $take ) {
+					$bound['remaining'] = self::decimal_sum( $remaining, $take, true );
+					if ( 1 !== $wpdb->update( self::table(), array( 'payload' => wp_json_encode( $bound ), 'updated_at' => time() ), array( 'ID' => $row['ID'], 'state' => 'contribution' ) ) ) { return false; }
+					$amount = self::decimal_sum( $amount, $take ); $wanted = self::decimal_sum( $wanted, $take, true );
+				}
+			}
+		}
+		$payload['remove_empty'] = $item && 'remove' === $payload['strategy'] && '0' === self::decimal( $payload['remove_quantity'] ) && '0' === self::decimal( $item['quantity'] );
+		$payload['remove_quantity'] = $amount; $payload['quantity'] = $amount;
+		return $payload;
+	}
+
 	/** Reserve a receipt first: a failed reservation must not add anything to the cart. */
 	public static function prepare( $wishlist, $source, $strategy = 'decrement' ) {
+		global $wpdb;
+		for ( $attempt = 0; $attempt < 3; ++$attempt ) {
+			$key = self::prepare_attempt( $wishlist, $source, $strategy );
+			if ( $key || ! preg_match( '/Record has changed|Deadlock found|Lock wait timeout/i', $wpdb->last_error ) ) { return $key; }
+		}
+		return false;
+	}
+
+	private static function prepare_attempt( $wishlist, $source, $strategy ) {
 		global $wpdb;
 		if ( ! in_array( $strategy, array( 'remove', 'decrement' ), true ) ) { return false; }
 		if ( empty( $source['ID'] ) || empty( $source['wishlist_id'] ) || (int) $source['wishlist_id'] !== (int) ( $wishlist['ID'] ?? 0 ) || ! is_array( $source['meta'] ?? null ) ) { return false; }
@@ -82,25 +198,34 @@ class TInvWL_Public_CartDebit {
 		$items = $wpdb->prefix . TINVWL_PREFIX . '_items';
 		$lock = 'tinvwl_item_' . md5( $items . '|' . $source['wishlist_id'] );
 		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) { return false; }
+		$transaction = false;
 		try {
+			if ( false === $wpdb->query( 'START TRANSACTION' ) ) { return false; }
+			$transaction = true;
 			// A login transfer cannot pass this mutex while an old-source reservation is being inserted.
 			$current = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `' . $wpdb->prefix . TINVWL_PREFIX . '_lists` WHERE ID = %d', $source['wishlist_id'] ), ARRAY_A );
 			if ( $wpdb->last_error || ! $current || (int) $current['author'] !== (int) $wishlist['author'] || ! hash_equals( (string) $current['share_key'], (string) $wishlist['share_key'] ) ) { return false; }
-			$fields = 'remove' === $strategy ? 'ID,product_id,variation_id,quantity' : 'ID,product_id,variation_id';
-			$saved = $wpdb->get_row( $wpdb->prepare( "SELECT $fields FROM `$items` WHERE ID = %d AND wishlist_id = %d", $source['ID'], $source['wishlist_id'] ), ARRAY_A );
+			$saved = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$items` WHERE ID = %d AND wishlist_id = %d FOR UPDATE", $source['ID'], $source['wishlist_id'] ), ARRAY_A );
 			if ( $wpdb->last_error || ! $saved || (int) $saved['product_id'] !== (int) $source['product_id'] || (int) $saved['variation_id'] !== (int) $source['variation_id'] ) { return false; }
-			if ( 'remove' === $strategy && ( ! preg_match( '/\A(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?\z/D', (string) $saved['quantity'] ) || ! is_finite( (float) $saved['quantity'] ) ) ) { return false; }
+			$saved['meta'] = empty( $saved['formdata'] ) ? array() : json_decode( $saved['formdata'], true );
+			if ( ! is_array( $saved['meta'] ) || TInvWL_Product::saved_configuration_identity( $saved['meta'] ) !== TInvWL_Product::saved_configuration_identity( $source['meta'] ) ) { return false; }
+			$contributions = self::contributions( $current, $saved );
 			$as_owner = ( new TInvWL_Wishlist( TINVWL_PREFIX ) )->is_owner( $current );
 			$payload = wp_json_encode( array( 'author' => (int) $current['author'], 'share_key' => $current['share_key'],
 				'as_owner' => (bool) $as_owner, 'product_id' => (int) $source['product_id'], 'variation_id' => (int) $source['variation_id'],
-				'meta' => $source['meta'], 'quantity' => 0, 'strategy' => $strategy, 'remove_quantity' => 'remove' === $strategy ? (string) $saved['quantity'] : '0' ) );
+				'meta' => $source['meta'], 'quantity' => 0, 'contributions' => $contributions, 'strategy' => $strategy, 'remove_quantity' => 'remove' === $strategy ? (string) $saved['quantity'] : '0' ) );
 			if ( false === $payload ) { return false; }
 			$key = bin2hex( random_bytes( 32 ) );
 			$now = time();
 			$result = $wpdb->query( $wpdb->prepare( 'INSERT INTO `' . self::table() . "` (operation_key,wishlist_id,item_id,payload,state,available_at,created_at,updated_at) VALUES (%s,%d,%d,%s,'prepared',%d,%d,%d)", $key, $source['wishlist_id'], $source['ID'], $payload, $now, $now, $now ) );
-			return 1 === $result ? $key : false;
+			if ( 1 !== $result || false === $wpdb->query( 'COMMIT' ) ) { return false; }
+			$transaction = false;
+			return $key;
+		} catch ( Throwable $error ) {
+			return false;
 		} finally {
 			$error = $wpdb->last_error;
+			if ( $transaction ) { $wpdb->query( 'ROLLBACK' ); }
 			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
 			$wpdb->last_error = $error;
 		}
@@ -116,8 +241,10 @@ class TInvWL_Public_CartDebit {
 	public static function transfer_moved_item( $source, $target, $item, $target_item_id ) {
 		global $wpdb;
 		if ( empty( $target_item_id ) || (int) $item['wishlist_id'] !== (int) $source['ID'] ) { return false; }
+		// Shrinking the source before a move must not turn its missing quantity into authority over the target.
+		try { self::contributions( $source, $item, false ); } catch ( Throwable $error ) { return false; }
 		$table = self::table();
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `$table` WHERE wishlist_id = %d AND item_id = %d AND state IN ('prepared','pending') FOR UPDATE", $source['ID'], $item['ID'] ), ARRAY_A );
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `$table` WHERE wishlist_id = %d AND item_id = %d AND state IN ('prepared','pending','contribution') ORDER BY ID FOR UPDATE", $source['ID'], $item['ID'] ), ARRAY_A );
 		if ( $wpdb->last_error || ! is_array( $rows ) ) { return false; }
 		foreach ( $rows as $row ) {
 			$payload = json_decode( $row['payload'], true );

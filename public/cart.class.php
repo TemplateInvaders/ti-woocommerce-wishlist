@@ -678,7 +678,13 @@ class TInvWL_Public_Cart {
 				&& self::may_remove_wishlist( $current, (bool) $payload['as_owner'] );
 			$state = 'discarded';
 			if ( $allowed ) {
-				$outcome = TInvWL_Public_CartDebit::remove_saved_contribution( $current, $payload, $operation['item_id'] );
+				$bounded = TInvWL_Public_CartDebit::bounded_payload( $current, $operation, $payload );
+				if ( false === $bounded ) { return false; }
+				$payload = $bounded;
+				$outcome = array( 'complete' => true, 'actions' => array() );
+				if ( (float) $payload['quantity'] > 0 || $payload['remove_empty'] ) {
+					$outcome = TInvWL_Public_CartDebit::remove_saved_contribution( $current, $payload, $operation['item_id'] );
+				}
 				if ( ! $outcome['complete'] ) { return false; }
 				$actions = $outcome['actions'];
 				$state = 'applied';

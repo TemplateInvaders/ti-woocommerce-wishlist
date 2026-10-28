@@ -41,6 +41,15 @@ if ( ! $available ) {
 	return;
 }
 
+/** Decode multi-value controls only; personalization text is already unslashed. */
+function tinvwl_themehigh_value( $value, $field ) {
+	if ( in_array( $field->get_property( 'type' ), array( 'checkboxgroup', 'multiselect', 'selectmultiple' ), true ) && is_string( $value ) ) {
+		$decoded = json_decode( $value, true );
+		if ( is_array( $decoded ) ) { return $decoded; }
+	}
+	return $value;
+}
+
 if ( ! function_exists( 'tinvwl_themehigh_prepare_cart_data' ) ) {
 	/** Native ThemeHigh reads options from the prepared request; raw controls are not cart identity. */
 	function tinvwl_themehigh_prepare_cart_data( $meta, $product ) {
@@ -72,10 +81,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woo_extra_product_options' ) ) 
 			foreach ( $item_data as $key => $value ) {
 				if ( isset( $extra_options[ $key ] ) ) {
 
-					$val = json_decode( $value['display'], true );
-					if ( JSON_ERROR_NONE !== json_last_error() ) {
-						$val = $value['display'];
-					}
+					$val = tinvwl_themehigh_value( $value['display'], $extra_options[ $key ] );
 
 					$data_arr            = array();
 					$data_arr['order']   = $extra_options[ $key ]->get_property( 'order' );
@@ -99,7 +105,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woo_extra_product_options' ) ) 
 				foreach ( $final_fields as $name => $data ) {
 					if ( isset( $data['value'] ) && isset( $data['label'] ) ) {
 						$display = isset( $data['value'] ) ? $data['value'] : '';
-						$display = is_array( $display ) ? implode( ",", $display ) : trim( stripslashes( $display ) );
+						$display = is_array( $display ) ? implode( ",", $display ) : (string) $display;
 
 						if ( isset( $data['type'] ) && ( $data['type'] === 'colorpicker' ) ) {
 							$display = THWEPOF_Utils::get_cart_item_color_display( $display );
@@ -135,10 +141,7 @@ function tinvwl_add_to_cart_meta_woo_extra_product_options( $wl_product ) {
 		foreach ( $item_data as $key => $value ) {
 			if ( isset( $extra_options[ $key ] ) ) {
 
-				$val = json_decode( $value, true );
-				if ( JSON_ERROR_NONE !== json_last_error() ) {
-					$val = $value;
-				}
+				$val = tinvwl_themehigh_value( $value, $extra_options[ $key ] );
 
 				$data_arr            = array();
 				$data_arr['order']   = $extra_options[ $key ]->get_property( 'order' );

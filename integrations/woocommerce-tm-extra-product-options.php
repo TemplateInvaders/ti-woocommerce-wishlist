@@ -169,6 +169,8 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_tm_extra_product_options' ) ) {
 			echo '<tr class="tinvwl-unavailable-configuration"><td colspan="20">' . esc_html__( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) . '</td></tr>';
 			return;
 		}
+		$core = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
+		if ( 'no' !== $core->tm_epo_hide_options_in_cart ) { return; }
 		foreach ( $components as $component ) {
 			$element = $component['element'];
 			$_product = $component['product'];
@@ -267,32 +269,30 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 			$core    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
 			$version = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO_VERSION : TM_EPO_VERSION;
 			$cart    = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? new THEMECOMPLETE_EPO_Cart() : TM_EPO();
-			if ( $core->tm_epo_hide_options_in_cart == 'no' ) {
-				$product_id = $wl_product['product_id'];
-				$has_epo    = $api->has_options( $product_id );
-				if ( $api->is_valid_options( $has_epo ) ) {
+			$product_id = $wl_product['product_id'];
+			$has_epo    = $api->has_options( $product_id );
+			if ( $api->is_valid_options( $has_epo ) ) {
 
-					$cart_class = version_compare( $version, '4.8.0', '<' ) ? $core : $cart;
+				$cart_class = version_compare( $version, '4.8.0', '<' ) ? $core : $cart;
 
-					$cart_item             = $cart_class->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
-					$cart_item['quantity'] = 1;
-					$cart_item['data']     = $product;
+				$cart_item             = $cart_class->add_cart_item_data_helper( array(), $product_id, $wl_product['meta'] );
+				$cart_item['quantity'] = 1;
+				$cart_item['data']     = $product;
 
-					$product_price = apply_filters( 'wc_epo_add_cart_item_original_price', $cart_item['data']->get_price(), $cart_item );
-					if ( ! empty( $cart_item['tmcartepo'] ) ) {
-						$to_currency = version_compare( $version, '4.9.0', '<' ) ? tc_get_woocommerce_currency() : themecomplete_get_woocommerce_currency();
-						foreach ( $cart_item['tmcartepo'] as $value ) {
-							if ( isset( $value['price_per_currency'] ) && array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
-								$value         = floatval( $value['price_per_currency'][ $to_currency ] );
-								$product_price += $value;
-							} else {
-								$product_price += floatval( $value['price'] );
-							}
+				$product_price = apply_filters( 'wc_epo_add_cart_item_original_price', $cart_item['data']->get_price(), $cart_item );
+				if ( ! empty( $cart_item['tmcartepo'] ) ) {
+					$to_currency = version_compare( $version, '4.9.0', '<' ) ? tc_get_woocommerce_currency() : themecomplete_get_woocommerce_currency();
+					foreach ( $cart_item['tmcartepo'] as $value ) {
+						if ( isset( $value['price_per_currency'] ) && array_key_exists( $to_currency, $value['price_per_currency'] ) ) {
+							$value         = floatval( $value['price_per_currency'][ $to_currency ] );
+							$product_price += $value;
+						} else {
+							$product_price += floatval( $value['price'] );
 						}
 					}
-
-					$price = $raw ? (float) $product_price : apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', $cart_class->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
 				}
+
+				$price = $raw ? (float) $product_price : apply_filters( 'wc_tm_epo_ac_product_price', apply_filters( 'woocommerce_cart_item_price', $cart_class->get_price_for_cart( $product_price, $cart_item, '' ), $cart_item, '' ), '', $cart_item, $product, $product_id );
 			}
 		}
 

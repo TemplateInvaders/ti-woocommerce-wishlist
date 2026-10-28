@@ -15,6 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product function class
  */
 class TInvWL_Product {
+	/** Subscription variations retain WooCommerce's variation identity and parent relationship. */
+	public static function is_variation_product( $product ) {
+		return $product instanceof WC_Product_Variation || ( $product && ( $product->is_type( 'variation' ) || $product->is_type( 'subscription_variation' ) ) );
+	}
 	private $quantity_addition = 0;
 
 	/**
@@ -248,9 +252,9 @@ class TInvWL_Product {
 		if ( 'publish' !== $post->post_status && ! current_user_can( 'private' === $post->post_status ? 'read_post' : 'edit_post', $post->ID ) ) {
 			return false;
 		}
-		if ( $product->is_type( 'variation' ) ) {
+		if ( self::is_variation_product( $product ) ) {
 			$parent = wc_get_product( $product->get_parent_id() );
-			return $parent && ! $parent->is_type( 'variation' ) && self::can_read_product( $parent );
+			return $parent && ! self::is_variation_product( $parent ) && self::can_read_product( $parent );
 		}
 		return true;
 	}
@@ -270,7 +274,7 @@ class TInvWL_Product {
 		if ( ! self::can_read_product( $variation ) ) {
 			return false;
 		}
-		if ( $variation->is_type( 'variation' ) ) {
+		if ( self::is_variation_product( $variation ) ) {
 			return $product_id === (int) $variation->get_parent_id();
 		}
 		// Legacy grouped POSTs store product_id=group and variation_id=simple child.
@@ -479,8 +483,8 @@ class TInvWL_Product {
 		}
 
 		$data                 = apply_filters( 'tinvwl_wishlist_product_add', $data );
-		$data['product_id']   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
-		$data['variation_id'] = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
+		$data['product_id']   = self::is_variation_product( $product_data ) ? $product_data->get_parent_id() : $product_data->get_id();
+		$data['variation_id'] = self::is_variation_product( $product_data ) ? $product_data->get_id() : 0;
 		$data['in_stock']     = $product_data->is_in_stock();
 
 		$data['formdata'] = $this->prepare_save_meta( $meta, $data['product_id'], $data['variation_id'] );
@@ -713,8 +717,8 @@ class TInvWL_Product {
 			return false;
 		}
 
-		$product_id   = $product_data->is_type( 'variation' ) ? $product_data->get_parent_id() : $product_data->get_id();
-		$variation_id = $product_data->is_type( 'variation' ) ? $product_data->get_id() : 0;
+		$product_id   = self::is_variation_product( $product_data ) ? $product_data->get_parent_id() : $product_data->get_id();
+		$variation_id = self::is_variation_product( $product_data ) ? $product_data->get_id() : 0;
 
 		global $wpdb;
 		$products = $this->get( array(
@@ -929,7 +933,7 @@ class TInvWL_Product {
 					}
 
 					if ( $_product->get_id() === absint( ( apply_filters( 'wpml_object_id', $wlproduct['product_id'], 'product', false ) ) ? apply_filters( 'wpml_object_id', $wlproduct['product_id'], 'product', false ) : $wlproduct['product_id'] ) ) {
-						if ( in_array( $_product->get_type(), array( 'variable', 'grouped' ) ) ) {
+						if ( in_array( $_product->get_type(), array( 'variable', 'variable-subscription', 'grouped' ) ) ) {
 							$use_original_id = false;
 
 							if ( function_exists( 'pll_is_translated_post_type' ) ) {

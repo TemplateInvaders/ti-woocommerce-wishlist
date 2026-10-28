@@ -41,6 +41,26 @@ if ( ! $available ) {
 	return;
 }
 
+/** Selection fields have containers; a text field that looks like JSON remains literal text. */
+function tinvwl_pewc_value( $value, $field ) {
+	if ( ! in_array( $field['field_type'] ?? '', array( 'radio', 'image_swatch', 'checkbox_group', 'upload' ), true ) ) { return $value; }
+	foreach ( $field['field_options'] ?? array() as $option ) {
+		if ( is_string( $value ) && ( ( $option['value'] ?? null ) === $value || ( $option['key'] ?? null ) === $value ) ) { return array( $value ); }
+	}
+	if ( is_string( $value ) ) { $decoded = json_decode( $value, true ); if ( is_array( $decoded ) ) { $value = $decoded; } }
+	return is_array( $value ) ? array_values( $value ) : array( $value );
+}
+
+function tinvwl_pewc_prepare_request( $meta, $row ) {
+	foreach ( (array) pewc_get_extra_fields( $row['product_id'] ) as $group ) {
+		foreach ( $group['items'] ?? array() as $field ) {
+			if ( isset( $field['id'] ) && array_key_exists( $field['id'], $meta ) ) { $meta[ $field['id'] ] = tinvwl_pewc_value( $meta[ $field['id'] ], $field ); }
+		}
+	}
+	return $meta;
+}
+add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_pewc_prepare_request', 10, 2 );
+
 if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 
 	/**
@@ -139,22 +159,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_pewc' ) ) {
 									$value = $form_meta[ $item['id'] ];
 								}
 
-								// Older renderers encoded selection arrays as JSON before calling this filter.
-								// Decode only array-valued field types; literal JSON in text fields stays text.
-								$is_literal_option = false;
-								foreach ( isset( $item['field_options'] ) ? $item['field_options'] : array() as $option ) {
-									if ( is_string( $value ) && ( ( isset( $option['value'] ) && $option['value'] === $value ) || ( isset( $option['key'] ) && $option['key'] === $value ) ) ) {
-										$is_literal_option = true;
-										break;
-									}
-								}
-								if ( ! $is_literal_option && is_string( $value ) && in_array( $item['field_type'], array( 'radio', 'image_swatch', 'checkbox_group', 'upload' ), true ) ) {
-									$decoded = json_decode( $value, true );
-									if ( is_array( $decoded ) && ( empty( $decoded ) || array_keys( $decoded ) === range( 0, count( $decoded ) - 1 ) ) ) {
-										$value = $decoded;
-									}
-								}
-
+								$value = tinvwl_pewc_value( $value, $item );
 								$selections = is_array( $value ) ? $value : array( $value );
 								$values     = array();
 								foreach ( $selections as $selection ) {
@@ -309,7 +314,7 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 
 								$id    = $item['id'];
 								$price = 0;
-								$value = isset( $wl_product['meta'][ $id ] ) ? $wl_product['meta'][ $id ] : '';
+								$value = tinvwl_pewc_value( $wl_product['meta'][ $id ] ?? '', $item );
 
 
 								// If an extra is flat rate, it's not charged per product
@@ -328,15 +333,11 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 									$field_price = pewc_get_field_price( $item, $product );
 
 									// Add the value of the field (not including the value of options)
-									if ( ! $is_flat_rate ) {
-										$price = floatval( $field_price );
-									}
+									$price = floatval( $field_price );
 
 									// Check for Name Your Price
 									if ( $field_type == 'name_price' && empty( $item['multiply'] ) ) {
-										if ( ! $is_flat_rate ) {
-											$price = $value;
-										}
+										$price = $value;
 									}
 
 									// Check for Calculation fields
@@ -344,9 +345,7 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 
 										if ( isset( $item['formula_action'] ) && $item['formula_action'] == 'cost' ) {
 
-											if ( ! $is_flat_rate ) {
-												$price = $value;
-											}
+											$price = $value;
 
 										}
 
@@ -360,24 +359,18 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 											$str_length -= absint( $item['field_freechars'] );
 											$str_length = max( 0, $str_length );
 										}
-										if ( ! $is_flat_rate ) {
-											$price = $str_length * $price;
-										}
+										$price = $str_length * $price;
 									}
 
 									// Calculate price for multiply fields
 									if ( ! empty( $item['multiply'] ) && ( $field_type == 'number' || $field_type == 'name_price' ) ) {
-										if ( ! $is_flat_rate ) {
-											$price = $value * $price;
-										}
+										$price = $value * $price;
 									}
 
 									// Calculate price for percentage fields
 									if ( $is_percentage && $field_type != 'calculation' ) {
-										if ( ! $is_flat_rate ) {
-											$price = pewc_calculate_percentage_price( $field_price, $product );
+										$price = pewc_calculate_percentage_price( $field_price, $product );
 											// $price = $value * $price;
-										}
 									}
 
 									// Filtered by Bookings to include per unit cost for extras
@@ -407,11 +400,9 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 														$option_price = pewc_calculate_percentage_price( $option_price, $product );
 													}
 
-													if ( ! $is_flat_rate ) {
-														$price                   += floatval( $option_price );
+													$price                   += floatval( $option_price );
 														$option_price            = pewc_maybe_include_tax( $product, $option_price );
 														$checkbox_group_values[] = $show_option_prices_in_cart === true ? $option['value'] . ' (' . wc_price( $option_price ) . ')' : $option['value'];
-													}
 												}
 
 											} else if ( ! empty( $option['price'] ) && $option['value'] == $option_value ) {
@@ -420,10 +411,8 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 													$option_price = pewc_calculate_percentage_price( $option_price, $product );
 												}
 
-												if ( ! $is_flat_rate ) {
-													$price += floatval( $option_price );
+												$price += floatval( $option_price );
 													break;
-												}
 											}
 
 										}
@@ -434,7 +423,7 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 									// Filter the price of the product extra
 									$price = apply_filters( 'pewc_add_cart_item_data_price', $price, $item, $product_id );
 
-									$extra_price += floatval( $price );
+									$extra_price += $is_flat_rate ? floatval( $price ) / ( $quantity > 0 ? $quantity : 1 ) : floatval( $price );
 								}
 							}
 						}
@@ -443,7 +432,7 @@ if ( ! function_exists( 'tinvwl_item_price_pewc' ) ) {
 				}
 				// Calculate the unit price after every group has contributed.
 				$new_price = max( 0, floatval( $product_price ) + floatval( $extra_price ) );
-				return $raw ? $new_price : wc_price( $new_price );
+				return $raw ? $new_price : wc_price( wc_get_price_to_display( $product, array( 'price' => $new_price, 'qty' => 1 ) ) );
 			}
 		}
 

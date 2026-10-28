@@ -207,6 +207,7 @@ class TInvWL_Public_CartDebit {
 			if ( $wpdb->last_error || ! $current || (int) $current['author'] !== (int) $wishlist['author'] || ! hash_equals( (string) $current['share_key'], (string) $wishlist['share_key'] ) ) { return false; }
 			$saved = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$items` WHERE ID = %d AND wishlist_id = %d FOR UPDATE", $source['ID'], $source['wishlist_id'] ), ARRAY_A );
 			if ( $wpdb->last_error || ! $saved || (int) $saved['product_id'] !== (int) $source['product_id'] || (int) $saved['variation_id'] !== (int) $source['variation_id'] ) { return false; }
+			if ( isset( $source['expected_quantity'] ) && 0 !== self::decimal_compare( $saved['quantity'], $source['expected_quantity'] ) ) { return false; }
 			$saved['meta'] = empty( $saved['formdata'] ) ? array() : json_decode( $saved['formdata'], true );
 			if ( ! is_array( $saved['meta'] ) || TInvWL_Product::saved_configuration_identity( $saved['meta'] ) !== TInvWL_Product::saved_configuration_identity( $source['meta'] ) ) { return false; }
 			$contributions = self::contributions( $current, $saved );

@@ -89,6 +89,7 @@ class TInvWL_Public_Cart {
 
 		add_action( 'woocommerce_cart_item_restored', array( __CLASS__, 'restore_item_data' ), 10, 2 );
 		add_action( 'woocommerce_add_to_cart', array( __CLASS__, 'consume_product_source' ), 100, 6 );
+		add_filter( 'woocommerce_add_cart_item_data', array( __CLASS__, 'reserve_product_source' ), -1000, 4 );
 
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'add_order_item_meta' ) );
 		add_action( 'woocommerce_store_api_checkout_update_order_meta', array( $this, 'add_order_item_meta' ) );
@@ -114,18 +115,52 @@ class TInvWL_Public_Cart {
 		if ( ! $saved ) { return false; }
 		$saved['meta'] = empty( $saved['formdata'] ) ? array() : json_decode( $saved['formdata'], true );
 		$operation = TInvWL_Public_CartDebit::prepare( $wishlist, $saved, 'remove' );
-		if ( ! $operation ) { return false; }
+		// A valid signed intent survives a temporary reservation failure in the server-side session.
 		$sources = (array) WC()->session->get( 'tinvwl_product_sources', array() );
 		foreach ( $sources as $key => $source ) {
 			if ( ! is_array( $source ) || (int) ( $source['expires'] ?? 0 ) < time() ) { unset( $sources[ $key ] ); }
 		}
-		$sources[ absint( $item['data']->get_id() ) ] = array( 'item_id' => absint( $item['ID'] ), 'product_id' => absint( $item['product_id'] ), 'share_key' => $wishlist['share_key'], 'expires' => time() + HOUR_IN_SECONDS, 'operation_key' => $operation, 'actor' => get_current_user_id() );
+		$sources[ absint( $item['data']->get_id() ) ] = array( 'item_id' => absint( $item['ID'] ), 'product_id' => absint( $item['product_id'] ), 'share_key' => $wishlist['share_key'], 'expires' => time() + HOUR_IN_SECONDS, 'operation_key' => $operation, 'actor' => get_current_user_id(), 'reservation' => array( 'wishlist' => $wishlist, 'source' => $saved ) );
+		if ( $operation ) { unset( $sources[ absint( $item['data']->get_id() ) ]['reservation'] ); }
 		// A session needs only a small set of recent product-page sources.
 		WC()->session->set( 'tinvwl_product_sources', array_slice( $sources, -20, null, true ) );
 		if ( ! headers_sent() && is_callable( array( WC()->session, 'set_customer_session_cookie' ) ) ) {
 			WC()->session->set_customer_session_cookie( true );
 		}
 		return true;
+	}
+
+	/** Resolve a deferred reservation before WooCommerce changes the cart, including Store API additions. */
+	public static function reserve_product_source( $cart_item_data, $product_id, $variation_id = 0, $quantity = 1 ) {
+		if ( self::$request_frames || ! WC()->session || ! $variation_id ) { return $cart_item_data; }
+		$sources = (array) WC()->session->get( 'tinvwl_product_sources', array() );
+		$source = $sources[ $product_id ] ?? null;
+		if ( ! is_array( $source ) || ! empty( $source['operation_key'] ) ) { return $cart_item_data; }
+		if ( (int) ( $source['expires'] ?? 0 ) < time() || ( ! empty( $source['actor'] ) && (int) $source['actor'] !== get_current_user_id() )
+			|| ! tinv_get_option( 'processing', 'autoremove' ) || 'tinvwl-addcart' !== tinv_get_option( 'processing', 'autoremove_status' ) ) {
+			unset( $sources[ $product_id ] ); WC()->session->set( 'tinvwl_product_sources', $sources ); return $cart_item_data;
+		}
+		$variation = wc_get_product( $variation_id );
+		if ( ! $variation instanceof WC_Product_Variation || (int) $variation->get_parent_id() !== (int) $product_id ) { return $cart_item_data; }
+		$wishlist = $source['reservation']['wishlist'] ?? null; $saved = $source['reservation']['source'] ?? null;
+		if ( ! is_array( $wishlist ) || ! is_array( $saved ) || ! ( new TInvWL_Wishlist( self::$_name ) )->is_owner( $wishlist ) ) {
+			throw new Exception( __( 'Please open this product from your wishlist again before adding it to the cart.', 'ti-woocommerce-wishlist' ) );
+		}
+		$model = new TInvWL_Product( $wishlist, self::$_name, true );
+		$current = $model->get_parent_source( $saved['ID'], $saved['product_id'] );
+		if ( ! $current ) { throw new Exception( __( 'The wishlist could not be updated. Please try again or open the product from your wishlist.', 'ti-woocommerce-wishlist' ) ); }
+		$current['meta'] = empty( $current['formdata'] ) ? array() : json_decode( $current['formdata'], true );
+		if ( TInvWL_Product::saved_configuration_identity( $saved['meta'] ) !== TInvWL_Product::saved_configuration_identity( $current['meta'] ) ) {
+			throw new Exception( __( 'The saved product has changed. Please open it from your wishlist again.', 'ti-woocommerce-wishlist' ) );
+		}
+		// A session proof cannot gain authority over quantity added while its reservation was unavailable.
+		$current['expected_quantity'] = $saved['quantity'];
+		$operation = TInvWL_Public_CartDebit::prepare( $wishlist, $current, 'remove' );
+		if ( ! $operation ) { throw new Exception( __( 'The wishlist could not be updated. Please try again or open the product from your wishlist.', 'ti-woocommerce-wishlist' ) ); }
+		$sources[ $product_id ]['operation_key'] = $operation;
+		unset( $sources[ $product_id ]['reservation'] );
+		WC()->session->set( 'tinvwl_product_sources', $sources );
+		return $cart_item_data;
 	}
 
 	/** A successful native add consumes its exact owned source, never another saved variation/configuration. */

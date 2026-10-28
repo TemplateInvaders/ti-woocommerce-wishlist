@@ -581,7 +581,7 @@ class TInvWL_Public_AddToWishlist
 
 			// Build the base SELECT clause
 			if ($lang) {
-				$select_fields = "{$table}.ID, t.element_id AS product_id, t2.element_id AS variation_id,
+				$select_fields = "{$table}.ID, t.element_id AS product_id, COALESCE(t2.element_id, 0) AS variation_id,
                             {$table}.formdata, {$table}.author, {$table}.date, {$table}.quantity,
                             {$table}.price, {$table}.in_stock";
 			} else {
@@ -604,28 +604,23 @@ class TInvWL_Public_AddToWishlist
 			}
 
 			// Add language joins if needed
-			if ($lang) {
-				$language_conditions = array($lang);
-				if ($lang_default) {
-					$language_conditions[] = $lang_default;
-				}
-
-				$languages_in = "'" . implode("','", array_map('esc_sql', $language_conditions)) . "'";
-
-				$sql .= " LEFT JOIN {$table_translations} tr ON
-                        {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
-                    LEFT JOIN {$table_translations} tr2 ON
-                        {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id
-                        AND tr2.element_type = 'post_product_variation'
-                    LEFT JOIN {$table_translations} t ON
-                        tr.trid = t.trid AND t.element_type = 'post_product'
-                        AND t.language_code IN ({$languages_in})
-                    LEFT JOIN {$table_translations} t2 ON
-                        {$table}.variation_id != 0 AND tr2.trid = t2.trid
-                        AND t2.element_type = 'post_product_variation'
-                        AND t2.language_code IN ({$languages_in})
-                    JOIN {$table_languages} l ON
-                        (t.language_code = l.code OR t2.language_code = l.code) AND l.active = 1";
+			if ( $lang ) {
+				// A fallback is eligible only when the current language has no complete parent/variation pair.
+				$preferred = $wpdb->prepare( "(CASE WHEN EXISTS (
+					SELECT 1 FROM {$table_translations} pc
+					JOIN {$table_languages} lc ON lc.code = pc.language_code AND lc.active = 1
+					LEFT JOIN {$table_translations} vc ON vc.trid = tr2.trid AND vc.element_type = 'post_product_variation' AND vc.language_code = pc.language_code
+					LEFT JOIN {$wpdb->posts} vp ON vp.ID = vc.element_id AND vp.post_parent = pc.element_id
+					WHERE pc.trid = tr.trid AND pc.element_type = 'post_product' AND pc.language_code = %s
+					AND ({$table}.variation_id = 0 OR vp.ID IS NOT NULL)
+				) THEN %s ELSE %s END)", $lang, $lang, $lang_default ?: $lang );
+				$sql .= " LEFT JOIN {$table_translations} tr ON {$table}.product_id = tr.element_id AND tr.element_type = 'post_product'
+					LEFT JOIN {$table_translations} tr2 ON {$table}.variation_id != 0 AND {$table}.variation_id = tr2.element_id AND tr2.element_type = 'post_product_variation'
+					LEFT JOIN {$table_translations} t ON tr.trid = t.trid AND t.element_type = 'post_product' AND t.language_code = {$preferred}
+					LEFT JOIN {$table_translations} t2 ON {$table}.variation_id != 0 AND tr2.trid = t2.trid AND t2.element_type = 'post_product_variation' AND t2.language_code = t.language_code
+						AND EXISTS (SELECT 1 FROM {$wpdb->posts} pv WHERE pv.ID = t2.element_id AND pv.post_parent = t.element_id)
+					JOIN {$table_languages} l ON t.language_code = l.code AND l.active = 1
+						AND ({$table}.variation_id = 0 OR t2.element_id IS NOT NULL)";
 			}
 
 			// Build WHERE clause

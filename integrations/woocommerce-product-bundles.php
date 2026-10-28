@@ -160,7 +160,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 					$discount          = (float) $bundled_item->get_discount();
 					// Match Product Bundles' composition of item and component discounts.
 					$discount          = $discount + (float) $discount_extra - $discount * (float) $discount_extra / 100;
-					$product_price     = empty( $discount ) ? $product_price : wc_price( WC_PB_Product_Prices::get_discounted_price( $product_price_raw, $discount ) );
+					$product_price     = empty( $discount ) ? $product_price : wc_price( wc_get_price_to_display( $bundled_item->product, array( 'price' => WC_PB_Product_Prices::get_discounted_price( $product_price_raw, $discount ), 'qty' => 1 ) ) );
 
 					if ( $bundled_item->product->is_visible() ) {
 						$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );
@@ -206,6 +206,33 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	add_action( 'tinvwl_wishlist_row_after', 'tinvwl_row_woocommerce_product_bundles', 10, 2 );
 } // End if().
 
+/** Keep configured prices in raw WooCommerce units; display each taxable component separately. */
+function tinvwl_bundle_configured_price( $row, $product, $display = false, $quantity = 1, $discount = 0 ) {
+	$components = tinvwl_bundle_saved_components( $row, $product );
+	if ( ! is_array( $components ) ) { return NAN; }
+	$base = (float) $product->get_price();
+	if ( $discount ) { $base = round( $base * ( 100 - $discount ) / 100, wc_cp_price_num_decimals( 'extended' ) ); }
+	$total = $display ? wc_get_price_to_display( $product, array( 'price' => $base, 'qty' => $quantity ) ) : $base * $quantity;
+	foreach ( $components as $component ) {
+		if ( ! $component['item']->is_priced_individually() ) { continue; }
+		$price = (float) $component['item']->get_raw_price( $component['product'] );
+		if ( $discount ) { $price = round( $price * ( 100 - $discount ) / 100, wc_cp_price_num_decimals( 'extended' ) ); }
+		$qty = $component['quantity'] * $quantity;
+		$total += $display ? wc_get_price_to_display( $component['product'], array( 'price' => $price, 'qty' => $qty ) ) : $price * $qty;
+	}
+	return $total;
+}
+
+function tinvwl_bundle_display_subtotal( $subtotal, $row, $product ) {
+	if ( $product->is_type( 'bundle' ) && is_array( tinvwl_bundle_saved_components( $row, $product ) ) ) {
+		$raw = tinvwl_bundle_configured_price( $row, $product );
+		$assumed = wc_get_price_to_display( $product, array( 'price' => $raw, 'qty' => $row['quantity'] ) );
+		return $subtotal - $assumed + tinvwl_bundle_configured_price( $row, $product, true, $row['quantity'] );
+	}
+	return $subtotal;
+}
+add_filter( 'tinvwl_wishlist_item_display_subtotal', 'tinvwl_bundle_display_subtotal', 10, 3 );
+
 if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 
 	/**
@@ -223,33 +250,8 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_product_bundles' ) ) {
 			$components = tinvwl_bundle_saved_components( $wl_product, $product );
 			if ( false === $components || ! apply_filters( 'tinvwl_wishlist_item_configuration_readable', true, $wl_product, $product ) ) { return $raw ? NAN : __( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 			if ( null === $components ) { return $price; }
-			$bundle_price = $product->get_price();
-			if ( is_array( $components ) ) {
-				$bundled_items_price = 0.0;
-				foreach ( $components as $component ) {
-					$bundled_item = $component['item'];
-					$_bundled_product = $component['product'];
-					$bundled_product_qty = $component['quantity'];
-
-					if ( $bundled_item->is_priced_individually() ) {
-						$product_price = $bundled_item->get_raw_price( $_bundled_product );
-
-						$bundled_item_price = (double) $product_price * (int) $bundled_product_qty;
-
-						$bundled_items_price += (double) $bundled_item_price;
-					}
-
-				} // End foreach().
-				$price = (double) $bundle_price + $bundled_items_price;
-
-				if ( $raw ) {
-					return $price;
-				}
-
-				if ( ! $raw ) {
-					$price = apply_filters( 'woocommerce_get_price_html', wc_price( $price ), $product );
-				}
-			} // End if().
+			$amount = tinvwl_bundle_configured_price( $wl_product, $product, ! $raw );
+			return $raw ? $amount : apply_filters( 'woocommerce_get_price_html', wc_price( $amount ), $product );
 		} // End if().
 
 		return $price;

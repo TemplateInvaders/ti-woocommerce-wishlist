@@ -202,7 +202,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_tm_extra_product_options' ) ) {
 				}
 			}
 
-			$product_price = wc_price( $product_price );
+			$product_price = wc_price( wc_get_price_to_display( $_product, array( 'price' => (float) $product_price, 'qty' => 1 ) ) );
 
 			if ( $_product->is_visible() ) {
 				$product_image = sprintf( '<a href="%s">%s</a>', esc_url( $product_url ), $product_image );

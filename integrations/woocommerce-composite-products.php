@@ -311,7 +311,7 @@ if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
 	 * @param WC_CP_Product $component_option Native selected component option.
 	 * @return float|false Configured unit price, or false for legacy vendor APIs.
 	 */
-	function tinvwl_composited_bundle_price( $meta, $bundle, $component_option ) {
+	function tinvwl_composited_bundle_price( $meta, $bundle, $component_option, $display = false, $quantity_multiplier = 1 ) {
 		// Older vendors do not expose object-local cart contexts; retain their existing adapter below.
 		if ( ! isset( WC_CP()->product_data, WC_PB()->product_data )
 			|| ! is_callable( array( WC_CP()->product_data, 'set' ) ) || ! is_callable( array( WC_CP()->product_data, 'delete' ) )
@@ -391,7 +391,8 @@ if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
 			} else {
 				WC_CP()->product_data->set( $bundle_product, 'composited_cart_item', $component_option );
 			}
-			$price = (float) $bundle_product->get_price();
+			$unit = (float) $bundle_product->get_price();
+			$price = $display ? wc_get_price_to_display( $bundle_product, array( 'price' => $unit, 'qty' => $quantity_multiplier ) ) : $unit * $quantity_multiplier;
 			$prefix = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $bundle->get_id() );
 			foreach ( $bundle->get_bundled_items() as $item_id => $item ) {
 				$quantity = isset( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) ? absint( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) : $item->get_quantity( 'default' );
@@ -400,7 +401,7 @@ if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
 					continue;
 				}
 				$variation_id = absint( $meta[ $prefix . 'bundle_variation_id_' . $item_id ] ?? 0 );
-				$selected = $variation_id ? wc_get_product( $variation_id ) : $item->product;
+				$selected = wc_get_product( $variation_id ? $variation_id : $item->get_product_id() );
 				if ( ! $selected ) {
 					continue;
 				}
@@ -416,7 +417,9 @@ if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
 				} else {
 					WC_PB()->product_data->set( $selected, 'bundled_cart_item', $cart_item );
 				}
-				$price += (float) $selected->get_price() * $quantity;
+				$unit = (float) $selected->get_price();
+				$qty = $quantity * $quantity_multiplier;
+				$price += $display ? wc_get_price_to_display( $selected, array( 'price' => $unit, 'qty' => $qty ) ) : $unit * $qty;
 			}
 			return $price;
 		} finally {
@@ -441,14 +444,14 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_woocommerce_composite_products( $price, $wl_product, $product, $raw = false ) {
+	function tinvwl_item_price_woocommerce_composite_products( $price, $wl_product, $product, $raw = false, $quantity = 1, $numeric = false ) {
 		if ( is_object( $product ) && $product->is_type( 'composite' ) ) {
 			$components = tinvwl_composite_saved_components( $wl_product, $product );
 			if ( false === $components ) { return $raw ? NAN : esc_html__( 'Unavailable', 'ti-woocommerce-wishlist' ); }
 			if ( null === $components || ( is_numeric( $price ) && ! is_finite( (float) $price ) ) ) { return $price; }
 			$wl_product['meta'] = tinvwl_composite_saved_meta( $wl_product['meta'] );
-			$_price = $product->get_price();
-			$regular_price = $product->get_regular_price();
+			$base = (float) $product->get_price();
+			$_price = $raw ? $base * $quantity : wc_get_price_to_display( $product, array( 'price' => $base, 'qty' => $quantity ) );
 			foreach ( $components as $component_id => $saved ) {
 				$component = $saved['component'];
 				$composited_product_quantity = $saved['quantity'];
@@ -472,25 +475,22 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 
 						$wl_product_bundle['meta'] = $component_meta;
 
-						$bundle_price = tinvwl_composited_bundle_price( $component_meta, $composited_product, $composited_product_wrapper );
+						$bundle_price = tinvwl_composited_bundle_price( $component_meta, $composited_product, $composited_product_wrapper, ! $raw, $composited_product_quantity * $quantity );
 						if ( false === $bundle_price ) {
-							$bundle_price = tinvwl_item_price_woocommerce_product_bundles( 0, $wl_product_bundle, $composited_product, true );
-							if ( $discount = $composited_product_wrapper->get_discount() ) {
-								$bundle_price = empty( $bundle_price ) ? $bundle_price : round( (double) $bundle_price * ( 100 - $discount ) / 100, wc_cp_price_num_decimals( 'extended' ) );
-							}
+							$bundle_price = tinvwl_bundle_configured_price( $wl_product_bundle, $composited_product, ! $raw, $composited_product_quantity * $quantity, $composited_product_wrapper->get_discount() );
 						}
-						$regular_price += $bundle_price * $composited_product_quantity;
-						$_price += $bundle_price * $composited_product_quantity;
+						$_price += $bundle_price;
 
 						continue;
 					}
 
-					$_price        += $composited_product_wrapper->get_price() * $composited_product_quantity;
-					$regular_price += $composited_product_wrapper->get_regular_price() * $composited_product_quantity;
+					$unit = (float) $composited_product_wrapper->get_price();
+					$qty = $composited_product_quantity * $quantity;
+					$_price += $raw ? $unit * $qty : wc_get_price_to_display( $composited_product, array( 'price' => $unit, 'qty' => $qty ) );
 				}
 			}
 
-			if ( $raw ) {
+			if ( $raw || $numeric ) {
 				return $_price;
 			}
 
@@ -503,6 +503,16 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_composite_products' ) ) {
 
 	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_composite_products', 10, 4 );
 } // End if().
+
+function tinvwl_composite_display_subtotal( $subtotal, $row, $product ) {
+	if ( $product->is_type( 'composite' ) && is_array( tinvwl_composite_saved_components( $row, $product ) ) ) {
+		$raw = tinvwl_item_price_woocommerce_composite_products( 0, $row, $product, true );
+		$assumed = wc_get_price_to_display( $product, array( 'price' => $raw, 'qty' => $row['quantity'] ) );
+		return $subtotal - $assumed + tinvwl_item_price_woocommerce_composite_products( 0, $row, $product, false, $row['quantity'], true );
+	}
+	return $subtotal;
+}
+add_filter( 'tinvwl_wishlist_item_display_subtotal', 'tinvwl_composite_display_subtotal', 10, 3 );
 
 if ( ! function_exists( 'tinv_wishlist_metaprepare_woocommerce_composite_products' ) ) {
 

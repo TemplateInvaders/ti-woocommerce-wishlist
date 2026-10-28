@@ -304,13 +304,28 @@ if ( ! function_exists( 'tinvwl_item_price_woocommerce_tm_extra_product_options'
 
 add_filter( 'tinvwl_addtowishlist_prepare_form', 'tinvwl_meta_woocommerce_tm_extra_product_options', 10, 3 );
 
+/** TM scalar controls must never flatten another integration's nested metadata. */
+function tinvwl_normalize_tm_controls( $meta ) {
+	foreach ( $meta as $key => $value ) {
+		if ( 'tcaddtocart' !== $key && ! preg_match( '/^tmcp_[a-z]+_\d+(?:_\d+)*(?:_quantity)?$/D', $key ) ) { continue; }
+		if ( is_string( $value ) && preg_match( '/^(?:tcaddtocart|tmcp_(?:product|select|radio|checkbox)_)/', $key ) ) {
+			$decoded = json_decode( $value, true );
+			if ( is_array( $decoded ) ) { $value = $decoded; }
+		}
+		if ( is_array( $value ) && 1 === count( $value ) && array_keys( $value ) === array( 0 ) && is_scalar( $value[0] ) ) { $value = $value[0]; }
+		$meta[ $key ] = $value;
+	}
+	return $meta;
+}
+
 function tinvwl_meta_woocommerce_tm_extra_product_options( $meta, $post, $files ) {
 
 	if ( defined( 'THEMECOMPLETE_EPO_VERSION' ) || defined( 'TM_EPO_VERSION' ) ) {
 		foreach ( $files as $name => $file ) {
 
-			if ( array_key_exists( $name, $meta ) ) {
-				$upload = THEMECOMPLETE_EPO()->upload_file( $file );
+			if ( preg_match( '/^tmcp_upload_\d+(?:_\d+)*$/D', $name ) && array_key_exists( $name, $meta ) ) {
+				$core = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
+				$upload = $core->upload_file( $file );
 				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
 					$meta[ $name ] = wc_clean( $upload['url'] );
 				}
@@ -318,12 +333,7 @@ function tinvwl_meta_woocommerce_tm_extra_product_options( $meta, $post, $files 
 		}
 	}
 
-	foreach ( $meta as $key => $data ) {
-		$data         = ( ! is_array( $data ) && is_object( json_decode( $data ) ) ) ? json_decode( $data, true ) : $data;
-		$meta[ $key ] = is_array( $data ) ? array_shift( $data ) : $data;
-	}
-
-	return $meta;
+	return tinvwl_normalize_tm_controls( $meta );
 }
 
 add_filter( 'tinvwl_product_prepare_meta', 'tinvwl_cart_meta_woocommerce_tm_extra_product_options' );
@@ -336,8 +346,9 @@ function tinvwl_cart_meta_woocommerce_tm_extra_product_options( $meta ) {
 
 		foreach ( $files as $name => $file ) {
 
-			if ( ! array_key_exists( $name, $meta ) ) {
-				$upload = THEMECOMPLETE_EPO()->upload_file( $file );
+			if ( preg_match( '/^tmcp_upload_\d+(?:_\d+)*$/D', $name ) && ! array_key_exists( $name, $meta ) ) {
+				$core = defined( 'THEMECOMPLETE_EPO_VERSION' ) ? THEMECOMPLETE_EPO() : TM_EPO();
+				$upload = $core->upload_file( $file );
 				if ( empty( $upload['error'] ) && ! empty( $upload['file'] ) ) {
 					$meta[ $name ] = wc_clean( $upload['url'] );
 				}
@@ -345,12 +356,7 @@ function tinvwl_cart_meta_woocommerce_tm_extra_product_options( $meta ) {
 		}
 	}
 
-	foreach ( $meta as $key => $data ) {
-		$data         = ( ! is_array( $data ) && is_object( json_decode( $data ) ) ) ? json_decode( $data, true ) : $data;
-		$meta[ $key ] = is_array( $data ) ? array_shift( $data ) : $data;
-	}
-
-	return $meta;
+	return tinvwl_normalize_tm_controls( $meta );
 }
 
 function tinvwl_add_to_wishlist_tm_extra_product_options() {

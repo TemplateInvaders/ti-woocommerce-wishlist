@@ -37,6 +37,20 @@ if ( ! tinv_get_option( 'integrations', $slug ) ) {
 	return;
 }
 
+/** Normalize only PPOM containers, preserving literal values inside their fields. */
+function tinvwl_ppom_saved_data( $value ) {
+	if ( is_string( $value ) ) { $value = json_decode( $value, true ); }
+	elseif ( is_array( $value ) || is_object( $value ) ) { $value = json_decode( wp_json_encode( $value ), true ); }
+	return is_array( $value ) ? $value : array();
+}
+
+function tinvwl_ppom_file_preview( $name, $settings, $cropped = false ) {
+	if ( ! is_scalar( $name ) || '' === (string) $name ) { return ''; }
+	if ( function_exists( 'ppom_uploaded_file_preview' ) ) { $html = ppom_uploaded_file_preview( (string) $name, $settings ); }
+	elseif ( function_exists( 'ppom_show_file_thumb' ) ) { $html = ppom_show_file_thumb( (string) $name, $cropped ); }
+	return ! empty( $html ) ? $html : esc_html( (string) $name );
+}
+
 if ( ! $available ) {
 	return;
 }
@@ -56,8 +70,8 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 	function tinv_wishlist_item_meta_woocommerce_product_add_on( $meta, $wl_product, $product ) {
 		if ( isset( $wl_product['meta'] ) && isset( $wl_product['meta']['ppom'] ) && class_exists( 'NM_PersonalizedProduct' ) ) {
 
-			$ppom         = json_decode( $wl_product['meta']['ppom'] );
-			$product_meta = $ppom->fields ? $ppom->fields : '';
+			$ppom = tinvwl_ppom_saved_data( $wl_product['meta']['ppom'] );
+			$product_meta = isset( $ppom['fields'] ) && is_array( $ppom['fields'] ) ? $ppom['fields'] : array();
 
 			$item_meta = array();
 
@@ -65,7 +79,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 
 				foreach ( $product_meta as $key => $value ) {
 
-					if ( empty( $value ) ) {
+					if ( null === $value || '' === $value || array() === $value ) {
 						continue;
 					}
 
@@ -83,7 +97,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 					switch ( $field_type ) {
 						case 'quantities':
 							$total_qty = 0;
-							foreach ( $value as $label => $qty ) {
+							foreach ( (array) $value as $label => $qty ) {
 								if ( ! empty( $qty ) ) {
 									$item_meta[] = array(
 										'key'     => $label,
@@ -96,9 +110,9 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 
 						case 'file':
 							$file_thumbs_html = '';
-							foreach ( $value as $file_id => $file_uploaded ) {
-								$file_name        = $file_uploaded['org'];
-								$file_thumbs_html .= ppom_show_file_thumb( $file_name );
+							foreach ( (array) $value as $file_id => $file_uploaded ) {
+								$file_name = is_array( $file_uploaded ) ? ( $file_uploaded['org'] ?? '' ) : '';
+								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta );
 							}
 							$item_meta[] = array(
 								'key'     => $field_title,
@@ -109,10 +123,10 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 
 						case 'cropper':
 							$file_thumbs_html = '';
-							foreach ( $value as $file_id => $file_cropped ) {
+							foreach ( (array) $value as $file_id => $file_cropped ) {
 
-								$file_name        = $file_cropped['org'];
-								$file_thumbs_html .= ppom_show_file_thumb( $file_name, true );
+								$file_name = is_array( $file_cropped ) ? ( $file_cropped['org'] ?? '' ) : '';
+								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta, true );
 							}
 							$item_meta[] = array(
 								'key'     => $field_title,
@@ -122,9 +136,10 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 
 						case 'image':
 							if ( $value ) {
-								foreach ( $value as $id => $images_meta ) {
-									$images_meta = json_decode( stripslashes( $images_meta ), true );
-									$image_url   = stripslashes( $images_meta['link'] );
+								foreach ( (array) $value as $id => $images_meta ) {
+									$images_meta = tinvwl_ppom_saved_data( $images_meta );
+									if ( ! isset( $images_meta['link'], $images_meta['title'] ) || ! is_scalar( $images_meta['link'] ) || ! is_scalar( $images_meta['title'] ) ) { continue; }
+									$image_url   = $images_meta['link'];
 									$image_html  = '<img class="img-thumbnail" style="width:' . esc_attr( ppom_get_thumbs_size() ) . '" src="' . esc_url( $image_url ) . '" title="' . esc_attr( $images_meta['title'] ) . '">';
 									$meta_key    = $field_title . '(' . $images_meta['title'] . ')';
 									$item_meta[] = array(
@@ -138,9 +153,10 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 						case 'audio':
 							if ( $value ) {
 								$ppom_file_count = 1;
-								foreach ( $value as $id => $audio_meta ) {
-									$audio_meta  = json_decode( stripslashes( $audio_meta ), true );
-									$audio_url   = stripslashes( $audio_meta['link'] );
+								foreach ( (array) $value as $id => $audio_meta ) {
+									$audio_meta  = tinvwl_ppom_saved_data( $audio_meta );
+									if ( ! isset( $audio_meta['link'], $audio_meta['title'] ) || ! is_scalar( $audio_meta['link'] ) || ! is_scalar( $audio_meta['title'] ) ) { continue; }
+									$audio_url   = $audio_meta['link'];
 									$audio_html  = '<a href="' . esc_url( $audio_url ) . '" title="' . esc_attr( $audio_meta['title'] ) . '">' . $audio_meta['title'] . '</a>';
 									$meta_key    = $field_title . ': ' . $ppom_file_count ++;
 									$item_meta[] = array(
@@ -154,15 +170,15 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 						case 'bulkquantity':
 							$item_meta[] = array(
 								'key'     => $key,
-								'display' => $value['option'] . ' (' . $value['qty'] . ')',
+								'display' => is_array( $value ) ? ( $value['option'] ?? '' ) . ' (' . ( $value['qty'] ?? '' ) . ')' : '',
 							);
 							break;
 
 						default:
-							$value       = is_object( $value ) ? implode( ",", (array) $value ) : $value;
+							$value       = ( is_array( $value ) || is_object( $value ) ) ? implode( ',', array_filter( (array) $value, 'is_scalar' ) ) : $value;
 							$item_meta[] = array(
 								'key'     => $field_title,
-								'display' => stripcslashes( $value ),
+								'display' => (string) $value,
 							);
 							break;
 					}

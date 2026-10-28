@@ -161,7 +161,22 @@ add_filter( 'tinvwl_wishlist_product_configuration_valid', 'tinvwl_composite_con
 function tinvwl_composite_cart_meta( $meta, $wl_product ) {
 	if ( $wl_product['data']->is_type( 'composite' ) ) {
 		$decoded = tinvwl_composite_saved_meta( $meta );
-		if ( false !== $decoded ) { return $decoded; }
+		if ( false !== $decoded ) {
+			$components = tinvwl_composite_saved_components( array( 'meta' => $decoded ), $wl_product['data'] );
+			foreach ( is_array( $components ) ? $components : array() as $id => $saved ) {
+				if ( ! $saved['product']->is_type( 'bundle' ) ) { continue; }
+				$prefix = 'component_' . $id . '_';
+				$nested = array();
+				foreach ( $decoded as $key => $value ) { if ( 0 === strpos( $key, $prefix ) ) { $nested[ substr( $key, strlen( $prefix ) ) ] = $value; } }
+				$parts = tinvwl_bundle_saved_components( array( 'meta' => $nested ), $saved['product'] );
+				$field_prefix = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $saved['product']->get_id() );
+				foreach ( is_array( $parts ) ? $parts : array() as $part_id => $part ) {
+					$field = $prefix . $field_prefix . 'bundle_quantity_' . $part_id;
+					if ( ! array_key_exists( $field, $decoded ) ) { $decoded[ $field ] = $part['quantity']; }
+				}
+			}
+			return $decoded;
+		}
 	}
 	return $meta;
 }
@@ -277,7 +292,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_composite_products' ) ) {
 
 					$wl_product_bundle['meta'] = $component_meta;
 
-					tinvwl_row_woocommerce_product_bundles( $wl_product_bundle, $composited_product, $composited_product_wrapper->get_discount() );
+					tinvwl_row_woocommerce_product_bundles( $wl_product_bundle, $composited_product, $composited_product_wrapper->get_discount(), $composited_product_quantity * $product_quantity );
 				}
 			} // End foreach().
 		} // End if().
@@ -379,7 +394,7 @@ if ( ! function_exists( 'tinvwl_composited_bundle_price' ) ) {
 			$price = (float) $bundle_product->get_price();
 			$prefix = apply_filters( 'woocommerce_product_bundle_field_prefix', '', $bundle->get_id() );
 			foreach ( $bundle->get_bundled_items() as $item_id => $item ) {
-				$quantity = isset( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) ? absint( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) : $item->get_quantity();
+				$quantity = isset( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) ? absint( $meta[ $prefix . 'bundle_quantity_' . $item_id ] ) : $item->get_quantity( 'default' );
 				if ( ! $quantity || ! $item->is_priced_individually()
 					|| ( $item->is_optional() && ! array_key_exists( $prefix . 'bundle_selected_optional_' . $item_id, $meta ) ) ) {
 					continue;

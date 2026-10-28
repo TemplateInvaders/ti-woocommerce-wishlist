@@ -133,7 +133,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 	 * @param \WC_Product $product Woocommerce Product.
 	 * @param int $discount_extra possible discount on bundle row.
 	 */
-	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product, $discount_extra = 0 ) {
+	function tinvwl_row_woocommerce_product_bundles( $wl_product, $product, $discount_extra = 0, $quantity_multiplier = 1 ) {
 		if ( is_object( $product ) && $product->is_type( 'bundle' ) ) {
 
 			$components = tinvwl_bundle_saved_components( $wl_product, $product );
@@ -145,7 +145,7 @@ if ( ! function_exists( 'tinvwl_row_woocommerce_product_bundles' ) ) {
 				foreach ( $components as $component ) {
 					$bundled_item = clone $component['item'];
 					$bundled_item->product = $component['product'];
-					$bundled_product_qty = $component['quantity'];
+					$bundled_product_qty = $component['quantity'] * $quantity_multiplier;
 					if ( ! $bundled_item->is_visible( 'cart' ) ) { continue; }
 
 					$product_url   = $bundled_item->product->get_permalink();

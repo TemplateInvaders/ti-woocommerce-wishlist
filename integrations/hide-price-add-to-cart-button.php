@@ -135,6 +135,8 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 	 */
 	function tinvwl_product_allow_add_to_cart_afwhp($allow, $wlproduct, $product)
 	{
+		tinvwl_afwhp_button_handled( $wlproduct, $product, false );
+
 
 		$args = array(
 				'post_type' => 'addify_whp',
@@ -148,14 +150,14 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 		foreach ($rules as $rule) {
 
 			$afwhp_rule_type = get_post_meta(intval($rule->ID), 'afwhp_rule_type', true);
-			$afwhp_hide_products = unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_products', true));
-			$afwhp_hide_categories = unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_categories', true));
-			$afwhp_hide_user_role = unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_user_role', true));
+			$afwhp_hide_products = maybe_unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_products', true));
+			$afwhp_hide_categories = maybe_unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_categories', true));
+			$afwhp_hide_user_role = maybe_unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_user_role', true));
 			$afwhp_is_hide_addtocart = get_post_meta(intval($rule->ID), 'afwhp_is_hide_addtocart', true);
 			$afwhp_custom_button_text = get_post_meta(intval($rule->ID), 'afwhp_custom_button_text', true);
 			$afwhp_custom_button_link = get_post_meta(intval($rule->ID), 'afwhp_custom_button_link', true);
 			$afwhp_contact7_form = get_post_meta(intval($rule->ID), 'afwhp_contact7_form', true);
-			$afwhp_hide_for_countries = unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_for_countries', true));
+			$afwhp_hide_for_countries = maybe_unserialize(get_post_meta(intval($rule->ID), 'afwhp_hide_for_countries', true));
 
 			if (!empty($afwhp_hide_for_countries)) {
 				//country
@@ -224,6 +226,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 					if ($istrue && $iscountry) {
 
 						if ('yes' == $afwhp_is_hide_addtocart) {
+							tinvwl_afwhp_button_handled( $wlproduct, $product, true );
 
 							if ('' == $afwhp_custom_button_text) {
 
@@ -277,6 +280,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 								if (in_array($curr_user_role, $afwhp_hide_user_role)) {
 
 									if ('yes' == $afwhp_is_hide_addtocart) {
+							tinvwl_afwhp_button_handled( $wlproduct, $product, true );
 
 										if ('' == $afwhp_custom_button_text) {
 
@@ -287,7 +291,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 
 												echo '<a href="' . esc_url($afwhp_custom_button_link) . '" rel="nofollow" class="button add_to_cart_button product_type_' . esc_attr($product->get_type()) . '">' . esc_attr($afwhp_custom_button_text) . '</a>';
 
-												return;
+												return false;
 											} elseif (!empty($afwhp_contact7_form)) {
 
 												$contact7 = get_post($afwhp_contact7_form);
@@ -311,12 +315,12 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 												</div>
 
 												<?php
-												return;
+												return false;
 											} else {
 
 												echo '<a href="javascript:void(0)" rel="nofollow" class="button add_to_cart_button product_type_' . esc_attr($product->get_type()) . '">' . esc_attr($afwhp_custom_button_text) . '</a>';
 
-												return;
+												return false;
 											}
 
 										}
@@ -346,6 +350,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 					if ($istrue && $iscountry) {
 
 						if ('yes' == $afwhp_is_hide_addtocart) {
+							tinvwl_afwhp_button_handled( $wlproduct, $product, true );
 
 							if ('' == $afwhp_custom_button_text) {
 
@@ -398,6 +403,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 							if (has_term($cat, 'product_cat', $product->get_id())) {
 
 								if ('yes' == $afwhp_is_hide_addtocart) {
+							tinvwl_afwhp_button_handled( $wlproduct, $product, true );
 
 									if ('' == $afwhp_custom_button_text) {
 
@@ -408,7 +414,7 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 
 											echo '<a href="' . esc_url($afwhp_custom_button_link) . '" rel="nofollow" class="button add_to_cart_button product_type_' . esc_attr($product->get_type()) . '">' . esc_attr($afwhp_custom_button_text) . '</a>';
 
-											return;
+											return false;
 										} elseif (!empty($afwhp_contact7_form)) {
 
 											$contact7 = get_post($afwhp_contact7_form);
@@ -432,12 +438,12 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 											</div>
 
 											<?php
-											return;
+											return false;
 										} else {
 
 											echo '<a href="javascript:void(0)" rel="nofollow" class="button add_to_cart_button product_type_' . esc_attr($product->get_type()) . '">' . esc_attr($afwhp_custom_button_text) . '</a>';
 
-											return;
+											return false;
 										}
 
 									}
@@ -452,5 +458,19 @@ if (class_exists('Addify_Woo_Hide_Price_Front')) {
 			}
 
 		}
+		return tinvwl_afwhp_button_handled( $wlproduct, $product ) ? false : $allow;
+
 	}
 }
+
+/** Keep native fallback from duplicating or bypassing an applicable replacement/hide rule. */
+function tinvwl_afwhp_button_handled( $row, $product, $set = null ) {
+	static $handled = array();
+	$key = $product->get_id() . '|' . ( $row['ID'] ?? 0 );
+	if ( null !== $set ) { $handled[ $key ] = $set; }
+	return ! empty( $handled[ $key ] );
+}
+function tinvwl_afwhp_default_button( $allow, $row, $product ) {
+	return $allow && ! tinvwl_afwhp_button_handled( $row, $product );
+}
+add_filter( 'tinvwl_wishlist_item_action_default_loop_button', 'tinvwl_afwhp_default_button', 10, 3 );

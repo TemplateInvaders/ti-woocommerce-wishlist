@@ -76,6 +76,7 @@ class TInvWL_Activator
 	 */
 	public static function uninstall()
 	{
+		TInvWL_Public_CartDebit::uninstall();
 		self::database('destroy');
 		self::unload_data();
 		self::remove_capabities();

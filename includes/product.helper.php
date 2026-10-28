@@ -630,6 +630,16 @@ class TInvWL_Product {
 		return json_encode( self::canonicalize_configuration( $value ) );
 	}
 
+	/** Stable identity for an already saved configuration; never run preparation hooks on transfer proofs. */
+	public static function saved_configuration_identity( $meta ) {
+		if ( ! is_array( $meta ) ) { return false; }
+		// Returned metadata also carries request fields, including a quantity that may predate the merge.
+		foreach ( array( 'add-to-cart', 'product_id', 'variation_id', 'quantity', 'undefined', 'product_sku' ) as $field ) { unset( $meta[ $field ] ); }
+		if ( isset( $meta['tinvwl-hidden-fields'] ) && '[]' === $meta['tinvwl-hidden-fields'] ) { unset( $meta['tinvwl-hidden-fields'] ); }
+		return $meta ? self::canonical_stored_configuration( json_encode( $meta ), true ) : '';
+	}
+
+
 	/** Reuse old key orders without rewriting stored addons or running prepare hooks on saved values. */
 	private function legacy_configuration_formdata( $formdata, $scope, $ignore_empty_hidden_fields = false ) {
 		global $wpdb;

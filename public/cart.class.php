@@ -110,12 +110,16 @@ class TInvWL_Public_Cart {
 			return false;
 		}
 		$model = new TInvWL_Product( $wishlist, self::$_name, true );
-		if ( ! $model->get_parent_source( $item['ID'], $item['product_id'] ) ) { return false; }
+		$saved = $model->get_parent_source( $item['ID'], $item['product_id'] );
+		if ( ! $saved ) { return false; }
+		$saved['meta'] = empty( $saved['formdata'] ) ? array() : json_decode( $saved['formdata'], true );
+		$operation = TInvWL_Public_CartDebit::prepare( $wishlist, $saved, 'remove' );
+		if ( ! $operation ) { return false; }
 		$sources = (array) WC()->session->get( 'tinvwl_product_sources', array() );
 		foreach ( $sources as $key => $source ) {
 			if ( ! is_array( $source ) || (int) ( $source['expires'] ?? 0 ) < time() ) { unset( $sources[ $key ] ); }
 		}
-		$sources[ absint( $item['data']->get_id() ) ] = array( 'item_id' => absint( $item['ID'] ), 'product_id' => absint( $item['product_id'] ), 'share_key' => $wishlist['share_key'], 'expires' => time() + HOUR_IN_SECONDS );
+		$sources[ absint( $item['data']->get_id() ) ] = array( 'item_id' => absint( $item['ID'] ), 'product_id' => absint( $item['product_id'] ), 'share_key' => $wishlist['share_key'], 'expires' => time() + HOUR_IN_SECONDS, 'operation_key' => $operation, 'actor' => get_current_user_id() );
 		// A session needs only a small set of recent product-page sources.
 		WC()->session->set( 'tinvwl_product_sources', array_slice( $sources, -20, null, true ) );
 		if ( ! headers_sent() && is_callable( array( WC()->session, 'set_customer_session_cookie' ) ) ) {
@@ -144,11 +148,14 @@ class TInvWL_Public_Cart {
 		if ( (int) ( $source['expires'] ?? 0 ) < time() || ! tinv_get_option( 'processing', 'autoremove' ) || 'tinvwl-addcart' !== tinv_get_option( 'processing', 'autoremove_status' ) ) {
 			return;
 		}
-		$wl = new TInvWL_Wishlist( self::$_name );
-		$wishlist = $wl->get_by_share_key( $source['share_key'] ?? '' );
-		if ( ! $wl->is_owner( $wishlist ) ) { return; }
-		$model = new TInvWL_Product( $wishlist, self::$_name, true );
-		$model->consume_parent_source( $source['item_id'] ?? 0, $source['product_id'] ?? 0, $quantity );
+		$operation = $source['operation_key'] ?? '';
+		if ( ! $operation || ( ! empty( $source['actor'] ) && (int) $source['actor'] !== get_current_user_id() ) ) { return; }
+		// Retain success independently of the one-use click token when confirmation is temporarily unavailable.
+		TInvWL_Public_CartDebit::remember_success( $operation, $quantity );
+		if ( TInvWL_Public_CartDebit::confirm( $operation, $quantity ) ) {
+			TInvWL_Public_CartDebit::forget_success( $operation );
+			TInvWL_Public_CartDebit::process( $operation );
+		}
 	}
 
 	/**
@@ -248,14 +255,21 @@ class TInvWL_Public_Cart {
 				$saved_source = $remove_saved_item ? self::saved_cart_source( $wlp, $product['ID'] ) : null;
 				if ( $remove_saved_item && ! $saved_source ) { return self::unavailable_cart_item( $product['ID'] ); }
 				$cart_item_data = apply_filters( 'tinvwl_addproduct_tocart_prepare_cart_data', $request_product['meta'], $product );
+				$debit_operation = $remove_saved_item ? TInvWL_Public_CartDebit::prepare( $wishlist, $saved_source, 'remove' ) : null;
+				if ( $remove_saved_item && ! $debit_operation ) { return array( 'product' => $product['data'], 'quantity' => $quantity, 'error_code' => 'wishlist_update_unavailable' ); }
 				$cart_quantities = wp_list_pluck( WC()->cart->get_cart(), 'quantity' );
 				$cart_item_key   = self::add_native_cart_item( $product_id, $quantity, $variation_id, $variations, $cart_item_data, $cart_errors );
 				if ( $cart_item_key ) {
 					// Native quantity filters and sold-individually rules may adjust the request.
 					// Attribute only the amount actually added to this new or existing cart row.
 					$cart_item = WC()->cart->get_cart_item( $cart_item_key );
-					if ( isset( $cart_item['quantity'] ) ) {
-						$quantity = $cart_item['quantity'] - ( $cart_quantities[ $cart_item_key ] ?? 0 );
+					$observed = isset( $cart_item['quantity'] ) && is_numeric( $cart_item['quantity'] ) ? (float) $cart_item['quantity'] - (float) ( $cart_quantities[ $cart_item_key ] ?? 0 ) : null;
+					$actual = $cart_errors['native_quantity'] ?? $observed;
+					$confirmed_quantity = is_numeric( $actual ) && is_finite( (float) $actual ) && $actual > 0;
+					if ( $confirmed_quantity ) { $quantity = (float) $actual; }
+					if ( $debit_operation ) {
+						if ( $confirmed_quantity ) { TInvWL_Public_CartDebit::remember_success( $debit_operation, $quantity ); }
+						if ( $confirmed_quantity && TInvWL_Public_CartDebit::confirm( $debit_operation, $quantity ) ) { TInvWL_Public_CartDebit::forget_success( $debit_operation ); TInvWL_Public_CartDebit::process( $debit_operation ); }
 					}
 
 					/* Run a 3rd party code when product added to a cart from a wishlist.
@@ -267,9 +281,6 @@ class TInvWL_Public_Cart {
 					do_action( 'tinvwl_product_added_to_cart', $cart_item_key, $quantity, $product );
 					$wla = new TInvWL_Analytics( $wishlist, self::$_name );
 					$wla->cart_product( $product_id, $variation_id );
-					if ( $remove_saved_item ) {
-						self::ar_f_wl( $wishlist, $saved_source['product_id'], $quantity, $saved_source['variation_id'], $saved_source['meta'], $saved_source['ID'] );
-					}
 					self::set_item_data( $cart_item_key, $wishlist['share_key'], $quantity );
 					self::set_item_meta( $cart_item_key, $product['meta'] );
 
@@ -279,6 +290,7 @@ class TInvWL_Public_Cart {
 						'cart_item_key' => $cart_item_key
 					);
 				}
+				if ( $debit_operation ) { TInvWL_Public_CartDebit::cancel( $debit_operation ); }
 			}
 			$error_code = $cart_errors['error_code'] ?? 'default';
 
@@ -311,12 +323,22 @@ class TInvWL_Public_Cart {
 			return $message;
 		};
 		$hooks = array( 'woocommerce_cart_product_cannot_add_another_message', 'woocommerce_cart_product_not_enough_stock_message', 'woocommerce_cart_product_not_enough_stock_already_in_cart_message' );
+		$depth = count( array_keys( (array) ( $GLOBALS['wp_current_filter'] ?? array() ), 'woocommerce_add_to_cart', true ) );
+		$added = static function ( $key, $added_product, $added_quantity, $added_variation ) use ( &$errors, $product_id, $variation_id, $depth ) {
+			$current_depth = count( array_keys( (array) ( $GLOBALS['wp_current_filter'] ?? array() ), 'woocommerce_add_to_cart', true ) );
+			if ( $current_depth === $depth + 1 && (int) $product_id === (int) $added_product && (int) $variation_id === (int) $added_variation
+				&& is_string( $key ) && '' !== $key && is_numeric( $added_quantity ) && is_finite( (float) $added_quantity ) && $added_quantity > 0 ) {
+				$errors['native_quantity'] = (float) $added_quantity;
+			}
+		};
+		add_action( 'woocommerce_add_to_cart', $added, PHP_INT_MIN, 4 );
 		foreach ( $hooks as $hook ) {
 			add_filter( $hook, $capture, PHP_INT_MAX, 2 );
 		}
 		try {
 			return WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $cart_item_data );
 		} finally {
+			remove_action( 'woocommerce_add_to_cart', $added, PHP_INT_MIN );
 			foreach ( $hooks as $hook ) {
 				remove_filter( $hook, $capture, PHP_INT_MAX );
 			}
@@ -599,6 +621,86 @@ class TInvWL_Public_Cart {
 
 		return null;
 	}
+
+	/** The same visitor privacy policy applies at cart time and order time. */
+	private static function may_remove_wishlist( $wishlist, $is_owner ): bool {
+		if ( $is_owner ) { return true; }
+		$status = $wishlist['status'] ?? '';
+		$allowed = tinv_get_option( 'processing', 'autoremove_anyone_type' );
+		return tinv_get_option( 'processing', 'autoremove_anyone' ) && in_array( $status, array( 'share', 'public' ), true )
+			&& ( ! $allowed || $allowed === $status );
+	}
+
+	/** Complete an independently persisted debit exactly once, including from WP-Cron. */
+	public static function apply_cart_debit( $operation_key ): bool {
+		global $wpdb;
+		if ( ! self::$_name ) { self::$_name = TINVWL_PREFIX; }
+		$operation = TInvWL_Public_CartDebit::get( $operation_key );
+		if ( ! $operation ) { return false; }
+		if ( in_array( $operation['state'], array( 'applied', 'discarded' ), true ) ) { return true; }
+		if ( 'pending' !== $operation['state'] ) { return false; }
+		$payload = json_decode( $operation['payload'], true );
+		if ( ! is_array( $payload ) || ! isset( $payload['author'], $payload['share_key'], $payload['as_owner'], $payload['product_id'], $payload['variation_id'], $payload['quantity'], $payload['meta'] )
+			|| ! is_array( $payload['meta'] ) || ! is_numeric( $payload['quantity'] ) || ! is_finite( (float) $payload['quantity'] ) || $payload['quantity'] <= 0 ) { return false; }
+		// A quantity obligation must wait for its original implementation rather than delete a whole row.
+		if ( 'remove' !== ( $payload['strategy'] ?? 'decrement' ) ) { return false; }
+		$items = $wpdb->prefix . self::$_name . '_items';
+		$lists = $wpdb->prefix . self::$_name . '_lists';
+		$receipts = TInvWL_Public_CartDebit::table();
+		$owner = (int) $payload['author'];
+		$locks = $owner ? array( 'tinvwl_merge_' . md5( $wpdb->prefix . '|' . $owner ) ) : array();
+		$locks[] = 'tinvwl_item_' . md5( $items . '|' . $operation['wishlist_id'] );
+		$acquired = $actions = array();
+		$transaction = $committed = false;
+		try {
+			foreach ( $locks as $lock ) {
+				if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock ) ) ) { return false; }
+				$acquired[] = $lock;
+			}
+			$tables = $wpdb->get_results( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name IN (%s, %s, %s)', $items, $lists, $receipts ), ARRAY_A );
+			if ( $wpdb->last_error || count( (array) $tables ) !== 3 ) { return false; }
+			foreach ( $tables as $table ) {
+				if ( ! in_array( strtolower( $table['Engine'] ), array( 'innodb', 'xtradb' ), true ) ) { return false; }
+			}
+			$suppressed = $wpdb->suppress_errors( true );
+			try { $independent = $wpdb->query( 'SET TRANSACTION READ WRITE' ); }
+			finally { $wpdb->suppress_errors( $suppressed ); }
+			if ( false === $independent || false === $wpdb->query( 'START TRANSACTION' ) ) { return false; }
+			$transaction = true;
+			$receipt = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$receipts` WHERE operation_key = %s FOR UPDATE", $operation_key ), ARRAY_A );
+			if ( $wpdb->last_error || ! $receipt ) { return false; }
+			if ( in_array( $receipt['state'], array( 'applied', 'discarded' ), true ) ) { return true; }
+			if ( 'pending' !== $receipt['state'] || $receipt['payload'] !== $operation['payload'] ) { return false; }
+			$current = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$lists` WHERE ID = %d FOR UPDATE", $operation['wishlist_id'] ), ARRAY_A );
+			if ( $wpdb->last_error ) { return false; }
+			$allowed = $current && $owner === (int) $current['author'] && hash_equals( (string) $payload['share_key'], (string) $current['share_key'] )
+				&& tinv_get_option( 'processing', 'autoremove' ) && 'tinvwl-addcart' === tinv_get_option( 'processing', 'autoremove_status' )
+				&& self::may_remove_wishlist( $current, (bool) $payload['as_owner'] );
+			$state = 'discarded';
+			if ( $allowed ) {
+				$outcome = TInvWL_Public_CartDebit::remove_saved_contribution( $current, $payload, $operation['item_id'] );
+				if ( ! $outcome['complete'] ) { return false; }
+				$actions = $outcome['actions'];
+				$state = 'applied';
+			}
+			$written = $wpdb->query( $wpdb->prepare( "UPDATE `$receipts` SET state = %s, updated_at = %d WHERE operation_key = %s AND state = 'pending'", $state, time(), $operation_key ) );
+			if ( 1 !== $written || false === $wpdb->query( 'COMMIT' ) ) { return false; }
+			$transaction = false;
+			$committed = true;
+		} catch ( Throwable $error ) {
+			error_log( 'TI Wishlist cart debit remains pending after an unsuccessful transaction.' );
+			return false;
+		} finally {
+			if ( $transaction ) { $wpdb->query( 'ROLLBACK' ); }
+			foreach ( array_reverse( $acquired ) as $lock ) { $wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) ); }
+		}
+		foreach ( $actions as $action ) {
+			try { do_action( ...$action ); }
+			catch ( Throwable $error ) { error_log( 'TI Wishlist cart debit action failed after its commit.' ); }
+		}
+		return $committed;
+	}
+
 
 	/**
 	 * Autoremove product from wishlist

@@ -806,6 +806,7 @@ class TInvWL_Public_TInvWL {
 					return false; // Never copy then delete when rollback cannot protect the source.
 				}
 			}
+			if ( ! TInvWL_Public_CartDebit::maybe_install() ) { return false; }
 			$last_key = '';
 			foreach ( $sources as $source_id => $pending_source ) {
 				$receiver = null;
@@ -842,6 +843,7 @@ class TInvWL_Public_TInvWL {
 						$last_key = $wishlist['share_key'];
 						unset( $sources[ $source_id ] );
 					} else {
+						$guest_source = $wishlist;
 						$wl->user = $user_id;
 						$targets  = $wl->get_by_user_default( $user_id );
 						if ( $wpdb->last_error ) {
@@ -866,9 +868,11 @@ class TInvWL_Public_TInvWL {
 								throw new RuntimeException( 'Could not read guest wishlist items.' );
 							}
 							foreach ( $products as $product ) {
-								if ( ! $receiver->transfer_saved_item( $product ) ) {
+								$transferred_id = $receiver->transfer_saved_item( $product );
+								if ( ! $transferred_id ) {
 									throw new RuntimeException( 'Could not transfer a saved guest wishlist item.' );
 								}
+								if ( ! TInvWL_Public_CartDebit::transfer_guest_item( $guest_source, $target ?: $wishlist, $product, $transferred_id ) ) { throw new RuntimeException( 'Could not transfer a pending cart debit.' ); }
 								if ( $target && 1 !== $wpdb->delete( $items, array( 'ID' => $product['ID'], 'wishlist_id' => $wishlist['ID'] ) ) ) {
 									throw new RuntimeException( 'Could not remove the transferred guest wishlist item.' );
 								}

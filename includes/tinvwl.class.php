@@ -80,6 +80,7 @@ class TInvWL {
 		TInvWL_Activator::maybe_upgrade_charset();
 		TInvWL_Form::_init( $this->_name );
 		add_action( 'wc_ajax_tinvwl_request_nonce', array( 'TInvWL_Request_Nonce', 'endpoint' ) );
+		TInvWL_Public_CartDebit::init();
 
 		if ( is_admin() ) {
 			if ( current_user_can( 'manage_options' ) ) {

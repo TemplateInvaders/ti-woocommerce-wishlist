@@ -224,11 +224,11 @@ class TInvWL_Product {
 		return (array) $actions;
 	}
 
-	private function product_action( $hook, $data ) {
+	private function product_action( $hook, ...$args ) {
 		if ( null !== $this->deferred_product_actions ) {
-			$this->deferred_product_actions[] = array( $hook, $data );
+			$this->deferred_product_actions[] = array_merge( array( $hook ), $args );
 		} else {
-			do_action( $hook, $data );
+			do_action( $hook, ...$args );
 		}
 	}
 
@@ -1153,7 +1153,7 @@ class TInvWL_Product {
 		$result       = $wpdb->query( $prepared_sql );
 
 		if ( $result ) {
-			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
+			$this->product_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
 		}
 
 		return (bool) $result;
@@ -1205,7 +1205,7 @@ class TInvWL_Product {
 		global $wpdb;
 		$result = $wpdb->delete( $this->table, array( 'ID' => $item_id, 'wishlist_id' => $wishlist_id, 'product_id' => $product_id, 'variation_id' => $variation_id ) );
 		if ( $result ) {
-			do_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
+			$this->product_action( 'tinvwl_wishlist_product_removed_from_wishlist', $wishlist_id, $product_id, $variation_id );
 		}
 		return (bool) $result;
 	}

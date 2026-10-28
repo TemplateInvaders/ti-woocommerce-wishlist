@@ -41,6 +41,17 @@ if (!$available) {
 	return;
 }
 
+/** Normalize the WCCF form container while preserving its literal field values. */
+function tinvwl_wccf_container( $value ) {
+	if ( is_string( $value ) ) { $value = json_decode( $value, true ); }
+	return is_array( $value ) ? $value : array();
+}
+function tinvwl_wccf_prepare_request( $meta ) {
+	if ( isset( $meta['wccf'] ) ) { $meta['wccf'] = tinvwl_wccf_container( $meta['wccf'] ); }
+	return $meta;
+}
+add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_wccf_prepare_request' );
+
 if (!function_exists('tinvwl_item_price_woocommerce_custom_fields')) {
 
 	/**
@@ -52,24 +63,17 @@ if (!function_exists('tinvwl_item_price_woocommerce_custom_fields')) {
 	 *
 	 * @return string
 	 */
-	function tinvwl_item_price_woocommerce_custom_fields($price, $wl_product, $product)
-	{
-
-		if (class_exists('WCCF') && isset($wl_product['meta']['wccf']['product_field'])) {
-
-			$posted = array();
-
-			foreach ($wl_product['meta']['wccf']['product_field'] as $key => $value) {
-				$posted[$key] = array('value' => $value);
-			}
-
-			$price = wc_price(WCCF_Pricing::get_adjusted_price($product->get_price(), $wl_product['product_id'], $wl_product['variation_id'], $posted, 1, false, false, $product, false));
-		}
-
-		return $price;
+	function tinvwl_item_price_woocommerce_custom_fields( $price, $wl_product, $product, $raw = false ) {
+		$container = tinvwl_wccf_container( $wl_product['meta']['wccf'] ?? array() );
+		if ( ! class_exists( 'WCCF' ) || ! isset( $container['product_field'] ) || ! is_array( $container['product_field'] ) ) { return $price; }
+		$posted = array();
+		foreach ( $container['product_field'] as $key => $value ) { $posted[ $key ] = array( 'value' => $value ); }
+		$amount = WCCF_Pricing::get_adjusted_price( $product->get_price(), $wl_product['product_id'], $wl_product['variation_id'], $posted, 1, false, false, $product, false );
+		return $raw ? $amount : wc_price( wc_get_price_to_display( $product, array( 'price' => $amount, 'qty' => 1 ) ) );
 	}
 
-	add_filter('tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_fields', 10, 3);
+
+	add_filter('tinvwl_wishlist_item_price', 'tinvwl_item_price_woocommerce_custom_fields', 10, 4);
 } // End if().
 
 if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_fields')) {
@@ -85,6 +89,8 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_fields')) {
 	 */
 	function tinv_wishlist_item_meta_woocommerce_custom_fields($item_data, $product_id, $variation_id)
 	{
+		if ( isset( $item_data['wccf']['display'] ) ) { $item_data['wccf']['display'] = tinvwl_wccf_container( $item_data['wccf']['display'] ); }
+
 
 		if (class_exists('WCCF') && isset($item_data['wccf'])) {
 

@@ -141,6 +141,11 @@ class TInvWL {
 	 * Define hooks for the plugin.
 	 */
 	public function define_hooks(): void {
+		// Woo admin explicitly hides internal item metadata; its underscore prefix alone is insufficient.
+		add_filter( 'woocommerce_hidden_order_itemmeta', static function ( $hidden ) {
+			$hidden[] = '_tinvwl_cart_item_key';
+			return array_values( array_unique( $hidden ) );
+		} );
 		if ( ! empty( $_COOKIE['tinv_wishlist_owner'] ) ) {
 			if ( ! defined( 'DONOTCACHEPAGE' ) ) { define( 'DONOTCACHEPAGE', true ); }
 			add_action( 'send_headers', 'nocache_headers' );

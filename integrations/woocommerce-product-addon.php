@@ -44,11 +44,15 @@ function tinvwl_ppom_saved_data( $value ) {
 	return is_array( $value ) ? $value : array();
 }
 
-function tinvwl_ppom_file_preview( $name, $settings, $cropped = false ) {
+function tinvwl_ppom_file_preview( $name, $settings, $cropped = false, $product_id = 0 ) {
 	if ( ! is_scalar( $name ) || '' === (string) $name ) { return ''; }
-	if ( function_exists( 'ppom_uploaded_file_preview' ) ) { $html = ppom_uploaded_file_preview( (string) $name, $settings ); }
-	elseif ( function_exists( 'ppom_show_file_thumb' ) ) { $html = ppom_show_file_thumb( (string) $name, $cropped ); }
-	return ! empty( $html ) ? $html : esc_html( (string) $name );
+	// The upload preview is an editor with Delete controls; saved metadata is read-only.
+	$html = '';
+	if ( function_exists( 'ppom_create_thumb_for_meta' ) ) {
+		try { $html = ppom_create_thumb_for_meta( (string) $name, absint( $product_id ), $cropped, null ); }
+		catch ( Throwable $error ) { $html = ''; }
+	}
+	return is_string( $html ) && '' !== $html ? $html : esc_html( (string) $name );
 }
 
 if ( ! $available ) {
@@ -112,7 +116,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 							$file_thumbs_html = '';
 							foreach ( (array) $value as $file_id => $file_uploaded ) {
 								$file_name = is_array( $file_uploaded ) ? ( $file_uploaded['org'] ?? '' ) : '';
-								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta );
+								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta, false, $product_id );
 							}
 							$item_meta[] = array(
 								'key'     => $field_title,
@@ -126,7 +130,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 							foreach ( (array) $value as $file_id => $file_cropped ) {
 
 								$file_name = is_array( $file_cropped ) ? ( $file_cropped['org'] ?? '' ) : '';
-								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta, true );
+								$file_thumbs_html .= tinvwl_ppom_file_preview( $file_name, $field_meta, true, $product_id );
 							}
 							$item_meta[] = array(
 								'key'     => $field_title,

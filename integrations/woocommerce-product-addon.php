@@ -121,6 +121,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 							$item_meta[] = array(
 								'key'     => $field_title,
 								'display' => $file_thumbs_html,
+								'display_html' => true,
 							);
 
 							break;
@@ -135,6 +136,7 @@ if ( ! function_exists( 'tinv_wishlist_item_meta_woocommerce_product_add_on' ) )
 							$item_meta[] = array(
 								'key'     => $field_title,
 								'display' => $file_thumbs_html,
+								'display_html' => true,
 							);
 							break;
 

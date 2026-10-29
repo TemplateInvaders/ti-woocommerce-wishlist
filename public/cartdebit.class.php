@@ -217,17 +217,50 @@ class TInvWL_Public_CartDebit {
 		return $payload;
 	}
 
-	/** Retain the qualifying order event even when later statuses no longer match the setting. */
+	/** A failed Woo load is terminal only after a successful read confirms absence in its native store. */
+	public static function order_is_absent( $order_id ) {
+		global $wpdb;
+		if ( $wpdb->last_error || ! class_exists( 'WC_Data_Store' ) ) { return false; }
+		try {
+			$store = WC_Data_Store::load( 'order' )->get_current_class_name();
+			if ( is_a( $store, 'Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore', true ) ) { $table = $wpdb->prefix . 'wc_orders'; $column = 'id'; }
+			elseif ( is_a( $store, 'WC_Order_Data_Store_CPT', true ) ) { $table = $wpdb->posts; $column = 'ID'; }
+			else { return false; }
+			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT `$column` FROM `$table` WHERE `$column` = %d", $order_id ) );
+			return ! $wpdb->last_error && null === $exists;
+		} catch ( Throwable $error ) { return false; }
+	}
+
+	private static function order_event_key( $kind, $order_id, $new_status ) {
+		return hash( 'sha256', 'order-event|' . $kind . '|' . (int) $order_id . '|' . str_replace( 'wc-', '', $new_status ) );
+	}
+
+	/** Retire canonical jobs and pre-upgrade jobs that included an arbitrary old status. */
+	private static function clear_order_schedule( $kind, $order_id, $new_status ) {
+		$new_status = str_replace( 'wc-', '', $new_status );
+		wp_clear_scheduled_hook( 'tinvwl_order_status_retry', array( $kind, (int) $order_id, '', $new_status ) );
+		if ( ! function_exists( '_get_cron_array' ) ) { return; }
+		foreach ( (array) _get_cron_array() as $at => $hooks ) {
+			foreach ( $hooks['tinvwl_order_status_retry'] ?? array() as $job ) {
+				$args = $job['args'];
+				if ( count( $args ) === 4 && $args[0] === $kind && (int) $args[1] === (int) $order_id && str_replace( 'wc-', '', $args[3] ) === $new_status ) {
+					wp_unschedule_event( $at, 'tinvwl_order_status_retry', $args );
+				}
+			}
+		}
+	}
+
+	/** Retain the qualifying target status; its previous status does not create a second event. */
 	public static function remember_order_event( $kind, $order_id, $old_status, $new_status ) {
 		global $wpdb;
 		if ( ! in_array( $kind, array( 'analytics', 'autoremove' ), true ) || ! $order_id ) { return false; }
-		self::retry_order_later( $kind, $order_id, $old_status, $new_status );
-		if ( ! self::maybe_install() ) { return false; }
+		$new_status = str_replace( 'wc-', '', $new_status );
+		if ( ! self::maybe_install() ) { self::retry_order_later( $kind, $order_id, $old_status, $new_status ); return false; }
 		$previous = $wpdb->suppress_errors( true );
 		try { $independent = $wpdb->query( 'SET TRANSACTION READ WRITE' ); }
 		finally { $wpdb->suppress_errors( $previous ); }
-		if ( false === $independent ) { return false; }
-		$key = hash( 'sha256', 'order-event|' . $kind . '|' . (int) $order_id . '|' . $new_status );
+		if ( false === $independent ) { self::retry_order_later( $kind, $order_id, $old_status, $new_status ); return false; }
+		$key = self::order_event_key( $kind, $order_id, $new_status );
 		$payload = wp_json_encode( array( 'kind' => $kind, 'order_id' => (int) $order_id, 'old_status' => $old_status, 'new_status' => $new_status ) );
 		$now = time();
 		$result = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO `' . self::table() . "` (operation_key,wishlist_id,item_id,payload,state,available_at,created_at,updated_at) VALUES (%s,0,%d,%s,'order_retry',%d,%d,%d)", $key, $order_id, $payload, $now + 60, $now, $now ) );
@@ -242,34 +275,46 @@ class TInvWL_Public_CartDebit {
 		if ( $wpdb->last_error ) { return; }
 		$event = json_decode( (string) $payload, true );
 		if ( false === $wpdb->query( $wpdb->prepare( 'UPDATE `' . self::table() . "` SET state = 'order_done', updated_at = %d WHERE operation_key = %s AND state = 'order_retry'", time(), $key ) ) ) { return; }
-		if ( is_array( $event ) && isset( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ) ) {
-			wp_clear_scheduled_hook( 'tinvwl_order_status_retry', array( $event['kind'], (int) $event['order_id'], $event['old_status'], $event['new_status'] ) );
-		}
+		if ( is_array( $event ) && isset( $event['kind'], $event['order_id'], $event['new_status'] ) ) { self::clear_order_schedule( $event['kind'], $event['order_id'], $event['new_status'] ); }
 	}
 
-	/** A separate WP cron entry also survives an unavailable receipt table. */
+	/** Canonical cron arguments have the same identity as the ledger, including fallback-only jobs. */
 	public static function retry_order_later( $kind, $order_id, $old_status, $new_status ) {
-		$args = array( $kind, (int) $order_id, $old_status, $new_status );
+		global $wpdb;
+		$new_status = str_replace( 'wc-', '', $new_status );
+		if ( isset( self::$installed[ self::table() ] ) ) {
+			$state = $wpdb->get_var( $wpdb->prepare( 'SELECT state FROM `' . self::table() . '` WHERE operation_key = %s', self::order_event_key( $kind, $order_id, $new_status ) ) );
+			if ( ! $wpdb->last_error && 'order_done' === $state ) { self::clear_order_schedule( $kind, $order_id, $new_status ); return; }
+		}
+		$args = array( $kind, (int) $order_id, '', $new_status );
 		if ( ! wp_next_scheduled( 'tinvwl_order_status_retry', $args ) ) {
 			if ( false === wp_schedule_single_event( time() + 60, 'tinvwl_order_status_retry', $args ) ) { self::log( 'Could not schedule the qualifying order event for retry.' ); }
 		}
 	}
 
 	public static function retry_order_event( $kind, $order_id, $old_status, $new_status ) {
+		$key = self::order_event_key( $kind, $order_id, $new_status );
 		$cart = TInvWL_Public_Cart::instance( TINVWL_PREFIX );
-		if ( 'analytics' === $kind ) { return $cart->order_status_analytics( $order_id, $old_status, $new_status ); }
-		if ( 'autoremove' === $kind && is_callable( array( $cart, 'order_status_changed' ) ) ) { return $cart->order_status_changed( $order_id, $old_status, $new_status ); }
-		return false;
+		$complete = false;
+		if ( 'analytics' === $kind ) { $complete = $cart->order_status_analytics( $order_id, $old_status, $new_status ); }
+		if ( 'autoremove' === $kind ) {
+			// Disabling/changing the policy cancels existing work instead of retrying it forever.
+			if ( ! tinv_get_option( 'processing', 'autoremove' ) || str_replace( 'wc-', '', (string) tinv_get_option( 'processing', 'autoremove_status' ) ) !== str_replace( 'wc-', '', $new_status ) ) { $complete = true; }
+			elseif ( is_callable( array( $cart, 'order_status_changed' ) ) ) { $complete = $cart->order_status_changed( $order_id, $old_status, $new_status ); }
+		}
+		if ( $complete ) { self::finish_order_event( $key ); self::clear_order_schedule( $kind, $order_id, $new_status ); }
+		return $complete;
 	}
 
 	public static function run_order_events() {
 		global $wpdb;
 		if ( ! self::maybe_install() ) { return false; }
-		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `' . self::table() . "` WHERE state = 'order_retry' AND available_at <= %d ORDER BY ID LIMIT 25", time() ), ARRAY_A );
+		// Failed work moves behind older due work, even when the fallback only runs once an hour.
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `' . self::table() . "` WHERE state = 'order_retry' AND available_at <= %d ORDER BY available_at,ID LIMIT 25", time() ), ARRAY_A );
 		if ( $wpdb->last_error || ! is_array( $rows ) ) { return false; }
 		foreach ( $rows as $row ) {
 			$event = json_decode( $row['payload'], true );
-			if ( ! is_array( $event ) || ! isset( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ) ) { continue; }
+			if ( ! is_array( $event ) || ! isset( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ) ) { self::finish_order_event( $row['operation_key'] ); continue; }
 			try { $complete = self::retry_order_event( $event['kind'], $event['order_id'], $event['old_status'], $event['new_status'] ); }
 			catch ( Throwable $error ) { $complete = false; }
 			if ( $complete ) { self::finish_order_event( $row['operation_key'] ); }

@@ -822,9 +822,7 @@ class TInvWL_Public_Cart {
 			return false;
 		}
 		$order = wc_get_order( $order_id );
-		if ( ! $order ) {
-			return false;
-		}
+		if ( ! $order ) { return TInvWL_Public_CartDebit::order_is_absent( $order_id ); }
 		// Metadata refresh/save must not discard pending changes on a shared cached order.
 		$order = clone $order;
 		$store = $order->get_data_store()->get_current_class_name();
@@ -876,9 +874,8 @@ class TInvWL_Public_Cart {
 			}
 			$transaction = true;
 			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT `$root_id` FROM `$root` WHERE `$root_id` = %d FOR UPDATE", $order_id ) );
-			if ( $wpdb->last_error || ! $exists ) {
-				return false;
-			}
+			if ( $wpdb->last_error ) { return false; }
+			if ( ! $exists ) { return true; }
 			// The first consistent read starts a fresh snapshot after the per-order mutex/root lock.
 			// Read-only metadata needs no cross-order next-key locks; completion stays serialized.
 			$receipt_sql = $wpdb->prepare( "SELECT meta_value FROM `$meta` WHERE `$meta_owner` = %d AND meta_key = %s ORDER BY `$meta_id`", $order_id, $key );
@@ -936,9 +933,8 @@ class TInvWL_Public_Cart {
 			}
 			// Preserve the same collection extension point exposed by WC_Order::get_items().
 			$native_items = apply_filters( 'woocommerce_order_get_items', $native_items, $order, array( 'line_item' ) );
-			if ( empty( $native_items ) || ! is_array( $native_items ) || $wpdb->last_error ) {
-				return false;
-			}
+			if ( ! is_array( $native_items ) || $wpdb->last_error ) { return false; }
+			if ( empty( $native_items ) ) { return true; }
 			$events = array();
 			foreach ( $native_items as $item ) {
 				if ( ! $item instanceof WC_Order_Item_Product ) { continue; }

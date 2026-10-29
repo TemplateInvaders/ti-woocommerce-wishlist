@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-item-data.php.
  *
- * @version             2.11.0
+ * @version             2.14.1
  * @package           TInvWishlist\Template
  */
 

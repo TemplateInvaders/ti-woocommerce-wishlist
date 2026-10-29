@@ -104,9 +104,6 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_fields')) {
 					'child_id' => $variation_id,
 				));
 
-				// Set quantity
-				$quantity = 1;
-				$quantity_index = null;
 				$display_pricing = null;
 
 				// Check if pricing can be displayed for this product
@@ -116,20 +113,15 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_fields')) {
 
 				foreach ($fields as $field) {
 
-					// Check how many times to iterate the same field (used for quantity-based product fields)
-					if ($quantity_index !== null) {
-						$iterations = ($quantity_index + 1);
-						$i = $quantity_index;
-					} else {
-						$iterations = ($field->is_quantity_based() && $quantity) ? $quantity : 1;
-						$i = 0;
+					// Enumerate saved instances instead of guessing their count from a display quantity.
+					$instances = array( 0 => (string) $field->get_id() );
+					if ( $field->is_quantity_based() ) {
+						foreach ( array_keys( $item_data['wccf']['display']['product_field'] ?? array() ) as $saved_id ) {
+							if ( preg_match( '/^' . preg_quote( (string) $field->get_id(), '/' ) . '_(\d+)$/D', (string) $saved_id, $match ) ) { $instances[ (int) $match[1] ] = $saved_id; }
+						}
+						ksort( $instances, SORT_NUMERIC );
 					}
-
-					// Start iteration of the same field
-					for ($i = $i; $i < $iterations; $i++) {
-
-						// Get field id
-						$field_id = $field->get_id() . ($i ? ('_' . $i) : '');
+					foreach ( $instances as $field_id ) {
 
 						// Special handling for files
 						if ($field->field_type_is('file')) {
@@ -156,7 +148,7 @@ if (!function_exists('tinv_wishlist_item_meta_woocommerce_custom_fields')) {
 										return trim($test_value) !== '';
 									});
 								} else {
-									$value = stripslashes(trim($field_value));
+									$value = is_scalar( $field_value ) || null === $field_value ? (string) $field_value : '';
 								}
 
 								$item_data[] = array(

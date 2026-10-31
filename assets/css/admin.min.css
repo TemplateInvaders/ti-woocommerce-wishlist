@@ -1,6 +1,6 @@
 /**
  * TI WooCommerce Wishlist Plugin - Allow your store guests and customers to add products to Wishlist.  Add Wishlist functionality to your store for free.
- * @version 2.14.0
+ * @version 2.14.1
  * @link https://wordpress.org/plugins/ti-woocommerce-wishlist/
  */
 *{-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -361,7 +361,7 @@ textarea[name=style_plain-css]{height:150px}
 .tinvwl-premium-feat .col-lg-4 .half-containers.subscribe .mc-field-group input[type=submit]{width:30%}
 .tinvwl-premium-feat .col-lg-4 .half-containers.subscribe #mc_embed_signup{margin-bottom:30px}
 .tinvwl-premium-feat h2{font-size:30px;text-transform:uppercase;letter-spacing:-0.025em;line-height:1;color:#fff}
-.tinvwl-premium-feat .tinvwl-pic-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border:5px solid #fff;text-align:center;background:#df4c57;background:linear-gradient(135deg,#df4c57 0,#f78c62 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#df4c57",endColorstr="#f78c62",GradientType=1);padding:25px 10px;color:#fff}
+.tinvwl-premium-feat .tinvwl-pic-col{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border:5px solid #fff;text-align:center;background:#df4c57;background:linear-gradient(135deg,#df4c57 0,#f78c62 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#df4c57',endColorstr='#f78c62',GradientType=1);padding:25px 10px;color:#fff}
 .tinvwl-premium-feat .tinvwl-pic-col img{display:block;margin:0 auto}
 .tinvwl-premium-feat .tinvwl-pic-col .tinvwl-btn.white{color:#ff5739}
 .tinvwl-premium-feat .tinvwl-pic-col .tinvwl-btn.white:hover{color:#fff}

@@ -156,7 +156,7 @@ if (class_exists('WC_Bookings')) {
 				$booking_form = (version_compare(WC_BOOKINGS_VERSION, '1.15.0', '<')) ? new WC_Booking_Form($product) : new WC_Bookings_Cost_Calculation();
 				$cost = (version_compare(WC_BOOKINGS_VERSION, '1.15.0', '<')) ? $booking_form->calculate_booking_cost($wl_product['meta']) : $booking_form->calculate_booking_cost(wc_bookings_get_posted_data($wl_product['meta'], $product), $product);
 				if (is_wp_error($cost)) {
-					return '<p class="stock out-of-stock"><span><i class="ftinvwl ftinvwl-times"></i></span><span>' . $cost->get_error_message() . '</span></p>';
+					return '<p class="stock out-of-stock"><span><i class="ftinvwl ftinvwl-times"></i></span><span>' . wp_kses_post($cost->get_error_message()) . '</span></p>';
 				}
 			}
 

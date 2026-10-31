@@ -1,14 +1,14 @@
-# Copyright (C) 2026 TI WooCommerce Wishlist Plugin - 2.14.0
-# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.14.0 package.
+# Copyright (C) 2026 TI WooCommerce Wishlist Plugin - 2.14.1
+# This file is distributed under the same license as the TI WooCommerce Wishlist Plugin - 2.14.1 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.14.0\n"
+"Project-Id-Version: TI WooCommerce Wishlist Plugin - 2.14.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
-"POT-Creation-Date: 2026-10-22 11:14+0000\n"
+"POT-Creation-Date: 2026-10-31 17:33+0000\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Default Wishlist Name"
 msgstr ""
 
-#: admin/settings/general.class.php:119, admin/tinvwl.class.php:474
+#: admin/settings/general.class.php:119, admin/tinvwl.class.php:481
 msgid "Wishlist Page"
 msgstr ""
 
@@ -857,63 +857,63 @@ msgstr ""
 msgid "Premium Features"
 msgstr ""
 
-#: admin/tinvwl.class.php:119
+#: admin/tinvwl.class.php:126
 msgid "<strong>Welcome to WooCommerce Wishlist Plugin</strong> – You‘re almost ready to start :)"
 msgstr ""
 
-#: admin/tinvwl.class.php:121, admin/tinvwl.class.php:141
+#: admin/tinvwl.class.php:128, admin/tinvwl.class.php:148
 msgid "Run the Setup Wizard"
 msgstr ""
 
-#: admin/tinvwl.class.php:123
+#: admin/tinvwl.class.php:130
 msgid "Skip Setup"
 msgstr ""
 
-#: admin/tinvwl.class.php:132
+#: admin/tinvwl.class.php:139
 msgid "WooCommerce Wishlist Plugin is misconfigured!"
 msgstr ""
 
-#: admin/tinvwl.class.php:133
+#: admin/tinvwl.class.php:140
 msgid "Since the Setup Wizard was skipped, the Wishlist may function improperly."
 msgstr ""
 
-#: admin/tinvwl.class.php:134
+#: admin/tinvwl.class.php:141
 msgid "Create a New Page or open to edit a page where the Wishlist should be displayed."
 msgstr ""
 
-#: admin/tinvwl.class.php:135
+#: admin/tinvwl.class.php:142
 msgid "Add <code>[ti_wishlistsview]</code> shortcode into a page content."
 msgstr ""
 
-#: admin/tinvwl.class.php:136
+#: admin/tinvwl.class.php:143
 msgid "In a plugin General Settings section apply this page as a \"Wishlist\" page."
 msgstr ""
 
-#: admin/tinvwl.class.php:138
+#: admin/tinvwl.class.php:145
 msgid "Please apply the Wishlist page"
 msgstr ""
 
-#: admin/tinvwl.class.php:139
+#: admin/tinvwl.class.php:146
 msgid " or "
 msgstr ""
 
-#: admin/tinvwl.class.php:150, admin/tinvwl.class.php:150
+#: admin/tinvwl.class.php:157, admin/tinvwl.class.php:157
 msgid "TI Wishlist"
 msgstr ""
 
-#: admin/tinvwl.class.php:251
+#: admin/tinvwl.class.php:258
 msgid "Are you sure you want to reset the settings?"
 msgstr ""
 
-#: admin/tinvwl.class.php:338, views/admin/wishlists.php:159, views/wizard/finish.php:33
+#: admin/tinvwl.class.php:345, views/admin/wishlists.php:159, views/wizard/finish.php:33
 msgid "Upgrade to Premium"
 msgstr ""
 
-#: admin/tinvwl.class.php:377
+#: admin/tinvwl.class.php:384
 msgid "<code>%1$s</code> version <strong style=\"color:red\">%2$s</strong> is out of date. The core version is <strong style=\"color:red\">%3$s</strong>"
 msgstr ""
 
-#: admin/tinvwl.class.php:403
+#: admin/tinvwl.class.php:410
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce Wishlist Plugin template files.</strong><br> These files may need updating to ensure they are compatible with the current version of WooCommerce Wishlist Plugin.<br> You can see which files are affected from the <a href=\"%2$s\">system status page</a>.<br> If in doubt, check with the author of the theme."
 msgstr ""
 
@@ -929,63 +929,67 @@ msgstr ""
 msgid "premium only"
 msgstr ""
 
-#: includes/api/wishlist.class.php:132, includes/api/wishlist.class.php:440
+#: includes/api/wishlist.class.php:132, includes/api/wishlist.class.php:443
 msgid "Invalid wishlist share key."
 msgstr ""
 
-#: includes/api/wishlist.class.php:163, includes/api/wishlist.class.php:179
+#: includes/api/wishlist.class.php:162
+msgid "A positive user ID is required."
+msgstr ""
+
+#: includes/api/wishlist.class.php:171, includes/api/wishlist.class.php:183
 msgid "No wishlists found for this user."
 msgstr ""
 
-#: includes/api/wishlist.class.php:233, includes/api/wishlist.class.php:242, includes/api/wishlist.class.php:250
+#: includes/api/wishlist.class.php:236, includes/api/wishlist.class.php:245, includes/api/wishlist.class.php:253
 msgid "Update wishlist data failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:351
+#: includes/api/wishlist.class.php:354
 msgid "Add product to wishlist failed."
 msgstr ""
 
-#: includes/api/wishlist.class.php:392
+#: includes/api/wishlist.class.php:395
 msgid "Invalid item ID."
 msgstr ""
 
-#: includes/api/wishlist.class.php:404, includes/api/wishlist.class.php:418
+#: includes/api/wishlist.class.php:407, includes/api/wishlist.class.php:421
 msgid "Product not found."
 msgstr ""
 
-#: includes/api/wishlist.class.php:423
+#: includes/api/wishlist.class.php:426
 msgid "Product removed from a wishlist."
 msgstr ""
 
-#: includes/api/wishlist.class.php:470, public/wishlist/ajax.class.php:156, public/wishlist/ajax.class.php:170, templates/ti-wishlist-null.php:17
+#: includes/api/wishlist.class.php:473, public/wishlist/ajax.class.php:159, public/wishlist/ajax.class.php:173, templates/ti-wishlist-null.php:17
 msgid "Wishlist is not found!"
 msgstr ""
 
-#: includes/api/wishlist.class.php:543, includes/api/wishlist.class.php:613
+#: includes/api/wishlist.class.php:546, includes/api/wishlist.class.php:616
 msgid "Authentication is required."
 msgstr ""
 
-#: includes/api/wishlist.class.php:561
+#: includes/api/wishlist.class.php:564
 msgid "You are not allowed to view this wishlist."
 msgstr ""
 
-#: includes/api/wishlist.class.php:601, includes/api/wishlist.class.php:624
+#: includes/api/wishlist.class.php:604, includes/api/wishlist.class.php:627
 msgid "You are not allowed to modify this wishlist."
 msgstr ""
 
-#: includes/export.class.php:301, includes/export.class.php:350
+#: includes/export.class.php:313, includes/export.class.php:362
 msgid "There was an error importing your settings, please try again."
 msgstr ""
 
-#: includes/export.class.php:329
+#: includes/export.class.php:341
 msgid "Please upload the TI WooCommerce Wishlist setting file or copy the content."
 msgstr ""
 
-#: includes/export.class.php:335
+#: includes/export.class.php:347
 msgid "The settings JSON is not valid."
 msgstr ""
 
-#: includes/export.class.php:374
+#: includes/export.class.php:386
 msgid "There was an error exporting your settings, please try again."
 msgstr ""
 
@@ -1025,11 +1029,11 @@ msgstr ""
 msgid "%1$s is conflicted with %2$s %3$s. Deactivating %1$s."
 msgstr ""
 
-#: includes/tinvwl.class.php:196
+#: includes/tinvwl.class.php:203
 msgid "Settings"
 msgstr ""
 
-#: includes/tinvwl.class.php:197
+#: includes/tinvwl.class.php:204
 msgid "Premium Version"
 msgstr ""
 
@@ -1057,7 +1061,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:315, includes/wizard.class.php:346, integrations/theme-flatsome.php:119, integrations/theme-flatsome.php:161, integrations/theme-flatsome.php:238, integrations/theme-flatsome.php:279, integrations/theme-flatsome.php:304, public/tinvwl.class.php:605, public/tinvwl.class.php:938, templates/ti-wishlist-product-counter.php:30, views/header.php:25
+#: includes/wizard.class.php:315, includes/wizard.class.php:346, integrations/theme-flatsome.php:133, integrations/theme-flatsome.php:175, integrations/theme-flatsome.php:252, integrations/theme-flatsome.php:293, integrations/theme-flatsome.php:318, public/tinvwl.class.php:608, public/tinvwl.class.php:984, templates/ti-wishlist-product-counter.php:30, views/header.php:25
 msgid "Wishlist"
 msgstr ""
 
@@ -1197,32 +1201,44 @@ msgstr ""
 msgid "Added To Wishlist"
 msgstr ""
 
-#: integrations/product-extras-for-woocommerce.php:130
+#: integrations/product-extras-for-woocommerce.php:145
 msgid "Flat rate cost"
 msgstr ""
 
-#: integrations/theme-flatsome.php:169
+#: integrations/theme-flatsome.php:183
 msgid "Wishlist Icon"
 msgstr ""
 
-#: integrations/theme-flatsome.php:188
+#: integrations/theme-flatsome.php:202
 msgid "Wishlist Icon Style"
 msgstr ""
 
-#: integrations/theme-flatsome.php:205
+#: integrations/theme-flatsome.php:219
 msgid "Show Wishlist Title"
 msgstr ""
 
-#: integrations/theme-flatsome.php:216
+#: integrations/theme-flatsome.php:230
 msgid "Custom Title"
 msgstr ""
 
-#: integrations/wc-fields-factory.php:535
+#: integrations/wc-fields-factory.php:534
 msgid "Unable to restore the saved product file."
 msgstr ""
 
-#: integrations/woo-product-bundle.php:122, integrations/woocommerce-composite-products.php:142, integrations/woocommerce-mix-and-match-products.php:127, integrations/woocommerce-product-bundles.php:137, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:144, templates/ti-wishlist.php:152
+#: integrations/woo-product-bundle.php:128, integrations/woocommerce-composite-products.php:59, integrations/woocommerce-composite-products.php:198, integrations/woocommerce-mix-and-match-products.php:59, integrations/woocommerce-mix-and-match-products.php:190, integrations/woocommerce-product-bundles.php:141, integrations/woocommerce-tm-extra-product-options.php:61, integrations/woocommerce-tm-extra-product-options.php:169, integrations/yith-woocommerce-product-add-ons.php:236, integrations/yith-woocommerce-product-add-ons.php:305, integrations/yith-woocommerce-product-add-ons.php:320
+msgid "Saved configuration is unavailable."
+msgstr ""
+
+#: integrations/woo-product-bundle.php:166, integrations/woocommerce-composite-products.php:250, integrations/woocommerce-mix-and-match-products.php:219, integrations/woocommerce-product-bundles.php:178, integrations/yith-woocommerce-product-bundles.php:165, templates/ti-wishlist-user.php:144, templates/ti-wishlist.php:152
 msgid "In stock"
+msgstr ""
+
+#: integrations/woocommerce-composite-products.php:59, integrations/woocommerce-mix-and-match-products.php:59, integrations/woocommerce-tm-extra-product-options.php:61, integrations/yith-woocommerce-product-add-ons.php:236
+msgid "Configuration"
+msgstr ""
+
+#: integrations/woocommerce-composite-products.php:450, integrations/woocommerce-composite-products.php:497, integrations/woocommerce-mix-and-match-products.php:262, integrations/woocommerce-product-bundles.php:251, integrations/woocommerce-tm-extra-product-options.php:263, integrations/woocommerce-tm-extra-product-options.php:265, integrations/yith-woocommerce-product-add-ons.php:291, integrations/yith-woocommerce-product-add-ons.php:293
+msgid "Unavailable"
 msgstr ""
 
 #: integrations/woocommerce-rental-and-booking.php:57
@@ -1269,7 +1285,7 @@ msgstr ""
 msgid "Wishlist Button"
 msgstr ""
 
-#: integrations/yith-woocommerce-product-add-ons.php:72
+#: integrations/yith-woocommerce-product-add-ons.php:240
 msgid "Base price"
 msgstr ""
 
@@ -1281,7 +1297,7 @@ msgstr ""
 msgid "Your session has expired. Please refresh the page and try again."
 msgstr ""
 
-#: public/addtowishlist.class.php:226, public/addtowishlist.class.php:286, public/addtowishlist.class.php:411, public/wishlist/ajax.class.php:99, public/wishlist/ajax.class.php:187, public/wishlist/ajax.class.php:200, public/wishlist/ajax.class.php:208, public/wishlist/ajax.class.php:244, public/wishlist/ajax.class.php:252, public/wishlist/ajax.class.php:307, public/wishlist/ajax.class.php:318
+#: public/addtowishlist.class.php:226, public/addtowishlist.class.php:286, public/addtowishlist.class.php:411, public/wishlist/ajax.class.php:102, public/wishlist/ajax.class.php:190, public/wishlist/ajax.class.php:203, public/wishlist/ajax.class.php:211, public/wishlist/ajax.class.php:247, public/wishlist/ajax.class.php:255
 msgid "Something went wrong"
 msgstr ""
 
@@ -1293,69 +1309,93 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: public/cart.class.php:965
+#: public/cart.class.php:147
+msgid "Please open this product from your wishlist again before adding it to the cart."
+msgstr ""
+
+#: public/cart.class.php:151, public/cart.class.php:159
+msgid "The wishlist could not be updated. Please try again or open the product from your wishlist."
+msgstr ""
+
+#: public/cart.class.php:154
+msgid "The saved product has changed. Please open it from your wishlist again."
+msgstr ""
+
+#: public/cart.class.php:1137
+msgid "Some selected items could not be added. Try again to retry only those items."
+msgstr ""
+
+#: public/cart.class.php:1161, public/wishlist/ajax.class.php:314
+msgid "Item #%d"
+msgstr ""
+
+#: public/cart.class.php:1161
+msgid "Unavailable item"
+msgstr ""
+
+#: public/cart.class.php:1186
 msgid "Sorry, the &quot;%s&quot; cannot be purchased."
 msgid_plural "Sorry, the following products cannot be purchased: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:976
+#: public/cart.class.php:1197
 msgid "You cannot add &quot;%s&quot; to the cart because the product is out of stock."
 msgid_plural "You cannot add the following products to the cart because they are out of stock: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:987
+#: public/cart.class.php:1208
 msgid "External product &quot;%s&quot; cannot be bought."
 msgid_plural "The following external products cannot be bought: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:998
+#: public/cart.class.php:1219
 msgid "Please choose product options for &quot;%s&quot;."
 msgid_plural "Please choose options for the following products: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:1009
+#: public/cart.class.php:1230
 msgid "You cannot add another &quot;%s&quot; to your cart."
 msgid_plural "You cannot add &quot;%s&quot; more to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:1020
+#: public/cart.class.php:1241
 msgid "You cannot add that amount of &quot;%s&quot; to the cart because there is not enough stock."
 msgid_plural "You cannot add the following products to the cart because there is not enough stock: &quot;%s&quot;."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/cart.class.php:1031
+#: public/cart.class.php:1252
 msgid "Product &quot;%s&quot; could not be added to the cart because some requirements are not met."
 msgid_plural "Products: &quot;%s&quot; could not be added to the cart because some requirements are not met."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/tinvwl.class.php:591
+#: public/tinvwl.class.php:594
 msgid "Create New"
 msgstr ""
 
-#: public/tinvwl.class.php:595
+#: public/tinvwl.class.php:598
 msgid "Please select some product options before adding this product to your wishlist."
 msgstr ""
 
-#: public/tinvwl.class.php:596
+#: public/tinvwl.class.php:599
 msgid "No items or actions are selected."
 msgstr ""
 
-#: public/tinvwl.class.php:597
+#: public/tinvwl.class.php:600
 msgid "Copied!"
 msgstr ""
 
-#: public/tinvwl.class.php:604
+#: public/tinvwl.class.php:607
 msgid "Unable to update wishlist. Please try again."
 msgstr ""
 
-#: public/tinvwl.class.php:606, templates/ti-addedtowishlist-dialogbox.php:36
+#: public/tinvwl.class.php:609, templates/ti-addedtowishlist-dialogbox.php:36
 msgid "Close"
 msgstr ""
 
@@ -1379,33 +1419,41 @@ msgstr ""
 msgid "Counter Text"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:213, public/wishlist/ajax.class.php:258, public/wishlist/ajax.class.php:333
+#: public/wishlist/ajax.class.php:216, public/wishlist/ajax.class.php:261, public/wishlist/ajax.class.php:344
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:228
+#: public/wishlist/ajax.class.php:231
 msgid "%s has not been removed from the wishlist."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:222
+#: public/wishlist/ajax.class.php:225
 msgid "%s has been removed from the wishlist."
 msgstr ""
 
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:286, public/wishlist/ajax.class.php:435, public/wishlist/ajax.class.php:516
+#: public/wishlist/ajax.class.php:289, public/wishlist/ajax.class.php:450, public/wishlist/ajax.class.php:540
 msgid "%s has been added to your cart."
 msgid_plural "%s have been added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:345
+#: public/wishlist/ajax.class.php:320
+msgid "Could not remove the selected items. Please refresh the wishlist and try again."
+msgstr ""
+
+#: public/wishlist/ajax.class.php:356
 msgid "%s has been successfully removed from the wishlist."
 msgid_plural "%s have been successfully removed from the wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
+#: public/wishlist/ajax.class.php:362
+msgid "Could not complete or confirm removal of %s. Please refresh the wishlist and check these items."
+msgstr ""
+
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:428, public/wishlist/ajax.class.php:509
+#: public/wishlist/ajax.class.php:443, public/wishlist/ajax.class.php:533
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""

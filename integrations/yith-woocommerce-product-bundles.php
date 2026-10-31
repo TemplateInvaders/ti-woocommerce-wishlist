@@ -138,7 +138,7 @@ if (!function_exists('tinvwl_row_yith_woocommerce_product_bundles')) {
 					}
 
 					$product = $bundled_item->get_product();
-					if (!is_object($product)) {
+					if (!TInvWL_Product::can_read_product($product)) {
 						continue;
 					}
 

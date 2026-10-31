@@ -3,7 +3,7 @@ Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
 Tested up to: 7.1.3
-Stable tag: 2.14.0
+Stable tag: 2.14.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,40 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 ## Changelog ##
+
+### 2.14.1 ###
+*Release Date - Unreleased*
+
+- **Security**: Improved guest action protection and access checks for saved product configurations
+- **Security**: Hardened saved bundle configurations and access to bundled products
+- **Fixed**: Database upgrades, legacy table recovery and preservation of fractional quantities
+- **Fixed**: Wishlist-to-cart operations, automatic removal and guest wishlist transfers
+- **Fixed**: Partial bulk actions, Undo and purchase tracking
+- **Fixed**: Wishlist buttons, selected variations and synchronization after AJAX requests
+- **Fixed**: Saved product options, uploaded file previews, addon pricing and tax display
+- **Fixed**: Internal metadata appearing in WooCommerce order details
+- **Fixed**: Settings imports and wishlist cleanup on multisite installations
+- **Updated**: Integration with [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) plugin
+- **Updated**: Integration with [WooCommerce Product Bundles](https://woocommerce.com/products/product-bundles/) plugin
+- **Updated**: Integration with [WPC Product Bundles](https://wordpress.org/plugins/woo-product-bundle/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/) plugin
+- **Updated**: Integration with [WooCommerce Bookings](https://woocommerce.com/products/woocommerce-bookings/) plugin
+- **Updated**: Integration with [WooCommerce Composite Products](https://woocommerce.com/products/composite-products/) plugin
+- **Updated**: Integration with [WooCommerce Mix and Match Products](https://woocommerce.com/products/woocommerce-mix-and-match-products/) plugin
+- **Updated**: Integration with [WooCommerce TM Extra Product Options](https://codecanyon.net/item/woocommerce-extra-product-options/7908619) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
+- **Updated**: Integration with [PPOM for WooCommerce](https://wordpress.org/plugins/woocommerce-product-addon/) plugin
+- **Updated**: Integration with [WooCommerce Product Add-Ons Ultimate](https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/) plugin
+- **Updated**: Integration with [WooCommerce Custom Fields](https://codecanyon.net/item/woocommerce-custom-fields/11332742) plugin
+- **Updated**: Integration with [Extra Product Options for WooCommerce](https://wordpress.org/plugins/woo-extra-product-options/) plugin
+- **Updated**: Integration with [Advanced Product Fields](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/) and [Advanced Product Fields Pro and Extended](https://www.studiowombat.com/plugin/advanced-product-fields-for-woocommerce/) plugins
+- **Updated**: Integration with [WooCommerce Product Add-Ons](https://woocommerce.com/products/product-add-ons/) plugin
+- **Updated**: Integration with [Woo Custom Product Addons](https://wordpress.org/plugins/woo-custom-product-addons/) plugin
+- **Updated**: Integration with [WC Fields Factory](https://wordpress.org/plugins/wc-fields-factory/) plugin
+- **Updated**: Integration with [Hide Price & Add to Cart Button](https://woocommerce.com/products/hide-price-add-to-cart-button/) plugin
+- **Updated**: Integration with [WPML Multilingual CMS](https://wpml.org/) plugin
+- **Updated**: Integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/) plugin
+- **Updated**: Compatibility with [Flatsome](https://flatsome.uxthemes.com/) theme
 
 ### 2.14.0 ###
 *Release Date - 22 October 2026*

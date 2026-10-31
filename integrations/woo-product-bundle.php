@@ -72,6 +72,48 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 	}
 
 	/**
+	 * Parse saved bundle data without allowing malformed quantities into HTML.
+	 *
+	 * Existing wishlist rows are untrusted, including rows saved through the API.
+	 *
+	 * @param array|string $ids Saved WPC bundle configuration.
+	 * @return array|false Parsed items, or false for an invalid configuration.
+	 */
+	function tinvwl_woo_product_bundle_items( $ids ) {
+		if ( ! is_array( $ids ) && ! is_string( $ids ) ) {
+			return false;
+		}
+		if ( is_array( $ids ) ) {
+			foreach ( $ids as $item ) {
+				if ( ! is_array( $item ) ) {
+					return false;
+				}
+				if ( array_key_exists( 'qty', $item ) && ( ! is_numeric( $item['qty'] ) || ! is_finite( (float) $item['qty'] ) || (float) $item['qty'] < 0 ) ) {
+					return false;
+				}
+			}
+		}
+
+		$bundle = WPCleverWoosb::instance();
+		try {
+			$items = version_compare( WOOSB_VERSION, '6.2.0', '<' ) ? $bundle->woosb_get_bundled( $ids ) : $bundle->get_bundled( $ids );
+		} catch ( \Throwable $error ) {
+			return false;
+		}
+		if ( ! is_array( $items ) ) {
+			return false;
+		}
+		foreach ( $items as $item ) {
+			if ( ! is_array( $item ) || ! isset( $item['id'], $item['qty'] )
+				|| ! is_scalar( $item['id'] ) || ! is_numeric( $item['id'] )
+				|| ! is_numeric( $item['qty'] ) || ! is_finite( (float) $item['qty'] ) || (float) $item['qty'] < 0 ) {
+				return false;
+			}
+		}
+		return $items;
+	}
+
+	/**
 	 * Add rows for sub product for WPC Product Bundles for WooCommerce
 	 *
 	 * @param array $wl_product Wishlist Product.
@@ -81,9 +123,11 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 	function tinvwl_row_woo_product_bundle( $wl_product, $product, $discount_extra = 0 ) {
 		if ( is_object( $product ) && $product->is_type( 'woosb' ) && isset( $wl_product['meta'] ) && isset( $wl_product['meta']['woosb_ids'] ) ) {
 
-			$bundle = WPCleverWoosb::instance();
-
-			$bundled_items = ( version_compare( WOOSB_VERSION, '6.2.0', '<' ) ) ? $bundle->woosb_get_bundled( $wl_product['meta']['woosb_ids'] ) : $bundle->get_bundled( $wl_product['meta']['woosb_ids'] );
+			$bundled_items = tinvwl_woo_product_bundle_items( $wl_product['meta']['woosb_ids'] );
+			if ( false === $bundled_items ) {
+				echo '<tr class="tinvwl-unavailable-configuration"><td colspan="20">' . esc_html__( 'Saved configuration is unavailable.', 'ti-woocommerce-wishlist' ) . '</td></tr>';
+				return;
+			}
 			if ( ! empty( $bundled_items ) ) {
 				foreach ( $bundled_items as $key => $data ) {
 
@@ -91,7 +135,7 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 
 					$bundled_item->product = wc_get_product( $data['id'] );
 
-					if ( ! $bundled_item->product ) {
+					if ( ! TInvWL_Product::can_read_product( $bundled_item->product ) ) {
 						continue;
 					}
 
@@ -137,7 +181,7 @@ if ( defined( 'WOOSB_VERSION' ) ) {
 					}
 					$row_string .= '</tr>';
 
-					echo sprintf( $row_string, $product_image, $product_title, $product_price, $availability_html, $bundled_product_qty ); // WPCS: xss ok.
+					echo sprintf( $row_string, $product_image, $product_title, $product_price, $availability_html, esc_html( (string) $bundled_product_qty ) ); // WPCS: xss ok.
 				} // End foreach().
 			} // End if().
 		} // End if().

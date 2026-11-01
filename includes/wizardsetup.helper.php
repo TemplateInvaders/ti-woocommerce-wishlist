@@ -61,10 +61,19 @@ class TInvWL_WizardSetup {
 	 * Apply redirect to wizard.
 	 */
 	public function redirect(): void {
-		if ( ! get_transient( '_tinvwl_activation_redirect' ) ) {
+		global $pagenow;
+		// Background requests must leave the pending navigation for an ordinary admin page.
+		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ||
+		     'GET' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ||
+		     wp_doing_ajax() || wp_doing_cron() ||
+		     ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
+		     in_array( $pagenow, [ 'admin-post.php', 'async-upload.php' ], true ) ) {
 			return;
 		}
-		delete_transient( '_tinvwl_activation_redirect' );
+		// A failed deletion must never turn a one-time redirect into an admin lockout.
+		if ( ! get_transient( '_tinvwl_activation_redirect' ) || ! delete_transient( '_tinvwl_activation_redirect' ) ) {
+			return;
+		}
 
 		$page     = filter_input( INPUT_GET, 'page' );
 		$activate = filter_input( INPUT_GET, 'activate-multi' );
@@ -72,6 +81,9 @@ class TInvWL_WizardSetup {
 		if ( in_array( $page, [ 'tinvwl-wizard' ], true ) ||
 		     is_network_admin() ||
 		     ! is_null( $activate ) ||
+		     ! get_option( $this->_name . '_db_ver' ) ||
+		     get_option( $this->_name . '_wizard', false ) ||
+		     ! apply_filters( 'tinvwl_enable_wizard', true ) ||
 		     apply_filters( 'tinvwl_prevent_automatic_wizard_redirect', false ) ) {
 			return;
 		}

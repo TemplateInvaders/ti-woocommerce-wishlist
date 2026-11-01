@@ -58,17 +58,18 @@ class TInvWL_Activator
 	 */
 	public static function activate()
 	{
+		$fresh_install = is_null(get_option(self::$_name . '_db_ver', null));
 		if (self::update()) {
 			return false;
-		}
-		if (is_null(get_option(self::$_name . '_db_ver', null))) {
-			TInvWL_WizardSetup::setup();
 		}
 		if ( ! self::database() ) {
 			return self::schema_error();
 		}
 		self::load_data();
 		TInvWL_Public_TInvWL::update_rewrite_rules();
+		if ($fresh_install) {
+			TInvWL_WizardSetup::setup();
+		}
 	}
 
 	/**

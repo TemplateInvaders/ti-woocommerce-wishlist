@@ -1,3 +1,5 @@
+"use strict";
+
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 // Add to wishlist
 (function ($) {
@@ -1901,6 +1903,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, 0);
   }
 })(jQuery);
+"use strict";
+
 // Initialize a single guest secret before the first mutation, including virgin tabs.
 (function ($) {
   $.tinvwlGuestNonceRequest = function (settings) {
@@ -2004,6 +2008,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     return deferred.promise();
   };
 })(jQuery);
+"use strict";
+
 // Misc
 (function ($) {
   $(document).ready(function () {
@@ -2086,6 +2092,8 @@ function clearTooltip(e) {
     delete elem.tinvwlTooltipLabel;
   }
 }
+"use strict";
+
 // Wishlist table
 (function ($) {
   //Prevent to submit wishlist table action

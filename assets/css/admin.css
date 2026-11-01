@@ -2271,7 +2271,7 @@ textarea[name=style_plain-css] {
   text-align: center;
   background: #df4c57; /* Old browsers */ /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #df4c57 0%, #f78c62 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#df4c57", endColorstr="#f78c62", GradientType=1); /* IE6-9 fallback on horizontal gradient */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#df4c57', endColorstr='#f78c62', GradientType=1); /* IE6-9 fallback on horizontal gradient */
   padding: 25px 10px;
   color: #ffffff;
 }

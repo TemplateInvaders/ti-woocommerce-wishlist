@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: TemplateInvaders (https://templateinvaders.com/)\n"
 "Last-Translator: TemplateInvaders (https://templateinvaders.com/)\n"
-"POT-Creation-Date: 2026-10-31 17:33+0000\n"
+"POT-Creation-Date: 2026-11-02 14:43+0000\n"
 "Report-Msgid-Bugs-To: https://templateinvaders.com/help/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -961,7 +961,7 @@ msgstr ""
 msgid "Product removed from a wishlist."
 msgstr ""
 
-#: includes/api/wishlist.class.php:473, public/wishlist/ajax.class.php:159, public/wishlist/ajax.class.php:173, templates/ti-wishlist-null.php:17
+#: includes/api/wishlist.class.php:473, public/wishlist/ajax.class.php:160, public/wishlist/ajax.class.php:174, templates/ti-wishlist-null.php:17
 msgid "Wishlist is not found!"
 msgstr ""
 
@@ -1061,7 +1061,7 @@ msgstr ""
 msgid "Page Setup"
 msgstr ""
 
-#: includes/wizard.class.php:315, includes/wizard.class.php:346, integrations/theme-flatsome.php:133, integrations/theme-flatsome.php:175, integrations/theme-flatsome.php:252, integrations/theme-flatsome.php:293, integrations/theme-flatsome.php:318, public/tinvwl.class.php:608, public/tinvwl.class.php:984, templates/ti-wishlist-product-counter.php:30, views/header.php:25
+#: includes/wizard.class.php:315, includes/wizard.class.php:346, integrations/theme-flatsome.php:133, integrations/theme-flatsome.php:175, integrations/theme-flatsome.php:252, integrations/theme-flatsome.php:293, integrations/theme-flatsome.php:318, public/tinvwl.class.php:609, public/tinvwl.class.php:985, templates/ti-wishlist-product-counter.php:30, views/header.php:25
 msgid "Wishlist"
 msgstr ""
 
@@ -1297,7 +1297,7 @@ msgstr ""
 msgid "Your session has expired. Please refresh the page and try again."
 msgstr ""
 
-#: public/addtowishlist.class.php:226, public/addtowishlist.class.php:286, public/addtowishlist.class.php:411, public/wishlist/ajax.class.php:102, public/wishlist/ajax.class.php:190, public/wishlist/ajax.class.php:203, public/wishlist/ajax.class.php:211, public/wishlist/ajax.class.php:247, public/wishlist/ajax.class.php:255
+#: public/addtowishlist.class.php:226, public/addtowishlist.class.php:286, public/addtowishlist.class.php:411, public/wishlist/ajax.class.php:103, public/wishlist/ajax.class.php:191, public/wishlist/ajax.class.php:204, public/wishlist/ajax.class.php:212, public/wishlist/ajax.class.php:248, public/wishlist/ajax.class.php:256
 msgid "Something went wrong"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr ""
 msgid "Some selected items could not be added. Try again to retry only those items."
 msgstr ""
 
-#: public/cart.class.php:1161, public/wishlist/ajax.class.php:314
+#: public/cart.class.php:1161, public/wishlist/ajax.class.php:315
 msgid "Item #%d"
 msgstr ""
 
@@ -1391,11 +1391,11 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: public/tinvwl.class.php:607
+#: public/tinvwl.class.php:608
 msgid "Unable to update wishlist. Please try again."
 msgstr ""
 
-#: public/tinvwl.class.php:609, templates/ti-addedtowishlist-dialogbox.php:36
+#: public/tinvwl.class.php:610, templates/ti-addedtowishlist-dialogbox.php:36
 msgid "Close"
 msgstr ""
 
@@ -1419,41 +1419,41 @@ msgstr ""
 msgid "Counter Text"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:216, public/wishlist/ajax.class.php:261, public/wishlist/ajax.class.php:344
+#: public/wishlist/ajax.class.php:217, public/wishlist/ajax.class.php:262, public/wishlist/ajax.class.php:345
 msgid "&ldquo;%s&rdquo;"
 msgstr ""
 
-#: public/wishlist/ajax.class.php:231
+#: public/wishlist/ajax.class.php:232
 msgid "%s has not been removed from the wishlist."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:225
+#: public/wishlist/ajax.class.php:226
 msgid "%s has been removed from the wishlist."
 msgstr ""
 
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:289, public/wishlist/ajax.class.php:450, public/wishlist/ajax.class.php:540
+#: public/wishlist/ajax.class.php:290, public/wishlist/ajax.class.php:451, public/wishlist/ajax.class.php:541
 msgid "%s has been added to your cart."
 msgid_plural "%s have been added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:320
+#: public/wishlist/ajax.class.php:321
 msgid "Could not remove the selected items. Please refresh the wishlist and try again."
 msgstr ""
 
-#: public/wishlist/ajax.class.php:356
+#: public/wishlist/ajax.class.php:357
 msgid "%s has been successfully removed from the wishlist."
 msgid_plural "%s have been successfully removed from the wishlist."
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/wishlist/ajax.class.php:362
+#: public/wishlist/ajax.class.php:363
 msgid "Could not complete or confirm removal of %s. Please refresh the wishlist and check these items."
 msgstr ""
 
 #. translators: %s: product name
-#: public/wishlist/ajax.class.php:443, public/wishlist/ajax.class.php:533
+#: public/wishlist/ajax.class.php:444, public/wishlist/ajax.class.php:534
 msgctxt "Item name in quotes"
 msgid "&ldquo;%s&rdquo;"
 msgstr ""

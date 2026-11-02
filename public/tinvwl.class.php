@@ -599,6 +599,7 @@ class TInvWL_Public_TInvWL {
 			'tinvwl_break_submit'        => esc_attr__( 'No items or actions are selected.', 'ti-woocommerce-wishlist' ),
 			'tinvwl_clipboard'           => esc_attr__( 'Copied!', 'ti-woocommerce-wishlist' ),
 			'allow_parent_variable'      => apply_filters( 'tinvwl_allow_add_parent_variable_product', false ),
+			'data_cookies'              => (bool) apply_filters( 'tinvwl_allow_data_cookies', true ),
 			'block_ajax_wishlists_data'  => apply_filters( 'tinvwl_block_ajax_wishlists_data', false ),
 			'update_wishlists_data'      => apply_filters( 'tinvwl_update_wishlists_data', false ),
 			'hash_key'                   => 'ti_wishlist_data_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ),

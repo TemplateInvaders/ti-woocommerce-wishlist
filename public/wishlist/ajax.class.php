@@ -66,6 +66,7 @@ class TInvWL_Public_Wishlist_Ajax {
 	 */
 	public function ajax_action(): void {
 		$post = filter_input_array( INPUT_POST, [
+			'tinvwl-snapshot'   => FILTER_VALIDATE_BOOLEAN,
 			'tinvwl-security'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-action'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'tinvwl-retry'      => FILTER_VALIDATE_BOOLEAN,
@@ -139,7 +140,7 @@ class TInvWL_Public_Wishlist_Ajax {
 				'action'        => 'get_data',
 				'icon'          => 'icon_big_heart_check',
 				'msg'           => '',
-				'content'       => tinvwl_shortcode_view( [
+				'content'       => ! empty( $post['tinvwl-snapshot'] ) ? '' : tinvwl_shortcode_view( [
 					'paged'          => $post['tinvwl-paged'] ?? 1,
 					'sharekey'       => false,
 					'lists_per_page' => $post['tinvwl-per-page'] ?? 0,
@@ -558,7 +559,7 @@ class TInvWL_Public_Wishlist_Ajax {
 			$response = TInvWL_Public_Cart::complete_bulk_response( $response );
 		}
 
-		$response['content'] = tinvwl_shortcode_view(
+		$response['content'] = 'get_data' === $action && ! empty( $post['tinvwl-snapshot'] ) ? '' : tinvwl_shortcode_view(
 			[
 				'paged'          => $post['tinvwl-paged'],
 				'sharekey'       => $post['tinvwl-sharekey'],

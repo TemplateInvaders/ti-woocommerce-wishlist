@@ -29,6 +29,25 @@
 		return data;
 	}
 
+	// Persist only a numeric display hint; product data, HTML and credentials stay live.
+	function wishlistCounter( value ) {
+		if ( false === value || 'false' === value ) { return 0; }
+		if ( 'number' !== typeof value && ( 'string' !== typeof value || value.length > 64 || ! /^\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i.test( value ) ) ) { return null; }
+		var counter = Number( value );
+		return isFinite( counter ) && counter >= 0 ? counter : null;
+	}
+
+	function restore_product_counter() {
+		var counter = 0;
+		try {
+			if ( false !== tinvwl_add_to_wishlist.data_cookies && 'undefined' !== typeof Cookies && undefined === Cookies.get( 'tinvwl_update_data' ) ) {
+				var cached = wishlistCounter( Cookies.get( 'tinvwl_wishlists_data_counter' ) );
+				if ( null !== cached ) { counter = cached; }
+			}
+		} catch ( error ) { /* Cookies are optional; the live request still runs. */ }
+		update_product_counter( counter );
+	}
+
 	// Statistics are requested in bounded batches for the buttons currently on this page.
 	function wishlistStatsProductIds( knownStats ) {
 		var ids = [], seen = Object.create( null );
@@ -1289,13 +1308,18 @@
 		});
 
 		// Get wishlist data from REST API.
-		var statsReadPending = false;
+		var statsReadPending = false, snapshotReadPending = null, snapshotReadQueued = false;
 		var get_data_ajax = function( refresh, force, target, statsProducts ) {
 			if (mutationRunning || mutationQueue.length) {
 				if ('refresh' === refresh) { rememberWishlistViews(target); }
 				return;
 			}
 			if ( statsProducts && statsReadPending ) { return; }
+			var snapshotRead = 'refresh' !== refresh && ! statsProducts;
+			if ( snapshotRead && snapshotReadPending && snapshotReadPending.revision === wishlistRevision ) {
+				if ( force ) { snapshotReadQueued = true; }
+				return;
+			}
 
 			if ( 'refresh' === refresh && ! ( target && target.jquery ) ) {
 				$( 'div.tinv-wishlist.woocommerce.tinv-wishlist-clear form[data-tinvwl_sharekey]' ).filter( function() {
@@ -1337,6 +1361,8 @@
 				}
 
 
+				if ( 'refresh' !== refresh ) { data['tinvwl-snapshot'] = true; }
+
 				if ( tinvwl_add_to_wishlist.wpml ) {
 					data.lang = tinvwl_add_to_wishlist.wpml;
 				}
@@ -1351,6 +1377,8 @@
 					if ( statsProducts ) { statsReadPending = true; }
 				}
 
+				var snapshotRequest;
+				if ( snapshotRead ) { snapshotReadQueued = false; snapshotReadPending = snapshotRequest = { revision: readRevision }; }
 				wishlistAjax({
 					url: tinvwl_add_to_wishlist.wc_ajax_url,
 					method: 'POST',
@@ -1361,6 +1389,13 @@
 					}
 				}).always( function() {
 					if ( statsProducts ) { statsReadPending = false; }
+					if ( snapshotRead && snapshotReadPending === snapshotRequest ) {
+						snapshotReadPending = null;
+						if ( snapshotReadQueued ) {
+							snapshotReadQueued = false;
+							window.setTimeout( function() { get_data_ajax( undefined, true ); }, 0 );
+						}
+					}
 					if ( 'refresh' === refresh ) {
 						finishWishlistAction( undefined, requestContainer );
 					}
@@ -1429,8 +1464,12 @@
 		};
 
 		tinvwl_add_to_wishlist.user_interacted = false;
+		var hasCounter = $( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).length > 0;
+		if ( hasCounter ) { restore_product_counter(); }
 
 		$.fn.tinvwl_get_wishlist_data();
+		// A visible counter must not wait for the first click or scroll.
+		if ( hasCounter && ! tinvwl_add_to_wishlist.block_ajax_wishlists_data ) { get_data_ajax( undefined, true ); }
 
 		$( document ).one( 'click keydown scroll', function() {
 			tinvwl_add_to_wishlist.user_interacted = true;
@@ -1623,6 +1662,15 @@
 	 * @param {string|number} counter - The counter value.
 	 */
 	function update_product_counter( counter ) {
+		var hidden = false === counter || 'false' === counter;
+		counter = wishlistCounter( counter );
+		if ( null === counter ) { return; }
+		try {
+			if ( false !== tinvwl_add_to_wishlist.data_cookies && 'undefined' !== typeof Cookies ) {
+				Cookies.set( 'tinvwl_wishlists_data_counter', String( counter ), { path: '/', sameSite: 'Lax', secure: 'https:' === window.location.protocol } );
+			}
+		} catch ( error ) { /* A display cookie is never required for wishlist operations. */ }
+		if ( hidden ) { counter = 'false'; }
 
 		// Hide counter if necessary
 		if ( '1' == window.tinvwl_add_to_wishlist['hide_zero_counter'] && 0 === counter ) {
@@ -1634,7 +1682,7 @@
 
 		// Update counter and icon label if counter is not 'false'
 		if ( 'false' !== counter ) {
-			jQuery( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).html( counter );
+			jQuery( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).text( counter );
 			jQuery( 'i.wishlist-icon' ).attr( 'data-icon-label', counter );
 		} else {
 

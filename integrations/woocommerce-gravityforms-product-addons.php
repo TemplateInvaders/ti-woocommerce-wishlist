@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Gravity Forms Product Add-Ons
  *
- * @version 3.7.7
+ * @version 4.0.3
  *
  * @slug woocommerce-gravityforms-product-addons
  *
@@ -41,6 +41,74 @@ if ( ! $available ) {
 	return;
 }
 
+if ( ! function_exists( 'tinvwl_gf_repeater_inputs' ) ) {
+	/** Only these native Repeater inputs contain row arrays, rather than literal text. */
+	function tinvwl_gf_repeater_inputs( $field ) {
+		$names = array( 'input_' . $field->id . '_row' );
+		foreach ( (array) $field->fields as $child ) {
+			if ( 'repeater' === $child->type ) {
+				$names = array_merge( $names, tinvwl_gf_repeater_inputs( $child ) );
+				continue;
+			}
+			$inputs = $child->get_entry_inputs();
+			foreach ( is_array( $inputs ) ? $inputs : array( array( 'id' => $child->id ) ) as $input ) {
+				$names[] = 'input_' . str_replace( '.', '_', (string) $input['id'] );
+			}
+		}
+		return $names;
+	}
+
+	function tinvwl_gf_row_array( $value ) {
+		if ( is_string( $value ) ) {
+			$decoded = json_decode( $value, true );
+			if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) { return $decoded; }
+		}
+		return $value;
+	}
+
+	/** Resolve current form fields without changing the stored configuration or request. */
+	function tinvwl_gf_saved_repeater( $field, $form, $meta ) {
+		$value = tinvwl_gf_row_array( $meta[ 'input_' . $field->id ] ?? null );
+		if ( is_array( $value ) ) { return $value; }
+		$post = array();
+		foreach ( tinvwl_gf_repeater_inputs( $field ) as $name ) {
+			$value = $meta[ $name ] ?? $meta[ 'input_' . str_replace( '_', '.', substr( $name, 6 ) ) ] ?? null;
+			if ( null !== $value ) { $post[ $name ] = tinvwl_gf_row_array( $value ); }
+		}
+		$original_post = $_POST;
+		$field = clone $field;
+		try {
+			$post[ 'is_submit_' . $form['id'] ] = 1;
+			$_POST = wp_slash( $post );
+			$field->set_context_property( 'form', $form );
+			return $field->get_value_submission( array() );
+		} finally { $_POST = $original_post; }
+	}
+
+	/** Restore row arrays only for native Repeater input names at the cart boundary. */
+	function tinvwl_gf_prepare_repeater_request( $meta, $row ) {
+		$id = $meta['wc_gforms_form_id'] ?? 0;
+		if ( ! is_scalar( $id ) || ! class_exists( 'RGFormsModel' ) ) { return $meta; }
+		$form = RGFormsModel::get_form_meta( absint( $id ) );
+		if ( ! is_array( $form ) || empty( $form['fields'] ) ) { return $meta; }
+		foreach ( $form['fields'] as $field ) {
+			if ( 'repeater' !== $field->type ) { continue; }
+			foreach ( tinvwl_gf_repeater_inputs( $field ) as $name ) {
+				if ( array_key_exists( $name, $meta ) ) { $meta[ $name ] = tinvwl_gf_row_array( $meta[ $name ] ); }
+			}
+		}
+		// GF reads WordPress POST values with unslashing. Restore that convention only
+		// for its request fields; the stored configuration remains unchanged.
+		foreach ( $meta as $key => $value ) {
+			if ( preg_match( '/^(?:input_|gform_|state_|is_submit_|wc_gforms_)/', (string) $key ) ) {
+				$meta[ $key ] = wp_slash( $value );
+			}
+		}
+		return $meta;
+	}
+	add_filter( 'tinvwl_addproduct_tocart_prepare_meta', 'tinvwl_gf_prepare_repeater_request', 10, 2 );
+}
+
 if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 
 	/**
@@ -50,11 +118,13 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 	 *
 	 * @return array
 	 */
-	function tinv_wishlist_metasupport_wc_gf_addons( $meta ) {
-		if ( array_key_exists( 'wc_gforms_form_id', $meta ) && class_exists( 'RGFormsModel' ) ) {
-			$form_meta = RGFormsModel::get_form_meta( $meta['wc_gforms_form_id']['display'] );
+	function tinv_wishlist_metasupport_wc_gf_addons( $meta, $product_id = 0, $variation_id = 0, $saved_meta = array() ) {
+		// Hidden form controls are removed from display metadata before this filter.
+		$form_id = $meta['wc_gforms_form_id']['display'] ?? $saved_meta['wc_gforms_form_id'] ?? 0;
+		if ( is_scalar( $form_id ) && $form_id && class_exists( 'RGFormsModel' ) ) {
+			$form_meta = RGFormsModel::get_form_meta( absint( $form_id ) );
 
-			if ( array_key_exists( 'fields', $form_meta ) ) {
+			if ( is_array( $form_meta ) && isset( $form_meta['fields'] ) && is_array( $form_meta['fields'] ) ) {
 				$_meta = array();
 				foreach ( $form_meta['fields'] as $field ) {
 
@@ -62,7 +132,12 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 						continue;
 					}
 
-					$field_name = $field->get_first_input_id( array( 'id' => 0 ) );
+					$inputs = $field instanceof GF_Field ? $field->get_entry_inputs() : rgar( $field, 'inputs' );
+					$first_input = is_array( $inputs ) && $inputs ? reset( $inputs )['id'] : $field['id'];
+					$field_name = 'input_' . str_replace( '.', '_', (string) $first_input );
+					if ( 'repeater' === $field['type'] && ! isset( $meta[ $field_name ] ) ) {
+						$meta[ $field_name ] = array( 'key' => $field->label, 'display' => '' );
+					}
 
 					if ( array_key_exists( $field_name, $meta ) ) {
 
@@ -84,6 +159,12 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 							}
 						}
 
+						if ( 'repeater' === $field['type'] && is_callable( array( 'WC_GFPA_Item_Meta', 'repeater_lines' ) ) ) {
+							$raw = $saved_meta ?: array_map( static function ( $data ) { return is_array( $data ) ? ( $data['display'] ?? '' ) : $data; }, $meta );
+							$rows = tinvwl_gf_saved_repeater( $field, $form_meta, $raw );
+							$lines = WC_GFPA_Item_Meta::repeater_lines( $field, $rows, array( 'form_id' => $form_meta['id'] ) );
+							$meta[ $field_name ]['display'] = html_entity_decode( wp_strip_all_tags( implode( '; ', $lines ) ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+						}
 						$meta[ $field_name ]['key'] = $field->label;
 						$_meta[ $field_name ]       = $meta[ $field_name ];
 
@@ -96,7 +177,7 @@ if ( ! function_exists( 'tinv_wishlist_metasupport_wc_gf_addons' ) ) {
 		return $meta;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_wc_gf_addons' );
+	add_filter( 'tinvwl_wishlist_item_meta_post', 'tinv_wishlist_metasupport_wc_gf_addons', 10, 4 );
 }
 
 if ( ! function_exists( 'tinvwl_wishlist_item_url_wc_gf_addons' ) ) {
@@ -124,13 +205,14 @@ if ( ! function_exists( 'tinvwl_item_price_wc_gf_addons' ) ) {
 	 * @param array $wl_product Wishlist Product.
 	 * @param \WC_Product $product Woocommerce Product.
 	 *
-	 * @return string
+	 * @param bool $raw Return the numeric price before display tax.
+	 * @return string|float
 	 */
-	function tinvwl_item_price_wc_gf_addons( $price, $wl_product, $product ) {
+	function tinvwl_item_price_wc_gf_addons( $price, $wl_product, $product, $raw = false ) {
 		if ( array_key_exists( 'wc_gforms_form_id', $wl_product['meta'] ) && class_exists( 'RGFormsModel' ) ) {
 			$form = RGFormsModel::get_form_meta( $wl_product['meta']['wc_gforms_form_id'] );
 
-			if ( empty( $form ) ) {
+			if ( ! is_array( $form ) || empty( $form['fields'] ) || ! is_array( $form['fields'] ) ) {
 				return $price;
 			}
 
@@ -145,111 +227,122 @@ if ( ! function_exists( 'tinvwl_item_price_wc_gf_addons' ) ) {
 				}
 			}
 
-			$use_choice_text = false;
-			$use_admin_label = false;
-			$products        = array();
-			$total           = 0;
+			if ( is_callable( array( 'WC_GFPA_Field_Helpers', 'get_product_fields' ) ) ) {
+				// The current native calculator includes conditional fields and Repeater rows.
+				$lead['currency'] = GFCommon::get_currency();
+				foreach ( $form['fields'] as $field ) {
+					$id = (string) $field['id'];
+					if ( 'repeater' === $field['type'] ) { $lead[ $id ] = tinvwl_gf_saved_repeater( $field, $form, $wl_product['meta'] ); }
+				}
+				$products = WC_GFPA_Field_Helpers::get_product_fields( $form, $lead );
+				$total = 0;
+			} else {
+				$use_choice_text = false;
+				$use_admin_label = false;
+				$products        = array();
+				$total           = 0;
 
-			foreach ( $form["fields"] as $field ) {
-				$id         = $field["id"];
-				$lead_value = RGFormsModel::get_lead_field_value( $lead, $field );
+				foreach ( $form["fields"] as $field ) {
+					$id         = $field["id"];
+					$lead_value = RGFormsModel::get_lead_field_value( $lead, $field );
 
-				$quantity_field = GFCommon::get_product_fields_by_type( $form, array( "quantity" ), $id );
-				$quantity       = sizeof( $quantity_field ) > 0 ? RGFormsModel::get_lead_field_value( $lead, $quantity_field[0] ) : 1;
+					$quantity_field = GFCommon::get_product_fields_by_type( $form, array( "quantity" ), $id );
+					$quantity       = sizeof( $quantity_field ) > 0 ? RGFormsModel::get_lead_field_value( $lead, $quantity_field[0] ) : 1;
 
-				switch ( $field["type"] ) {
+					switch ( $field["type"] ) {
 
-					case "product" :
+						case "product" :
 
-						//if single product, get values from the multiple inputs
-						if ( is_array( $lead_value ) ) {
-							$product_quantity = sizeof( $quantity_field ) == 0 && ! rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
-							if ( empty( $product_quantity ) ) {
-								break;
+							//if single product, get values from the multiple inputs
+							if ( is_array( $lead_value ) ) {
+								$product_quantity = sizeof( $quantity_field ) == 0 && ! rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
+								if ( empty( $product_quantity ) ) {
+									break;
+								}
+
+								if ( ! rgget( $id, $products ) ) {
+									$products[ $id ] = array();
+								}
+
+								$products[ $id ]["name"]     = $use_admin_label && ! rgempty( "adminLabel", $field ) ? $field["adminLabel"] : $lead_value[ $id . ".1" ];
+								$products[ $id ]["price"]    = rgar( $lead_value, $id . ".2" );
+								$products[ $id ]["quantity"] = $product_quantity;
+							} else if ( ! empty( $lead_value ) ) {
+
+								if ( empty( $quantity ) ) {
+									break;
+								}
+
+								if ( ! rgar( $products, $id ) ) {
+									$products[ $id ] = array();
+								}
+
+								if ( $field["inputType"] == "price" ) {
+									$name  = $field["label"];
+									$price = $lead_value;
+								} else {
+									list( $name, $price ) = explode( "|", $lead_value );
+								}
+
+								$products[ $id ]["name"]     = ! $use_choice_text ? $name : RGFormsModel::get_choice_text( $field, $name );
+								$products[ $id ]["price"]    = $price;
+								$products[ $id ]["quantity"] = $quantity;
+								$products[ $id ]["options"]  = array();
 							}
 
-							if ( ! rgget( $id, $products ) ) {
-								$products[ $id ] = array();
-							}
-
-							$products[ $id ]["name"]     = $use_admin_label && ! rgempty( "adminLabel", $field ) ? $field["adminLabel"] : $lead_value[ $id . ".1" ];
-							$products[ $id ]["price"]    = rgar( $lead_value, $id . ".2" );
-							$products[ $id ]["quantity"] = $product_quantity;
-						} else if ( ! empty( $lead_value ) ) {
-
-							if ( empty( $quantity ) ) {
-								break;
-							}
-
-							if ( ! rgar( $products, $id ) ) {
-								$products[ $id ] = array();
-							}
-
-							if ( $field["inputType"] == "price" ) {
-								$name  = $field["label"];
-								$price = $lead_value;
-							} else {
-								list( $name, $price ) = explode( "|", $lead_value );
-							}
-
-							$products[ $id ]["name"]     = ! $use_choice_text ? $name : RGFormsModel::get_choice_text( $field, $name );
-							$products[ $id ]["price"]    = $price;
-							$products[ $id ]["quantity"] = $quantity;
-							$products[ $id ]["options"]  = array();
-						}
-
-						if ( isset( $products[ $id ] ) ) {
-							$options = GFCommon::get_product_fields_by_type( $form, array( "option" ), $id );
-							foreach ( $options as $option ) {
-								$option_value = RGFormsModel::get_lead_field_value( $lead, $option );
-								$option_label = empty( $option["adminLabel"] ) ? $option["label"] : $option["adminLabel"];
-								if ( is_array( $option_value ) ) {
-									foreach ( $option_value as $value ) {
-										$option_info = GFCommon::get_option_info( $value, $option, $use_choice_text );
-										if ( ! empty( $option_info ) ) {
-											$products[ $id ]["options"][] = array(
-												"field_label"  => rgar( $option, "label" ),
-												"option_name"  => rgar( $option_info, "name" ),
-												"option_label" => $option_label . ": " . rgar( $option_info, "name" ),
-												"price"        => rgar( $option_info, "price" )
-											);
+							if ( isset( $products[ $id ] ) ) {
+								$options = GFCommon::get_product_fields_by_type( $form, array( "option" ), $id );
+								foreach ( $options as $option ) {
+									$option_value = RGFormsModel::get_lead_field_value( $lead, $option );
+									$option_label = empty( $option["adminLabel"] ) ? $option["label"] : $option["adminLabel"];
+									if ( is_array( $option_value ) ) {
+										foreach ( $option_value as $value ) {
+											$option_info = GFCommon::get_option_info( $value, $option, $use_choice_text );
+											if ( ! empty( $option_info ) ) {
+												$products[ $id ]["options"][] = array(
+													"field_label"  => rgar( $option, "label" ),
+													"option_name"  => rgar( $option_info, "name" ),
+													"option_label" => $option_label . ": " . rgar( $option_info, "name" ),
+													"price"        => rgar( $option_info, "price" )
+												);
+											}
 										}
+									} else if ( ! empty( $option_value ) ) {
+										$option_info                  = GFCommon::get_option_info( $option_value, $option, $use_choice_text );
+										$products[ $id ]["options"][] = array(
+											"field_label"  => rgar( $option, "label" ),
+											"option_name"  => rgar( $option_info, "name" ),
+											"option_label" => $option_label . ": " . rgar( $option_info, "name" ),
+											"price"        => rgar( $option_info, "price" )
+										);
 									}
-								} else if ( ! empty( $option_value ) ) {
-									$option_info                  = GFCommon::get_option_info( $option_value, $option, $use_choice_text );
-									$products[ $id ]["options"][] = array(
-										"field_label"  => rgar( $option, "label" ),
-										"option_name"  => rgar( $option_info, "name" ),
-										"option_label" => $option_label . ": " . rgar( $option_info, "name" ),
-										"price"        => rgar( $option_info, "price" )
-									);
 								}
 							}
-						}
-						break;
+							break;
+					}
 				}
-			}
 
-			$shipping_field = GFCommon::get_fields_by_type( $form, array( "shipping" ) );
-			$shipping_price = $shipping_name = "";
+				$shipping_field = GFCommon::get_fields_by_type( $form, array( "shipping" ) );
+				$shipping_price = $shipping_name = "";
 
-			if ( ! empty( $shipping_field ) && ! RGFormsModel::is_field_hidden( $form, $shipping_field[0], array(), $lead ) ) {
-				$shipping_price = RGFormsModel::get_lead_field_value( $lead, $shipping_field[0] );
-				$shipping_name  = $shipping_field[0]["label"];
-				if ( $shipping_field[0]["inputType"] != "singleshipping" ) {
-					list( $shipping_method, $shipping_price ) = explode( "|", $shipping_price );
-					$shipping_name = $shipping_field[0]["label"] . " ($shipping_method)";
+				if ( ! empty( $shipping_field ) && ! RGFormsModel::is_field_hidden( $form, $shipping_field[0], array(), $lead ) ) {
+					$shipping_price = RGFormsModel::get_lead_field_value( $lead, $shipping_field[0] );
+					$shipping_name  = $shipping_field[0]["label"];
+					if ( $shipping_field[0]["inputType"] != "singleshipping" ) {
+						list( $shipping_method, $shipping_price ) = explode( "|", $shipping_price );
+						$shipping_name = $shipping_field[0]["label"] . " ($shipping_method)";
+					}
 				}
+
+				$shipping_price = GFCommon::to_number( $shipping_price );
+
+				$product_info = array(
+					"products" => $products,
+					"shipping" => array( "name" => $shipping_name, "price" => $shipping_price )
+				);
+
+				$products = apply_filters( "gform_product_info_{$form["id"]}", apply_filters( "gform_product_info", $product_info, $form, $lead ), $form, $lead );
 			}
-
-			$shipping_price = GFCommon::to_number( $shipping_price );
-
-			$product_info = array(
-				"products" => $products,
-				"shipping" => array( "name" => $shipping_name, "price" => $shipping_price )
-			);
-
-			$products = apply_filters( "gform_product_info_{$form["id"]}", apply_filters( "gform_product_info", $product_info, $form, $lead ), $form, $lead );
 
 			if ( ! empty( $products["products"] ) ) {
 
@@ -271,13 +364,14 @@ if ( ! function_exists( 'tinvwl_item_price_wc_gf_addons' ) ) {
 			$price = $product->get_price( 'edit' );
 			$price += (float) $total;
 
-			return wc_price( $price );
+			if ( $raw ) { return $price; }
+			return wc_price( wc_get_price_to_display( $product, array( 'price' => $price ) ) );
 		}
 
 		return $price;
 	}
 
-	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wc_gf_addons', 10, 3 );
+	add_filter( 'tinvwl_wishlist_item_price', 'tinvwl_item_price_wc_gf_addons', 10, 4 );
 } // End if().
 
 if ( ! function_exists( 'tinvwl_wc_gf_addons_edit_link' ) ) {

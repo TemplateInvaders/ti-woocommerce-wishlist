@@ -4,7 +4,7 @@
  *
  * @name Anti-Spam by CleanTalk
  *
- * @version 6.90
+ * @version 6.91
  *
  * @slug cleantalk-spam-protect
  *

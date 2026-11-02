@@ -4,7 +4,7 @@
  *
  * @name Quick Buy Now Button for WooCommerce
  *
- * @version 1.6.1
+ * @version 1.6.2
  *
  * @slug buy-now-button-for-woocommerce
  *

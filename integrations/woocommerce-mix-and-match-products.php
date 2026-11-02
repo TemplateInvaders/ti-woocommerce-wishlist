@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Mix and Match
  *
- * @version 2.8.7
+ * @version 2.9.5
  *
  * @slug woocommerce-mix-and-match-products
  *

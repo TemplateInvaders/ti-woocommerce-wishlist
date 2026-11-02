@@ -4,7 +4,7 @@
  *
  * @name PW WooCommerce Gift Cards
  *
- * @version 2.53
+ * @version 2.55
  *
  * @slug pw-woocommerce-gift-cards
  *

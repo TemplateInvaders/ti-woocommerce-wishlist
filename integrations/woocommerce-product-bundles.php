@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Product Bundles
  *
- * @version 8.5.9
+ * @version 8.5.17
  *
  * @slug woocommerce-product-bundles
  *

@@ -4,7 +4,7 @@
  *
  * @name WooCommerce Composite Products
  *
- * @version 11.0.7
+ * @version 11.2.2
  *
  * @slug woocommerce-composite-products
  *

@@ -227,9 +227,14 @@
 		if (!options.data || options.data instanceof window.FormData || !owns(options.data, 'tinvwl-security')) { return $.ajax(options); }
 		var result = $.Deferred();
 		function refresh(retried) {
-			freshRequestNonce().done(function (nonces) {
+			var initialSnapshot = !retried && 'get_data' === options.data['tinvwl-action'] && true === options.data['tinvwl-snapshot'] && !options.data['tinvwl-sharekey'];
+			freshRequestNonce(initialSnapshot ? options.data : undefined).done(function (nonces) {
 				if (!nonces || 'string' !== typeof nonces.table_nonce || !nonces.table_nonce) { result.reject(); return; }
 				tinvwl_add_to_wishlist.nonce = nonces.table_nonce;
+				if (initialSnapshot && wishlistData(nonces.wishlists_data)) {
+					result.resolveWith(this, [{status: true, action: 'get_data', content: '', wishlists_data: nonces.wishlists_data}]);
+					return;
+				}
 				send(retried);
 			}).fail(function () { result.rejectWith(this, arguments); });
 		}
@@ -263,13 +268,14 @@
 	}
 
 	var nonceRequest;
-	function freshRequestNonce() {
+	function freshRequestNonce(snapshotData) {
 		var request = nonceRequest;
 		if ( ! nonceRequest ) {
 			request = $.tinvwlGuestNonceRequest({
 				url: tinvwl_add_to_wishlist.nonce_url || tinvwl_add_to_wishlist.wc_ajax_url.replace( /([?&])wc-ajax=[^&#]*/, '$1wc-ajax=tinvwl_request_nonce' ),
 				method: 'POST',
 				dataType: 'json',
+				data: snapshotData,
 				cache: false
 			});
 			nonceRequest = request;

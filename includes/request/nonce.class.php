@@ -86,11 +86,19 @@ class TInvWL_Request_Nonce {
 		if ( '' === $add_nonce ) {
 			wp_send_json( array( 'status' => false, 'error' => 'guest_identity_unavailable' ), 409 );
 		}
-		wp_send_json( array(
+		$response = array(
 			'add_nonce' => $add_nonce,
 			'cart_nonce' => self::create( 'tinvwl_save_cart' ),
 			'table_nonce' => self::create( 'tinvwl_table_action' ),
 			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-		) );
+		);
+		if ( filter_input( INPUT_POST, 'tinvwl-snapshot', FILTER_VALIDATE_BOOLEAN ) && class_exists( 'TInvWL_Public_AddToWishlist' ) ) {
+			try {
+				$response['wishlists_data'] = TInvWL_Public_AddToWishlist::instance()->get_initial_wishlists_data();
+			} catch ( Throwable $error ) {
+				// An optional read must not prevent session-bound mutation nonces.
+			}
+		}
+		wp_send_json( $response );
 	}
 }

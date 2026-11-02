@@ -516,6 +516,17 @@ class TInvWL_Public_AddToWishlist
 		return $stats;
 	}
 
+	/** Canonical owner snapshot for the uncached, session-bound frontend bootstrap. */
+	public function get_initial_wishlists_data() {
+		$share_key = false;
+		if ( ! is_user_logged_in() ) {
+			$wl = new TInvWL_Wishlist( $this->_name );
+			$guest = $wl->get_by_sharekey_default()[0] ?? array();
+			if ( $guest && $wl->is_owner( $guest ) ) { $share_key = $guest['share_key']; }
+		}
+		return $this->get_wishlists_data( $share_key );
+	}
+
 	/**
 	 * @param string $share_key
 	 *

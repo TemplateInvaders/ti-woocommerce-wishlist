@@ -62,6 +62,7 @@ class TInvWL_Activator
 	private static $schema_deferred = false;
 	private static $schema_recording = false;
 	private static $schema_created = false;
+	private static $schema_failure_scope = 'schema';
 
 	private static function schema_database_option() {
 		return self::$_name . '_db_ver';
@@ -81,7 +82,7 @@ class TInvWL_Activator
 	/** Read the shared checkpoint after acquiring the lock, bypassing request caches. */
 	private static function schema_state() {
 		global $wpdb;
-		$keys = array( self::schema_database_option(), self::schema_marker(), self::schema_marker() . '_error', self::$_name . '_db_ver' );
+		$keys = array( self::schema_database_option(), self::schema_marker(), self::schema_marker() . '_error', self::$_name . '_db_ver', self::charset_marker(), self::charset_marker() . '_error' );
 		$keys = array_values( array_unique( $keys ) );
 		$placeholders = implode( ', ', array_fill( 0, count( $keys ), '%s' ) );
 		self::schema_stage( 'read_checkpoint', $wpdb->options );
@@ -145,7 +146,7 @@ class TInvWL_Activator
 		$message = $exception ? $exception->getMessage() : (string) $wpdb->last_error;
 		// Engine errors can include duplicate values or connection usernames in quotes.
 		$message = preg_replace( '/\x27[^\x27]*\x27|"[^"]*"|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i', '[redacted]', $message );
-		$record = array( 'schema_version' => (string) self::$_version, 'attempted_at' => gmdate( 'c' ), 'sql_errno' => self::schema_sql_errno(), 'message' => substr( strip_tags( $message ), 0, 400 ) );
+		$record = array( 'operation' => self::$schema_failure_scope, 'schema_version' => (string) self::$_version, 'attempted_at' => gmdate( 'c' ), 'sql_errno' => self::schema_sql_errno(), 'message' => substr( strip_tags( $message ), 0, 400 ) );
 		foreach ( array( 'stage', 'table', 'column', 'index', 'attribute', 'expected', 'actual' ) as $key ) {
 			if ( array_key_exists( $key, $details ) ) {
 				$value = $details[ $key ];
@@ -163,7 +164,7 @@ class TInvWL_Activator
 		$identity = $record;
 		unset( $identity['attempted_at'] );
 		$fingerprint = md5( wp_json_encode( $identity ) );
-		$key = self::schema_marker() . '_last_log';
+		$key = ( 'charset' === ( $record['operation'] ?? '' ) ? self::charset_marker() : self::schema_marker() ) . '_last_log';
 		self::$schema_recording = true;
 		try {
 			$previous = get_option( $key, array() );
@@ -184,7 +185,7 @@ class TInvWL_Activator
 	}
 
 	/** true = completed, null = deferred, false = failed. Never return truthy status objects. */
-	private static function with_schema_lock( $callback ) {
+	private static function with_schema_lock( $callback, $scope = 'schema' ) {
 		global $wpdb;
 		if ( self::$schema_lock ) { return $callback(); }
 		self::$schema_failure = null;
@@ -206,11 +207,15 @@ class TInvWL_Activator
 			$failure = self::$schema_failure;
 			// Lock diagnostics are separate from protected migration status. A request
 			// that never owned the lock cannot write the permanent migration error.
-			update_option( self::schema_marker() . '_lock_error', $failure, false );
+			$failure['operation'] = $scope;
+			$error_marker = 'charset' === $scope ? self::charset_marker() : self::schema_marker();
+			update_option( $error_marker . '_lock_error', $failure, false );
 			self::log_schema_failure( $failure );
 			return false;
 		}
 		self::$schema_lock = $lock;
+		$previous_scope = self::$schema_failure_scope;
+		self::$schema_failure_scope = $scope;
 		$prefix = self::$wpdb_prefix;
 		self::$wpdb_prefix = $wpdb->prefix;
 		$previous = $wpdb->suppress_errors( true );
@@ -231,6 +236,7 @@ class TInvWL_Activator
 			$wpdb->last_error = $error;
 			$wpdb->suppress_errors( $previous );
 			self::$schema_lock = null;
+			self::$schema_failure_scope = $previous_scope;
 			self::$wpdb_prefix = $prefix;
 		}
 	}
@@ -259,7 +265,6 @@ class TInvWL_Activator
 		}
 		return self::owns_schema_lock();
 	}
-
 
 	/**
 	 * Method activation plugin.
@@ -326,6 +331,7 @@ class TInvWL_Activator
 			$revision = (string) $state[ self::schema_marker() ];
 			if ( ( $current && version_compare( $current, self::$_version, '>' ) )
 				|| ( '2:' === substr( $revision, 0, 2 ) && version_compare( substr( $revision, 2 ), self::$_version, '>' ) ) ) { return null; }
+			if ( ! self::archive_charset_failure( $state ) ) { return false; }
 			if ( $current && version_compare( $current, self::$_version, '>=' ) ) {
 				return self::reconcile_schema( self::current_tables() ) && self::schema_repaired();
 			}
@@ -565,6 +571,19 @@ class TInvWL_Activator
 		return implode(' ', $format);
 	}
 
+	/** Repair an existing declared primary key before dbDelta attempts ADD PRIMARY KEY. */
+	private static function repair_primary_before_create( $name, $table ) {
+		global $wpdb;
+		self::schema_stage( 'alter_index', $name, array( 'index' => 'PRIMARY' ) );
+		$status = $wpdb->get_row( $wpdb->prepare( 'SHOW TABLE STATUS WHERE Name = %s', $name ), ARRAY_A );
+		if ( $wpdb->last_error ) { return self::schema_failure(); }
+		if ( ! $status ) { return true; } // A missing table is created normally by dbDelta.
+		// The shared repair derives the primary key from the declared fields, changes
+		// DROP/ADD in one ALTER, and retains every unrelated extension index and row.
+		$table['index'] = array();
+		return self::repair_indexes( $name, $table );
+	}
+
 	/**
 	 * Created tables from array
 	 *
@@ -582,8 +601,9 @@ class TInvWL_Activator
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		foreach ( $tables as $name => $table ) {
 			if ( ! empty( $table['field'] ) ) {
-				$previous = $wpdb->suppress_errors( true );
 				self::$schema_ddl_failure = null;
+				if ( ! self::repair_primary_before_create( self::$wpdb_prefix . self::$_name . '_' . $name, $table ) ) { return false; }
+				$previous = $wpdb->suppress_errors( true );
 				self::schema_stage( 'create_table', self::$wpdb_prefix . self::$_name . '_' . $name, array( 'repairable_indexes' => array_keys( $table['index'] ?? array() ) ) );
 				try { dbDelta( self::table( $name, $table ) ); self::capture_schema_query_error( '' ); if ( self::$schema_ddl_failure ) { return false; } }
 				finally { $wpdb->suppress_errors( $previous ); }
@@ -630,6 +650,9 @@ class TInvWL_Activator
 
 	private static function schema_repaired() {
 		if ( ! self::owns_schema_lock() ) { return false; }
+		// Only archive a legacy charset error after actual main-schema verification.
+		$state = self::schema_state();
+		if ( false === $state || ! self::archive_charset_failure( $state ) ) { return false; }
 		// The DB version is the final checkpoint; a failed write remains retryable.
 		return self::schema_checkpoint( self::schema_marker(), '2:' . self::$_version )
 			&& self::schema_checkpoint( self::schema_marker() . '_error', null )
@@ -646,11 +669,40 @@ class TInvWL_Activator
 		}
 		if ( ! self::$schema_failure ) { self::schema_failure( array( 'stage' => 'final_validation', 'attribute' => 'schema', 'expected' => 'required definitions', 'actual' => 'validation failed' ) ); }
 		$failure = $failure ?: self::$schema_failure;
+		$failure['operation'] = self::$schema_failure_scope;
 		self::$schema_recording = true;
-		try { self::schema_checkpoint( self::schema_marker() . '_error', $failure ); }
+		try {
+			if ( 'charset' === self::$schema_failure_scope ) { self::save_charset_failure( $failure ); }
+			else { self::schema_checkpoint( self::schema_marker() . '_error', $failure ); }
+		}
 		finally { self::$schema_recording = false; }
 		self::log_schema_failure( $failure );
 		return false;
+	}
+
+	/** Charset conversion has its own checkpoint and diagnostic lifecycle. */
+	private static function charset_marker() {
+		return self::$_name . '_utf8mb4_schema_' . substr( self::schema_marker(), -1 );
+	}
+
+	private static function charset_retry_pending( $failure ) {
+		return is_array( $failure ) && (int) ( $failure['retry_after'] ?? 0 ) > time();
+	}
+
+	private static function save_charset_failure( $failure ) {
+		$failure['operation'] = 'charset';
+		$failure['retry_after'] = time() + HOUR_IN_SECONDS;
+		return self::schema_checkpoint( self::charset_marker() . '_error', $failure );
+	}
+
+	/** Preserve a legacy conversion diagnostic; only verified repair clears the main error. */
+	private static function archive_charset_failure( $state ) {
+		$failure = $state[ self::schema_marker() . '_error' ];
+		if ( ! is_array( $failure ) || ( 'alter_charset' !== ( $failure['stage'] ?? '' ) && 'charset' !== ( $failure['operation'] ?? '' ) ) ) {
+			return true;
+		}
+		// Do not replace a more recent, already separated conversion diagnostic.
+		return ! empty( $state[ self::charset_marker() . '_error' ] ) || self::save_charset_failure( $failure );
 	}
 
 	/** MySQL DDL must never implicitly commit a caller's transaction. */
@@ -727,6 +779,13 @@ class TInvWL_Activator
 				ksort( $existing[ $index ] );
 				if ( array_values( $existing[ $index ] ) === $expected && ! isset( $prefixes[ $index ] ) && $unique[ $index ] === ( 'PRIMARY' === $index ? 0 : 1 ) ) { continue; }
 			}
+			if ( 'PRIMARY' === $index ) {
+				self::schema_stage( 'alter_index', $name, array( 'index' => $index, 'expected' => $expected ) );
+				$null_columns = array_map( static fn( $field ) => "`$field` IS NULL", $expected );
+				$has_null = $wpdb->get_var( "SELECT 1 FROM `$name` WHERE " . implode( ' OR ', $null_columns ) . ' LIMIT 1' );
+				if ( $wpdb->last_error ) { return self::schema_failure(); }
+				if ( $has_null ) { return self::schema_failure( array( 'attribute' => 'null_values', 'expected' => 'no NULL primary key values', 'actual' => 'NULL values present' ) ); }
+			}
 			$changes = array();
 			if ( isset( $existing[ $index ] ) ) { $changes[] = 'PRIMARY' === $index ? 'DROP PRIMARY KEY' : "DROP INDEX `$index`"; }
 			$definition = '`' . implode( '`, `', $expected ) . '`';
@@ -780,12 +839,22 @@ class TInvWL_Activator
 		if ( ! current_user_can( 'manage_options' ) ) { return; }
 		$failure = get_option( self::schema_marker() . '_error' );
 		if ( ! $failure && ! self::schema_ready() ) { $failure = get_option( self::schema_marker() . '_lock_error' ); }
-		if ( ! $failure ) { return; }
-		echo '<div class="notice notice-error"><p>' . esc_html__( 'TI Wishlist could not finish updating its database tables. The update will be retried automatically. Possible causes include a schema mismatch, a database error, insufficient ALTER/CREATE permissions or unsupported table engines. Some wishlist operations are unavailable until verification succeeds.', TINVWL_DOMAIN ) . '</p>';
-		if ( is_array( $failure ) ) {
-			echo '<p><code>' . esc_html( substr( wp_json_encode( $failure ), 0, 2400 ) ) . '</code></p>';
+		if ( $failure ) {
+			echo '<div class="notice notice-error"><p>' . esc_html__( 'TI Wishlist could not finish updating its database tables. The update will be retried automatically. Possible causes include a schema mismatch, a database error, insufficient ALTER/CREATE permissions or unsupported table engines. Some wishlist operations are unavailable until verification succeeds.', TINVWL_DOMAIN ) . '</p>';
+			if ( is_array( $failure ) ) {
+				echo '<p><code>' . esc_html( substr( wp_json_encode( $failure ), 0, 2400 ) ) . '</code></p>';
+			}
+			echo '</div>';
 		}
-		echo '</div>';
+		$marker = self::charset_marker();
+		$failure = get_option( $marker . '_error' ) ?: get_option( $marker . '_lock_error' );
+		if ( '1' !== (string) get_option( $marker ) && $failure ) {
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'TI Wishlist could not finish its character set conversion. Database schema readiness is checked separately. Conversion retries are delayed; an unsupported source encoding requires review before conversion.', TINVWL_DOMAIN ) . '</p>';
+			if ( is_array( $failure ) ) {
+				echo '<p><code>' . esc_html( substr( wp_json_encode( $failure ), 0, 2400 ) ) . '</code></p>';
+			}
+			echo '</div>';
+		}
 	}
 
 	/** Keep existing fractional storage in both dbDelta DDL and required-column repairs. */
@@ -820,23 +889,29 @@ class TInvWL_Activator
 		return $tables;
 	}
 
-	/** Upgrade existing tables even when the plugin release version is unchanged. */
-	public static function maybe_upgrade_charset() {
+	/** Convert known UTF-8 data separately; true forces a retry before the one-hour backoff. */
+	public static function maybe_upgrade_charset( $force = false ) {
 		global $wpdb;
 		if ( 'utf8mb4' !== $wpdb->charset || ! $wpdb->has_cap( 'utf8mb4' ) ) {
 			return false;
 		}
-		$marker = self::$_name . '_utf8mb4_schema_f';
+		$marker = self::charset_marker();
 		if ( '1' === (string) get_option( $marker ) ) {
 			return true;
 		}
-		return self::with_schema_lock( static function () use ( $marker ) {
-			global $wpdb;
+		if ( true !== $force && self::charset_retry_pending( get_option( $marker . '_error' ) ) ) {
+			return null;
+		}
+		return self::with_schema_lock( static function () use ( $marker, $force ) {
 			$state = self::schema_state();
 			if ( false === $state ) { return false; }
 			if ( ! self::schema_state_ready( $state ) ) { return null; }
+			if ( '1' === (string) $state[ $marker ] ) { return true; }
+			if ( true !== $force && self::charset_retry_pending( $state[ $marker . '_error' ] ) ) { return null; }
 			$tables = self::current_tables();
 			if ( ! self::schema_matches( $tables ) ) {
+				// A real required-schema defect still belongs to the main migration.
+				self::$schema_failure_scope = 'schema';
 				return false;
 			}
 			foreach ( $tables as $name => $table ) {
@@ -845,10 +920,13 @@ class TInvWL_Activator
 				}
 			}
 			if ( ! self::schema_matches( $tables ) ) {
+				self::$schema_failure_scope = 'schema';
 				return false;
 			}
-			return self::schema_checkpoint( $marker, '1' );
-		} );
+			return self::schema_checkpoint( $marker . '_error', null )
+				&& self::schema_checkpoint( $marker . '_lock_error', null )
+				&& self::schema_checkpoint( $marker, '1' );
+		}, 'charset' );
 	}
 
 	/** Change only known UTF-8 fields; retain types, indexes and extension columns. */
@@ -886,7 +964,7 @@ class TInvWL_Activator
 				continue;
 			}
 			if ( ! in_array( $charset, array( 'utf8', 'utf8mb3' ), true ) ) {
-				return self::schema_failure();
+				return self::schema_failure( array( 'column' => $field, 'actual' => $column['Collation'] ) );
 			}
 			$flags = $table['field'][ $field ];
 			$flags = is_string( $flags ) ? $aliases[ $flags ] : $flags;
@@ -918,7 +996,6 @@ class TInvWL_Activator
 		}
 		return true;
 	}
-
 
 	/** MySQL 8 omits integer display widths that MariaDB still reports. */
 	private static function schema_type( $type ) {
@@ -1349,6 +1426,9 @@ class TInvWL_Activator
 		delete_option( self::schema_marker() . '_error' );
 		delete_option( self::schema_marker() . '_lock_error' );
 		delete_option( self::schema_marker() . '_last_log' );
+		delete_option( self::charset_marker() . '_error' );
+		delete_option( self::charset_marker() . '_lock_error' );
+		delete_option( self::charset_marker() . '_last_log' );
 
 		return true;
 	}

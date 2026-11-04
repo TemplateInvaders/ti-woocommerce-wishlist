@@ -4,7 +4,7 @@
  *
  * @name YITH WooCommerce Product Add-Ons
  *
- * @version 4.34.1
+ * @version 4.35.0
  *
  * @slug yith-woocommerce-product-add-ons
  *

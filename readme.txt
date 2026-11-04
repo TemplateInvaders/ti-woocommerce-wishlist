@@ -2,8 +2,8 @@
 Contributors: templateinvaders
 Tags: woocommerce, wishlist, woocommerce wishlist, shop, ecommerce
 Requires at least: 6.1
-Tested up to: 7.1.3
-Stable tag: 2.14.1
+Tested up to: 7.1.4
+Stable tag: 2.14.2
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -161,6 +161,19 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 
 == Changelog ==
+
+= 2.14.2 =
+*Release Date - 4 November 2026*
+
+- **Updated**: Compatibility with WordPress 7.1.4 and WooCommerce 11.2.1
+- **Fixed**: Database update recovery, concurrent migrations and repair of required indexes without losing saved wishlist data
+- **Fixed**: Repeated database update notices after failed character set conversion
+- **Improved**: Database migration diagnostics and controlled retries
+- **Updated**: Integration with [AutomateWoo](https://woocommerce.com/products/automatewoo/) plugin
+- **Updated**: Integration with [LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/) plugin
+- **Updated**: Integration with [ShopEngine](https://wordpress.org/plugins/shopengine/) plugin
+- **Updated**: Integration with [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) plugin
+- **Updated**: Integration with [YITH WooCommerce Product Add-Ons](https://wordpress.org/plugins/yith-woocommerce-product-add-ons/) plugin
 
 = 2.14.1 =
 *Release Date - 2 November 2026*

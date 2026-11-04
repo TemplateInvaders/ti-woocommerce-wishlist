@@ -840,7 +840,7 @@ class TInvWL_Activator
 		$failure = get_option( self::schema_marker() . '_error' );
 		if ( ! $failure && ! self::schema_ready() ) { $failure = get_option( self::schema_marker() . '_lock_error' ); }
 		if ( $failure ) {
-			echo '<div class="notice notice-error"><p>' . esc_html__( 'TI Wishlist could not finish updating its database tables. The update will be retried automatically. Possible causes include a schema mismatch, a database error, insufficient ALTER/CREATE permissions or unsupported table engines. Some wishlist operations are unavailable until verification succeeds.', TINVWL_DOMAIN ) . '</p>';
+			echo '<div class="notice notice-error"><p>' . esc_html__( 'TI Wishlist could not finish updating its database tables. The update will be retried automatically. Possible causes include a schema mismatch, a database error, insufficient ALTER/CREATE permissions or unsupported table engines. Some wishlist operations are unavailable until verification succeeds.', 'ti-woocommerce-wishlist' ) . '</p>';
 			if ( is_array( $failure ) ) {
 				echo '<p><code>' . esc_html( substr( wp_json_encode( $failure ), 0, 2400 ) ) . '</code></p>';
 			}
@@ -849,7 +849,7 @@ class TInvWL_Activator
 		$marker = self::charset_marker();
 		$failure = get_option( $marker . '_error' ) ?: get_option( $marker . '_lock_error' );
 		if ( '1' !== (string) get_option( $marker ) && $failure ) {
-			echo '<div class="notice notice-warning"><p>' . esc_html__( 'TI Wishlist could not finish its character set conversion. Database schema readiness is checked separately. Conversion retries are delayed; an unsupported source encoding requires review before conversion.', TINVWL_DOMAIN ) . '</p>';
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'TI Wishlist could not finish its character set conversion. Database schema readiness is checked separately. Conversion retries are delayed; an unsupported source encoding requires review before conversion.', 'ti-woocommerce-wishlist' ) . '</p>';
 			if ( is_array( $failure ) ) {
 				echo '<p><code>' . esc_html( substr( wp_json_encode( $failure ), 0, 2400 ) ) . '</code></p>';
 			}

@@ -64,6 +64,5 @@ if ( ! function_exists( 'tinvwl_comet_cache_reject' ) ) {
 	add_action( 'tinvwl_before_action_owner', 'tinvwl_comet_cache_reject' );
 	add_action( 'tinvwl_before_action_user', 'tinvwl_comet_cache_reject' );
 	add_filter( 'tinvwl_addproduct_tocart', 'tinvwl_comet_cache_reject' );
-	add_action( 'tinvwl_wishlist_addtowishlist_button', 'tinvwl_comet_cache_reject' );
-	add_action( 'tinvwl_wishlist_addtowishlist_dialogbox', 'tinvwl_comet_cache_reject' );
+	add_action( 'tinvwl_no_cache', 'tinvwl_comet_cache_reject' );
 }

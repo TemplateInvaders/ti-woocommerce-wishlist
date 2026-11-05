@@ -435,6 +435,7 @@ class TInvWL_Public_Wishlist_View {
 	 * @return mixed
 	 */
 	function htmloutput( $atts ) {
+		TInvWL_Cache::prevent();
 		// Copy values explicitly; bulk array copies can retain global references.
 		$globals = array();
 		foreach ( array( 'product', 'post' ) as $key ) {

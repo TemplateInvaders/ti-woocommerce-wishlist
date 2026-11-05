@@ -147,10 +147,7 @@ class TInvWL {
 			$hidden[] = '_tinvwl_cart_item_key';
 			return array_values( array_unique( $hidden ) );
 		} );
-		if ( ! empty( $_COOKIE['tinv_wishlist_owner'] ) ) {
-			if ( ! defined( 'DONOTCACHEPAGE' ) ) { define( 'DONOTCACHEPAGE', true ); }
-			add_action( 'send_headers', 'nocache_headers' );
-		}
+		TInvWL_Cache::init();
 		add_filter(
 			'plugin_action_links_' . plugin_basename( TINVWL_PATH . 'ti-woocommerce-wishlist.php' ),
 			[ $this, 'action_links' ]

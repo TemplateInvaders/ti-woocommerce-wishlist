@@ -33,29 +33,23 @@ $tinvwl_integrations[$slug] = array(
 	'available' => $available,
 );
 
-// Authorization cookies must bypass page cache even when optional compatibility is disabled.
+// Personal URLs bypass the cache; TI cookies do not personalize public catalog HTML.
 if ( $available ) {
-	if ( ! function_exists( 'tinvwl_rocket_reject_owner_cookie' ) ) {
-		function tinvwl_rocket_reject_owner_cookie( $cookies = array() ) {
-			$cookies[] = 'tinv_wishlist_owner';
-			return array_values( array_unique( $cookies ) );
-		}
-	}
-	add_filter( 'rocket_cache_reject_cookies', 'tinvwl_rocket_reject_owner_cookie' );
+	add_filter( 'rocket_cache_reject_uri', array( 'TInvWL_Cache', 'reject_urls' ) );
 
 	if ( ! function_exists( 'tinvwl_rocket_upgrade_owner_cache_policy' ) ) {
 		function tinvwl_rocket_upgrade_owner_cache_policy() {
 			$option = 'tinvwl_rocket_owner_cache_policy';
-			if ( 1 === (int) get_option( $option ) || ! function_exists( 'flush_rocket_htaccess' ) || ! function_exists( 'rocket_generate_config_file' ) || ! function_exists( 'rocket_clean_domain' ) ) {
+			if ( 2 === (int) get_option( $option ) || ! function_exists( 'flush_rocket_htaccess' ) || ! function_exists( 'rocket_generate_config_file' ) || ! function_exists( 'rocket_clean_domain' ) ) {
 				return;
 			}
 			flush_rocket_htaccess();
 			rocket_generate_config_file();
-			// Old files were keyed only by the public share cookie and cannot retain owner HTML.
+			// Regenerate the old cookie exclusions and purge previously personalized HTML.
 			$before = did_action( 'after_rocket_clean_domain' );
 			$result = rocket_clean_domain();
 			if ( false !== $result && did_action( 'after_rocket_clean_domain' ) > $before ) {
-				update_option( $option, 1, false );
+				update_option( $option, 2, false );
 			}
 		}
 	}
@@ -80,8 +74,6 @@ if (!function_exists('tinvwl_rocket_cache_dynamic_cookies')) {
 	 */
 	function tinvwl_rocket_cache_dynamic_cookies($cookies = array())
 	{
-		$cookies[] = 'tinv_wishlistkey';
-
 		return $cookies;
 	}
 }
@@ -116,8 +108,6 @@ if (!function_exists('tinvwl_rocket_flush')) {
  */
 function tivnwl_wp_rocket()
 {
-	add_filter('rocket_cache_dynamic_cookies', 'tinvwl_rocket_cache_dynamic_cookies');
-	add_filter('rocket_htaccess_mod_rewrite', '__return_false');
 	tinvwl_rocket_flush();
 }
 

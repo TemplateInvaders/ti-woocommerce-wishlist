@@ -162,6 +162,11 @@ Yes, you can! Join in on our [GitHub repository](https://github.com/TemplateInva
 
 == Changelog ==
 
+= 2.14.3 =
+*Release Date - Unreleased*
+
+- **Fixed**: Public catalog caching for guests with existing wishlists while keeping personal wishlist pages and responses uncached
+
 = 2.14.2 =
 *Release Date - 4 November 2026*
 

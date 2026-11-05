@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/ti-wishlist-product-counter.php.
  *
- * @version             2.13.0
+ * @version             2.14.3
  * @package           TInvWishlist\Template
  */
 
@@ -33,7 +33,7 @@ if ( '' === trim( $accessible_label ) ) {
 <a href="<?php echo esc_url(tinv_url_wishlist_default()); ?>"
    name="<?php echo esc_attr(sanitize_title($text_attr)); ?>"
    aria-label="<?php echo esc_attr($accessible_label); ?>"
-   class="wishlist_products_counter<?php echo ' ' . $icon_class . ' ' . $icon_style . (empty($text_attr) ? ' no-txt' : '') . (0 < $counter ? ' wishlist-counter-with-products' : ''); ?>">
+   class="wishlist_products_counter<?php echo ' ' . $icon_class . ' ' . $icon_style . (empty($text_attr) ? ' no-txt' : ''); ?>">
 	<?php
 	if ($icon_img_html) {
 		echo $icon_img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

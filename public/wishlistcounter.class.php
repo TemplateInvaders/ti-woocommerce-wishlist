@@ -123,7 +123,7 @@ class TInvWL_Public_WishlistCounter
 
 				$text = tinv_get_option('topline', 'show_text') ? apply_filters('tinvwl_wishlist_products_counter_text', tinv_get_option('topline', 'text')) : '';
 
-				$icon = '<span class="wishlist_products_counter ' . $icon_class . ' ' . $icon_style . (empty($text) ? ' no-txt' : '') . (0 < $this->get_counter() ? ' wishlist-counter-with-products' : '') . '" >';
+				$icon = '<span class="wishlist_products_counter ' . $icon_class . ' ' . $icon_style . (empty($text) ? ' no-txt' : '') . '" >';
 
 				if ($icon_class && 'custom' === $icon_type && !empty($icon_upload)) {
 					$icon .= sprintf('<img src="%s"  alt="%s"/>', esc_url($icon_upload), esc_attr($text));

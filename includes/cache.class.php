@@ -59,8 +59,11 @@ class TInvWL_Cache {
 		if ( tinv_get_option( 'general', 'my_account_endpoint' ) && function_exists( 'wc_get_page_id' ) ) {
 			$ids[] = wc_get_page_id( 'myaccount' );
 		}
-		foreach ( array_unique( array_filter( $ids ) ) as $id ) {
-			$url = get_permalink( $id );
+		$permalinks = array_map( 'get_permalink', array_unique( array_filter( $ids ) ) );
+		if ( tinv_get_option( 'general', 'my_account_endpoint' ) && function_exists( 'wc_get_endpoint_url' ) ) {
+			$permalinks[] = wc_get_endpoint_url( tinv_get_option( 'general', 'my_account_endpoint_slug' ), '', wc_get_page_permalink( 'myaccount' ) );
+		}
+		foreach ( $permalinks as $url ) {
 			// Query-style permalinks share '/' with the catalog; never exclude that
 			// whole path for ?page_id=N. Runtime guards and query cache rules apply.
 			if ( wp_parse_url( $url, PHP_URL_QUERY ) ) {
@@ -68,7 +71,17 @@ class TInvWL_Cache {
 			}
 			$path = wp_parse_url( $url, PHP_URL_PATH );
 			if ( is_string( $path ) && '' !== $path ) {
-				$urls[] = '/' === $path ? '^/$' : preg_quote( untrailingslashit( $path ), '#' ) . '(?:/.*)?$';
+				// Restrict home/translated-home exclusions to real TI routes, not
+				// the whole language or installation directory. Capturing (/...)
+				// also lets Rocket strip its home_root before adding it back.
+				$base = preg_quote( untrailingslashit( $path ), '#' );
+				// Rocket passes rules through esc_url_raw(): [] are URL-encoded,
+				// and braces/backslashes are removed. Use URL-safe regex syntax.
+				$hex = '(a|b|c|d|e|f|0|1|2|3|4|5|6|7|8|9)';
+				$key = '(?=(' . str_repeat( '.', 6 ) . '|' . str_repeat( '.', 32 ) . ')(/|$))' . $hex . '+';
+				$number = '(0|1|2|3|4|5|6|7|8|9)+';
+				$route = '(' . $key . '(/(wl_page|page)/' . $number . ')?|(wl_page|page)/' . $number . ')';
+				$urls[] = '' === $base ? '/(' . $route . '/?)?' : $base . '(/' . $route . ')?/?';
 			}
 		}
 		return array_values( array_unique( $urls ) );
@@ -131,7 +144,7 @@ class TInvWL_Cache {
 	}
 
 	public static function rest( $response, $server, $request ) {
-		if ( preg_match( '#^/wc/v3/wishlist(?:/|$)#', $request->get_route() ) ) {
+		if ( preg_match( '#^/wc/v3/wishlist(?:/|$)#i', $request->get_route() ) ) {
 			self::prevent();
 			$response = rest_ensure_response( $response );
 			if ( $response instanceof WP_HTTP_Response ) {

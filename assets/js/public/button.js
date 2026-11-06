@@ -37,6 +37,10 @@
 		return isFinite( counter ) && counter >= 0 ? counter : null;
 	}
 
+	function hasWishlistState() {
+		return $( '.wishlist_products_counter, .wishlist_products_counter_number, .theme-item-count.wishlist-item-count, .tinvwl-mini-wishlist-wrapper' ).length > 0;
+	}
+
 	function restore_product_counter() {
 		var counter = 0;
 		try {
@@ -1339,7 +1343,7 @@
 			var hasProducts = $( 'a.tinvwl_add_to_wishlist_button' ).filter( function() {
 				return !! $( this ).data( 'tinv-wl-product' );
 			}).length;
-			if ( ( 'refresh' === refresh || hasProducts || $( '.wishlist_products_counter_number' ).length ) && ( tinvwl_add_to_wishlist.user_interacted || force ) ) {
+			if ( ( 'refresh' === refresh || hasProducts || hasWishlistState() ) && ( tinvwl_add_to_wishlist.user_interacted || force ) ) {
 
 				var readRevision = wishlistRevision;
 				var readSequence = ++latestRead;
@@ -1470,12 +1474,12 @@
 		};
 
 		tinvwl_add_to_wishlist.user_interacted = false;
-		var hasCounter = $( '.wishlist_products_counter_number, .theme-item-count.wishlist-item-count' ).length > 0;
-		if ( hasCounter ) { restore_product_counter(); }
+		var hasState = hasWishlistState();
+		if ( hasState ) { restore_product_counter(); }
 
 		$.fn.tinvwl_get_wishlist_data();
-		// A visible counter must not wait for the first click or scroll.
-		if ( hasCounter && ! tinvwl_add_to_wishlist.block_ajax_wishlists_data ) { get_data_ajax( undefined, true ); }
+		// Visible wishlist icons, counters and mini wishlists update before interaction.
+		if ( hasState && ! tinvwl_add_to_wishlist.block_ajax_wishlists_data ) { get_data_ajax( undefined, true ); }
 
 		$( document ).one( 'click keydown scroll', function() {
 			tinvwl_add_to_wishlist.user_interacted = true;

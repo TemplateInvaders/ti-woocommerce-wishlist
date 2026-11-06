@@ -78,7 +78,8 @@ class TInvWL_Cache {
 				// Rocket passes rules through esc_url_raw(): [] are URL-encoded,
 				// and braces/backslashes are removed. Use URL-safe regex syntax.
 				$hex = '(a|b|c|d|e|f|0|1|2|3|4|5|6|7|8|9)';
-				$key = '(?=(' . str_repeat( '.', 6 ) . '|' . str_repeat( '.', 32 ) . ')(/|$))' . $hex . '+';
+				// Count only characters inside the key segment, never its slash/pagination.
+				$key = '(?=(' . str_repeat( '(?!/).', 6 ) . '|' . str_repeat( '(?!/).', 32 ) . ')(/|$))' . $hex . '+';
 				$number = '(0|1|2|3|4|5|6|7|8|9)+';
 				$route = '(' . $key . '(/(wl_page|page)/' . $number . ')?|(wl_page|page)/' . $number . ')';
 				$urls[] = '' === $base ? '/(' . $route . '/?)?' : $base . '(/' . $route . ')?/?';
